@@ -36,7 +36,7 @@ struct LaunchView: View {
                     Text("Launch View")
                 }
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                         withAnimation {
                             self.isActive = true
                             self.isloading.toggle()
