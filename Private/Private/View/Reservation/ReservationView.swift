@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ReservationView: View {
     
+    @ObservedObject var shopStore: ShopStore
+    
     @Binding var root: Bool
     @Binding var selection: Int
     
@@ -19,6 +21,6 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(root: .constant(true), selection: .constant(4))
+        ReservationView(shopStore: ShopStore(), root: .constant(true), selection: .constant(4))
     }
 }
