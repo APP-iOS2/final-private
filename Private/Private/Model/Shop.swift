@@ -18,7 +18,7 @@ struct Shop {
     var shopTelNumber: String
     var shopInfo: String
     var shopImageURL: String
-    var shopItems: ShopItem
+    var shopItems: [ShopItem]
     var numberOfBookmark: Int
 }
 

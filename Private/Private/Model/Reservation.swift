@@ -9,7 +9,7 @@ import Foundation
 
 struct Reservation {
     var shop: Shop
-    var date: Date
+    var date: Double
     var time: String
     var isOpen: Bool
     var numberOfPeople: Int

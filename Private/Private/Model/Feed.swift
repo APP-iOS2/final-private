@@ -14,7 +14,7 @@ struct Feed {
     var contents: String
     var createdAt: Double = Date().timeIntervalSince1970
     var visitedShop: Shop
-    var category: Category
+    var category: [Category]
 }
 
 enum Category: Int, CaseIterable {
