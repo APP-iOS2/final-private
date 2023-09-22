@@ -107,7 +107,7 @@
 		3CCD2DF72ABC357C005709F4 /* ReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationView.swift; sourceTree = "<group>"; };
 		3CCD2DF92ABC3588005709F4 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
 		3CCD2DFB2ABC37DB005709F4 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "View+.swift"; path = "Private/Extension/View+.swift"; sourceTree = SOURCE_ROOT; };
-		3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextMaster.swift; path = Private/Extension/TextMaster.swift; sourceTree = SOURCE_ROOT; };
+		3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextMaster.swift; path = Private/Commons/TextMaster.swift; sourceTree = SOURCE_ROOT; };
 		3CCD2E002ABC3A6D005709F4 /* Pretendard */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pretendard; sourceTree = "<group>"; };
 		3CCD2E022ABC3B64005709F4 /* Font+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Font+.swift"; path = "Private/Extension/Font+.swift"; sourceTree = SOURCE_ROOT; };
 		3CF3D8C12AB82A97003689A6 /* Private.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Private.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -203,7 +203,6 @@
 			isa = PBXGroup;
 			children = (
 				3CCD2DFB2ABC37DB005709F4 /* View+.swift */,
-				3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */,
 				3CCD2E022ABC3B64005709F4 /* Font+.swift */,
 			);
 			path = Extension;
@@ -277,6 +276,7 @@
 		3CCD2DFF2ABC3A3F005709F4 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
+				3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
