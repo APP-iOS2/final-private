@@ -10,14 +10,18 @@ import SwiftUI
 struct ReservationView: View {
     
     @ObservedObject var shopStore: ShopStore
+    @ObservedObject var reservationStore: ReservationStore
     
     @State private var showingDate: Bool = false
     @State private var showingNumbers: Bool = false
+    @State private var date = Date()
     @State private var number = 1  // 인원
-    private let step = 1
-    private let range = 1...6  // 인원제한에 대한 정보가 없음
+    
     @Binding var root: Bool
     @Binding var selection: Int
+    
+    private let step = 1
+    private let range = 1...6  // 인원제한에 대한 정보가 없음
     
     var body: some View {
         ScrollView {
@@ -50,6 +54,10 @@ struct ReservationView: View {
                 .onTapGesture {
                     showingDate.toggle()
                 }
+                .sheet(isPresented: $showingDate) {
+                    DateTimePickerView(reservationStore: reservationStore, date: $date)
+                }
+
                 
                 // 예약 클릭 시 뷰가 새로 뜨게함
                 
@@ -131,6 +139,7 @@ struct ReservationView: View {
                 .cornerRadius(12)
                 
             }// VStack
+
         }// ScrollView
         .padding()
         
@@ -139,6 +148,6 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(shopStore: ShopStore(), root: .constant(true), selection: .constant(4))
+        ReservationView(shopStore: ShopStore(), reservationStore: ReservationStore() , root: .constant(true), selection: .constant(4))
     }
 }
