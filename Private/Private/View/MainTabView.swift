@@ -9,11 +9,20 @@ import SwiftUI
 
 struct MainTabView: View {
     
+    enum Field: Hashable {
+        case username
+        case password
+    }
+    
     @State var selection: Int = 1
     @State private var rootSection1: Bool = false
     @State private var rootSection2: Bool = false
     @State private var rootSection3: Bool = false
     @State private var rootSection4: Bool = false
+    @State private var rootSection5: Bool = false
+    
+    @State private var testText: String = ""
+    @FocusState private var focusedField: Field?
     
     var selectionBinding: Binding<Int> { Binding (
         get: {
@@ -32,29 +41,39 @@ struct MainTabView: View {
             if $0 == self.selection && rootSection4 {
                 rootSection4 = false
             }
+            if $0 == self.selection && rootSection4 {
+                rootSection5 = false
+            }
             self.selection = $0
         }
     )}
     
     var body: some View {
         Text("메인 탭 뷰")
+        
+//        TextMaster(text: $testText, isFocused: $focusedField, maxLine: 5, fontSize: 30)
+        
 //        TabView(selection: selectionBinding) {
-//            FirstView(root: $rootSection1).tabItem {
+//            MainHomeView(root: $rootSection1).tabItem {
 //                Image(selection == 1 ? "Maptabfill" : "Map_tab")
 //                Text("첫번째 탭")
 //            }.tag(1)
-//            SecondView(root: $rootSection2).tabItem {
+//            SearchView(root: $rootSection2).tabItem {
 //                Image(selection == 2 ? "BookMark_tab_fill" : "BookMark_tab")
 //                Text("두번째 탭")
 //            }.tag(2)
-//            ThirdView(root: $rootSection3).tabItem {
+//            PostView(root: $rootSection3).tabItem {
 //                Image(selection == 3 ? "Notification_tab_fill" : "Notification_tab")
 //                Text("세번째 탭")
 //            }.tag(3)
-//            FourthView(root: $rootSection4, selection: $selection).tabItem {
+//            ReservationView(root: $rootSection4, selection: $selection).tabItem {
 //                Image(selection == 4 ? "MyPage_tab_fill" : "MyPage_tab")
 //                Text("네번째 탭")
 //            }.tag(4)
+//            MyPageView(root: $rootSection5, selection: $selection).tabItem {
+//                Image(selection == 5 ? "MyPage_tab_fill" : "MyPage_tab")
+//                Text("다섯번째 탭")
+//            }.tag(5)
 //        }
     }
 }
