@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct MainHomeView: View {
+    
+    @Binding var root: Bool
+    @Binding var selection: Int
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Hello, World!")
     }
 }
 
 struct MainHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        MainHomeView()
+        MainHomeView(root: .constant(true), selection: .constant(1))
     }
 }

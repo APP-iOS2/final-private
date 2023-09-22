@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct ReservationView: View {
+    
+    @Binding var root: Bool
+    @Binding var selection: Int
+    
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
@@ -15,6 +19,6 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView()
+        ReservationView(root: .constant(true), selection: .constant(4))
     }
 }

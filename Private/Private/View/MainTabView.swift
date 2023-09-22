@@ -9,10 +9,11 @@ import SwiftUI
 
 struct MainTabView: View {
     
-    enum Field: Hashable {
-        case username
-        case password
-    }
+    @StateObject private var userStore: UserStore = UserStore()
+    @StateObject private var shopStore: ShopStore = ShopStore()
+    @StateObject private var feedStore: FeedStore = FeedStore()
+    @StateObject private var reservationStore: ReservationStore = ReservationStore()
+    @StateObject private var chatRoomStore: ChatRoomStore = ChatRoomStore()
     
     @State var selection: Int = 1
     @State private var rootSection1: Bool = false
@@ -20,9 +21,6 @@ struct MainTabView: View {
     @State private var rootSection3: Bool = false
     @State private var rootSection4: Bool = false
     @State private var rootSection5: Bool = false
-    
-    @State private var testText: String = ""
-    @FocusState private var focusedField: Field?
     
     var selectionBinding: Binding<Int> { Binding (
         get: {
@@ -49,32 +47,23 @@ struct MainTabView: View {
     )}
     
     var body: some View {
-        Text("메인 탭 뷰")
-        
-//        TextMaster(text: $testText, isFocused: $focusedField, maxLine: 5, fontSize: 30)
-        
-//        TabView(selection: selectionBinding) {
-//            MainHomeView(root: $rootSection1).tabItem {
-//                Image(selection == 1 ? "Maptabfill" : "Map_tab")
-//                Text("첫번째 탭")
-//            }.tag(1)
-//            SearchView(root: $rootSection2).tabItem {
-//                Image(selection == 2 ? "BookMark_tab_fill" : "BookMark_tab")
-//                Text("두번째 탭")
-//            }.tag(2)
-//            PostView(root: $rootSection3).tabItem {
-//                Image(selection == 3 ? "Notification_tab_fill" : "Notification_tab")
-//                Text("세번째 탭")
-//            }.tag(3)
-//            ReservationView(root: $rootSection4, selection: $selection).tabItem {
-//                Image(selection == 4 ? "MyPage_tab_fill" : "MyPage_tab")
-//                Text("네번째 탭")
-//            }.tag(4)
-//            MyPageView(root: $rootSection5, selection: $selection).tabItem {
-//                Image(selection == 5 ? "MyPage_tab_fill" : "MyPage_tab")
-//                Text("다섯번째 탭")
-//            }.tag(5)
-//        }
+        TabView(selection: selectionBinding) {
+            MainHomeView(root: $rootSection1, selection: $selection).tabItem {
+                Image(systemName: "house.fill")
+            }.tag(1)
+            SearchView(root: $rootSection2, selection: $selection).tabItem {
+                Image(systemName: "magnifyingglass")
+            }.tag(2)
+            PostView(root: $rootSection3, selection: $selection).tabItem {
+                Image(systemName: "plus")
+            }.tag(3)
+            ReservationView(root: $rootSection4, selection: $selection).tabItem {
+                Image(systemName: "calendar.badge.clock")
+            }.tag(4)
+            MyPageView(root: $rootSection5, selection: $selection).tabItem {
+                Image(systemName: "person.fill")
+            }.tag(5)
+        }
     }
 }
 

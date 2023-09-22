@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct SearchView: View {
+    
+    @Binding var root: Bool
+    @Binding var selection: Int
+    
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
@@ -15,6 +19,6 @@ struct SearchView: View {
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        SearchView(root: .constant(true), selection: .constant(2))
     }
 }
