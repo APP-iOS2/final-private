@@ -12,6 +12,9 @@
 		3864D85AA2BBF6F3F6082E7D /* Pods_PrivateTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A395D3AA2009366C31BCDB6 /* Pods_PrivateTests.framework */; };
 		3C3716242ABD15A4004E8419 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3716232ABD15A4004E8419 /* UserStore.swift */; };
 		3C3716262ABD15CD004E8419 /* ShopStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3716252ABD15CD004E8419 /* ShopStore.swift */; };
+		3C3716282ABD1762004E8419 /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3716272ABD1762004E8419 /* FeedStore.swift */; };
+		3C37162A2ABD176E004E8419 /* ReservationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3716292ABD176E004E8419 /* ReservationStore.swift */; };
+		3C37162C2ABD1789004E8419 /* ChatRoomStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C37162B2ABD1789004E8419 /* ChatRoomStore.swift */; };
 		3CA3035C2AB8376700FEC7BD /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA3035B2AB8376700FEC7BD /* FirebaseAnalytics */; };
 		3CA3035E2AB8376700FEC7BD /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA3035D2AB8376700FEC7BD /* FirebaseAnalyticsOnDeviceConversion */; };
 		3CA303602AB8376700FEC7BD /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA3035F2AB8376700FEC7BD /* FirebaseAnalyticsSwift */; };
@@ -87,6 +90,9 @@
 /* Begin PBXFileReference section */
 		3C3716232ABD15A4004E8419 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		3C3716252ABD15CD004E8419 /* ShopStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopStore.swift; sourceTree = "<group>"; };
+		3C3716272ABD1762004E8419 /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
+		3C3716292ABD176E004E8419 /* ReservationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationStore.swift; sourceTree = "<group>"; };
+		3C37162B2ABD1789004E8419 /* ChatRoomStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomStore.swift; sourceTree = "<group>"; };
 		3C9816AC39F3302EDB88BA8A /* Pods_Private_PrivateUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private_PrivateUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CCD2DDD2ABC3141005709F4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Private/Model/User.swift; sourceTree = SOURCE_ROOT; };
 		3CCD2DDF2ABC314A005709F4 /* Shop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Shop.swift; path = Private/Model/Shop.swift; sourceTree = SOURCE_ROOT; };
@@ -221,6 +227,9 @@
 			children = (
 				3C3716232ABD15A4004E8419 /* UserStore.swift */,
 				3C3716252ABD15CD004E8419 /* ShopStore.swift */,
+				3C3716272ABD1762004E8419 /* FeedStore.swift */,
+				3C3716292ABD176E004E8419 /* ReservationStore.swift */,
+				3C37162B2ABD1789004E8419 /* ChatRoomStore.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -649,6 +658,7 @@
 			files = (
 				3CCD2DE62ABC319C005709F4 /* ChatRoom.swift in Sources */,
 				3C3716262ABD15CD004E8419 /* ShopStore.swift in Sources */,
+				3C37162C2ABD1789004E8419 /* ChatRoomStore.swift in Sources */,
 				3C3716242ABD15A4004E8419 /* UserStore.swift in Sources */,
 				3CF3D8C72AB82A97003689A6 /* LaunchView.swift in Sources */,
 				3CCD2DFA2ABC3588005709F4 /* MyPageView.swift in Sources */,
@@ -665,6 +675,8 @@
 				3CCD2DE82ABC31FD005709F4 /* Message.swift in Sources */,
 				3CCD2DFC2ABC37DB005709F4 /* View+.swift in Sources */,
 				3CCD2DE42ABC3185005709F4 /* Reservation.swift in Sources */,
+				3C37162A2ABD176E004E8419 /* ReservationStore.swift in Sources */,
+				3C3716282ABD1762004E8419 /* FeedStore.swift in Sources */,
 				3CCD2DF62ABC3572005709F4 /* PostView.swift in Sources */,
 				3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */,
 			);
