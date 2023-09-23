@@ -24,6 +24,7 @@ struct MapMainView: View {
                 .edgesIgnoringSafeArea(.vertical)
         }
        
+       
     }
 }
 
