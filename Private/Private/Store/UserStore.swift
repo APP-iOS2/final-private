@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NMapsMap
 
 final class UserStore: ObservableObject {
     @Published var user: [User] = []
@@ -15,7 +16,8 @@ final class UserStore: ObservableObject {
     init() {
         
     }
-    
+    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
+
     static let user = User(
         name: "김철수",
         nickname: "Private",
@@ -25,7 +27,20 @@ final class UserStore: ObservableObject {
         following: [],
         myFeed: [],
         savedFeed: [],
-        bookmark: [],
+        bookmark: [
+            Shop(
+            name: "강남 맛집",
+            category: Category.koreanFood,
+            coord: NMGLatLng(lat: 36.444, lng: 127.332),
+            address: "서울시 강남구",
+            addressDetail: "7번 출구 어딘가",
+            shopTelNumber: "010-1234-5678",
+            shopInfo: "미슐랭 맛집",
+            shopImageURL: "",
+            shopItems: [shopItem],
+            numberOfBookmark: 0
+        )
+        ],
         chattingRoom: [],
         myReservation: []
     )
