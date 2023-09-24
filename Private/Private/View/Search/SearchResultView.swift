@@ -47,7 +47,9 @@ struct SearchResultView: View {
     }
 }
 
-#Preview {
-    SearchResultView(searchTerm: "사용자 아무개")
-        .environmentObject(SearchStore())
+struct SearchResultView_Previews: PreviewProvider {
+    static var previews: some View {
+        SearchResultView(searchTerm: "사용자 아무개")
+            .environmentObject(SearchStore())
+    }
 }
