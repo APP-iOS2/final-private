@@ -14,6 +14,7 @@ struct PrivateApp: App {
         WindowGroup {
             LaunchView()
                 .environmentObject(FeedStore())
+                .environmentObject(SearchStore())
         }
     }
 }
