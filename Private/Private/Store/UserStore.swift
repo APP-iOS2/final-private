@@ -39,6 +39,17 @@ final class UserStore: ObservableObject {
             shopImageURL: "",
             shopItems: [shopItem],
             numberOfBookmark: 0
+        ), Shop(
+            name: "강남 맛집2",
+            category: Category.koreanFood,
+            coord: NMGLatLng(lat: 36.4445, lng: 127.331),
+            address: "서울시 강남구",
+            addressDetail: "7번 출구 어딘가",
+            shopTelNumber: "010-1234-5678",
+            shopInfo: "미슐랭 맛집",
+            shopImageURL: "",
+            shopItems: [shopItem],
+            numberOfBookmark: 0
         )
         ],
         chattingRoom: [],

@@ -34,8 +34,6 @@ struct NaverMap: UIViewRepresentable {
     func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
         
     }
-    
-    
 }
 
 final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NMFMapViewTouchDelegate, CLLocationManagerDelegate {
@@ -59,17 +57,16 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     private override init() {
         super.init()
         
-        view.showZoomControls = false
+        view.showZoomControls = true
         view.mapView.positionMode = .direction
         view.mapView.isNightModeEnabled = true
         // MARK: - 줌 레벨 제한
         view.mapView.zoomLevel = 15 // 기본 카메라 줌 레벨
-        //        view.mapView.minZoomLevel = 10 // 최소 줌 레벨
-        //        view.mapView.maxZoomLevel = 17 // 최대 줌 레벨
+        view.mapView.minZoomLevel = 10 // 최소 줌 레벨
+        view.mapView.maxZoomLevel = 17 // 최대 줌 레벨
         // MARK: - 현 위치 추적 버튼
-        view.showLocationButton = false
+        view.showLocationButton = true
         view.showCompass = false
-        view.showZoomControls = false
         
         // MARK: - NMFMapViewCameraDelegate를 상속 받은 Coordinator 클래스 넘겨주기
         view.mapView.addCameraDelegate(delegate: self)
@@ -137,9 +134,9 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
             marker.captionText = shopMarker.name
             marker.captionMinZoom = 10
             marker.captionMaxZoom = 17
-            // marker.iconImage = .
-            marker.width = CGFloat(NMF_MARKER_SIZE_AUTO)
-            marker.height = CGFloat(NMF_MARKER_SIZE_AUTO)
+            marker.iconImage = NMFOverlayImage(name: "placeholder")
+            marker.width = CGFloat(40)
+            marker.height = CGFloat(40)
             
             markers.append(marker)
         }
