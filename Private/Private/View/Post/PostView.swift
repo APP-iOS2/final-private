@@ -12,8 +12,45 @@ struct PostView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     
+    @EnvironmentObject private var feedStore: FeedStore
+    @EnvironmentObject private var userStore: UserStore
+    
+    @State private var text: String = ""
+    @FocusState private var isTextMasterFocused: Bool
+    
+    private let minLine: Int = 5
+    private let maxLine: Int = 8
+    private let fontSize: Double = 24
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            ScrollView {
+                HStack {
+                    AsyncImage(url: URL(string: UserStore.user.profileImageURL)) { image in
+                        image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 70, height: 70)
+                        
+                        VStack {
+                            Text(UserStore.user.name)
+                            Text(UserStore.user.nickname)
+                        }
+                    } // HStack
+                    .padding(.trailing, 250)
+                
+                
+                TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize)
+                    .listRowSeparator(.hidden)
+                
+                Divider()
+                CatecoryView()
+                
+            } // ScrollView
+            .navigationTitle("글쓰기")
+            .navigationBarTitleDisplayMode(.inline)
+        } // NavigationStack
     }
 }
 
