@@ -17,7 +17,7 @@ final class UserStore: ObservableObject {
     }
     
     static let user = User(
-        name: "김철수",
+        name: "맛집탐방러",
         nickname: "Private",
         phoneNumber: "010-0000-0000",
         profileImageURL: "https://discord.com/channels/1087563203686445056/1153285554646036550/1154579593819344928",

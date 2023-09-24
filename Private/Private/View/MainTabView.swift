@@ -9,6 +9,10 @@ import SwiftUI
 
 struct MainTabView: View {
     
+    init() {
+        UITabBar.appearance().backgroundColor = UIColor(Color.tabColor)
+    }
+    
     @StateObject private var userStore: UserStore = UserStore()
     @StateObject private var shopStore: ShopStore = ShopStore()
     @StateObject private var feedStore: FeedStore = FeedStore()

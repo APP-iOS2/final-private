@@ -13,6 +13,7 @@ struct PrivateApp: App {
     var body: some Scene {
         WindowGroup {
             LaunchView()
+                .environmentObject(FeedStore())
         }
     }
 }

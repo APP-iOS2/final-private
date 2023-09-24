@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Reservation {
+struct Reservation: Hashable {
     var shop: Shop
     var date: Double
     var time: String

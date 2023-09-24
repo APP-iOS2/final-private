@@ -12,8 +12,49 @@ struct MainHomeView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     
+    @State var selectedNumber: Int = 0
+    
     var body: some View {
-        Text("Hello, World!")
+        NavigationStack {
+            HStack {
+                Button {
+                    selectedNumber = 0
+                } label: {
+                    Image(systemName: "map")
+                    Text("지도")
+                }
+                .padding(.leading, 10)
+                
+                Button {
+                    selectedNumber = 1
+                } label: {
+                    Image(systemName: "text.justify")
+                    Text("피드")
+                }
+                Spacer()
+                
+                Button {
+                    print("검색")
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                }
+                
+                NavigationLink {
+                    
+                } label: {
+                    Image(systemName: "paperplane")
+                }
+            }
+            .padding(.horizontal, 10)
+            .font(.pretendardMedium20)
+            .foregroundColor(.primary)
+            
+            if selectedNumber == 0 {
+                MapMainView()
+            } else if selectedNumber == 1 {
+                FeedMainView()
+            }
+        }
     }
 }
 
