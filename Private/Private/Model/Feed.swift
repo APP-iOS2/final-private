@@ -7,8 +7,10 @@
 
 import Foundation
 
-struct Feed {
+struct Feed: Identifiable, Hashable {
+    
     let id: String = UUID().uuidString
+    
     var writer: User
     var images: [String]
     var contents: String
@@ -17,7 +19,7 @@ struct Feed {
     var category: [Category]
 }
 
-enum Category: Int, CaseIterable {
+enum Category: Int, CaseIterable, Hashable {
     case koreanFood
     case westernFood
     case japaneseFood
