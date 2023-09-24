@@ -46,6 +46,8 @@ struct MainHomeView: View {
                 }
             }
             .padding(.horizontal, 10)
+            .font(.pretendardMedium20)
+            .foregroundColor(.primary)
             
             if selectedNumber == 0 {
                 MapMainView()
