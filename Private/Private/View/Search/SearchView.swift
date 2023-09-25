@@ -50,9 +50,7 @@ struct SearchView: View {
                 }
                 .disabled(isSearchTextEmpty)
                 
-                TextField("사용자 검색", text: $searchTerm)
-                    .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
-                    .disableAutocorrection(true) // 자동수정 비활성화
+                SearchBarTextField(text: $searchTerm, placeholder: "사용자 검색")
                     .onChange(of: searchTerm) { newValue in
                         trimmedSearchTerm = searchTerm.trimmingCharacters(in: .whitespaces)
                         if trimmedSearchTerm.isEmpty {
@@ -61,23 +59,9 @@ struct SearchView: View {
                             isSearchTextEmpty = false
                         }
                     }
-                
-                if !searchTerm.isEmpty {
-                    Button {
-                        searchTerm = ""
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.trailing, 5)
-                }
             }
             .padding(.horizontal)
             .padding(.vertical, 12)
-            .background {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(.gray)
-            }
             .padding(.bottom, 30)
         }
     }
@@ -173,5 +157,6 @@ struct SearchView: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchView(root: .constant(true), selection: .constant(2))
+            .environmentObject(SearchStore())
     }
 }

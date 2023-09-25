@@ -12,4 +12,6 @@ extension Color {
     static let darkGraySubColor = Color("DarkGraySubColor")
     static let subGrayColor = Color("SubGrayColor")
     static let tabColor = Color("TabColor")
+    static let chatTextColor = Color("ChatTextColor")
+    static let lightGrayColor = Color("LightGrayColor")
 }

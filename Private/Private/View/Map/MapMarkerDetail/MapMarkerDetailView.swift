@@ -1,20 +1,20 @@
 //
-//  MapMainView.swift
+//  MapMarkerDetailView.swift
 //  Private
 //
-//  Created by 변상우 on 2023/09/22.
+//  Created by yeon I on 2023/09/25.
 //
 
 import SwiftUI
 
-struct MapMainView: View {
+struct MapMarkerDetailView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
-struct MapMainView_Previews: PreviewProvider {
+struct MapMarkerDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MapMainView()
+        MapMarkerDetailView()
     }
 }
