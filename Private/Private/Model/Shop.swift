@@ -8,7 +8,7 @@
 import Foundation
 import NMapsMap
 
-struct Shop {
+struct Shop: Hashable {
     let id: String = UUID().uuidString
     var name: String
     var category: Category
@@ -22,7 +22,7 @@ struct Shop {
     var numberOfBookmark: Int
 }
 
-struct ShopItem {
+struct ShopItem: Hashable {
     var item: String
     var price: String
     var image: String

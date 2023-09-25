@@ -9,10 +9,6 @@ import SwiftUI
 
 struct LaunchView: View {
     
-    init() {
-        UITabBar.appearance().backgroundColor = UIColor(Color.white)
-    }
-    
     @State private var isActive = false
     @State private var isloading = true
     

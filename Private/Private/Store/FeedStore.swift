@@ -11,13 +11,13 @@ final class FeedStore: ObservableObject {
     @Published var feedList: [Feed] = []
     
     init() {
-        
+        feedList.append(FeedStore.feed)
     }
     
     static let feed = Feed(
         writer: UserStore.user,
-        images: [""],
-        contents: "맛있는 맛집이에요",
+        images: ["userDefault"],
+        contents: "데이트하기 좋은곳 찾으신다면 추천! 기본은하고 분위기가 좋음. 오므라이스도 맛있다.",
         visitedShop: ShopStore.shop,
         category: [Category.koreanFood]
     )

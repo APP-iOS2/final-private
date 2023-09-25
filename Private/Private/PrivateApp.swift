@@ -13,6 +13,9 @@ struct PrivateApp: App {
     var body: some Scene {
         WindowGroup {
             LaunchView()
+                .environmentObject(FeedStore())
+                .environmentObject(SearchStore())
+                .environmentObject(ChatRoomStore())
         }
     }
 }

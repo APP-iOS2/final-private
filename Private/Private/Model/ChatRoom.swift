@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChatRoom {
+struct ChatRoom: Hashable {
     var id: String
     var otherUser: User
     var messages: [Message]

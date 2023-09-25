@@ -9,6 +9,10 @@ import SwiftUI
 
 struct MainTabView: View {
     
+    init() {
+        UITabBar.appearance().backgroundColor = UIColor(Color.tabColor)
+    }
+    
     @StateObject private var userStore: UserStore = UserStore()
     @StateObject private var shopStore: ShopStore = ShopStore()
     @StateObject private var feedStore: FeedStore = FeedStore()
@@ -47,22 +51,24 @@ struct MainTabView: View {
     )}
     
     var body: some View {
-        TabView(selection: selectionBinding) {
-            MainHomeView(root: $rootSection1, selection: $selection).tabItem {
-                Image(systemName: "house.fill")
-            }.tag(1)
-            SearchView(root: $rootSection2, selection: $selection).tabItem {
-                Image(systemName: "magnifyingglass")
-            }.tag(2)
-            PostView(root: $rootSection3, selection: $selection).tabItem {
-                Image(systemName: "plus")
-            }.tag(3)
-            ReservationView(root: $rootSection4, selection: $selection).tabItem {
-                Image(systemName: "calendar.badge.clock")
-            }.tag(4)
-            MyPageView(root: $rootSection5, selection: $selection).tabItem {
-                Image(systemName: "person.fill")
-            }.tag(5)
+        NavigationStack {
+            TabView(selection: selectionBinding) {
+                MainHomeView(root: $rootSection1, selection: $selection).tabItem {
+                    Image(systemName: "house.fill")
+                }.tag(1)
+                SearchView(root: $rootSection2, selection: $selection).tabItem {
+                    Image(systemName: "magnifyingglass")
+                }.tag(2)
+                PostView(root: $rootSection3, selection: $selection).tabItem {
+                    Image(systemName: "plus")
+                }.tag(3)
+                ReservationView(root: $rootSection4, selection: $selection).tabItem {
+                    Image(systemName: "calendar.badge.clock")
+                }.tag(4)
+                MyPageView(root: $rootSection5, selection: $selection).tabItem {
+                    Image(systemName: "person.fill")
+                }.tag(5)
+            }
         }
     }
 }
