@@ -72,10 +72,15 @@
 		3CF3D8E22AB82A99003689A6 /* PrivateUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8E12AB82A99003689A6 /* PrivateUITestsLaunchTests.swift */; };
 		3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F32AB82FF3003689A6 /* MainTabView.swift */; };
 		3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F52AB83200003689A6 /* MainLoginView.swift */; };
-		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
 		D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */; };
 		D1A6CA032ABD6B9A00AE59D0 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */; };
 		D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */; };
+		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
+		E47B3F712AC11C52002164A6 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B3F702AC11C52002164A6 /* UserInfoView.swift */; };
+		E47B3F732AC14A0F002164A6 /* MyHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */; };
+		E47B3F752AC14A22002164A6 /* MySavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B3F742AC14A22002164A6 /* MySavedView.swift */; };
+		E47B3F772AC14A3B002164A6 /* MySavedPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B3F762AC14A3B002164A6 /* MySavedPlaceView.swift */; };
+		E47B3F792AC16B61002164A6 /* MyFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B3F782AC16B61002164A6 /* MyFeed.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,9 +148,12 @@
 		D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCellView.swift; sourceTree = "<group>"; };
 		DCBBE0A1367066F0B655E6C5 /* Pods-Private-PrivateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.release.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E121B3F00B9AC989B133EC53 /* Pods-Private-PrivateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.debug.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		E3A2BBD22ABD76390083E1DE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Private/Info.plist; sourceTree = SOURCE_ROOT; };
-		E3A2BBD42ABD76420083E1DE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Private/Commons/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
+		E47B3F702AC11C52002164A6 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
+		E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHistoryView.swift; sourceTree = "<group>"; };
+		E47B3F742AC14A22002164A6 /* MySavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySavedView.swift; sourceTree = "<group>"; };
+		E47B3F762AC14A3B002164A6 /* MySavedPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySavedPlaceView.swift; sourceTree = "<group>"; };
+		E47B3F782AC16B61002164A6 /* MyFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFeed.swift; sourceTree = "<group>"; };
 		E6B3EFE5CA6CEDFE83001F8E /* Pods-Private.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private.debug.xcconfig"; path = "Target Support Files/Pods-Private/Pods-Private.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -233,6 +241,7 @@
 				3CCD2DDD2ABC3141005709F4 /* User.swift */,
 				3CCD2DDF2ABC314A005709F4 /* Shop.swift */,
 				3CCD2DE12ABC3177005709F4 /* Feed.swift */,
+				E47B3F782AC16B61002164A6 /* MyFeed.swift */,
 				3CCD2DE32ABC3185005709F4 /* Reservation.swift */,
 				3CCD2DE52ABC319C005709F4 /* ChatRoom.swift */,
 				3CCD2DE72ABC31FD005709F4 /* Message.swift */,
@@ -294,6 +303,10 @@
 			isa = PBXGroup;
 			children = (
 				3CCD2DF92ABC3588005709F4 /* MyPageView.swift */,
+				E47B3F702AC11C52002164A6 /* UserInfoView.swift */,
+				E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */,
+				E47B3F742AC14A22002164A6 /* MySavedView.swift */,
+				E47B3F762AC14A3B002164A6 /* MySavedPlaceView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -301,7 +314,6 @@
 		3CCD2DFF2ABC3A3F005709F4 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
-				E3A2BBD42ABD76420083E1DE /* GoogleService-Info.plist */,
 				3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */,
 			);
 			path = Commons;
@@ -681,6 +693,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E47B3F732AC14A0F002164A6 /* MyHistoryView.swift in Sources */,
 				3CCD2DE62ABC319C005709F4 /* ChatRoom.swift in Sources */,
 				3C3716262ABD15CD004E8419 /* ShopStore.swift in Sources */,
 				3CB734082ABD6EEF00D82503 /* MapMainView.swift in Sources */,
@@ -694,17 +707,21 @@
 				3C37B1B42AC02481004A8E7E /* Color+.swift in Sources */,
 				3CCD2DF22ABC3546005709F4 /* MainHomeView.swift in Sources */,
 				3CCD2DFE2ABC37F8005709F4 /* TextMaster.swift in Sources */,
+				E47B3F752AC14A22002164A6 /* MySavedView.swift in Sources */,
 				3CCD2DE22ABC3177005709F4 /* Feed.swift in Sources */,
 				3CB7340A2ABD6F0100D82503 /* FeedMainView.swift in Sources */,
 				3CCD2DE02ABC314A005709F4 /* Shop.swift in Sources */,
 				D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */,
 				3CCD2DDE2ABC3141005709F4 /* User.swift in Sources */,
 				3CCD2DF82ABC357C005709F4 /* ReservationView.swift in Sources */,
+				E47B3F712AC11C52002164A6 /* UserInfoView.swift in Sources */,
 				3CCD2E032ABC3B64005709F4 /* Font+.swift in Sources */,
 				3CB7340C2ABEFEBC00D82503 /* CGFloat+.swift in Sources */,
 				3CCD2DE82ABC31FD005709F4 /* Message.swift in Sources */,
+				E47B3F792AC16B61002164A6 /* MyFeed.swift in Sources */,
 				3CCD2DFC2ABC37DB005709F4 /* View+.swift in Sources */,
 				E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */,
+				E47B3F772AC14A3B002164A6 /* MySavedPlaceView.swift in Sources */,
 				3CCD2DE42ABC3185005709F4 /* Reservation.swift in Sources */,
 				3C37162A2ABD176E004E8419 /* ReservationStore.swift in Sources */,
 				3C3716282ABD1762004E8419 /* FeedStore.swift in Sources */,
