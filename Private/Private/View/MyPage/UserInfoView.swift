@@ -60,7 +60,7 @@ struct UserInfoView: View {
                     Text("프로필 편집")
                         .font(.pretendardRegular14)
                         .frame(width: .screenWidth*0.5, height: 32)
-                        .background(Color(.subGray))
+                        .background(Color.subGrayColor)
                         .cornerRadius(8)
                         .foregroundColor(.white)
                 })
