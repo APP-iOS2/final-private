@@ -12,16 +12,54 @@ struct ReservationView: View {
     @ObservedObject var shopStore: ShopStore
     @ObservedObject var reservationStore: ReservationStore
     
+    @State private var reserv = ReservationStore.reservation  // 더미데이터 사용
     @State private var showingDate: Bool = false
     @State private var showingNumbers: Bool = false
     @State private var date = Date()
     @State private var number = 1  // 인원
+    
+    @State private var isSelectedTime: Bool = false
     
     @Binding var root: Bool
     @Binding var selection: Int
     
     private let step = 1
     private let range = 1...6  // 인원제한에 대한 정보가 없음
+    
+    
+    /// Double 타입의 날짜를 String으로 변형.
+    /// 만약, 예약 날짜가 오늘이면 오늘(요일) 형태로 바꿔줌
+    var reservationDate: String {
+        let reservationDate = Date(timeIntervalSince1970: reserv.date)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")  // 요일을 한국어로 얻기 위해 로케일 설정
+        
+        if Calendar.current.isDateInToday(reservationDate) {
+            // 예약 날짜가 오늘일 경우
+            dateFormatter.dateFormat = "오늘(E)" // 요일을 표시하는 형식으로 설정
+        } else {
+            dateFormatter.dateFormat = "yyyy년 MM월 dd일"
+        }
+        
+        let dateString = dateFormatter.string(from: reservationDate)
+        return dateString
+    }
+    
+    
+    //    /// 오늘이 무슨 요일인지 (수) 이런 식으로 나타내줌
+    //    var dayOfWeek: String {
+    //        let calendar = Calendar.current
+    //        let components = calendar.dateComponents([.weekday], from: self.date)
+    //        let weekday = components.weekday!
+    //
+    //        let dateFormatter = DateFormatter()
+    //        dateFormatter.locale = Locale(identifier: "ko_KR") // 로케일을 한국으로 설정 (요일을 한국어로 얻기 위해)
+    //        dateFormatter.dateFormat = "(E)" // 요일을 표시하는 형식으로 설정
+    //
+    //        let dayOfWeek = dateFormatter.string(from: self.date)
+    //        return dayOfWeek
+    //    }
     
     var body: some View {
         ScrollView {
@@ -39,7 +77,12 @@ struct ReservationView: View {
                 // 버튼의 범위를 HStack 전체로 할지 고민
                 HStack {
                     Image(systemName: "calendar")
-                    Text("오늘(수) / 시간")
+                    HStack {
+                        Text(reservationDate)
+                        //                        Text(isSelectedDate ? reservationDate : "오늘" + dayOfWeek)
+                        Text(" / ")
+                        Text(isSelectedTime ? reserv.time + "시": "시간")
+                    }
                     Spacer()
                     Button {
                         showingDate.toggle()
@@ -51,13 +94,11 @@ struct ReservationView: View {
                 .padding()
                 .background(Color("SubGrayColor"))
                 .padding(.bottom)
-                .onTapGesture {
-                    showingDate.toggle()
+                
+                if showingDate {
+                    DateTimePickerView(reservationStore: reservationStore, date: $date, reserv: $reserv, isSelectedTime: $isSelectedTime)
                 }
-                .sheet(isPresented: $showingDate) {
-                    DateTimePickerView(reservationStore: reservationStore, date: $date)
-                }
-
+                
                 
                 // 예약 클릭 시 뷰가 새로 뜨게함
                 
@@ -66,21 +107,19 @@ struct ReservationView: View {
                 
                 HStack {
                     Image(systemName: "person")
-                    Text("인원 선택")
+                    Text(isSelectedTime ? String(number) + "명" : "인원 선택")
                     Spacer()
                     Button {
                         showingNumbers.toggle()
                     } label: {
                         Image(systemName: showingNumbers ? "chevron.up.circle": "chevron.down.circle")
                     }
+                    .disabled(!isSelectedTime)
                 }
                 .font(Font.pretendardMedium18)
                 .padding()
                 .background(Color("SubGrayColor"))
                 .padding(.bottom, 20)
-                .onTapGesture {
-                    showingNumbers.toggle()
-                }
                 
                 // 뷰 따로 빼야함
                 // 가게 예약 가능인원 정보를 받을지 말지 정해야함
@@ -92,17 +131,12 @@ struct ReservationView: View {
                     
                     Divider()
                     
-                    HStack {
-                        Text("방문하시는 인원을 선택하세요")
-                        Spacer()
-
-                        // Stepper 안에 숫자를 넣어야 함
-                        Stepper(value: $number, in: range, step: step) {
-                            Text("\(number)")
-                        }
-                        .padding(10)
-                        
+//                    Text("방문하시는 인원을 선택하세요")
+                    // Stepper 안에 숫자를 넣으면 깔끔할 듯...
+                    Stepper(value: $number, in: range, step: step) {
+                        Text("\(number)")
                     }
+                    .padding(10)
                 }
                 
                 VStack(alignment: .leading) {
@@ -137,9 +171,10 @@ struct ReservationView: View {
                 .tint(.black)
                 .background(Color("AccentColor"))
                 .cornerRadius(12)
+                .disabled(!isSelectedTime)
                 
             }// VStack
-
+            
         }// ScrollView
         .padding()
         
@@ -148,6 +183,6 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(shopStore: ShopStore(), reservationStore: ReservationStore() , root: .constant(true), selection: .constant(4))
+        ReservationView(shopStore: ShopStore(), reservationStore: ReservationStore(), root: .constant(true), selection: .constant(4))
     }
 }
