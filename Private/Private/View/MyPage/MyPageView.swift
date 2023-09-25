@@ -21,53 +21,58 @@ struct MyPageView: View {
         VStack {
             HStack {
                 Spacer()
-                Image(systemName: "gearshape")
-                    .padding(.trailing,40)
+                Button {
+                    print("go SettingView")
+                }label: {
+                    Image(systemName: "gearshape")
+                        .padding(.trailing,40)
+                        .foregroundColor(.white)
+                }
             }
             UserInfoView()
-                
-            
             Divider()
                 .background(Color.white)
                 .frame(width: .screenWidth*0.9)
                 .padding([.top,.bottom],15)
-                
             HStack {
                 Spacer()
-                Button(action: {
+                Button {
                     isMyhistoryButton = true
                     isMySavedFeedButton = false
                     isMySavedPlaceButton = false
                     viewNumber = 0
-                },label: {
+                }label: {
                     HStack {
                         isMyhistoryButton ? Image( systemName: "location.fill") : Image (systemName: "location")
                         Text("내 기록")
-                    }.font(.pretendardRegular12)
-                        .foregroundColor(.white)
-                        .frame(width: .screenWidth*0.95*0.3)
-                })
-                
-                Button(action: {
+                    }
+                    .font(.pretendardRegular12)
+                    .foregroundColor(.white)
+                    .frame(width: .screenWidth*0.95*0.3)
+                    .padding(.bottom,15.0)
+                    .modifier(BottomBorder(showBorder: viewNumber == 0))
+                }
+                Button {
                     isMyhistoryButton = false
                     isMySavedFeedButton = true
                     isMySavedPlaceButton = false
                     viewNumber = 1
-                },label: {
+                }label: {
                     HStack {
                         isMySavedFeedButton ? Image( systemName: "bookmark.fill") : Image (systemName: "bookmark")
                         Text("내가 저장한 피드")
                     }.font(.pretendardRegular12)
                         .foregroundColor(.white)
                         .frame(width: .screenWidth*0.95*0.3)
-                })
-                
-                Button(action: {
+                        .padding(.bottom,15.0)
+                        .modifier(BottomBorder(showBorder: viewNumber == 1))
+                }
+                Button {
                     isMyhistoryButton = false
                     isMySavedFeedButton = false
                     isMySavedPlaceButton = true
                     viewNumber = 2
-                },label: {
+                }label: {
                     HStack {
                         isMySavedPlaceButton ? Image( systemName: "pin.fill")
                         : Image (systemName: "pin")
@@ -75,34 +80,11 @@ struct MyPageView: View {
                     }.font(.pretendardRegular12)
                         .foregroundColor(.white)
                         .frame(width: .screenWidth*0.95*0.3)
-                })
+                        .padding(.bottom,15.0)
+                        .modifier(BottomBorder(showBorder: viewNumber == 2))
+                }
                 Spacer()
             }
-            
-            
-            HStack {
-                isMyhistoryButton ?
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 1)
-                :
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 0)
-                isMySavedFeedButton ?
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 1)
-                :
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 0)
-                isMySavedPlaceButton ?
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 1)
-                :
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 0)
-            }
-            .padding([.top,.bottom], 5)
-            
-           
                 switch viewNumber {
                 case 0:
                     MyHistoryView()
@@ -113,10 +95,8 @@ struct MyPageView: View {
                 default:
                     MyHistoryView()
                 }
-            
             Spacer()
         }
-       
     }
 }
 
