@@ -17,6 +17,9 @@ final class SearchStore: ObservableObject {
         
     }
     
+//    static func searchUser(input: String, onSuccess: @escaping (_ user: [User]) -> Void) {
+//        FollowStore.db.collection("users").whereField("nickname", arrayContains: input.lowercased().
+//    }
     
     
     func addRecentSearch(_ searchText: String) {
