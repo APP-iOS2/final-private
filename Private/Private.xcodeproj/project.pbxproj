@@ -72,10 +72,11 @@
 		3CF3D8E22AB82A99003689A6 /* PrivateUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8E12AB82A99003689A6 /* PrivateUITestsLaunchTests.swift */; };
 		3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F32AB82FF3003689A6 /* MainTabView.swift */; };
 		3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F52AB83200003689A6 /* MainLoginView.swift */; };
-		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
 		D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */; };
 		D1A6CA032ABD6B9A00AE59D0 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */; };
 		D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */; };
+		E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E385FAB42AC161EE00AC7255 /* PostStore.swift */; };
+		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,7 +144,7 @@
 		D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCellView.swift; sourceTree = "<group>"; };
 		DCBBE0A1367066F0B655E6C5 /* Pods-Private-PrivateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.release.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E121B3F00B9AC989B133EC53 /* Pods-Private-PrivateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.debug.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		E3A2BBD22ABD76390083E1DE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Private/Info.plist; sourceTree = SOURCE_ROOT; };
+		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
 		E3A2BBD42ABD76420083E1DE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Private/Commons/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
 		E6B3EFE5CA6CEDFE83001F8E /* Pods-Private.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private.debug.xcconfig"; path = "Target Support Files/Pods-Private/Pods-Private.debug.xcconfig"; sourceTree = "<group>"; };
@@ -276,6 +277,7 @@
 		3CCD2DEC2ABC34D6005709F4 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				E385FAB42AC161EE00AC7255 /* PostStore.swift */,
 				3CCD2DF52ABC3572005709F4 /* PostView.swift */,
 				E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */,
 			);
@@ -710,6 +712,7 @@
 				3C3716282ABD1762004E8419 /* FeedStore.swift in Sources */,
 				D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */,
 				3CCD2DF62ABC3572005709F4 /* PostView.swift in Sources */,
+				E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */,
 				3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */,
 				D1A6CA032ABD6B9A00AE59D0 /* SearchResultView.swift in Sources */,
 			);

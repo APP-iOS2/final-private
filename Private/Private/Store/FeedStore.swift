@@ -21,4 +21,17 @@ final class FeedStore: ObservableObject {
         visitedShop: ShopStore.shop,
         category: [Category.koreanFood]
     )
+    
+    func removeImage(_ image: Feed) {
+        var index: Int = 0
+        
+        for tempImage in feedList {
+            
+            if tempImage.id == image.id {
+                feedList.remove(at: index)
+                break
+            }
+            index += 1
+        }
+    }
 }
