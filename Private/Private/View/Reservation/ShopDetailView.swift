@@ -200,12 +200,3 @@ struct ShopwDetailInfoView: View {
         }
     }
 }
-
-struct ShopwDetailCurrentReviewView: View {
-    
-    var body: some View {
-        VStack {
-            Text("최근 리뷰 뷰")
-        }
-    }
-}

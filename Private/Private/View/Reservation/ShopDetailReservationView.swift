@@ -25,14 +25,12 @@ struct ShopDetailReservationView: View {
     
     var body: some View {
         VStack {
-//            LazyVStack {
-//                ForEach(reservationList, id: \.self) { reservation in
-//
-//                }
-//            }
-            
-            ItemInfoView(shopStore: shopStore)
-                .padding(.horizontal, 10)
+            LazyVStack {
+                ForEach(0..<10) { _ in
+                    ItemInfoView(shopStore: shopStore)
+                        .padding(.horizontal, 10)
+                }
+            }
         }
     }
 }
