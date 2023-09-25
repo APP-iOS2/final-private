@@ -45,9 +45,12 @@ struct MyPageView: View {
                     HStack {
                         isMyhistoryButton ? Image( systemName: "location.fill") : Image (systemName: "location")
                         Text("내 기록")
-                    }.font(.pretendardRegular12)
-                        .foregroundColor(.white)
-                        .frame(width: .screenWidth*0.95*0.3)
+                    }
+                    .font(.pretendardRegular12)
+                    .foregroundColor(.white)
+                    .frame(width: .screenWidth*0.95*0.3)
+                    .padding(.bottom,15.0)
+                    .modifier(BottomBorder(showBorder: viewNumber == 0))
                 }
                 Button {
                     isMyhistoryButton = false
@@ -61,6 +64,8 @@ struct MyPageView: View {
                     }.font(.pretendardRegular12)
                         .foregroundColor(.white)
                         .frame(width: .screenWidth*0.95*0.3)
+                        .padding(.bottom,15.0)
+                        .modifier(BottomBorder(showBorder: viewNumber == 1))
                 }
                 Button {
                     isMyhistoryButton = false
@@ -75,30 +80,11 @@ struct MyPageView: View {
                     }.font(.pretendardRegular12)
                         .foregroundColor(.white)
                         .frame(width: .screenWidth*0.95*0.3)
+                        .padding(.bottom,15.0)
+                        .modifier(BottomBorder(showBorder: viewNumber == 2))
                 }
                 Spacer()
             }
-            HStack {
-                isMyhistoryButton ?
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 1)
-                :
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 0)
-                isMySavedFeedButton ?
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 1)
-                :
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 0)
-                isMySavedPlaceButton ?
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 1)
-                :
-                Rectangle()
-                    .frame(width: .screenWidth*0.95*0.3, height: 0)
-            }
-            .padding([.top,.bottom], 5)
                 switch viewNumber {
                 case 0:
                     MyHistoryView()
