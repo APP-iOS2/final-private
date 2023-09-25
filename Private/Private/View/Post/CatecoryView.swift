@@ -12,18 +12,17 @@ struct CatecoryView: View {
     @State private var selectedCategory: Category = .koreanFood
     private let gridItems: [GridItem] = [
         GridItem(.adaptive(minimum: 70))
-//        .init(.flexible(), spacing: 10),
-//        .init(.flexible(), spacing: 10),
-//        .init(.flexible(), spacing: 10),
-//        .init(.flexible(), spacing: 10),
-//        .init(.flexible(), spacing: 10)
+        //        .init(.flexible(), spacing: 10),
+        //        .init(.flexible(), spacing: 10),
+        //        .init(.flexible(), spacing: 10),
+        //        .init(.flexible(), spacing: 10),
+        //        .init(.flexible(), spacing: 10)
     ]
     var body: some View {
         VStack(alignment: .leading) {
             
             HStack {
                 Text("카테고리")
-                    .padding(.leading, 15)
                     .font(.title2).fontWeight(.semibold)
                 Text("(최대3개)")
                     .font(.footnote)
@@ -36,11 +35,12 @@ struct CatecoryView: View {
                         if category == selectedCategory {
                             Text(category.categoryName)
                                 .font(.body)
-                                .foregroundColor(.white)
+                                .foregroundColor(.black)
                                 .padding(.vertical,4)
                                 .padding(.horizontal, 4)
                                 .background(Color.accentColor)
                                 .cornerRadius(7)
+                            
                             
                         } else {
                             Text(category.categoryName)
@@ -49,7 +49,8 @@ struct CatecoryView: View {
                                 .cornerRadius(7)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 7)
-                                        .stroke(Color.gray, lineWidth: 1.5)
+                                        .stroke(Color.darkGrayColor, lineWidth: 1.5)
+                                    //                                        .frame(width: 70, height: 28)
                                 )
                         }
                     }
