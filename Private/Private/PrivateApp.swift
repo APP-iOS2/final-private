@@ -15,6 +15,7 @@ struct PrivateApp: App {
             LaunchView()
                 .environmentObject(FeedStore())
                 .environmentObject(SearchStore())
+                .environmentObject(ChatRoomStore())
         }
     }
 }
