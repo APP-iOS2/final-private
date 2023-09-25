@@ -32,6 +32,8 @@ struct ShopDetailView: View {
     
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     
+    @ObservedObject var shopStore: ShopStore
+    
     let dummyShop = ShopStore.shop
     let dummyImageString: String = "https://image.bugsm.co.kr/album/images/500/40912/4091237.jpg"
     
@@ -110,12 +112,12 @@ struct ShopDetailView: View {
                         case .shopInfo:
                             ShopwDetailInfoView()
                         case .shopReservation:
-                            ShopwDetailReservationView()
+                            ShopDetailReservationView(shopStore: shopStore)
                         case .shopCurrentReview:
                             ShopwDetailCurrentReviewView()
                         }
                     }
-                    .padding(.horizontal, 10)
+                    .padding([.top, .horizontal], 10)
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color.white)
@@ -127,7 +129,7 @@ struct ShopDetailView: View {
 
 struct ShopDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailView()
+        ShopDetailView(shopStore: ShopStore())
     }
 }
 
@@ -195,24 +197,6 @@ struct ShopwDetailInfoView: View {
                     .lineSpacing(5)
                     .frame(alignment: .leading)
             }
-        }
-    }
-}
-
-struct ShopwDetailReservationView: View {
-    
-    var body: some View {
-        VStack {
-            Text("가게 예약 뷰")
-        }
-    }
-}
-
-struct ShopwDetailCurrentReviewView: View {
-    
-    var body: some View {
-        VStack {
-            Text("최근 리뷰 뷰")
         }
     }
 }
