@@ -16,6 +16,8 @@ extension Font {
     static let pretendardBold14: Font = .custom("Pretendard-Bold", size: 14)
     
     // SemiBold
+    static let pretendardSemiBold12: Font = .custom("Pretendard-SemiBold", size: 12)
+    static let pretendardSemiBold14: Font = .custom("Pretendard-SemiBold", size: 14)
     static let pretendardSemiBold16: Font = .custom("Pretendard-SemiBold", size: 16)
     
     // Medium
