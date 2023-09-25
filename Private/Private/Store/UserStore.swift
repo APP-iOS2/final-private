@@ -13,7 +13,7 @@ final class UserStore: ObservableObject {
     @Published var following: [User] = []
     
     init() {
-        
+        user.append(UserStore.user)
     }
     
     static let user = User(
