@@ -15,4 +15,7 @@ struct Reservation {
     var numberOfPeople: Int
     var totalPrice: String
     var reservedUser: User
+    // 뭐에 대한 예약인지 - 아이템
+    // 브레이크 타임
+    // 휴일[배열]
 }
