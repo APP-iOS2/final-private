@@ -33,6 +33,10 @@ struct ShopDetailView: View {
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     
     @ObservedObject var shopStore: ShopStore
+    @ObservedObject var reservationStore: ReservationStore
+    
+    @Binding var root: Bool
+    @Binding var selection: Int
     
     let dummyShop = ShopStore.shop
     let dummyImageString: String = "https://image.bugsm.co.kr/album/images/500/40912/4091237.jpg"
@@ -112,7 +116,7 @@ struct ShopDetailView: View {
                         case .shopInfo:
                             ShopwDetailInfoView()
                         case .shopReservation:
-                            ShopDetailReservationView(shopStore: shopStore)
+                            ShopDetailReservationView(shopStore: shopStore, reservationStore: reservationStore)
                         case .shopCurrentReview:
                             ShopwDetailCurrentReviewView()
                         }
@@ -129,7 +133,7 @@ struct ShopDetailView: View {
 
 struct ShopDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailView(shopStore: ShopStore())
+        ShopDetailView(shopStore: ShopStore(), reservationStore: ReservationStore(), root: .constant(true), selection: .constant(4))
     }
 }
 

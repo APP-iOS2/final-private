@@ -22,12 +22,13 @@ import SwiftUI
 struct ShopDetailReservationView: View {
     
     @ObservedObject var shopStore: ShopStore
+    @ObservedObject var reservationStore: ReservationStore
     
     var body: some View {
         VStack {
             LazyVStack {
                 ForEach(0..<10) { _ in
-                    ItemInfoView(shopStore: shopStore)
+                    ItemInfoView(shopStore: shopStore, reservationStore: reservationStore)
                         .padding(.horizontal, 10)
                 }
             }
@@ -37,7 +38,7 @@ struct ShopDetailReservationView: View {
 
 struct ShopDetailReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailReservationView(shopStore: ShopStore())
+        ShopDetailReservationView(shopStore: ShopStore(), reservationStore: ReservationStore())
     }
 }
 

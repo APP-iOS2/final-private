@@ -10,6 +10,7 @@ import SwiftUI
 struct ItemInfoView: View {
     
     @ObservedObject var shopStore: ShopStore
+    @ObservedObject var reservationStore: ReservationStore
     private let shopItem = ShopStore.shopItem
     
     var body: some View {
@@ -20,6 +21,15 @@ struct ItemInfoView: View {
             HStack {
                 Text(shopItem.item)
                     .font(Font.pretendardBold24)
+                
+                Spacer()
+                NavigationLink {
+                    ReservationView(shopStore: shopStore, reservationStore: reservationStore)
+                } label: {
+                    Text("예약하기")
+                }
+
+
                 
             }
             Text("\(shopItem.price)원")
@@ -40,7 +50,7 @@ struct ItemInfoView: View {
 
 struct ItemInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        ItemInfoView(shopStore: ShopStore())
+        ItemInfoView(shopStore: ShopStore(), reservationStore: ReservationStore())
             .frame(height: 100)
     }
 }

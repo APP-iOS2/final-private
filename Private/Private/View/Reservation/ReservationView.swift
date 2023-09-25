@@ -24,9 +24,6 @@ struct ReservationView: View {
     @State private var isSelectedTime: Bool = false
     @State private var isShwoingConfirmView: Bool = false
     
-    @Binding var root: Bool
-    @Binding var selection: Int
-    
     private let step = 1  // 인원선택 stepper의 step
     private let range = 1...6  // stepper 인원제한
     
@@ -57,7 +54,7 @@ struct ReservationView: View {
                     .opacity(0)
                 
                 // 메뉴마다 이렇게 있을 수 없음.. 식당에서는 예약 아이템을 어떻게 둬야할지
-                ItemInfoView(shopStore: shopStore)
+                ItemInfoView(shopStore: shopStore, reservationStore: reservationStore)
                     .padding(.bottom, 20)
                 
                 Text("예약 일시")
@@ -180,6 +177,6 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(shopStore: ShopStore(), reservationStore: ReservationStore(), root: .constant(true), selection: .constant(4))
+        ReservationView(shopStore: ShopStore(), reservationStore: ReservationStore())
     }
 }
