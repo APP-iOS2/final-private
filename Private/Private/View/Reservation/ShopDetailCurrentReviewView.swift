@@ -50,7 +50,7 @@ struct ShopDetailCurrentReviewCell: View {
     let dummyFeedImageString: String = "https://image.bugsm.co.kr/album/images/500/40912/4091237.jpg"
     let dummyUserImageString: String = "https://i.pinimg.com/564x/d7/fd/a8/d7fda819308b8998288990b28e7f509d.jpg"
     
-    @State var isHearted: Bool = false
+    /// Feed에 사용자가 북마크(저장) 했는지를 체크하는 변수를 추가해야 할 것 같습니당. 파베와 연결을 위해서 Feed의 구조체에는 북마크한 유저 id들을 배열로 담는 변수만 저장하도록 하는 편이 낫다고 생각합니다. 내부 코드 안에서만 배열 안에 로그인한 유저의 id가 포함되는지, 즉 로그인한 유저가 해당 Feed를 북마크했는지 Bool로 체크하도록,,합니다,,
     @State var isBookmarked: Bool = false
 
     var body: some View {
@@ -74,17 +74,6 @@ struct ShopDetailCurrentReviewCell: View {
                 }
                 
                 Spacer()
-                
-                Button {
-                    print(#function)
-                    isHearted.toggle()
-                } label: {
-                    Image(systemName: isHearted ? "heart.fill" : "heart")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 30)
-                        .foregroundColor(Color.black)
-                }
 
                 Button {
                     print(#function)
@@ -96,6 +85,7 @@ struct ShopDetailCurrentReviewCell: View {
                         .frame(height: 30)
                         .foregroundColor(Color.black)
                 }
+                .padding(.horizontal, 2)
             }
             
             HStack(alignment: .top, spacing: 10) {
