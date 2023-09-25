@@ -22,9 +22,7 @@ struct UserInfoView: View {
                 }
                 .padding(.bottom, 1.0)
                 Text(UserStore.user.nickname).font(.pretendardBold24)
-                    
             }.padding([.top, .trailing], 14)
-            
             VStack {
                 HStack {
                     VStack {
@@ -36,7 +34,7 @@ struct UserInfoView: View {
                     }
                     .padding(.trailing,19.0 )
                     VStack {
-                        Text("\(UserStore.user.myFeed.count)")
+                        Text("\(UserStore.user.follower.count)")
                             .font(.pretendardBold18)
                             .padding(.bottom, 5.0)
                         Text("팔로워")
@@ -44,14 +42,12 @@ struct UserInfoView: View {
                     }
                     .padding(.trailing,19.0)
                     VStack {
-                        Text("\(UserStore.user.myFeed.count)")
+                        Text("\(UserStore.user.following.count)")
                             .font(.pretendardBold18)
                             .padding(.bottom, 5.0)
                         Text("팔로잉")
                             .font(.pretendardBold14)
                     }
-                    
-                   
                 }
                 .padding(.bottom, 10.0)
                 Button(action: {

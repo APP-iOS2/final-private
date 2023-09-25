@@ -17,44 +17,43 @@ struct MyHistoryView: View {
         VStack{
             HStack {
                 Spacer()
-                Button(action: {
+                Button {
                     isFeed = true
                     isMap = false
-                }, label: {
+                } label: {
                     Image(systemName: "line.3.horizontal")
                     Text("피드")
-                })
+                }
                 .font(.pretendardBold24)
                 .foregroundColor(isFeed || !isMap ? .white : .white.opacity(0.5))
-                
                 Spacer()
-                
-                Button(action: {
+                Button {
                     isFeed = false
                     isMap = true
-                }, label: {
+                } label: {
                     Image(systemName: "map")
                     Text("지도")
-                })
+                }
                 .font(.pretendardBold24)
                 .foregroundColor(isMap ? .white : .white.opacity(0.5))
                 .sheet(isPresented: $isMap){
-                    NavigationView {
+                    NavigationStack {
                         MapMainView()
                             .toolbar {
                                 ToolbarItem(placement: .navigationBarTrailing) {
-                                    Button(action: {
+                                    Button {
                                         isMap = false
                                         isFeed = true
-                                    }, label: {
+                                    } label: {
                                         Text("취소")
-                                            .foregroundColor(.white)
-                                    })
+                                            .foregroundColor(.black)
+                                    }
                                 }
                             }
+                            .font(.pretendardBold18)
+                            .navigationBarTitleDisplayMode(.inline)
                     }
                 }
-                
                 Spacer()
             }
             if (isFeed == true || isMap == false) {
@@ -69,7 +68,6 @@ struct MyHistoryView: View {
                         alignment: .center,
                         spacing: 1
                     ) {
-                         
                             ForEach(UserStore.user.myFeed, id: \.self) { feed in
                                 AsyncImage(url:URL(string:feed.images[0])) { image in
                                     image
