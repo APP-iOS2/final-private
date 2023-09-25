@@ -15,7 +15,7 @@ struct User: Hashable {
     var profileImageURL: String
     var follower: [String]
     var following: [String]
-    var myFeed: [Feed]
+    var myFeed: [MyFeed]
     var savedFeed: [Feed]
     var bookmark: [Shop]
     var chattingRoom: [ChatRoom]
