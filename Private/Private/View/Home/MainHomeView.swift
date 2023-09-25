@@ -15,7 +15,7 @@ struct MainHomeView: View {
     @State var selectedNumber: Int = 0
     
     var body: some View {
-        NavigationStack {
+        VStack {
             HStack {
                 Button {
                     selectedNumber = 0
@@ -23,7 +23,9 @@ struct MainHomeView: View {
                     Image(systemName: "map")
                     Text("지도")
                 }
-                .padding(.leading, 10)
+                .foregroundColor(selectedNumber == 0 ? .primary : .subGrayColor)
+                .padding(.bottom, 10)
+                .modifier(BottomBorder(showBorder: selectedNumber == 0))
                 
                 Button {
                     selectedNumber = 1
@@ -31,6 +33,10 @@ struct MainHomeView: View {
                     Image(systemName: "text.justify")
                     Text("피드")
                 }
+                .foregroundColor(selectedNumber == 1 ? .primary : .subGrayColor)
+                .padding(.bottom, 10)
+                .modifier(BottomBorder(showBorder: selectedNumber == 1))
+                
                 Spacer()
                 
                 Button {
@@ -40,11 +46,12 @@ struct MainHomeView: View {
                 }
                 
                 NavigationLink {
-                    
+                    ChatRoomListView()
                 } label: {
                     Image(systemName: "paperplane")
                 }
             }
+            .padding(.leading, 10)
             .padding(.horizontal, 10)
             .font(.pretendardMedium20)
             .foregroundColor(.primary)
@@ -61,5 +68,6 @@ struct MainHomeView: View {
 struct MainHomeView_Previews: PreviewProvider {
     static var previews: some View {
         MainHomeView(root: .constant(true), selection: .constant(1))
+            .environmentObject(FeedStore())
     }
 }
