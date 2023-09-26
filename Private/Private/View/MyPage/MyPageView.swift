@@ -18,12 +18,12 @@ struct MyPageView: View {
     @State var viewNumber: Int = 0
     
     var body: some View {
-        VStack {
+        NavigationStack {
             HStack {
                 Spacer()
-                Button {
-                    print("go SettingView")
-                }label: {
+                NavigationLink {
+                    SettingView()
+                } label: {
                     Image(systemName: "gearshape")
                         .padding(.trailing,40)
                         .foregroundColor(.primary)
