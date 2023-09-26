@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Reservation {
+struct Reservation: Hashable {
     var id: String = UUID().uuidString
     var shopId: String
     var reservedUserId: String

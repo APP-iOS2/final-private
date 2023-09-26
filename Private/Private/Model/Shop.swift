@@ -28,13 +28,13 @@ struct Shop: Hashable {
     var weeklyBusinessHours: [String: BusinessHours]  // 영업시간
 }
 
-struct ShopItem {
+struct ShopItem: Hashable {
     var name: String
     var price: Int
     var imageUrl: String
 }
 
-struct BusinessHours {
+struct BusinessHours: Hashable {
     var startHour: Int
     var startMinute: Int
     var endHour: Int
