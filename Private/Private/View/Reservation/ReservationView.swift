@@ -31,7 +31,7 @@ struct ReservationView: View {
     /// Double 타입의 날짜를 String으로 변형.
     /// 만약, 예약 날짜가 오늘이면 오늘(요일) 형태로 바꿔줌
     var reservationDate: String {
-        let reservationDate = Date(timeIntervalSince1970: self.selectedDate)
+        let reservationDate: Date = Date(timeIntervalSince1970: selectedDate)
         
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")  // 요일을 한국어로 얻기 위해 로케일 설정

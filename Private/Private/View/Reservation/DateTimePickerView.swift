@@ -43,11 +43,25 @@ struct DateTimePickerView: View {
         let reservationDate = Date(timeIntervalSince1970: self.selectedDate)
         if Calendar.current.isDateInToday(reservationDate) {
             // 선택한 날짜가 오늘일 때
+            // 현 시간이 오전 9시보다 ~~일 때 고려
             let nowInt = Int("HH".stringFromDate())
+            let startTime: Int = 9
             let endTime: Int = 21
             
             if let nowInt {
-                let times = Array(nowInt + 1...endTime)
+                // 현재 시간이 마감시간보다 늦으면 indexError가 나는 것을 방지
+                // 현재시간이 마감시간과 같거나, 같을 때
+                guard nowInt < endTime else {
+                    return []
+                }
+                
+                // 현재 시간이 9시 전이거나 같을 때
+                guard nowInt >= startTime else {
+                    let times = Array(startTime...endTime - 1)
+                    return times
+                }
+                
+                let times = Array(nowInt + 1...endTime - 1)
                 return times
             }
         } else {
@@ -78,7 +92,7 @@ struct DateTimePickerView: View {
                 }
                 .font(Font.pretendardBold24)
             }
-            .tint(Color(.label))
+            .tint(.primary)
             Divider()
                 .padding(.bottom)
             
@@ -107,7 +121,7 @@ struct DateTimePickerView: View {
                     .frame(width: 16, height: 16)
                 Text("불가")
             }
-            .tint(Color(.label))
+            .tint(.primary)
             
             Button {
                 showingTime.toggle()
@@ -120,7 +134,7 @@ struct DateTimePickerView: View {
                 }
                 .font(Font.pretendardBold24)
             }
-            .tint(Color(.label))
+            .tint(.primary)
             Divider()
             
             /*
@@ -142,6 +156,29 @@ struct DateTimePickerView: View {
                         
                         LazyVGrid(columns: colums, spacing: 20) {
                             ForEach(amReservation, id: \.self) { timeSlot in
+                                VStack {
+                                    Button {
+                                        self.selectedTime = timeSlot
+                                        isSelectedTime = true
+                                        print("\(timeSlot)")
+                                    } label: {
+                                        Text("\(timeSlot):00")  // 현재시간
+                                            .frame(minWidth: 60, maxWidth: .infinity)
+                                            .frame(height: 35)
+                                    }
+                                    .background(timeSlot == self.selectedTime ? Color("AccentColor") : Color("SubGrayColor"))
+                                    .tint(timeSlot == self.selectedTime ? .primary : Color(.systemGray3))
+                                    .cornerRadius(8)
+                                }
+                            }
+                        }
+                    }
+                    
+                    if pmReservation.count > 0 {
+                        Text("오후")
+                        
+                        LazyVGrid(columns: colums, spacing: 20) {
+                            ForEach(pmReservation, id: \.self) { timeSlot in
                                 // 반복문 ForEach
                                 VStack {
                                     Button {
@@ -163,28 +200,16 @@ struct DateTimePickerView: View {
                         }
                     }
                     
-                    Text("오후")
-                    
-                    LazyVGrid(columns: colums, spacing: 20) {
-                        ForEach(pmReservation, id: \.self) { timeSlot in
-                            // 반복문 ForEach
-                            VStack {
-                                Button {
-                                    // 시간 선택
-                                    // 버튼이 눌리면 색상 바꿔주기
-                                    self.selectedTime = timeSlot
-                                    isSelectedTime = true
-                                    print("\(timeSlot)")
-                                } label: {
-                                    Text("\(timeSlot):00")  // 현재시간
-                                        .frame(minWidth: 60, maxWidth: .infinity)
-                                        .frame(height: 35)
-                                }
-                                .background(timeSlot == self.selectedTime ? Color("AccentColor") : Color("SubGrayColor"))
-                                .tint(timeSlot == self.selectedTime ? Color(.label) : Color(.systemGray3))
-                                .cornerRadius(8)
-                            }
+                    if timeSlots.count == 0 {
+                        VStack {
+                            Text("예약 가능한 시간이 없습니다.")
+                            Text("다른 날짜를 선택해주세요.")
                         }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .foregroundColor(.primary)
+                        .background(Color("SubGrayColor"))
+                        .cornerRadius(8)
                     }
                     
                 }
