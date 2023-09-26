@@ -30,7 +30,7 @@ struct Shop {
 
 struct ShopItem {
     var name: String
-    var price: Double
+    var price: Int
     var imageUrl: String
 }
 
