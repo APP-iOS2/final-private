@@ -91,6 +91,8 @@ struct MyPageView: View {
                     MyHistoryView()
                 case 1:
                     MySavedView()
+                        .padding(.top,37.2)
+                    // MyHistorView 의 피드 지도 버튼 간격을 맞추기 위한 패딩
                 case 2:
                     MySavedPlaceView()
                 default:
