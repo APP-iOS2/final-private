@@ -63,7 +63,7 @@ final class UserStore: ObservableObject {
         }
     }
   
-    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
+//    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
 
 //    static let user = User(
 //        name: "맛집탐방러",

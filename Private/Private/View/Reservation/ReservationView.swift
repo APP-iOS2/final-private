@@ -10,7 +10,7 @@ import SwiftUI
 struct ReservationView: View {
     
     @ObservedObject var shopStore: ShopStore
-    @ObservedObject var reservationStore: ReservationStore
+    @EnvironmentObject var reservationStore: ReservationStore
     
     @State private var date = Date()  // 현재 날짜와 시간을 가져옴
 
@@ -147,9 +147,9 @@ struct ReservationView: View {
                 Button {
                     // 예약하기 뷰로 넘어가기
 
-                    ReservationStore.reservation.date = self.selectedDate
-                    ReservationStore.reservation.time = self.selectedTime
-                    ReservationStore.reservation.numberOfPeople = number
+                    reservationStore.reservationList[0].date = self.selectedDate
+                    reservationStore.reservationList[0].time = self.selectedTime
+                    reservationStore.reservationList[0].numberOfPeople = number
                     
                     isShwoingConfirmView.toggle()
                     
@@ -163,7 +163,7 @@ struct ReservationView: View {
                 .cornerRadius(12)
                 .disabled(!isSelectedTime)
                 .sheet(isPresented: $isShwoingConfirmView) {
-                    ReservationConfirmView(reservationStore: reservationStore, reservationDate: reservationDate)
+                    ReservationConfirmView(reservationDate: reservationDate)
                 }
                 
             }// VStack
@@ -176,6 +176,6 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(shopStore: ShopStore(), reservationStore: ReservationStore())
+        ReservationView(shopStore: ShopStore())
     }
 }

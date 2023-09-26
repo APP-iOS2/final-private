@@ -46,7 +46,9 @@ struct ShopDetailCurrentReviewView_Previews: PreviewProvider {
 
 struct ShopDetailCurrentReviewCell: View {
     
-    let dummyFeed = FeedStore.feed
+    @EnvironmentObject var feedStore: FeedStore
+    
+//    let dummyFeed = FeedStore.feed
     let dummyFeedImageString: String = "https://image.bugsm.co.kr/album/images/500/40912/4091237.jpg"
     let dummyUserImageString: String = "https://i.pinimg.com/564x/d7/fd/a8/d7fda819308b8998288990b28e7f509d.jpg"
     
@@ -67,9 +69,9 @@ struct ShopDetailCurrentReviewCell: View {
                 .frame(width: 70, height: 70)
                 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("\(dummyFeed.writer.name)")
+                    Text("\(feedStore.feedList[0].writer.name)")
                         .font(Font.pretendardBold18)
-                    Text("@\(dummyFeed.writer.nickname)")
+                    Text("@\(feedStore.feedList[0].writer.nickname)")
                         .font(Font.pretendardRegular16)
                 }
                 
@@ -98,7 +100,7 @@ struct ShopDetailCurrentReviewCell: View {
                 }
                 .frame(width: 170, height: 170)
                 
-                Text(dummyFeed.contents)
+                Text(feedStore.feedList[0].contents)
                     .font(Font.pretendardRegular16)
             }
         }

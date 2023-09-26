@@ -25,6 +25,7 @@ struct PrivateApp: App {
                 .environmentObject(FeedStore())
                 .environmentObject(SearchStore())
                 .environmentObject(ChatRoomStore())
+                .environmentObject(ReservationStore())
         }
     }
 }

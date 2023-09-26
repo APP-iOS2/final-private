@@ -34,7 +34,7 @@ struct ShopDetailReservationView: View {
                         HStack {
                             Spacer()
                             NavigationLink {
-                                ReservationView(shopStore: shopStore, reservationStore: reservationStore)
+                                ReservationView(shopStore: shopStore)
                             } label: {
                                 Text("예약하기")
                                     .font(Font.pretendardBold18)
