@@ -8,7 +8,7 @@
 import SwiftUI
 import NMapsMap
 
-struct Shop {
+struct Shop: Hashable {
     let id: String = UUID().uuidString
     var name: String
     var category: Category

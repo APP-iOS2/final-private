@@ -19,7 +19,7 @@ final class ShopStore: ObservableObject {
         name: "라면맛집",
         category: .koreanFood,
         coord: NMGLatLng(lat: 36.444, lng: 127.332),
-        address: "서울시 강남구",
+        address: "서울 강남구 강남대로 96길 22 2층",
         addressDetail: "7번 출구 어딘가",
         shopTelNumber: "010-1234-5678",
         shopInfo: "미슐랭 맛집",

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct User {
+struct User: Hashable {
     let id: String = UUID().uuidString
     var name: String
     var nickname: String
@@ -15,7 +15,7 @@ struct User {
     var profileImageURL: String
     var follower: [String]
     var following: [String]
-    var myFeed: [Feed]
+    var myFeed: [MyFeed]
     var savedFeed: [Feed]
     var bookmark: [Shop]
     var chattingRoom: [ChatRoom]
