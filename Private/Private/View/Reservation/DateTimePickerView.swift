@@ -28,7 +28,7 @@ struct DateTimePickerView: View {
     @State private var amReservation: [Int] = []  // 오전 예약시간
     @State private var pmReservation: [Int] = []  // 오후 예약시간
     @Binding var date: Date
-    @Binding var selectedDate: Double  // 선택한 날짜
+    @Binding var selectedDate: Date  // 선택한 날짜
     @Binding var selectedTime: Int     // 선택한 시간
     @Binding var isSelectedTime: Bool  // 시간대가 설정 되었는지
     
@@ -40,7 +40,7 @@ struct DateTimePickerView: View {
     /// 현재 시간 기준으로 +1 시간하여 예약 가능한 시간대를 배열로 변환
     var timeSlots: [Int] {
         // 오늘이 아니라면 -> 전체 시간을 일단 띄워야 함
-        let reservationDate = Date(timeIntervalSince1970: self.selectedDate)
+        let reservationDate = selectedDate
         if Calendar.current.isDateInToday(reservationDate) {
             // 선택한 날짜가 오늘일 때
             // 현 시간이 오전 9시보다 ~~일 때 고려
@@ -103,7 +103,6 @@ struct DateTimePickerView: View {
                 .datePickerStyle(.graphical)
                 .padding(.bottom)
                 .onChange(of: date) { newValue in
-                    selectedDate = newValue.timeIntervalSince1970
                     separateReservationTime(timeSlots: timeSlots)
                     print(selectedDate)
                 }
@@ -241,6 +240,6 @@ struct DateTimePickerView: View {
 
 struct DateTimePickerView_Previews: PreviewProvider {
     static var previews: some View {
-        DateTimePickerView(reservationStore: ReservationStore(), date: .constant(Date()), selectedDate: .constant(Date().timeIntervalSince1970), selectedTime: .constant(-1), isSelectedTime: .constant(false))
+        DateTimePickerView(reservationStore: ReservationStore(), date: .constant(Date()), selectedDate: .constant(Date()), selectedTime: .constant(-1), isSelectedTime: .constant(false))
     }
 }

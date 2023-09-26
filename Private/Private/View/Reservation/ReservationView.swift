@@ -15,7 +15,7 @@ struct ReservationView: View {
     @State private var date = Date()  // 현재 날짜와 시간을 가져옴
 
     // 나중에 실제 데이터 가져오면 이거 없애고 ObservedObject로 해결하면 될듯
-    @State private var selectedDate: Double = Date().timeIntervalSince1970
+    @State private var selectedDate: Date = Date()
     @State private var selectedTime: Int = -1  // 시간
     @State private var number = 1  // 예약 인원
 
@@ -31,7 +31,7 @@ struct ReservationView: View {
     /// Double 타입의 날짜를 String으로 변형.
     /// 만약, 예약 날짜가 오늘이면 오늘(요일) 형태로 바꿔줌
     var reservationDate: String {
-        let reservationDate: Date = Date(timeIntervalSince1970: selectedDate)
+        let reservationDate: Date = selectedDate
         
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")  // 요일을 한국어로 얻기 위해 로케일 설정
@@ -146,10 +146,9 @@ struct ReservationView: View {
                 
                 Button {
                     // 예약하기 뷰로 넘어가기
-                    let timeString = String(selectedTime)
 
                     ReservationStore.reservation.date = self.selectedDate
-                    ReservationStore.reservation.time = timeString
+                    ReservationStore.reservation.time = self.selectedTime
                     ReservationStore.reservation.numberOfPeople = number
                     
                     isShwoingConfirmView.toggle()
