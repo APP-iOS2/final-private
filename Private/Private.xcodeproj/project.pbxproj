@@ -80,6 +80,7 @@
 		3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F52AB83200003689A6 /* MainLoginView.swift */; };
 		63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB09992ABD87BD002CCE4E /* NaverMap.swift */; };
 		63BB099C2ABE825C002CCE4E /* TestMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB099B2ABE825C002CCE4E /* TestMapView.swift */; };
+		63BB09EC2AC29F54002CCE4E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63BB09EB2AC29F54002CCE4E /* GoogleService-Info.plist */; };
 		A65C3B102AC12A6E00460ACB /* MapMarkerDetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B0F2AC12A6E00460ACB /* MapMarkerDetailStore.swift */; };
 		A65C3B122AC12BD800460ACB /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B112AC12BD800460ACB /* Review.swift */; };
 		A65C3B142AC12C7200460ACB /* ReviewSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B132AC12C7200460ACB /* ReviewSheetView.swift */; };
@@ -162,6 +163,8 @@
 		5A395D3AA2009366C31BCDB6 /* Pods_PrivateTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PrivateTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63BB09992ABD87BD002CCE4E /* NaverMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverMap.swift; sourceTree = "<group>"; };
 		63BB099B2ABE825C002CCE4E /* TestMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMapView.swift; sourceTree = "<group>"; };
+		63BB09EB2AC29F54002CCE4E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		63BB09ED2AC2A1A2002CCE4E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		87739F481181992B30A0E64A /* Pods_Private.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A65C3B0F2AC12A6E00460ACB /* MapMarkerDetailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerDetailStore.swift; sourceTree = "<group>"; };
 		A65C3B112AC12BD800460ACB /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
@@ -175,8 +178,6 @@
 		E121B3F00B9AC989B133EC53 /* Pods-Private-PrivateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.debug.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
-		E4440B8C2AC18144004B4F58 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		E4440B8E2AC18172004B4F58 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E47B3F702AC11C52002164A6 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHistoryView.swift; sourceTree = "<group>"; };
 		E47B3F742AC14A22002164A6 /* MySavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySavedView.swift; sourceTree = "<group>"; };
@@ -354,7 +355,7 @@
 		3CCD2DFF2ABC3A3F005709F4 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
-				E4440B8C2AC18144004B4F58 /* GoogleService-Info.plist */,
+				63BB09EB2AC29F54002CCE4E /* GoogleService-Info.plist */,
 				3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */,
 				3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */,
 				3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */,
@@ -388,8 +389,8 @@
 		3CF3D8C32AB82A97003689A6 /* Private */ = {
 			isa = PBXGroup;
 			children = (
+				63BB09ED2AC2A1A2002CCE4E /* Info.plist */,
 				3CF3D8C42AB82A97003689A6 /* PrivateApp.swift */,
-				E4440B8E2AC18172004B4F58 /* Info.plist */,
 				3CCD2DFF2ABC3A3F005709F4 /* Commons */,
 				3CF3D8F22AB82DDD003689A6 /* Resource */,
 				3C3716202ABD14F6004E8419 /* Extension */,
@@ -631,6 +632,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CF3D8CC2AB82A99003689A6 /* Preview Assets.xcassets in Resources */,
+				63BB09EC2AC29F54002CCE4E /* GoogleService-Info.plist in Resources */,
 				3CF3D8C92AB82A99003689A6 /* Assets.xcassets in Resources */,
 				3CCD2E012ABC3A6D005709F4 /* Pretendard in Resources */,
 			);

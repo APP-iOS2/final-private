@@ -7,18 +7,21 @@
 
 import SwiftUI
 import NMapsMap
+import FirebaseFirestore
+import FirebaseStorage
 
 final class UserStore: ObservableObject {
     @Published var user: [User] = []
     @Published var follower: [User] = []
     @Published var following: [User] = []
     
-    init() {
-      
-    }
+    let dbRef = Firestore.firestore().collection("User")
   
     static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
 
+    init() {
+        
+    }
     static let user = User(
         name: "맛집탐방러",
         nickname: "Private",
@@ -71,5 +74,50 @@ final class UserStore: ObservableObject {
     static let dummyFeed1 = MyFeed(writer: "me", images: ["https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/advices/166557187458549420.jpg?gif=1&w=480&webp=1"], contents: "", visitedShop: ShopStore.shop, category: [MyCategory.brunch])
     static let dummyFeed2 = MyFeed(writer: "me", images: ["https://mblogthumb-phinf.pstatic.net/MjAxNzAzMjZfMTM5/MDAxNDkwNDYxMDM1NzE4.sdrUUcAQOXtk6xZ7FJcEyyq-7P9kbo9OJ-GdKuWMfcYg.F9ljFIbwPQ25fdCXYUvN8fbC0Aun5UhHjVq_JE3UJc8g.PNG.nydelphie/DSC03257.png?type=w800"], contents: "", visitedShop: ShopStore.shop, category: [MyCategory.brunch])
     static let dummyFeed3 = MyFeed(writer: "me", images: ["https://mblogthumb-phinf.pstatic.net/MjAxNzAzMjZfMTM5/MDAxNDkwNDYxMDM1NzE4.sdrUUcAQOXtk6xZ7FJcEyyq-7P9kbo9OJ-GdKuWMfcYg.F9ljFIbwPQ25fdCXYUvN8fbC0Aun5UhHjVq_JE3UJc8g.PNG.nydelphie/DSC03257.png?type=w800"], contents: "", visitedShop: ShopStore.shop, category: [MyCategory.brunch])
+    
+    //MARK: - fetch: User에 데이터 받아오기
+    func fetchUser()  {
+        dbRef.order(by: "createdAt", descending: true).getDocuments() {snapshot, error in
+            // self.studies.removeAll()
+            if let snapshot {
+                var tempUser: [User] = []
+                for userData in snapshot.documents {
+                    let user = User(name: userData["name"] as? String ?? "",
+                                    nickname: userData["nickname"] as? String ?? "",
+                                    phoneNumber: userData["phoneNumber"] as? String ?? "",
+                                    profileImageURL: userData["profileImageURL"] as? String ?? "",
+                                    follower: userData["follower"] as? [String] ?? [],
+                                    following: userData["following"] as? [String] ?? [],
+                                    myFeed: [],
+                                    savedFeed: [],
+                                    bookmark: [],
+                                    chattingRoom: [],
+                                    myReservation: [])
+                    
+                    tempUser.append(user)
+                    
+                }
+                DispatchQueue.main.async {
+                    self.user = tempUser
+                    print("studies:\(self.user)")
+                }
+            }
+        }
+    }
+    //MARK: - fetch: User등록(원래는 로그인에서 처리, 데이터 확인용)
+    func addUser(_ user: User) {
+        print("UserData")
+        dbRef.document(user.id)
+            .setData(["name": user.name,
+                      "nickname": user.nickname,
+                      "phoneNumber": user.phoneNumber,
+                      "profileImageURL": user.profileImageURL,
+                      "follower": user.follower,
+                      "following": user.following,
+                      "bookmarks": user.bookmark
+                     ])
+        fetchUser()
+    }
+    
 }
 

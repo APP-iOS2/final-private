@@ -16,6 +16,7 @@ struct NaverMap: UIViewRepresentable {
     
     @EnvironmentObject var userDataStore: UserStore
     
+    @StateObject var coordinator: Coordinator = Coordinator.shared
     // test
     @Binding var coord: NMGLatLng
     
