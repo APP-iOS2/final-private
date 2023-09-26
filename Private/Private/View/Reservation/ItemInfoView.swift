@@ -11,7 +11,7 @@ struct ItemInfoView: View {
     
     @ObservedObject var shopStore: ShopStore
     @ObservedObject var reservationStore: ReservationStore
-    private let shopItem = ShopStore.shopItem
+    private let shopItem = ShopStore.shop.menu[0]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -19,7 +19,7 @@ struct ItemInfoView: View {
                 .opacity(0)
             
             HStack {
-                Text(shopItem.item)
+                Text(shopItem.name)
                     .font(Font.pretendardBold24)
                 
                 Spacer()

@@ -30,11 +30,9 @@ final class ReservationStore: ObservableObject {
     
     static var reservation = Reservation(
         shop: ShopStore.shop,
-        date: Date().timeIntervalSince1970,
+        reservedUser: UserStore.user, date: Date().timeIntervalSince1970,
         time: "",
-        isOpen: true,
         numberOfPeople: 4,
-        totalPrice: ShopStore.shop.shopItems[0].price,
-        reservedUser: UserStore.user
+        totalPrice: ShopStore.shop.menu[0].price
     )
 }

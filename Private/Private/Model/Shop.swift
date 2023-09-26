@@ -5,7 +5,7 @@
 //  Created by 변상우 on 2023/09/21.
 //
 
-import Foundation
+import SwiftUI
 import NMapsMap
 
 struct Shop {
@@ -18,12 +18,27 @@ struct Shop {
     var shopTelNumber: String
     var shopInfo: String
     var shopImageURL: String
-    var shopItems: [ShopItem]
-    var numberOfBookmark: Int
+    var reservationItems: [ShopItem]?  // 예약항목
+//    var numberOfBookmark: Int     // 실험용
+    var bookmarks: [String]
+    var menu: [ShopItem]
+    var regularHoliday: [String] // 정기 휴무일
+    var temporayHoliday: [Date] // 특정 휴무일
+    var breakTimeHours: [String: BusinessHours]  // 브레이크타임
+    var weeklyBusinessHours: [String: BusinessHours]  // 영업시간
 }
 
 struct ShopItem {
-    var item: String
-    var price: String
-    var image: String
+    var name: String
+    var price: Double
+    var imageUrl: String
 }
+
+struct BusinessHours {
+    var startHour: Int
+    var startMinute: Int
+    var endHour: Int
+    var endMinute: Int
+}
+
+
