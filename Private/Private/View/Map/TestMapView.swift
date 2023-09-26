@@ -27,12 +27,15 @@ struct TestMapView: View {
         }
         .sheet(isPresented: $isSheetPresented) {
             MapReviewSheetView()
+                .presentationDetents([.height(.screenHeight - 500)])
         }
     }
 }
 struct TestMapView_Previews: PreviewProvider {
     static var previews: some View {
         TestMapView()
-        //Binding<Bool>의 인스턴스를 생성하여 TestMapView에 전달
+       
     }
 }
+
+//비행기 버튼 누르면  채팅방이없으면 새로생기고, 키보드 뜨면서 메세지 보내기  하기 ...!

@@ -22,7 +22,7 @@ let dummyFeeds = [
                       myReservation: []),
          images: ["alla3"],
          contents:
-            "오늘 여친이랑 같이 갔어요. 여친 생일이라 큰맘 먹었는데 , 플레이팅 너무 감동적이었어요                                                                                                      근데 계산할땐 감동이아니라 슬펐어요.",
+            "오늘 여친이랑 같이 갔어요. 여친 생일이라 큰맘 먹었는데 , 플레이팅 너무 감동적이었어요                                                                                                      근데 계산할땐 감동이 아니라 슬펐어요.ㅜㅜ",
          visitedShop: Shop.init(
             name: "알라프리마",
             category: Category.westernFood,

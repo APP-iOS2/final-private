@@ -20,6 +20,23 @@ struct NoReviewView: View {
                 .font(.pretendardMedium16)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
+            HStack {
+               
+                Button {
+                    //ChatRoomView()
+                    PostView(root: .constant(true), selection: .constant(3))
+                } label: {
+                   
+                    Text("리뷰쓰러가기")
+                        .font(.pretendardRegular14)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(Color.darkGrayColor)
+                        .cornerRadius(30)
+                    
+                }
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         //.background(Color.white)
@@ -30,3 +47,4 @@ struct NoReviewView_Previews: PreviewProvider {
         NoReviewView(visitorName: "방문자")
     }
 }
+
