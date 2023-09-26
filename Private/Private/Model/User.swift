@@ -9,6 +9,7 @@ import Foundation
 
 struct User: Hashable {
     let id: String = UUID().uuidString
+    let email: String
     var name: String
     var nickname: String
     var phoneNumber: String
