@@ -23,15 +23,8 @@ struct ItemInfoView: View {
                     .font(Font.pretendardBold24)
                 
                 Spacer()
-                NavigationLink {
-                    ReservationView(shopStore: shopStore, reservationStore: reservationStore)
-                } label: {
-                    Text("예약하기")
-                }
-
-
-                
             }
+            
             Text("\(shopItem.price)원")
                 .font(Font.pretendardBold18)
                 .foregroundColor(Color("AccentColor"))
