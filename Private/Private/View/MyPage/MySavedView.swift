@@ -8,8 +8,34 @@
 import SwiftUI
 
 struct MySavedView: View {
+    var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
+                               GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
+                               GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
     var body: some View {
-        Text("MySavedView")
+        if UserStore.user.savedFeed.isEmpty {
+            Text("저장한 피드가 없습니다")
+                .font(.pretendardBold24)
+                .padding()
+        } else {
+            ScrollView {
+                LazyVGrid(
+                    columns: columns,
+                    alignment: .center,
+                    spacing: 1
+                ) {
+                    ForEach(UserStore.user.savedFeed, id: \.self) { feed in
+                        AsyncImage(url:URL(string:feed.images[0])) { image in
+                            image
+                                .resizable()
+                                .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
+                            
+                        } placeholder: {
+                            Image(systemName: "photo")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
