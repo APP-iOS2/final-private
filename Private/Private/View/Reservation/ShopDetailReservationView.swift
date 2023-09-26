@@ -28,8 +28,21 @@ struct ShopDetailReservationView: View {
         VStack {
             LazyVStack {
                 ForEach(0..<10) { _ in
-                    ItemInfoView(shopStore: shopStore, reservationStore: reservationStore)
-                        .padding(.horizontal, 10)
+                    ZStack {
+                        ItemInfoView(shopStore: shopStore, reservationStore: reservationStore)
+                        
+                        HStack {
+                            Spacer()
+                            NavigationLink {
+                                ReservationView(shopStore: shopStore, reservationStore: reservationStore)
+                            } label: {
+                                Text("예약하기")
+                                    .font(Font.pretendardBold18)
+                                    .padding()
+                            }
+                        }
+                    }
+                    .padding(10)
                 }
             }
         }
@@ -41,35 +54,3 @@ struct ShopDetailReservationView_Previews: PreviewProvider {
         ShopDetailReservationView(shopStore: ShopStore(), reservationStore: ReservationStore())
     }
 }
-
-//struct ShopDetailReservationCell: View {
-//
-//    let reservationName: String
-//    let reservationPrice: String
-//
-//    var body: some View {
-//
-//        VStack {
-//            Text(reservationName)
-//            Text(reservationPrice)
-//
-//            HStack {
-//                Text(reservationName)
-//                    .font(Font.pretendardBold24)
-//
-//            }
-////            Text("\(shopItem.price)원")
-////                .font(Font.pretendardBold18)
-////                .foregroundColor(Color("AccentColor"))
-////                .padding(.bottom)
-////
-////            Text("2023.09.20 ~ 2023.12.25")  // 데이터에 없음
-////                .font(Font.pretendardRegular14)
-////                .foregroundColor(.secondary)
-//        }
-//        .frame(height: 100)
-//        .padding()
-//        .background(Color("SubGrayColor"))
-//        .cornerRadius(12)
-//    }
-//}
