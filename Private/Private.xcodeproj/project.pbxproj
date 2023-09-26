@@ -59,7 +59,6 @@
 		3CCD2DE62ABC319C005709F4 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DE52ABC319C005709F4 /* ChatRoom.swift */; };
 		3CCD2DE82ABC31FD005709F4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DE72ABC31FD005709F4 /* Message.swift */; };
 		3CCD2DF22ABC3546005709F4 /* MainHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DF12ABC3546005709F4 /* MainHomeView.swift */; };
-		3CCD2DF42ABC3553005709F4 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DF32ABC3553005709F4 /* SearchView.swift */; };
 		3CCD2DF62ABC3572005709F4 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DF52ABC3572005709F4 /* PostView.swift */; };
 		3CCD2DF82ABC357C005709F4 /* ReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DF72ABC357C005709F4 /* ReservationView.swift */; };
 		3CCD2DFA2ABC3588005709F4 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DF92ABC3588005709F4 /* MyPageView.swift */; };
@@ -87,6 +86,7 @@
 		D1A6CA032ABD6B9A00AE59D0 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */; };
 		D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */; };
 		D1EC43922AC16E2900B088EA /* FollowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43912AC16E2900B088EA /* FollowStore.swift */; };
+		D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43992AC2D42F00B088EA /* SearchView.swift */; };
 		E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E385FAB42AC161EE00AC7255 /* PostStore.swift */; };
 		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
 		E47B3F712AC11C52002164A6 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B3F702AC11C52002164A6 /* UserInfoView.swift */; };
@@ -137,7 +137,6 @@
 		3CCD2DE52ABC319C005709F4 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatRoom.swift; path = Private/Model/ChatRoom.swift; sourceTree = SOURCE_ROOT; };
 		3CCD2DE72ABC31FD005709F4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Message.swift; path = Private/Model/Message.swift; sourceTree = SOURCE_ROOT; };
 		3CCD2DF12ABC3546005709F4 /* MainHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHomeView.swift; sourceTree = "<group>"; };
-		3CCD2DF32ABC3553005709F4 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3CCD2DF52ABC3572005709F4 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		3CCD2DF72ABC357C005709F4 /* ReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationView.swift; sourceTree = "<group>"; };
 		3CCD2DF92ABC3588005709F4 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
@@ -171,6 +170,7 @@
 		D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCellView.swift; sourceTree = "<group>"; };
 		D1EC43912AC16E2900B088EA /* FollowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowStore.swift; sourceTree = "<group>"; };
+		D1EC43992AC2D42F00B088EA /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		DCBBE0A1367066F0B655E6C5 /* Pods-Private-PrivateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.release.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E121B3F00B9AC989B133EC53 /* Pods-Private-PrivateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.debug.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
@@ -314,7 +314,7 @@
 		3CCD2DEB2ABC34C8005709F4 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				3CCD2DF32ABC3553005709F4 /* SearchView.swift */,
+				D1EC43992AC2D42F00B088EA /* SearchView.swift */,
 				D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */,
 				D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */,
 			);
@@ -774,7 +774,6 @@
 				3CCD2DFA2ABC3588005709F4 /* MyPageView.swift in Sources */,
 				3CF3D8C52AB82A97003689A6 /* PrivateApp.swift in Sources */,
 				3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */,
-				3CCD2DF42ABC3553005709F4 /* SearchView.swift in Sources */,
 				3C37B1B42AC02481004A8E7E /* Color+.swift in Sources */,
 				3CCD2DF22ABC3546005709F4 /* MainHomeView.swift in Sources */,
 				D1EC43922AC16E2900B088EA /* FollowStore.swift in Sources */,
@@ -799,6 +798,7 @@
 				E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */,
 				E47B3F772AC14A3B002164A6 /* MySavedPlaceView.swift in Sources */,
 				3CCD2DE42ABC3185005709F4 /* Reservation.swift in Sources */,
+				D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */,
 				3C37162A2ABD176E004E8419 /* ReservationStore.swift in Sources */,
 				3C93B5082AC1549200788633 /* SendMessageTextField.swift in Sources */,
 				3C93B5062AC13E7200788633 /* ChatRoomView.swift in Sources */,
