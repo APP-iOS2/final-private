@@ -58,7 +58,7 @@ struct ReviewSheetView_Previews: PreviewProvider {
     static var previews: some View {
         ReviewSheetView(
             feeds: [
-                Feed(writer: User(name: "@Chadul",
+                Feed(writer: User(email: "", name: "@Chadul",
                                   nickname: "맛집조아",
                                   phoneNumber: "010-1111-1111",
                                   profileImageURL: "mapuser2",
@@ -84,7 +84,7 @@ struct ReviewSheetView_Previews: PreviewProvider {
                         shopItems: [],
                         numberOfBookmark: 0),
                      category: [Category.westernFood]),
-                Feed(writer: User(name: "@glahemm",
+                Feed(writer: User(email: "", name: "@glahemm",
                                   nickname: "개발자아님",
                                   phoneNumber: "010-1112-1112",
                                   profileImageURL: "mapuser1",
@@ -111,7 +111,7 @@ struct ReviewSheetView_Previews: PreviewProvider {
                         numberOfBookmark: 0),
                      category: [Category.westernFood]),
                 
-                Feed(writer: User(name: "@MichelleM",
+                Feed(writer: User(email: "", name: "@MichelleM",
                                   nickname: "배고픈미쳴",
                                   phoneNumber: "010-1113-1113",
                                   profileImageURL: "mapuser3",///
@@ -138,7 +138,7 @@ struct ReviewSheetView_Previews: PreviewProvider {
                         numberOfBookmark: 0),
                      category: [Category.koreanFood]),
                 
-                Feed(writer: User(name: "@LikaLike",
+                Feed(writer: User(email: "", name: "@LikaLike",
                                   nickname: "SigRxPP",
                                   phoneNumber: "010-1114-1114",
                                   profileImageURL: "mapuser4",
