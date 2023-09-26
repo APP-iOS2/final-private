@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LaunchView: View {
     
+    @EnvironmentObject var authStore: AuthStore
+    
     @State private var isActive = false
     @State private var isloading = true
     
@@ -16,16 +18,11 @@ struct LaunchView: View {
         if isActive {
             /// 로그인 한 유저가 있으면 MainTabView로 이동
             /// 로그인 한 유저가 없으면 MainLoginView로 이동
-            // if currentUser != nil {
-            //     MainTabView()
-            // } else {
-            //     MainLoginView()
-            // }
-            if true {
-                MainTabView()
-            } else {
-//                MainLoginView()
-            }
+            if authStore.currentUser != nil {
+                 MainTabView()
+             } else {
+                 MainLoginView()
+             }
         } else {
             if isloading {
                 VStack {
