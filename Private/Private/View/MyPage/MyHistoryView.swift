@@ -25,7 +25,7 @@ struct MyHistoryView: View {
                     Text("피드")
                 }
                 .font(.pretendardBold24)
-                .foregroundColor(isFeed || !isMap ? .white : .white.opacity(0.5))
+                .foregroundColor(isFeed || !isMap ? .primary : .primary.opacity(0.3))
                 Spacer()
                 Button {
                     isFeed = false
@@ -35,7 +35,7 @@ struct MyHistoryView: View {
                     Text("지도")
                 }
                 .font(.pretendardBold24)
-                .foregroundColor(isMap ? .white : .white.opacity(0.5))
+                .foregroundColor(isMap ? .primary : .primary.opacity(0.3))
                 .sheet(isPresented: $isMap){
                     NavigationStack {
                         MapMainView()

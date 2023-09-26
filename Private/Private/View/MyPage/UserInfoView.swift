@@ -58,7 +58,7 @@ struct UserInfoView: View {
                         .frame(width: .screenWidth*0.5, height: 32)
                         .background(Color.subGrayColor)
                         .cornerRadius(8)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 })
             }
             .padding(.top, 40.0)

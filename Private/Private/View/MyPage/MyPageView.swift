@@ -26,12 +26,13 @@ struct MyPageView: View {
                 }label: {
                     Image(systemName: "gearshape")
                         .padding(.trailing,40)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 }
             }
             UserInfoView()
+                .padding(.top,-15.0)
             Divider()
-                .background(Color.white)
+                .background(Color.primary)
                 .frame(width: .screenWidth*0.9)
                 .padding([.top,.bottom],15)
             HStack {
@@ -47,7 +48,7 @@ struct MyPageView: View {
                         Text("내 기록")
                     }
                     .font(.pretendardRegular12)
-                    .foregroundColor(.white)
+                    .foregroundColor(.chatTextColor)
                     .frame(width: .screenWidth*0.95*0.3)
                     .padding(.bottom,15.0)
                     .modifier(BottomBorder(showBorder: viewNumber == 0))
@@ -62,7 +63,7 @@ struct MyPageView: View {
                         isMySavedFeedButton ? Image( systemName: "bookmark.fill") : Image (systemName: "bookmark")
                         Text("내가 저장한 피드")
                     }.font(.pretendardRegular12)
-                        .foregroundColor(.white)
+                        .foregroundColor(.chatTextColor)
                         .frame(width: .screenWidth*0.95*0.3)
                         .padding(.bottom,15.0)
                         .modifier(BottomBorder(showBorder: viewNumber == 1))
@@ -78,7 +79,7 @@ struct MyPageView: View {
                         : Image (systemName: "pin")
                         Text("내가 저장한 장소")
                     }.font(.pretendardRegular12)
-                        .foregroundColor(.white)
+                        .foregroundColor(.chatTextColor)
                         .frame(width: .screenWidth*0.95*0.3)
                         .padding(.bottom,15.0)
                         .modifier(BottomBorder(showBorder: viewNumber == 2))
