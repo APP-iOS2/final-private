@@ -26,11 +26,6 @@ struct SignUpView: View {
                 Text("정보입력 완료하기")
             }
         }
-        .onAppear {
-            if let userEmail = authStore.currentUser?.email {
-                userStore.fetchCurrentUser(userEmail: userEmail)
-            }
-        }
     }
 }
 

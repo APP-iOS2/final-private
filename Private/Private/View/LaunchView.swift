@@ -10,6 +10,7 @@ import SwiftUI
 struct LaunchView: View {
     
     @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var userStore: UserStore
     
     @State private var isActive = false
     @State private var isloading = true
@@ -34,6 +35,9 @@ struct LaunchView: View {
                             self.isActive = true
                             self.isloading.toggle()
                         }
+                    }
+                    if let userEmail = authStore.currentUser?.email {
+                        userStore.fetchCurrentUser(userEmail: userEmail)
                     }
                 }
             }
