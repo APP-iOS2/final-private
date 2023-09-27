@@ -10,14 +10,13 @@ import SwiftUI
 struct LaunchView: View {
     
     @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var userStore: UserStore
     
     @State private var isActive = false
     @State private var isloading = true
     
     var body: some View {
         if isActive {
-            /// 로그인 한 유저가 있으면 MainTabView로 이동
-            /// 로그인 한 유저가 없으면 MainLoginView로 이동
             if authStore.currentUser != nil {
                  MainTabView()
              } else {
@@ -34,6 +33,11 @@ struct LaunchView: View {
                             self.isActive = true
                             self.isloading.toggle()
                         }
+                    }
+                }
+                .onAppear {
+                    if let email = authStore.currentUser?.email {
+                        userStore.fetchCurrentUser(userEmail: email)
                     }
                 }
             }

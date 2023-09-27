@@ -18,13 +18,17 @@ struct NaverMap: UIViewRepresentable {
     
     // test
     @Binding var coord: NMGLatLng
+    @Binding var isSheetPresented: Bool
     
     func makeCoordinator() -> Coordinator {
-        Coordinator.shared
-    }
-    
-    init(coord: Binding<NMGLatLng>) {
+            let coordinator = Coordinator.shared
+            coordinator.isSheetPresentedBinding = $isSheetPresented
+            return coordinator
+        }
+    //init 메서드에 isSheetPresented 바인딩을 추가.
+    init(coord: Binding<NMGLatLng>, isSheetPresented: Binding<Bool>) {
         self._coord = coord
+        self._isSheetPresented = isSheetPresented
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
@@ -47,6 +51,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     var markers: [NMFMarker] = []
     var bookMarkedMarkers: [NMFMarker] = []
     var locationManager: CLLocationManager?
+    var isSheetPresentedBinding: Binding<Bool>?//
     
     @Published var currentShopId: String = "보리마루"
     @Published var isBookMarkTapped: Bool = false
@@ -205,7 +210,12 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
                     self.currentShopId = marker.captionText
                     print("showMarkerDetailView : \(self.showMarkerDetailView)")
                     //print(currentShopId)
-                    
+                    DispatchQueue.main.async {
+                        print("Before setting isSheetPresentedBinding to true")
+                        self.isSheetPresentedBinding?.wrappedValue = true
+                        print("After setting isSheetPresentedBinding to true")
+                                       }
+           
                     return true
                 }
                 marker.mapView = view.mapView

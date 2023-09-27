@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct MySavedView: View {
+  
     @ObservedObject var userStore: UserStore
+  
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
