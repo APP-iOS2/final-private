@@ -9,16 +9,6 @@ import SwiftUI
 
 // 예약일이 날짜, 시간까지 통채로 있어서 한 번에 동기화되도록 가능할까..
 
-extension String {
-    func stringFromDate() -> String {
-        let now = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = self
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        return dateFormatter.string(from: now)
-    }
-}
-
 // 오늘의 목표 버튼까지 만들기
 struct DateTimePickerView: View {
     @EnvironmentObject var reservationStore: ReservationStore
@@ -27,9 +17,9 @@ struct DateTimePickerView: View {
     @State private var showingTime: Bool = false
     @State private var amReservation: [Int] = []  // 오전 예약시간
     @State private var pmReservation: [Int] = []  // 오후 예약시간
-    @Binding var date: Date
-    @Binding var selectedDate: Date  // 선택한 날짜
-    @Binding var selectedTime: Int     // 선택한 시간
+    
+    @Binding var temporaryReservation: Reservation
+//    @Binding var date: Date
     @Binding var isSelectedTime: Bool  // 시간대가 설정 되었는지
     
     static let today = Calendar.current.startOfDay(for: Date())
@@ -40,7 +30,7 @@ struct DateTimePickerView: View {
     /// 현재 시간 기준으로 +1 시간하여 예약 가능한 시간대를 배열로 변환
     var timeSlots: [Int] {
         // 오늘이 아니라면 -> 전체 시간을 일단 띄워야 함
-        let reservationDate = selectedDate
+        let reservationDate = temporaryReservation.date
         if Calendar.current.isDateInToday(reservationDate) {
             // 선택한 날짜가 오늘일 때
             // 현 시간이 오전 9시보다 ~~일 때 고려
@@ -98,20 +88,20 @@ struct DateTimePickerView: View {
             
             // 날짜 선택 화면 표시 여부
             if showingDate {
-                DatePicker("Date", selection: $date, in: Self.today...,
+                DatePicker("Date", selection: $temporaryReservation.date, in: Self.today...,
                            displayedComponents: [.date])
                 .datePickerStyle(.graphical)
                 .padding(.bottom)
-                .onChange(of: date) { newValue in
+                .onChange(of: temporaryReservation.date) { newValue in
                     separateReservationTime(timeSlots: timeSlots)
-                    print(selectedDate)
+                    print(temporaryReservation.date)
                 }
             }
             
             HStack {
                 Spacer()
                 Rectangle()
-                    .foregroundColor(Color.accentColor)
+                    .foregroundColor(Color("AccentColor"))
                     .frame(width: 16, height: 16)
                 Text("선택")
                     .padding(.trailing, 6)
@@ -157,7 +147,7 @@ struct DateTimePickerView: View {
                             ForEach(amReservation, id: \.self) { timeSlot in
                                 VStack {
                                     Button {
-                                        self.selectedTime = timeSlot
+                                        self.temporaryReservation.time = timeSlot
                                         isSelectedTime = true
                                         print("\(timeSlot)")
                                     } label: {
@@ -165,8 +155,8 @@ struct DateTimePickerView: View {
                                             .frame(minWidth: 60, maxWidth: .infinity)
                                             .frame(height: 35)
                                     }
-                                    .background(timeSlot == self.selectedTime ? Color.accentColor : Color.subGrayColor)
-                                    .tint(timeSlot == self.selectedTime ? .primary : Color(.systemGray3))
+                                    .background(timeSlot == self.temporaryReservation.time ? Color("AccentColor") : Color.subGrayColor)
+                                    .tint(timeSlot == self.temporaryReservation.time ? .primary : Color(.systemGray))
                                     .cornerRadius(8)
                                 }
                             }
@@ -183,7 +173,7 @@ struct DateTimePickerView: View {
                                     Button {
                                         // 시간 선택
                                         // 버튼이 눌리면 색상 바꿔주기
-                                        self.selectedTime = timeSlot
+                                        self.temporaryReservation.time = timeSlot
                                         isSelectedTime = true
                                         print("\(timeSlot)")
                                     } label: {
@@ -191,8 +181,8 @@ struct DateTimePickerView: View {
                                             .frame(minWidth: 60, maxWidth: .infinity)
                                             .frame(height: 35)
                                     }
-                                    .background(timeSlot == self.selectedTime ? Color.accentColor : Color.subGrayColor)
-                                    .tint(timeSlot == self.selectedTime ? Color(.label) : Color(.systemGray3))
+                                    .background(timeSlot == self.temporaryReservation.time ? Color("AccentColor") : Color.subGrayColor)
+                                    .tint(timeSlot == self.temporaryReservation.time ? Color(.label) : Color(.systemGray))
                                     .cornerRadius(8)
                                 }
                             }
@@ -240,7 +230,7 @@ struct DateTimePickerView: View {
 
 struct DateTimePickerView_Previews: PreviewProvider {
     static var previews: some View {
-        DateTimePickerView(date: .constant(Date()), selectedDate: .constant(Date()), selectedTime: .constant(-1), isSelectedTime: .constant(false))
+        DateTimePickerView(temporaryReservation: .constant(Reservation(shopId: "shopId", reservedUserId: "userId", date: Date(), time: 16, numberOfPeople: 5, totalPrice: 30000)), isSelectedTime: .constant(true))
             .environmentObject(ReservationStore())
     }
 }
