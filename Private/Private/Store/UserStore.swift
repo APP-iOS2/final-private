@@ -64,7 +64,7 @@ final class UserStore: ObservableObject {
     }
   
 //    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
-
+  
 //    static let user = User(
 //        name: "맛집탐방러",
 //        nickname: "Private",
@@ -83,7 +83,7 @@ final class UserStore: ObservableObject {
 //            addressDetail: "7번 출구 어딘가",
 //            shopTelNumber: "010-1234-5678",
 //            shopInfo: "미슐랭 맛집",
-//            shopImageURL: "",
+//            shopImageURL: "https://img.daily.co.kr/@files/www.daily.co.kr/content/food/2020/20200730/40d0fb3794229958bdd1e36520a4440f.jpg",
 //            shopItems: [shopItem],
 //            numberOfBookmark: 0
 //        ), Shop(
@@ -94,7 +94,7 @@ final class UserStore: ObservableObject {
 //            addressDetail: "7번 출구 어딘가",
 //            shopTelNumber: "010-1234-5678",
 //            shopInfo: "미슐랭 맛집",
-//            shopImageURL: "",
+//            shopImageURL: "https://mblogthumb-phinf.pstatic.net/MjAxNzAzMjZfMTM5/MDAxNDkwNDYxMDM1NzE4.sdrUUcAQOXtk6xZ7FJcEyyq-7P9kbo9OJ-GdKuWMfcYg.F9ljFIbwPQ25fdCXYUvN8fbC0Aun5UhHjVq_JE3UJc8g.PNG.nydelphie/DSC03257.png?type=w800",
 //            shopItems: [shopItem],
 //            numberOfBookmark: 0
 //        )

@@ -9,7 +9,12 @@ import SwiftUI
 
 struct MySavedPlaceView: View {
     var body: some View {
-        Text("MySavedPlaceView")
+        ScrollView {
+            ShopInfoCardView()
+            Divider()
+                .background(Color.primary)
+                .frame(width: .screenWidth * 0.9)
+        }
     }
 }
 
