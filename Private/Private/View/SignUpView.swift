@@ -25,6 +25,13 @@ struct SignUpView: View {
             } label: {
                 Text("정보입력 완료하기")
             }
+            
+            Button {
+                authStore.signOutGoogle()
+            } label: {
+                Text("구글 아이디 로그아웃")
+            }
+
         }
     }
 }
