@@ -14,6 +14,9 @@ import SwiftUI
 /// - Picker 지우고 라이브러리로 변경
 /// - 미묘한 간격,,,,,거슬림
 
+// Todo: - Error fix
+/// - 스크롤뷰가 아래까지 안내려가는 이슈......
+
 enum ShopDetailCategory: String, CaseIterable {
     case shopInfo = "가게 정보"
     case shopMenu = "메뉴"
@@ -116,6 +119,39 @@ struct ShopDetailView: View {
                 .background(Color.white)
                 .offset(CGSize(width: 0, height: CGFloat.screenHeight * 0.2))
             }
+            
+            HStack(spacing: 10) {
+                VStack(spacing: 2) {
+                    Image(systemName: "bookmark")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 25)
+                        .foregroundColor(Color.black)
+                    
+                    Text("\(999)+") // bookmarks count
+                        .font(Font.pretendardBold14)
+                }
+                
+                NavigationLink {
+                    ReservationView()
+                } label: {
+                    Button {
+                        
+                    } label: {
+                        Text("예약하기")
+                    }
+                    .frame(height: CGFloat.screenHeight * 0.05)
+                    .frame(maxWidth: .infinity)
+                    .tint(.primary)
+                    .background(Color("AccentColor"))
+                    .cornerRadius(12)
+                    .cornerRadius(12)
+                }
+            }
+            .padding(10)
+            .frame(width: CGFloat.screenWidth, height: CGFloat.screenHeight * 0.1)
+            .background(Color.white)
+            .frame(alignment: .bottom)
         }
     }
 }
