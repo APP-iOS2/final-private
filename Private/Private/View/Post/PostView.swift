@@ -17,10 +17,13 @@ struct PostView: View {
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var userStore: UserStore
     
+    @State private var selectedWriter: String = "김아무개"
     
     @State private var text: String = ""
     @State private var clickLocation: Bool = false
     @State private var isImagePickerPresented: Bool = false
+    @State private var ImageViewPresented: Bool = true
+    
     @State private var selectedImage: [UIImage]? = []
     @FocusState private var isTextMasterFocused: Bool
     
@@ -58,7 +61,7 @@ struct PostView: View {
                     //MARK: 장소
                     VStack {
                         Button {
-                            
+                            // 맵뷰
                         } label: {
                             Label("장소", systemImage: "location")
                         }
@@ -120,6 +123,9 @@ struct PostView: View {
                     CatecoryView()
                 } // leading VStack
             }
+            .fullScreenCover(isPresented: $ImageViewPresented) {
+                ImagePickerView(selectedImages: $selectedImage)
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Button {
@@ -148,7 +154,7 @@ struct PostView_Previews: PreviewProvider {
     static var previews: some View {
         PostView(root: .constant(true), selection: .constant(3))
             .environmentObject(FeedStore())
-        
+            .environmentObject(UserStore())
     }
 }
 
