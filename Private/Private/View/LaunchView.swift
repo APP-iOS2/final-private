@@ -34,8 +34,11 @@ struct LaunchView: View {
                             self.isloading.toggle()
                         }
                     }
+                    if let email = authStore.currentUser?.email {
+                        userStore.fetchCurrentUser(userEmail: email)
+                    }
                 }
-                .onAppear {
+                .onDisappear {
                     if let email = authStore.currentUser?.email {
                         userStore.fetchCurrentUser(userEmail: email)
                     }
