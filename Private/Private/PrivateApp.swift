@@ -22,7 +22,7 @@ struct PrivateApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            LaunchView()
                 .environmentObject(AuthStore())
                 .environmentObject(UserStore())
                 .environmentObject(FeedStore())

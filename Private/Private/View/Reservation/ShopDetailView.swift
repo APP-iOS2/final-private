@@ -33,6 +33,8 @@ struct ShopDetailView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     
+    @State var isReservationPresented: Bool = false
+    
     let dummyShop = ShopStore.shop
     
     var body: some View {
@@ -132,26 +134,26 @@ struct ShopDetailView: View {
                         .font(Font.pretendardBold14)
                 }
                 
-                NavigationLink {
-                    ReservationView()
+                Button {
+                    isReservationPresented.toggle()
                 } label: {
-                    Button {
-                        
-                    } label: {
-                        Text("예약하기")
-                    }
-                    .frame(height: CGFloat.screenHeight * 0.05)
-                    .frame(maxWidth: .infinity)
-                    .tint(.primary)
-                    .background(Color("AccentColor"))
-                    .cornerRadius(12)
-                    .cornerRadius(12)
+                    Text("예약하기")
+                        .frame(maxWidth: .infinity)
                 }
+                .frame(height: CGFloat.screenHeight * 0.05)
+                .frame(maxWidth: .infinity)
+                .tint(.primary)
+                .background(Color("AccentColor"))
+                .cornerRadius(12)
+                .cornerRadius(12)
             }
             .padding(10)
             .frame(width: CGFloat.screenWidth, height: CGFloat.screenHeight * 0.1)
             .background(Color.white)
             .frame(alignment: .bottom)
+            .navigationDestination(isPresented: $isReservationPresented) {
+                ReservationView()
+            }
         }
     }
 }
