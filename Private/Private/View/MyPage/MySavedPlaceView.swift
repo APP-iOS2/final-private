@@ -10,7 +10,7 @@ import SwiftUI
 struct MySavedPlaceView: View {
     var body: some View {
         ScrollView {
-            ShopInfoCardView()
+//            ShopInfoCardView()
             Divider()
                 .background(Color.primary)
                 .frame(width: .screenWidth * 0.9)

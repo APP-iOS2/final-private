@@ -22,7 +22,7 @@ struct MyPageView: View {
             HStack {
                 Spacer()
                 NavigationLink {
-                    SettingView()
+//                    SettingView()
                 } label: {
                     Image(systemName: "gearshape")
                         .padding(.trailing,40)
