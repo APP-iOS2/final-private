@@ -32,8 +32,8 @@ struct ShopDetailView: View {
     
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     
-    @ObservedObject var shopStore: ShopStore
-    @ObservedObject var reservationStore: ReservationStore
+    @EnvironmentObject var shopStore: ShopStore
+    @EnvironmentObject var reservationStore: ReservationStore
     
     @Binding var root: Bool
     @Binding var selection: Int
@@ -116,7 +116,7 @@ struct ShopDetailView: View {
                         case .shopInfo:
                             ShopwDetailInfoView()
                         case .shopReservation:
-                            ShopDetailReservationView(shopStore: shopStore, reservationStore: reservationStore)
+                            ShopDetailReservationView()
                         case .shopCurrentReview:
                             ShopwDetailCurrentReviewView()
                         }
@@ -133,6 +133,8 @@ struct ShopDetailView: View {
 
 struct ShopDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailView(shopStore: ShopStore(), reservationStore: ReservationStore(), root: .constant(true), selection: .constant(4))
+        ShopDetailView(root: .constant(true), selection: .constant(4))
+            .environmentObject(ShopStore())
+            .environmentObject(ReservationStore())
     }
 }

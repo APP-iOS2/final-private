@@ -21,7 +21,7 @@ extension String {
 
 // 오늘의 목표 버튼까지 만들기
 struct DateTimePickerView: View {
-    @ObservedObject var reservationStore: ReservationStore
+    @EnvironmentObject var reservationStore: ReservationStore
     
     @State private var showingDate: Bool = true
     @State private var showingTime: Bool = false
@@ -111,12 +111,12 @@ struct DateTimePickerView: View {
             HStack {
                 Spacer()
                 Rectangle()
-                    .foregroundColor(Color("AccentColor"))
+                    .foregroundColor(Color.accentColor)
                     .frame(width: 16, height: 16)
                 Text("선택")
                     .padding(.trailing, 6)
                 Rectangle()
-                    .foregroundColor(Color("DarkGrayColor"))
+                    .foregroundColor(Color.darkGrayColor)
                     .frame(width: 16, height: 16)
                 Text("불가")
             }
@@ -165,7 +165,7 @@ struct DateTimePickerView: View {
                                             .frame(minWidth: 60, maxWidth: .infinity)
                                             .frame(height: 35)
                                     }
-                                    .background(timeSlot == self.selectedTime ? Color("AccentColor") : Color("SubGrayColor"))
+                                    .background(timeSlot == self.selectedTime ? Color.accentColor : Color.subGrayColor)
                                     .tint(timeSlot == self.selectedTime ? .primary : Color(.systemGray3))
                                     .cornerRadius(8)
                                 }
@@ -191,7 +191,7 @@ struct DateTimePickerView: View {
                                             .frame(minWidth: 60, maxWidth: .infinity)
                                             .frame(height: 35)
                                     }
-                                    .background(timeSlot == self.selectedTime ? Color("AccentColor") : Color("SubGrayColor"))
+                                    .background(timeSlot == self.selectedTime ? Color.accentColor : Color.subGrayColor)
                                     .tint(timeSlot == self.selectedTime ? Color(.label) : Color(.systemGray3))
                                     .cornerRadius(8)
                                 }
@@ -207,7 +207,7 @@ struct DateTimePickerView: View {
                         .frame(maxWidth: .infinity)
                         .padding()
                         .foregroundColor(.primary)
-                        .background(Color("SubGrayColor"))
+                        .background(Color.subGrayColor)
                         .cornerRadius(8)
                     }
                     
@@ -240,6 +240,7 @@ struct DateTimePickerView: View {
 
 struct DateTimePickerView_Previews: PreviewProvider {
     static var previews: some View {
-        DateTimePickerView(reservationStore: ReservationStore(), date: .constant(Date()), selectedDate: .constant(Date()), selectedTime: .constant(-1), isSelectedTime: .constant(false))
+        DateTimePickerView(date: .constant(Date()), selectedDate: .constant(Date()), selectedTime: .constant(-1), isSelectedTime: .constant(false))
+            .environmentObject(ReservationStore())
     }
 }
