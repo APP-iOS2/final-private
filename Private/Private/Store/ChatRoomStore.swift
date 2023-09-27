@@ -12,15 +12,15 @@ final class ChatRoomStore: ObservableObject {
     @Published var messageList: [Message] = []
     
     init() {
-        chatRoomList.append(ChatRoomStore.chatRoom)
-        messageList = ChatRoomStore.chatRoom.messages
+//        chatRoomList.append(ChatRoomStore.chatRoom)
+//        messageList = ChatRoomStore.chatRoom.messages
     }
     
-    static let chatRoom = ChatRoom(
-        id: "",
-        otherUser: UserStore.user,
-        messages: message
-    )
+//    static let chatRoom = ChatRoom(
+//        id: "",
+//        otherUser: UserStore.user,
+//        messages: message
+//    )
     
     static let message = [
         Message(

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct MyHistoryView: View {
+    
+    @EnvironmentObject var userStore: UserStore
+    
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
@@ -57,7 +60,7 @@ struct MyHistoryView: View {
                 Spacer()
             }
             if (isFeed == true || isMap == false) {
-                if UserStore.user.myFeed.isEmpty {
+                if userStore.user.myFeed.isEmpty {
                 Text("게시물이 존재 하지 않습니다.")
                         .font(.pretendardBold24)
                         .padding()
@@ -68,7 +71,7 @@ struct MyHistoryView: View {
                         alignment: .center,
                         spacing: 1
                     ) {
-                            ForEach(UserStore.user.myFeed, id: \.self) { feed in
+                            ForEach(userStore.user.myFeed, id: \.self) { feed in
                                 AsyncImage(url:URL(string:feed.images[0])) { image in
                                     image
                                         .resizable()

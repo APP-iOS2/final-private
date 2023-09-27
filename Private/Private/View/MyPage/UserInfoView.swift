@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct UserInfoView: View {
+    
+    @EnvironmentObject var userStore: UserStore
+    
     var body: some View {
         HStack {
             VStack() {
@@ -21,12 +24,12 @@ struct UserInfoView: View {
                         .clipShape(Circle())
                 }
                 .padding(.bottom, 1.0)
-                Text(UserStore.user.nickname).font(.pretendardBold24)
+                Text(userStore.user.nickname).font(.pretendardBold24)
             }.padding([.top, .trailing], 14)
             VStack {
                 HStack {
                     VStack {
-                        Text("\(UserStore.user.myFeed.count)")
+                        Text("\(userStore.user.myFeed.count)")
                             .font(.pretendardBold18)
                             .padding(.bottom, 5.0)
                         Text("게시글")
@@ -34,7 +37,7 @@ struct UserInfoView: View {
                     }
                     .padding(.trailing,19.0 )
                     VStack {
-                        Text("\(UserStore.user.follower.count)")
+                        Text("\(userStore.user.follower.count)")
                             .font(.pretendardBold18)
                             .padding(.bottom, 5.0)
                         Text("팔로워")
@@ -42,7 +45,7 @@ struct UserInfoView: View {
                     }
                     .padding(.trailing,19.0)
                     VStack {
-                        Text("\(UserStore.user.following.count)")
+                        Text("\(userStore.user.following.count)")
                             .font(.pretendardBold18)
                             .padding(.bottom, 5.0)
                         Text("팔로잉")
