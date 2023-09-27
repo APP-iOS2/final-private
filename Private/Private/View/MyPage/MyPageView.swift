@@ -22,14 +22,14 @@ struct MyPageView: View {
             HStack {
                 Spacer()
                 NavigationLink {
-//                    SettingView()
+                    SettingView()
                 } label: {
                     Image(systemName: "gearshape")
                         .padding(.trailing,40)
                         .foregroundColor(.primary)
                 }
             }
-            UserInfoView(userStore: UserStore())
+            UserInfoView()
                 .padding(.top,-15.0)
             Divider()
                 .background(Color.primary)
@@ -88,15 +88,15 @@ struct MyPageView: View {
             }
             switch viewNumber {
             case 0:
-                MyHistoryView(userStore: UserStore())
+                MyHistoryView()
             case 1:
-                MySavedView(userStore: UserStore())
+                MySavedView()
                     .padding(.top,37.2)
                 // MyHistorView 의 피드 지도 버튼 간격을 맞추기 위한 패딩
             case 2:
-                MySavedPlaceView(userStore: UserStore())
+                MySavedPlaceView()
             default:
-                MyHistoryView(userStore: UserStore())
+                MyHistoryView()
             }
             Spacer()
                 
@@ -106,6 +106,6 @@ struct MyPageView: View {
 
 struct MyPageView_Previews: PreviewProvider {
     static var previews: some View {
-        MyPageView(root: .constant(true), selection: .constant(5))
+        MyPageView(root: .constant(true), selection: .constant(5)).environmentObject(UserStore())
     }
 }

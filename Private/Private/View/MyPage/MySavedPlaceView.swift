@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MySavedPlaceView: View {
-    @ObservedObject var userStore: UserStore
+    @EnvironmentObject private var userStore: UserStore
     var body: some View {
         ScrollView {
             if userStore.user.bookmark.isEmpty {
@@ -26,6 +26,6 @@ struct MySavedPlaceView: View {
 
 struct MySavedPlaceView_Previews: PreviewProvider {
     static var previews: some View {
-        MySavedPlaceView(userStore: UserStore())
+        MySavedPlaceView().environmentObject(UserStore())
     }
 }

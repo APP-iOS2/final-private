@@ -10,7 +10,7 @@ import Kingfisher
 
 struct MyHistoryView: View {
     
-    @ObservedObject var userStore: UserStore
+    @EnvironmentObject private var userStore: UserStore
     
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
@@ -88,6 +88,6 @@ struct MyHistoryView: View {
 
 struct MyHistoryView_Previews: PreviewProvider {
     static var previews: some View {
-        MyHistoryView(userStore: UserStore())
+        MyHistoryView().environmentObject(UserStore())
     }
 }
