@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SettingView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var authStore: AuthStore
+    
     var backButton : some View {
         Button {
             self.presentationMode.wrappedValue.dismiss()
@@ -47,6 +49,7 @@ struct SettingView: View {
                 Section (content: {
                     Button{
                         print("로그아웃")
+                        authStore.signOutGoogle()
                     } label: {
                         HStack {
                             Text("로그아웃")
