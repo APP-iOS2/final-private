@@ -13,7 +13,6 @@ struct UserInfoModifyView: View {
             Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
             
                 .navigationTitle("닉네임")
-                .navigationTitle()
         }
     }
 }

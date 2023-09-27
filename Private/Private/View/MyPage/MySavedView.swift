@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct MySavedView: View {
-    
-    @EnvironmentObject var userStore: UserStore
-    
+  
+    @ObservedObject var userStore: UserStore
+  
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
@@ -44,6 +44,6 @@ struct MySavedView: View {
 
 struct MySavedView_Previews: PreviewProvider {
     static var previews: some View {
-        MySavedView()
+        MySavedView(userStore: UserStore())
     }
 }
