@@ -30,8 +30,8 @@ final class ShopStore: ObservableObject {
             ShopItem(name: "마제소바", price: 10000, imageUrl: "https://www.kfoodtimes.com/news/photo/202105/16015_27303_5527.png"),
             ShopItem(name: "차슈덮밥", price: 12000, imageUrl: "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/411/3435af5cc6041f247e89a65b1a1d73c5_res.jpeg")
         ],
-        regularHoliday: ["월요일"],
-        temporayHoliday: [],
+        regularHoliday: ["월요일", "화요일", "수요일", "목요일"],
+        temporayHoliday: [Date()],
         breakTimeHours:  [
             "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
             "화요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),

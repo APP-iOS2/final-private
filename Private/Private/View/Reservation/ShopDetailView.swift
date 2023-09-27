@@ -7,24 +7,16 @@
 
 import SwiftUI
 
-/*
- static let shop = Shop(
- name: "맛집",
- category: Category.koreanFood,
- coord: NMGLatLng(lat: 36.444, lng: 127.332),
- address: "서울시 강남구",
- addressDetail: "7번 출구 어딘가",
- shopTelNumber: "010-1234-5678",
- shopInfo: "미슐랭 맛집",
- shopImageURL: "",
- shopItems: [shopItem],
- numberOfBookmark: 0
- )
- */
+// Todo: - UI 관련
+/// - 헤더뷰 height(CGFloat.screenHeight * 0.1) 수정
+/// - 지역정보 disclosure group을 열면 아래의 뷰가 내려가게 만들고 싶음! -> 헤더뷰 height와 같이 연구,,
+/// - 지역정보 disclosure group width 수정
+/// - Picker 지우고 라이브러리로 변경
+/// - 미묘한 간격,,,,,거슬림
 
 enum ShopDetailCategory: String, CaseIterable {
     case shopInfo = "가게 정보"
-    case shopReservation = "예약"
+    case shopMenu = "메뉴"
     case shopCurrentReview = "최근 리뷰"
 }
 
@@ -39,12 +31,11 @@ struct ShopDetailView: View {
     @Binding var selection: Int
     
     let dummyShop = ShopStore.shop
-    let dummyImageString: String = "https://image.bugsm.co.kr/album/images/500/40912/4091237.jpg"
     
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
-                AsyncImage(url: URL(string: dummyImageString)!) { image in
+                AsyncImage(url: URL(string: dummyShop.shopImageURL)!) { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(height: 300)
@@ -68,21 +59,20 @@ struct ShopDetailView: View {
                                     .font(Font.pretendardMedium18)
                             }
                             
-                            GeometryReader { geometry in
-                                DisclosureGroup(dummyShop.address) {
-                                    HStack(spacing: 5) {
-                                        Text(dummyShop.addressDetail)
-                                            .font(Font.pretendardRegular14)
-                                        
-                                        Image(systemName: "doc.on.doc")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 15, height: 15)
-                                    }
+                            DisclosureGroup(dummyShop.address) {
+                                HStack(spacing: 5) {
+                                    Text(dummyShop.addressDetail)
+                                        .font(Font.pretendardRegular14)
+                                    
+                                    Image(systemName: "doc.on.doc")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 15, height: 15)
                                 }
-                                .font(Font.pretendardMedium18)
-                                .frame(width: geometry.size.width - 100, height: geometry.size.height)
                             }
+                            .font(Font.pretendardMedium18)
+                            
+                            Spacer()
                         }
                         
                         Spacer()
@@ -98,9 +88,7 @@ struct ShopDetailView: View {
                         .foregroundColor(Color("DarkGrayColor"))
                     }
                     .padding(10)
-                    .frame(height: 100)
-                    
-                    Divider()
+                    .frame(height: CGFloat.screenHeight * 0.1)
                     
                     Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(Font.pretendardRegular16)) {
                         ForEach(ShopDetailCategory.allCases, id: \.self) { category in
@@ -110,13 +98,14 @@ struct ShopDetailView: View {
                     }
                     .pickerStyle(.segmented)
                     .padding(10)
+                    .padding(.bottom, 5)
                     
                     ScrollView {
                         switch selectedShopDetailCategory {
                         case .shopInfo:
                             ShopwDetailInfoView()
-                        case .shopReservation:
-                            ShopDetailReservationView()
+                        case .shopMenu:
+                            ShopDetailMenuView()
                         case .shopCurrentReview:
                             ShopwDetailCurrentReviewView()
                         }
@@ -125,7 +114,7 @@ struct ShopDetailView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color.white)
-                .offset(CGSize(width: 0, height: 120))
+                .offset(CGSize(width: 0, height: CGFloat.screenHeight * 0.2))
             }
         }
     }

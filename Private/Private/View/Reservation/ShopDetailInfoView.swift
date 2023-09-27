@@ -9,47 +9,42 @@ import SwiftUI
 
 struct ShopwDetailInfoView: View {
     
-    let dummyImage: [URL] = Array(repeating: URL(string: "https://image.bugsm.co.kr/album/images/500/40912/4091237.jpg")!, count: 10)
-    let dummyBusinessHours: String = """
-    월화 휴무
-    14:30 - 18:00 브레이크 타임
-    수 12:00 - 20:00
-    목 12:00 - 20:00
-    금 12:00 - 20:00
-    토 12:00 - 20:00
-    일 12:00 - 20:00
-    """
     let dummyShop = ShopStore.shop
+    let sortedWeekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(dummyImage, id: \.self) { imageURL in
-                        AsyncImage(url: imageURL) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(height: 100)
-                        } placeholder: {
-                            ProgressView()
-                        }
-                    }
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 10) {
+                ZStack {
+                    Image(systemName: "text.justify.leading")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 20, height: 20)
                 }
+                .frame(width: 25, height: 25)
+                
+                Text("소개")
+                    .font(Font.pretendardMedium18)
+                
+                Spacer()
             }
-            .frame(height: 100)
             
-            Divider()
-            
-            Text(dummyShop.shopInfo)
-                .font(Font.pretendardRegular16)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(dummyShop.shopInfo)
+                    .font(Font.pretendardRegular16)
+            }
+            .padding(10)
             
             Divider()
             
             HStack(spacing: 10) {
-                Image(systemName: "clock")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 25, height: 25)
+                ZStack {
+                    Image(systemName: "clock")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 25, height: 25)
+                }
+                .frame(width: 25, height: 25)
                 
                 Text("영업 시간")
                     .font(Font.pretendardMedium18)
@@ -65,16 +60,78 @@ struct ShopwDetailInfoView: View {
                 .cornerRadius(12)
             }
             
-            VStack(spacing: 0) {
-                Text(dummyBusinessHours)
-                    .font(Font.pretendardRegular16)
-                    .lineSpacing(5)
-                    .frame(alignment: .leading)
+            VStack(alignment: .leading, spacing: 2) {
+                ForEach(sortedWeekdays, id: \.self) { day in
+                    if let hours = dummyShop.weeklyBusinessHours[day] {
+                        HStack(spacing: 0) {
+                            Text("\(day)")
+                            
+                            Spacer()
+                            
+                            if dummyShop.regularHoliday.contains(where: { holidayString in
+                                return holidayString == day
+                            }) {
+                                Text("정기 휴무")
+                            } else {
+                                Text("\(hours.startHour):\(hours.startMinute) - \(hours.endHour):\(hours.endMinute)")
+                            }
+                        }
+                    }
+                }
+            }
+            .padding(10)
+            
+            VStack(spacing: 10) {
+                DisclosureGroup {
+                    VStack(alignment: .leading, spacing: 2) {
+                        ForEach(dummyShop.temporayHoliday, id: \.self) { day in
+                            HStack(spacing: 0) {
+                                Text(day.formatted()) // 임시로 해놨습니당. DateFormatter로 9월 27일 와 같은 형식으로 수정할 예정입니다.
+                                    .font(Font.pretendardRegular16)
+                                
+                                Spacer()
+                            }
+                        }
+                    }
+                    .padding(10)
+                } label: {
+                    Text("휴무일")
+                        .font(Font.pretendardMedium18)
+                        .lineSpacing(5)
+                        .frame(alignment: .leading)
+                }
+                
+                DisclosureGroup {
+                    VStack(alignment: .leading, spacing: 2) {
+                        ForEach(sortedWeekdays, id: \.self) { day in
+                            if let hours = dummyShop.breakTimeHours[day] {
+                                HStack(spacing: 0) {
+                                    Text("\(day)")
+                                    
+                                    Spacer()
+                                    
+                                    if dummyShop.regularHoliday.contains(where: { holidayString in
+                                        return holidayString == day
+                                    }) {
+                                        Text("정기 휴무")
+                                    } else {
+                                        Text("\(hours.startHour):\(hours.startMinute) - \(hours.endHour):\(hours.endMinute)")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .padding(10)
+                } label: {
+                    Text("브레이크 타임")
+                        .font(Font.pretendardMedium18)
+                        .lineSpacing(5)
+                        .frame(alignment: .leading)
+                }
             }
         }
     }
 }
-
 
 struct ShopDetailInfoView_Previews: PreviewProvider {
     static var previews: some View {

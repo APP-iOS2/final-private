@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0679CAC22ABD876400F48BE4 /* ShopDetailReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0679CAC12ABD876400F48BE4 /* ShopDetailReservationView.swift */; };
+		0679CAC22ABD876400F48BE4 /* ShopDetailMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */; };
 		0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */; };
 		069C67372AC26D2D00A5275F /* ShopDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */; };
 		06C796CE2ABD5C5C0043C395 /* ShopDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C796CD2ABD5C5C0043C395 /* ShopDetailView.swift */; };
@@ -90,7 +90,6 @@
 		A65C3B102AC12A6E00460ACB /* MapMarkerDetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B0F2AC12A6E00460ACB /* MapMarkerDetailStore.swift */; };
 		A65C3B122AC12BD800460ACB /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B112AC12BD800460ACB /* Review.swift */; };
 		A65C3B142AC12C7200460ACB /* ReviewSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B132AC12C7200460ACB /* ReviewSheetView.swift */; };
-		B509D5372AC2D55800648614 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B509D5362AC2D55800648614 /* GoogleService-Info.plist */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
 		B5BEAA232AC154430002CC2C /* ReservationConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEAA222AC154430002CC2C /* ReservationConfirmView.swift */; };
@@ -125,7 +124,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0679CAC12ABD876400F48BE4 /* ShopDetailReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailReservationView.swift; sourceTree = "<group>"; };
+		065480ED2AC3CC9F009781B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		065480EF2AC3CCA9009781B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailMenuView.swift; sourceTree = "<group>"; };
 		0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailCurrentReviewView.swift; sourceTree = "<group>"; };
 		069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailInfoView.swift; sourceTree = "<group>"; };
 		06C796CD2ABD5C5C0043C395 /* ShopDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailView.swift; sourceTree = "<group>"; };
@@ -182,7 +183,6 @@
 		A65C3B0F2AC12A6E00460ACB /* MapMarkerDetailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerDetailStore.swift; sourceTree = "<group>"; };
 		A65C3B112AC12BD800460ACB /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		A65C3B132AC12C7200460ACB /* ReviewSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSheetView.swift; sourceTree = "<group>"; };
-		B509D5362AC2D55800648614 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
 		B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePickerView.swift; sourceTree = "<group>"; };
 		B5BEAA222AC154430002CC2C /* ReservationConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationConfirmView.swift; sourceTree = "<group>"; };
@@ -195,7 +195,6 @@
 		E121B3F00B9AC989B133EC53 /* Pods-Private-PrivateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.debug.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
-		E4440B8E2AC18172004B4F58 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E47B3F702AC11C52002164A6 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHistoryView.swift; sourceTree = "<group>"; };
 		E47B3F742AC14A22002164A6 /* MySavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySavedView.swift; sourceTree = "<group>"; };
@@ -362,7 +361,7 @@
 				B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */,
 				06C796CD2ABD5C5C0043C395 /* ShopDetailView.swift */,
 				069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */,
-				0679CAC12ABD876400F48BE4 /* ShopDetailReservationView.swift */,
+				0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */,
 				0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */,
 			);
 			path = Reservation;
@@ -383,6 +382,7 @@
 		3CCD2DFF2ABC3A3F005709F4 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
+				065480EF2AC3CCA9009781B4 /* GoogleService-Info.plist */,
 				3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */,
 				3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */,
 				3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */,
@@ -417,8 +417,7 @@
 			isa = PBXGroup;
 			children = (
 				3CF3D8C42AB82A97003689A6 /* PrivateApp.swift */,
-				B509D5362AC2D55800648614 /* GoogleService-Info.plist */,
-				E4440B8E2AC18172004B4F58 /* Info.plist */,
+				065480ED2AC3CC9F009781B4 /* Info.plist */,
 				3CCD2DFF2ABC3A3F005709F4 /* Commons */,
 				3CF3D8F22AB82DDD003689A6 /* Resource */,
 				3C3716202ABD14F6004E8419 /* Extension */,
@@ -663,7 +662,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CF3D8CC2AB82A99003689A6 /* Preview Assets.xcassets in Resources */,
-				B509D5372AC2D55800648614 /* GoogleService-Info.plist in Resources */,
 				3CF3D8C92AB82A99003689A6 /* Assets.xcassets in Resources */,
 				3CCD2E012ABC3A6D005709F4 /* Pretendard in Resources */,
 			);
@@ -829,7 +827,7 @@
 				3CCD2DF82ABC357C005709F4 /* ReservationView.swift in Sources */,
 				E47B3F712AC11C52002164A6 /* UserInfoView.swift in Sources */,
 				3CCD2E032ABC3B64005709F4 /* Font+.swift in Sources */,
-				0679CAC22ABD876400F48BE4 /* ShopDetailReservationView.swift in Sources */,
+				0679CAC22ABD876400F48BE4 /* ShopDetailMenuView.swift in Sources */,
 				3CB7340C2ABEFEBC00D82503 /* CGFloat+.swift in Sources */,
 				3CCD2DE82ABC31FD005709F4 /* Message.swift in Sources */,
 				E47B3F792AC16B61002164A6 /* MyFeed.swift in Sources */,
