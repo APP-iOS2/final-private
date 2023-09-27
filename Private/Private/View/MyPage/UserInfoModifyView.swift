@@ -13,6 +13,8 @@ struct UserInfoModifyView: View {
     }
 }
 
-//#Preview {
-//    UserInfoModifyView()
-//}
+struct UserInfoModifyView_Previews: PreviewProvider {
+    static var previews: some View {
+        UserInfoModifyView()
+    }
+}
