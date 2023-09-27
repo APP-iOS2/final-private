@@ -68,21 +68,20 @@ struct ShopDetailView: View {
                                     .font(Font.pretendardMedium18)
                             }
                             
-                            GeometryReader { geometry in
-                                DisclosureGroup(dummyShop.address) {
-                                    HStack(spacing: 5) {
-                                        Text(dummyShop.addressDetail)
-                                            .font(Font.pretendardRegular14)
-                                        
-                                        Image(systemName: "doc.on.doc")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 15, height: 15)
-                                    }
+                            DisclosureGroup(dummyShop.address) {
+                                HStack(spacing: 5) {
+                                    Text(dummyShop.addressDetail)
+                                        .font(Font.pretendardRegular14)
+                                    
+                                    Image(systemName: "doc.on.doc")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 15, height: 15)
                                 }
-                                .font(Font.pretendardMedium18)
-                                .frame(width: geometry.size.width - 100, height: geometry.size.height)
                             }
+                            .font(Font.pretendardMedium18)
+                            
+                            Spacer()
                         }
                         
                         Spacer()
