@@ -92,6 +92,7 @@
 		A65C3B142AC12C7200460ACB /* ReviewSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B132AC12C7200460ACB /* ReviewSheetView.swift */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
+		B59853642AC3BE4E00C45E76 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59853632AC3BE4E00C45E76 /* String+.swift */; };
 		B5BEAA232AC154430002CC2C /* ReservationConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEAA222AC154430002CC2C /* ReservationConfirmView.swift */; };
 		D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */; };
 		D1A6CA032ABD6B9A00AE59D0 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */; };
@@ -185,6 +186,7 @@
 		A65C3B132AC12C7200460ACB /* ReviewSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSheetView.swift; sourceTree = "<group>"; };
 		B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
 		B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePickerView.swift; sourceTree = "<group>"; };
+		B59853632AC3BE4E00C45E76 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		B5BEAA222AC154430002CC2C /* ReservationConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationConfirmView.swift; sourceTree = "<group>"; };
 		BD81231EFA3DC67095A11398 /* Pods-PrivateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrivateTests.release.xcconfig"; path = "Target Support Files/Pods-PrivateTests/Pods-PrivateTests.release.xcconfig"; sourceTree = "<group>"; };
 		D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStore.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				3CCD2E022ABC3B64005709F4 /* Font+.swift */,
 				3C37B1B32AC02481004A8E7E /* Color+.swift */,
 				3CB7340B2ABEFEBC00D82503 /* CGFloat+.swift */,
+				B59853632AC3BE4E00C45E76 /* String+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -458,10 +461,10 @@
 		3CF3D8F02AB82D8D003689A6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				63BB09982ABD8783002CCE4E /* Map */,
 				3CF3D8C62AB82A97003689A6 /* LaunchView.swift */,
 				3CF3D8F32AB82FF3003689A6 /* MainTabView.swift */,
 				3CF3D8F52AB83200003689A6 /* MainLoginView.swift */,
+				63BB09982ABD8783002CCE4E /* Map */,
 				3CCD2DEA2ABC34C1005709F4 /* Home */,
 				3CCD2DEB2ABC34C8005709F4 /* Search */,
 				3CCD2DEC2ABC34D6005709F4 /* Post */,
@@ -845,6 +848,7 @@
 				D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */,
 				3CCD2DF62ABC3572005709F4 /* PostView.swift in Sources */,
 				E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */,
+				B59853642AC3BE4E00C45E76 /* String+.swift in Sources */,
 				3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */,
 				3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */,
 				D1A6CA032ABD6B9A00AE59D0 /* SearchResultView.swift in Sources */,
