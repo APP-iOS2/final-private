@@ -10,7 +10,7 @@ import SwiftUI
 struct UserInfoView: View {
     
     @EnvironmentObject private var userStore: UserStore
-    
+    @State var isModify: Bool = false
     var body: some View {
         HStack {
             VStack() {
@@ -53,15 +53,19 @@ struct UserInfoView: View {
                     }
                 }
                 .padding(.bottom, 10.0)
-                Button(action: {
-                    print("프로필 편집")
-                },label: {
+                Button{
+                    isModify = true
+                } label: {
                     Text("프로필 편집")
                         .font(.pretendardRegular14)
                         .frame(width: .screenWidth*0.5, height: 32)
                         .background(Color.subGrayColor)
                         .cornerRadius(8)
                         .foregroundColor(.primary)
+                }.sheet(isPresented: $isModify, content: {
+                    NavigationStack {
+                        UserInfoModifyView(isModify: $isModify)
+                    }
                 })
             }
             .padding(.top, 40.0)

@@ -25,7 +25,7 @@ struct MyPageView: View {
                     SettingView()
                 } label: {
                     Image(systemName: "gearshape")
-                        .padding(.trailing,40)
+                        .padding(.trailing,30)
                         .foregroundColor(.primary)
                 }
             }
@@ -60,7 +60,7 @@ struct MyPageView: View {
                     viewNumber = 1
                 }label: {
                     HStack {
-                        isMySavedFeedButton ? Image( systemName: "bookmark.fill") : Image (systemName: "bookmark")
+                        isMySavedFeedButton ? Image(systemName: "bookmark.fill") : Image (systemName: "bookmark")
                         Text("내가 저장한 피드")
                     }.font(.pretendardRegular12)
                         .foregroundColor(.chatTextColor)
@@ -75,7 +75,7 @@ struct MyPageView: View {
                     viewNumber = 2
                 }label: {
                     HStack {
-                        isMySavedPlaceButton ? Image( systemName: "pin.fill")
+                        isMySavedPlaceButton ? Image(systemName: "pin.fill")
                         : Image (systemName: "pin")
                         Text("내가 저장한 장소")
                     }.font(.pretendardRegular12)

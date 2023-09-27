@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject private var authStore: AuthStore
     
     var backButton : some View {
         Button {

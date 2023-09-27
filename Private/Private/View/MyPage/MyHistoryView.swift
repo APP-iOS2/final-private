@@ -64,7 +64,7 @@ struct MyHistoryView: View {
                 if userStore.user.myFeed.isEmpty {
                     Text("게시물이 존재 하지 않습니다.")
                         .font(.pretendardBold24)
-                        .padding()
+                        .padding(.top, .screenHeight * 0.2)
                 } else {
                     ScrollView {
                         LazyVGrid(

@@ -380,13 +380,13 @@
 			isa = PBXGroup;
 			children = (
 				3CCD2DF92ABC3588005709F4 /* MyPageView.swift */,
+				3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */,
+				3C91AEA12AC40F6100E60D9B /* SettingView.swift */,
 				E47B3F702AC11C52002164A6 /* UserInfoView.swift */,
 				E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */,
-				3C91AEA12AC40F6100E60D9B /* SettingView.swift */,
-				3C91AEA02AC40F6100E60D9B /* ShopInfoCardView.swift */,
-				3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */,
 				E47B3F742AC14A22002164A6 /* MySavedView.swift */,
 				E47B3F762AC14A3B002164A6 /* MySavedPlaceView.swift */,
+				3C91AEA02AC40F6100E60D9B /* ShopInfoCardView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
