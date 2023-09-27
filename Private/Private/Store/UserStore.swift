@@ -83,6 +83,11 @@ final class UserStore: ObservableObject {
             self.user = User(email: email, name: name, nickname: nickname, phoneNumber: phoneNumber, profileImageURL: profileImageURL, follower: follower, following: following, myFeed: myFeed, savedFeed: savedFeed, bookmark: bookmark, chattingRoom: chattingRoom, myReservation: myReservation)
         }
     }
+    
+    func deleteUser(userEmail: String) {
+        Firestore.firestore().collection("User")
+            .document(user.email).delete()
+    }
   
 //    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
   
