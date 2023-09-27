@@ -15,7 +15,8 @@ struct MainTabView: View {
     
     @EnvironmentObject var userStore: UserStore
     @StateObject private var shopStore: ShopStore = ShopStore()
-    
+    @StateObject private var reservationStore: ReservationStore = ReservationStore()
+     
     @State var selection: Int = 1
     @State private var rootSection1: Bool = false
     @State private var rootSection2: Bool = false
