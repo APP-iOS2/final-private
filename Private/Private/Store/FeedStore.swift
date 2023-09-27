@@ -9,20 +9,21 @@ import FirebaseStorage
 import FirebaseFirestore
 
 final class FeedStore: ObservableObject {
+    
     @Published var feedList: [Feed] = []
     private let dbRef = Firestore.firestore().collection("Feed")
     
     init() {
-        feedList.append(FeedStore.feed)
+//        feedList.append(FeedStore.feed)
     }
     
-    static let feed = Feed(
-        writer: UserStore.user,
-        images: ["userDefault"],
-        contents: "데이트하기 좋은곳 찾으신다면 추천! 기본은하고 분위기가 좋음. 오므라이스도 맛있다.",
-        visitedShop: ShopStore.shop,
-        category: [Category.koreanFood]
-    )
+//    static let feed = Feed(
+//        writer: UserStore.user,
+//        images: ["userDefault"],
+//        contents: "데이트하기 좋은곳 찾으신다면 추천! 기본은하고 분위기가 좋음. 오므라이스도 맛있다.",
+//        visitedShop: ShopStore.shop,
+//        category: [Category.koreanFood]
+//    )
     
     func addFeed(feedid: String) {
         

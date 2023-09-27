@@ -32,8 +32,9 @@ struct ChatRoomCellView: View {
     }
 }
 
-struct ChatRoomCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatRoomCellView(chatRoom: ChatRoomStore.chatRoom)
-    }
-}
+//struct ChatRoomCellView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChatRoomCellView(chatRoom: chatRoom)
+//            .environmentObject(ChatRoomStore())
+//    }
+//}
