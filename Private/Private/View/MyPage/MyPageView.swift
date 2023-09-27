@@ -29,7 +29,7 @@ struct MyPageView: View {
                         .foregroundColor(.primary)
                 }
             }
-            UserInfoView()
+            UserInfoView(userStore: UserStore())
                 .padding(.top,-15.0)
             Divider()
                 .background(Color.primary)
@@ -86,19 +86,20 @@ struct MyPageView: View {
                 }
                 Spacer()
             }
-                switch viewNumber {
-                case 0:
-                    MyHistoryView()
-                case 1:
-                    MySavedView()
-                        .padding(.top,37.2)
-                    // MyHistorView 의 피드 지도 버튼 간격을 맞추기 위한 패딩
-                case 2:
-                    MySavedPlaceView()
-                default:
-                    MyHistoryView()
-                }
+            switch viewNumber {
+            case 0:
+                MyHistoryView(userStore: UserStore())
+            case 1:
+                MySavedView(userStore: UserStore())
+                    .padding(.top,37.2)
+                // MyHistorView 의 피드 지도 버튼 간격을 맞추기 위한 패딩
+            case 2:
+                MySavedPlaceView(userStore: UserStore())
+            default:
+                MyHistoryView(userStore: UserStore())
+            }
             Spacer()
+                
         }
     }
 }
