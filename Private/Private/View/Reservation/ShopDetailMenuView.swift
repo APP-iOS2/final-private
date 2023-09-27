@@ -9,26 +9,33 @@ import SwiftUI
 
 struct ShopDetailMenuView: View {
     
+    let dummyShop = ShopStore.shop
+    
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 0) {
             LazyVStack {
-                ForEach(0..<10) { _ in
-                    ZStack {
-                        ItemInfoView()
-                        
-                        HStack {
-                            Spacer()
-                            NavigationLink {
-                                ReservationView()
-                            } label: {
-                                Text("예약하기")
-                                    .font(Font.pretendardBold18)
-                                    .padding()
-                            }
+                ForEach(dummyShop.menu, id: \.self) { menu in
+                    HStack(spacing: 10) {
+                        AsyncImage(url: URL(string: menu.imageUrl)!) { image in
+                            image.resizable()
+                                .frame(width: 120, height: 120)
+                                .aspectRatio(contentMode: .fit)
+                                .cornerRadius(12)
+                        } placeholder: {
+                            ProgressView()
                         }
+                        
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("\(menu.name)")
+                                .font(Font.pretendardMedium24)
+                            Text("\(menu.price)")
+                                .font(Font.pretendardRegular16)
+                        }
+                        
+                        Spacer()
                     }
                     .padding(10)
                 }
