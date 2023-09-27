@@ -26,8 +26,8 @@ struct TestMapView: View {
             Coordinator.shared.makeMarkers()
         }
         .sheet(isPresented: $isSheetPresented) {
-            MapReviewSheetView()
-                .presentationDetents([.height(.screenHeight - 500)])
+//            MapReviewSheetView()
+//                .presentationDetents([.height(.screenHeight - 500)])
         }
     }
 }
