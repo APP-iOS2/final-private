@@ -56,6 +56,7 @@
 		3CA3038C2AB8376700FEC7BD /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA3038B2AB8376700FEC7BD /* FirebaseRemoteConfigSwift */; };
 		3CA3038E2AB8376700FEC7BD /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA3038D2AB8376700FEC7BD /* FirebaseStorage */; };
 		3CA303902AB8376700FEC7BD /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA3038F2AB8376700FEC7BD /* FirebaseStorageCombine-Community */; };
+		3CA30E1F2AC3B686002B7A8B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA30E1E2AC3B686002B7A8B /* SignUpView.swift */; };
 		3CA30E252AC3B986002B7A8B /* MapMarkerDetail in Resources */ = {isa = PBXBuildFile; fileRef = 3CA30E242AC3B986002B7A8B /* MapMarkerDetail */; };
 		3CB734082ABD6EEF00D82503 /* MapMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB734072ABD6EEF00D82503 /* MapMainView.swift */; };
 		3CB7340A2ABD6F0100D82503 /* FeedMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB734092ABD6F0100D82503 /* FeedMainView.swift */; };
@@ -88,6 +89,9 @@
 		3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F52AB83200003689A6 /* MainLoginView.swift */; };
 		63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB09992ABD87BD002CCE4E /* NaverMap.swift */; };
 		63BB099C2ABE825C002CCE4E /* TestMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB099B2ABE825C002CCE4E /* TestMapView.swift */; };
+		A65C3B102AC12A6E00460ACB /* MapMarkerDetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B0F2AC12A6E00460ACB /* MapMarkerDetailStore.swift */; };
+		A65C3B122AC12BD800460ACB /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B112AC12BD800460ACB /* Review.swift */; };
+		A65C3B142AC12C7200460ACB /* ReviewSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65C3B132AC12C7200460ACB /* ReviewSheetView.swift */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
 		B5BEAA232AC154430002CC2C /* ReservationConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEAA222AC154430002CC2C /* ReservationConfirmView.swift */; };
@@ -142,6 +146,7 @@
 		3C93B5052AC13E7200788633 /* ChatRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomView.swift; sourceTree = "<group>"; };
 		3C93B5072AC1549200788633 /* SendMessageTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageTextField.swift; sourceTree = "<group>"; };
 		3C9816AC39F3302EDB88BA8A /* Pods_Private_PrivateUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private_PrivateUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CA30E1E2AC3B686002B7A8B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		3CA30E242AC3B986002B7A8B /* MapMarkerDetail */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MapMarkerDetail; sourceTree = "<group>"; };
 		3CB734072ABD6EEF00D82503 /* MapMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMainView.swift; sourceTree = "<group>"; };
 		3CB734092ABD6F0100D82503 /* FeedMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMainView.swift; sourceTree = "<group>"; };
@@ -179,6 +184,9 @@
 		63BB09992ABD87BD002CCE4E /* NaverMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverMap.swift; sourceTree = "<group>"; };
 		63BB099B2ABE825C002CCE4E /* TestMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMapView.swift; sourceTree = "<group>"; };
 		87739F481181992B30A0E64A /* Pods_Private.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A65C3B0F2AC12A6E00460ACB /* MapMarkerDetailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerDetailStore.swift; sourceTree = "<group>"; };
+		A65C3B112AC12BD800460ACB /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		A65C3B132AC12C7200460ACB /* ReviewSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewSheetView.swift; sourceTree = "<group>"; };
 		B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
 		B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePickerView.swift; sourceTree = "<group>"; };
 		B5BEAA222AC154430002CC2C /* ReservationConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationConfirmView.swift; sourceTree = "<group>"; };
@@ -462,6 +470,7 @@
 				3CF3D8C62AB82A97003689A6 /* LaunchView.swift */,
 				3CF3D8F32AB82FF3003689A6 /* MainTabView.swift */,
 				3CF3D8F52AB83200003689A6 /* MainLoginView.swift */,
+				3CA30E1E2AC3B686002B7A8B /* SignUpView.swift */,
 				3CCD2DEA2ABC34C1005709F4 /* Home */,
 				3CCD2DEB2ABC34C8005709F4 /* Search */,
 				3CCD2DEC2ABC34D6005709F4 /* Post */,
@@ -801,6 +810,7 @@
 				3C37B1B42AC02481004A8E7E /* Color+.swift in Sources */,
 				3CCD2DF22ABC3546005709F4 /* MainHomeView.swift in Sources */,
 				D1EC43922AC16E2900B088EA /* FollowStore.swift in Sources */,
+				3CA30E1F2AC3B686002B7A8B /* SignUpView.swift in Sources */,
 				3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */,
 				3CCD2DFE2ABC37F8005709F4 /* TextMaster.swift in Sources */,
 				B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */,
