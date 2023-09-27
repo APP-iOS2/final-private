@@ -121,7 +121,7 @@ struct PostView: View {
                 } // leading VStack
             }
             .toolbar {
-                ToolbarItemGroup(placement: .topBarLeading) {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
                     Button {
                         dismiss()
                     } label: {
@@ -129,7 +129,7 @@ struct PostView: View {
                             .foregroundStyle(.white)
                     }
                 }
-                ToolbarItemGroup(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
                         
                     } label: {
