@@ -29,7 +29,7 @@ struct SearchBarTextField: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 15)
-                        .foregroundColor(.darkGraySubColor)
+                        .foregroundColor(.gray)
                         .opacity(text.isEmpty ? 0 : 1)
                 }
                 .padding(.trailing, 8)

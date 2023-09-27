@@ -21,6 +21,9 @@ final class SearchStore: ObservableObject {
 //        FollowStore.db.collection("users").whereField("nickname", arrayContains: input.lowercased().
 //    }
     
+    func fetchrecentSearchResult() {
+        recentSearchResult = userDefaults.value(forKey: "SearchResult") as? [String] ?? []
+    }
     
     func addRecentSearch(_ searchText: String) {
         if recentSearchResult.contains(searchText) {

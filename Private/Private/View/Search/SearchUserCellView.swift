@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct SearchUserCellView: View {
+    @EnvironmentObject private var followStore: FollowStore
     var user:User
+    
     
     var body: some View {
         HStack {
@@ -24,7 +26,7 @@ struct SearchUserCellView: View {
             .frame(width: 44, height: 44)
             
             Button{
-                
+//                followStore.manageFollow(userId: <#T##String#>, followCheck: <#T##Bool#>, followingCount: <#T##(Int) -> Void#>, followersCount: <#T##(Int) -> Void#>)
             }label: {
                 Text("팔로우")
                 
