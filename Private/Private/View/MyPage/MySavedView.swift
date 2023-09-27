@@ -18,7 +18,7 @@ struct MySavedView: View {
         if userStore.user.savedFeed.isEmpty {
             Text("저장한 피드가 없습니다")
                 .font(.pretendardBold24)
-                .padding()
+                .padding(.top, .screenHeight * 0.2)
         } else {
             ScrollView {
                 LazyVGrid(
