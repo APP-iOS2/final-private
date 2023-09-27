@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReservationView: View {
     
-    @ObservedObject var shopStore: ShopStore
+    @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
     
     @State private var date = Date()  // 현재 날짜와 시간을 가져옴
@@ -54,7 +54,7 @@ struct ReservationView: View {
                     .opacity(0)
                 
                 // 메뉴마다 이렇게 있을 수 없음.. 식당에서는 예약 아이템을 어떻게 둬야할지
-                ItemInfoView(shopStore: shopStore, reservationStore: reservationStore)
+                ItemInfoView()
                     .padding(.bottom, 20)
                 
                 Text("예약 일시")
@@ -82,7 +82,7 @@ struct ReservationView: View {
                 .padding(.bottom)
                 
                 if showingDate {
-                    DateTimePickerView(reservationStore: reservationStore, date: $date, selectedDate: $selectedDate, selectedTime: $selectedTime, isSelectedTime: $isSelectedTime)
+                    DateTimePickerView(date: $date, selectedDate: $selectedDate, selectedTime: $selectedTime, isSelectedTime: $isSelectedTime)
                 }
                 
                 Text("인원")
@@ -101,7 +101,7 @@ struct ReservationView: View {
                 }
                 .font(Font.pretendardMedium18)
                 .padding()
-                .background(Color("SubGrayColor"))
+                .background(Color.subGrayColor)
                 .padding(.bottom, 20)
                 
                 // 뷰 따로 빼야함
@@ -130,7 +130,7 @@ struct ReservationView: View {
                         Text("알립니다")
                     }
                     .font(Font.pretendardBold18)
-                    .foregroundColor(Color("AccentColor"))
+                    .foregroundColor(Color.accentColor)
                     .padding(.bottom, 6)
                     
                     // BreakTime에 대한 Data 없음
@@ -140,7 +140,7 @@ struct ReservationView: View {
                     Text("당일 예약은 예약을 받지 않습니다.\n예약시간은 10분 경과시, 자동 취소됩니다.\n양해부탁드립니다.")
                 }
                 .padding()
-                .background(Color("SubGrayColor"))
+                .background(Color.subGrayColor)
                 .cornerRadius(12)
                 .padding(.bottom, 30)
                 
@@ -159,7 +159,7 @@ struct ReservationView: View {
                         .padding()
                 }
                 .tint(.black)
-                .background(Color("AccentColor"))
+                .background(Color.accentColor)
                 .cornerRadius(12)
                 .disabled(!isSelectedTime)
                 .sheet(isPresented: $isShwoingConfirmView) {
@@ -176,6 +176,8 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(shopStore: ShopStore())
+        ReservationView()
+            .environmentObject(ShopStore())
+            .environmentObject(ReservationStore())
     }
 }

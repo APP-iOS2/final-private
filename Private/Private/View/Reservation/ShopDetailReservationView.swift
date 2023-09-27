@@ -21,20 +21,20 @@ import SwiftUI
 
 struct ShopDetailReservationView: View {
     
-    @ObservedObject var shopStore: ShopStore
-    @ObservedObject var reservationStore: ReservationStore
+    @EnvironmentObject var shopStore: ShopStore
+    @EnvironmentObject var reservationStore: ReservationStore
     
     var body: some View {
         VStack {
             LazyVStack {
                 ForEach(0..<10) { _ in
                     ZStack {
-                        ItemInfoView(shopStore: shopStore, reservationStore: reservationStore)
+                        ItemInfoView()
                         
                         HStack {
                             Spacer()
                             NavigationLink {
-                                ReservationView(shopStore: shopStore)
+                                ReservationView()
                             } label: {
                                 Text("예약하기")
                                     .font(Font.pretendardBold18)
@@ -51,6 +51,8 @@ struct ShopDetailReservationView: View {
 
 struct ShopDetailReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailReservationView(shopStore: ShopStore(), reservationStore: ReservationStore())
+        ShopDetailReservationView()
+            .environmentObject(ShopStore())
+            .environmentObject(ReservationStore())
     }
 }

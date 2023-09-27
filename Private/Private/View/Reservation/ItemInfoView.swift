@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ItemInfoView: View {
     
-    @ObservedObject var shopStore: ShopStore
-    @ObservedObject var reservationStore: ReservationStore
+    @EnvironmentObject var shopStore: ShopStore
+    @EnvironmentObject var reservationStore: ReservationStore
     private let shopItem = ShopStore.shop.menu[0]
     
     var body: some View {
@@ -43,7 +43,9 @@ struct ItemInfoView: View {
 
 struct ItemInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        ItemInfoView(shopStore: ShopStore(), reservationStore: ReservationStore())
+        ItemInfoView()
+            .environmentObject(ShopStore())
+            .environmentObject(ReservationStore())
             .frame(height: 100)
     }
 }
