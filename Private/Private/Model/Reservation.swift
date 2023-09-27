@@ -13,7 +13,7 @@ struct Reservation: Hashable {
     var reservedUserId: String
     var date: Date  // 예약일
     var time: Int  // 예약시간
-    var numberOfPeople: Int  // 예약인원
+    var numberOfPeople: Int = 1  // 예약인원
     var totalPrice: Int   // 총 가격
     var requirement: String? // 요구사항
 }
