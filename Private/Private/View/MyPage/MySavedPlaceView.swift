@@ -15,7 +15,7 @@ struct MySavedPlaceView: View {
                 Text("저장한 북마크가 없습니다.")
                     .font(.pretendardBold24)
             } else {
-                ShopInfoCardView(userStore: UserStore())
+//                ShopInfoCardView(userStore: UserStore())
                 Divider()
                     .background(Color.primary)
                     .frame(width: .screenWidth * 0.9)
