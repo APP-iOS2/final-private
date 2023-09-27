@@ -105,7 +105,7 @@ struct ShopDetailView: View {
                         case .shopInfo:
                             ShopwDetailInfoView()
                         case .shopMenu:
-                            ShopDetailReservationView()
+                            ShopDetailMenuView()
                         case .shopCurrentReview:
                             ShopwDetailCurrentReviewView()
                         }

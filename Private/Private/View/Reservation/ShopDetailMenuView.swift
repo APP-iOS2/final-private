@@ -1,5 +1,5 @@
 //
-//  ShopDetailReservationView.swift
+//  ShopDetailMenuView.swift
 //  Private
 //
 //  Created by H on 2023/09/22.
@@ -7,19 +7,7 @@
 
 import SwiftUI
 
-/*
- static let reservation = Reservation(
-     shop: ShopStore.shop,
-     date: Date().timeIntervalSince1970,
-     time: "",
-     isOpen: true,
-     numberOfPeople: 4,
-     totalPrice: ShopStore.shop.shopItems[0].price,
-     reservedUser: UserStore.user
- )
- */
-
-struct ShopDetailReservationView: View {
+struct ShopDetailMenuView: View {
     
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
@@ -49,9 +37,9 @@ struct ShopDetailReservationView: View {
     }
 }
 
-struct ShopDetailReservationView_Previews: PreviewProvider {
+struct ShopDetailMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailReservationView()
+        ShopDetailMenuView()
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }
