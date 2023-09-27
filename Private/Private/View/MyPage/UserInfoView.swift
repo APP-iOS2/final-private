@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UserInfoView: View {
     
-    @ObservedObject var userStore: UserStore
+    @EnvironmentObject private var userStore: UserStore
     
     var body: some View {
         HStack {
@@ -71,6 +71,6 @@ struct UserInfoView: View {
 
 struct UserInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        UserInfoView(userStore: UserStore())
+        UserInfoView().environmentObject(UserStore())
     }
 }
