@@ -13,6 +13,6 @@ struct UserInfoModifyView: View {
     }
 }
 
-#Preview {
-    UserInfoModifyView()
-}
+//#Preview {
+//    UserInfoModifyView()
+//}
