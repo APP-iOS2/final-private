@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SettingView: View {
-    @EnvironmentObject var authStore: AuthStore
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var backButton : some View {
         Button {
@@ -47,7 +46,7 @@ struct SettingView: View {
                 })
                 Section (content: {
                     Button{
-                        authStore.signOutGoogle()
+                        print("로그아웃")
                     } label: {
                         HStack {
                             Text("로그아웃")

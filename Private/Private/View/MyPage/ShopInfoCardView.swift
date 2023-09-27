@@ -9,7 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct ShopInfoCardView: View {
-    @ObservedObject var userStore: UserStore
+    @EnvironmentObject var userStore: UserStore
     var body: some View {
         HStack {
             KFImage(URL(string:userStore.user.bookmark[0].shopImageURL)) .placeholder {
@@ -72,6 +72,6 @@ struct ShopInfoCardView: View {
 
 struct ShopInfoCardView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopInfoCardView(userStore: UserStore())
+        ShopInfoCardView().environmentObject(UserStore())
     }
 }
