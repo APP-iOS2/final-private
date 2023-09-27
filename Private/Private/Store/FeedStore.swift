@@ -4,12 +4,14 @@
 //
 //  Created by 변상우 on 2023/09/22.
 //
-
 import Foundation
+import FirebaseStorage
+import FirebaseFirestore
 
 final class FeedStore: ObservableObject {
     
     @Published var feedList: [Feed] = []
+    private let dbRef = Firestore.firestore().collection("Feed")
     
     init() {
 //        feedList.append(FeedStore.feed)
@@ -23,6 +25,10 @@ final class FeedStore: ObservableObject {
 //        category: [Category.koreanFood]
 //    )
     
+    func addFeed(feedid: String) {
+        
+    }
+   
     func removeImage(_ image: Feed) {
         var index: Int = 0
         
@@ -33,6 +39,25 @@ final class FeedStore: ObservableObject {
                 break
             }
             index += 1
+        }
+    }
+    
+    func uploadImageToFirebase (image: UIImage) async -> String? {
+
+        guard let imageData = image.jpegData(compressionQuality: 0.4) else { return nil }
+        var imagePath = "images/\(UUID().uuidString).jpg"
+        let imageRef = Storage.storage().reference().child(imagePath)
+        
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        
+        do {
+            let _ = try await imageRef.putDataAsync(imageData)
+            let url = try await imageRef.downloadURL()
+            return url.absoluteString
+        } catch let error {
+            print(error.localizedDescription)
+            return nil
         }
     }
 }
