@@ -52,7 +52,8 @@ final class FollowStore: ObservableObject {
         }
     }
     
-    func updateFollowCount(userId: String, followingCount: @escaping 
+
+    func updateFollowCount(userId: String, followingCount: @escaping
     (_ followingCount: Int) -> Void, followersCount: @escaping
     (_ followingCount: Int) -> Void) {
         
@@ -70,20 +71,60 @@ final class FollowStore: ObservableObject {
             }
         }
     }
-    
+    //팔로우 상태를 체크후 팔로우 언팔로우 하는 함수
     func manageFollow(userId: String, followCheck:Bool, followingCount: @escaping
             (_ followingCount: Int) -> Void, followersCount: @escaping
             (_ followingCount: Int) -> Void) {
         
         if !followCheck {
-//            follow()
+            follow(userId: userId, followCheck: followCheck, followingCount: followingCount, followersCount: followersCount)
         } else {
-//            unfollow()
+            unfollow(userId: userId, followCheck: followCheck, followingCount: followingCount, followersCount: followersCount)
         }
     }
-    
-    
-    
+    //팔로우
+    func follow(userId: String, followCheck:Bool, followingCount: @escaping
+                (_ followingCount: Int) -> Void, followersCount: @escaping
+                (_ followingCount: Int) -> Void) {
+        FollowStore.followingID(userId: userId).setData([:]) {
+            (err) in
+            
+            if err == nil {
+                self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
+            }
+        }
+        
+        FollowStore.followersID(userId: userId).setData([:]) {
+            (err) in
+            
+            if err == nil {
+                self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
+            }
+        }
+    }
+    //언팔로우
+    func unfollow(userId: String, followCheck:Bool, followingCount: @escaping
+                (_ followingCount: Int) -> Void, followersCount: @escaping
+                  (_ followingCount: Int) -> Void) {
+        FollowStore.followingID(userId: userId).getDocument {
+            (document, err) in
+            
+            if let doc = document, doc.exists {
+                doc.reference.delete()
+                
+                self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
+            }
+        }
+        FollowStore.followersID(userId: userId).getDocument {
+            (document, err) in
+            
+            if let doc = document, doc.exists {
+                doc.reference.delete()
+                
+                self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
+            }
+        }
+    }
     
     func follows(userId: String) {
         FollowStore.followingCollection(userid: userId).getDocuments { (QuerySnapshot, err) in

@@ -131,7 +131,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     }
     
     func makeMarkers() {
-        for shopMarker in UserStore.user.bookmark {
+        for shopMarker in userDataStore.user.bookmark {
             let marker = NMFMarker()
             
             marker.position = shopMarker.coord

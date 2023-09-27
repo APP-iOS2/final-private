@@ -6,10 +6,21 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct MainLoginView: View {
+    
+    @EnvironmentObject var authStore: AuthStore
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Button {
+                authStore.signInGoogle()
+            } label: {
+                Text("구글 로그인")
+            }
+
+        }
     }
 }
 
