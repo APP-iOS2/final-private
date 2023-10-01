@@ -41,9 +41,11 @@ struct ShopDetailView: View {
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
-                LazyVStack(pinnedViews: .sectionHeaders) {
+//                LazyVStack(pinnedViews: .sectionHeaders) {
+                ZStack(alignment: .topLeading) {
                     Section {
                         ShopDetailBodyView(shopDetailName: dummyShop.name, shopDetailCategoryName: dummyShop.category.categoryName, shopDetailAddress: dummyShop.address, shopDetailAddressDetail: dummyShop.addressDetail, selectedShopDetailCategory: $selectedShopDetailCategory)
+                            .padding(.top, CGFloat.screenHeight * 0.2)
                     } header: {
                         ShopDetailHeaderView(shopDetailImageURL: dummyShop.shopImageURL)
                     }
@@ -70,7 +72,7 @@ struct ShopDetailView: View {
             AsyncImage(url: URL(string: shopDetailImageURL)!) { image in
                 image.resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(height: 100)
+                    .frame(height: CGFloat.screenHeight * 0.2)
             } placeholder: {
                 ProgressView()
             }
@@ -131,6 +133,7 @@ struct ShopDetailView: View {
                 }
                 .padding(10)
                 .frame(height: CGFloat.screenHeight * 0.1)
+                .padding(.vertical, 10)
                 
                 Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(Font.pretendardRegular16)) {
                     ForEach(ShopDetailCategory.allCases, id: \.self) { category in
@@ -156,6 +159,7 @@ struct ShopDetailView: View {
             }
             .frame(maxWidth: .infinity)
             .background(Color.white)
+            .cornerRadius(12)
         }
     }
     
