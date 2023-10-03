@@ -182,11 +182,11 @@ final class ReservationStore: ObservableObject {
             // Date와 time 프로퍼티로 나누기 (예: 시간은 Int 타입으로 저장)
             let calendar = Calendar.current
             let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
-            let year = components.year ?? 0
-            let month = components.month ?? 0
-            let day = components.day ?? 0
+//            let year = components.year ?? 0
+//            let month = components.month ?? 0
+//            let day = components.day ?? 0
             let hour = components.hour ?? 0
-            let minute = components.minute ?? 0
+//            let minute = components.minute ?? 0
             
             return (date, hour)
         }

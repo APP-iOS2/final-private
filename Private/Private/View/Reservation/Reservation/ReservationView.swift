@@ -11,14 +11,15 @@ struct ReservationView: View {
     
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
-    
+
     @State private var reservationDateString: String = ""
     @State private var showingDate: Bool = false    // 예약 일시 선택
     @State private var showingNumbers: Bool = false // 예약 인원 선택
-    @State private var isSelectedTime: Bool = false // 인원 선택 활성화를 위한 상태 변수
+    @State private var isSelectedTime: Bool = false
     @State private var isShwoingConfirmView: Bool = false
     
     // 임시 예약 Data
+    // shopId, reservedUserId는 여기서 정보를 주고 넘겨줘야 함..!
     @State private var temporaryReservation: Reservation = Reservation(shopId: "가게정보 없음", reservedUserId: "유저정보 없음", date: Date(), time: -1, totalPrice: 30000)
     
     // stepper 관련 변수들
@@ -123,13 +124,7 @@ struct ReservationView: View {
                 .padding(.bottom, 30)
                 
                 Button {
-                    // 예약하기 뷰로 넘어가기
-
-                    // 에러나는 부분~~ 차라리
-                    reservationStore.reservationList.append(self.temporaryReservation)
-
                     isShwoingConfirmView.toggle()
-                    
                 } label: {
                     Text("예약하기")
                         .frame(maxWidth: .infinity)

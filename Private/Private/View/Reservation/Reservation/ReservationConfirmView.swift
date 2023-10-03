@@ -11,23 +11,28 @@ struct ReservationConfirmView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @Binding var temporaryReservation: Reservation
     
+    @State private var isShowingMyReservation: Bool = false
+    
     var body: some View {
         VStack(alignment: .leading) {
             VStack {
                 Divider()
                     .opacity(0)
                 Text("예약 날짜: \(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))")
-                Text("예약 시간: \(reservationStore.reservationList[0].time)시")
-                Text("예약 인원: \(reservationStore.reservationList[0].numberOfPeople)명")
-                Text("총 비용: \(reservationStore.reservationList[0].totalPrice)원")
+                Text("예약 시간: \(temporaryReservation.time)시")
+                Text("예약 인원: \(temporaryReservation.numberOfPeople)명")
+                Text("총 비용: \(temporaryReservation.totalPrice)원")
             }
             .padding()
-            .background(Color("SubGrayColor"))
+            .background(Color.subGrayColor)
             .cornerRadius(8)
             
             Button {
                 print(#fileID, #function, #line, "- 예약 확정 ")
-                reservationStore.addReservationToFirestore(reservationData: reservationStore.reservationList[0])
+                reservationStore.addReservationToFirestore(reservationData: temporaryReservation)
+                
+                // 여기서 뷰 한 번 보여줘보자..!
+                isShowingMyReservation.toggle()
             } label: {
                 Text("예약하기")
                     .frame(maxWidth: .infinity)
@@ -36,6 +41,9 @@ struct ReservationConfirmView: View {
             .tint(.primary)
             .background(Color("AccentColor"))
             .cornerRadius(12)
+            .sheet(isPresented: $isShowingMyReservation) {
+                MyReservation()
+            }
         }
         .padding()
     }
