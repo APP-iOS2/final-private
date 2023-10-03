@@ -19,7 +19,6 @@ struct DateTimePickerView: View {
     @State private var pmReservation: [Int] = []  // 오후 예약시간
     
     @Binding var temporaryReservation: Reservation
-//    @Binding var date: Date
     @Binding var isSelectedTime: Bool  // 시간대가 설정 되었는지
     
     static let today = Calendar.current.startOfDay(for: Date())
