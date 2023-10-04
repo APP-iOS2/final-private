@@ -41,7 +41,7 @@ struct User: Hashable {
            else {
                return nil // 필수 필드가 없을 경우 초기화를 실패시킵니다.
            }
-        
+      
         self.email = email
         self.name = name
         self.nickname = nickname
@@ -55,5 +55,36 @@ struct User: Hashable {
         self.chattingRoom = chattingRoom
         self.myReservation = myReservation
     }
+    
+    init() {
+        self.email = ""
+        self.name = ""
+        self.nickname = ""
+        self.phoneNumber = ""
+        self.profileImageURL = ""
+        self.follower = []
+        self.following = []
+        self.myFeed = []
+        self.savedFeed = []
+        self.bookmark = []
+        self.chattingRoom = []
+        self.myReservation = []
+    }
+    
+    func toDictionary() -> [String: Any] {
+           return ["email": email,
+                   "name": name,
+                   "nickname": nickname,
+                   "phoneNumber": phoneNumber,
+                   "profileImageURL": profileImageURL,
+                   "follower": follower,
+                   "following": following,
+                   "myFeed": myFeed,
+                   "savedFeed": savedFeed,
+                   "bookmark": bookmark,
+                   "chattingRoom": chattingRoom,
+                   "myReservation": myReservation
+                  ]
+       }
 }
 

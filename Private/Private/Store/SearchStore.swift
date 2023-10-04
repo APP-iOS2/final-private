@@ -32,7 +32,7 @@ final class SearchStore: ObservableObject {
             
             // 사용자 정의 초기화 메서드를 사용하여 User 객체 생성 및 추가
             let users: [User] = querySnapshot.documents.compactMap { document in
-                let userData = document.data()
+                let userData = document.data() 
                 if let user = User(document: userData) {
                     return user
                 } else {
