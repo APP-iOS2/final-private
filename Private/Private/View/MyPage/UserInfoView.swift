@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct UserInfoView: View {
     
@@ -15,13 +16,18 @@ struct UserInfoView: View {
         HStack {
             VStack() {
                 ZStack {
-                    Circle()
-                        .frame(width: .screenWidth*0.23)
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .frame(width: .screenWidth*0.23,height: 80)
-                        .foregroundColor(.gray)
-                        .clipShape(Circle())
+                    if userStore.user.profileImageURL.isEmpty {
+                        Circle()
+                            .frame(width: .screenWidth*0.23)
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .frame(width: .screenWidth*0.23,height: 80)
+                            .foregroundColor(.gray)
+                            .clipShape(Circle())
+                    } else {
+                        KFImage(URL(string: userStore.user.profileImageURL))
+                            .frame(width: .screenWidth*0.23)
+                    }
                 }
                 .padding(.bottom, 1.0)
                 Text(userStore.user.nickname).font(.pretendardBold24)
@@ -64,7 +70,7 @@ struct UserInfoView: View {
                         .foregroundColor(.primary)
                 }.sheet(isPresented: $isModify, content: {
                     NavigationStack {
-                        UserInfoModifyView(isModify: $isModify)
+                        UserInfoModifyView(isModify: $isModify, mypageNickname: "")
                     }
                 })
             }
