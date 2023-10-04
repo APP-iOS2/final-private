@@ -41,6 +41,27 @@ final class UserStore: ObservableObject {
         fetchCurrentUser(userEmail: user.email)
     }
     
+    func updateUser(user: User) {
+        Firestore.firestore().collection("User")
+            .document(user.email)
+            .updateData(["email" : user.email,
+                      "name" : user.name,
+                      "nickname" : user.nickname,
+                      "phoneNumber" : user.phoneNumber,
+                      "profileImageURL" : user.profileImageURL,
+                      "follower" : user.follower,
+                      "following" : user.following,
+                      "myFeed" : user.myFeed,
+                      "savedFeed" : user.savedFeed,
+                      "bookmark" : user.bookmark,
+                      "chattingRoom" : user.chattingRoom,
+                      "myReservation" : user.myReservation
+                     ]
+            )
+        
+        fetchCurrentUser(userEmail: user.email)
+    }
+    
     func fetchCurrentUser(userEmail: String) {
         Firestore.firestore().collection("User").document(userEmail).getDocument { snapshot, error in
             
@@ -62,9 +83,14 @@ final class UserStore: ObservableObject {
             self.user = User(email: email, name: name, nickname: nickname, phoneNumber: phoneNumber, profileImageURL: profileImageURL, follower: follower, following: following, myFeed: myFeed, savedFeed: savedFeed, bookmark: bookmark, chattingRoom: chattingRoom, myReservation: myReservation)
         }
     }
+    
+    func deleteUser(userEmail: String) {
+        Firestore.firestore().collection("User")
+            .document(user.email).delete()
+    }
   
 //    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
-
+  
 //    static let user = User(
 //        name: "맛집탐방러",
 //        nickname: "Private",
@@ -83,7 +109,7 @@ final class UserStore: ObservableObject {
 //            addressDetail: "7번 출구 어딘가",
 //            shopTelNumber: "010-1234-5678",
 //            shopInfo: "미슐랭 맛집",
-//            shopImageURL: "",
+//            shopImageURL: "https://img.daily.co.kr/@files/www.daily.co.kr/content/food/2020/20200730/40d0fb3794229958bdd1e36520a4440f.jpg",
 //            shopItems: [shopItem],
 //            numberOfBookmark: 0
 //        ), Shop(
@@ -94,7 +120,7 @@ final class UserStore: ObservableObject {
 //            addressDetail: "7번 출구 어딘가",
 //            shopTelNumber: "010-1234-5678",
 //            shopInfo: "미슐랭 맛집",
-//            shopImageURL: "",
+//            shopImageURL: "https://mblogthumb-phinf.pstatic.net/MjAxNzAzMjZfMTM5/MDAxNDkwNDYxMDM1NzE4.sdrUUcAQOXtk6xZ7FJcEyyq-7P9kbo9OJ-GdKuWMfcYg.F9ljFIbwPQ25fdCXYUvN8fbC0Aun5UhHjVq_JE3UJc8g.PNG.nydelphie/DSC03257.png?type=w800",
 //            shopItems: [shopItem],
 //            numberOfBookmark: 0
 //        )
@@ -102,6 +128,7 @@ final class UserStore: ObservableObject {
 //        chattingRoom: [],
 //        myReservation: []
 //    )
+
     static let dummyFeed = MyFeed(writer: "me", images: ["https://img.daily.co.kr/@files/www.daily.co.kr/content/food/2020/20200730/40d0fb3794229958bdd1e36520a4440f.jpg"], contents: "", visitedShop: ShopStore.shop, category: [MyCategory.brunch])
     static let dummyFeed1 = MyFeed(writer: "me", images: ["https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/advices/166557187458549420.jpg?gif=1&w=480&webp=1"], contents: "", visitedShop: ShopStore.shop, category: [MyCategory.brunch])
     static let dummyFeed2 = MyFeed(writer: "me", images: ["https://mblogthumb-phinf.pstatic.net/MjAxNzAzMjZfMTM5/MDAxNDkwNDYxMDM1NzE4.sdrUUcAQOXtk6xZ7FJcEyyq-7P9kbo9OJ-GdKuWMfcYg.F9ljFIbwPQ25fdCXYUvN8fbC0Aun5UhHjVq_JE3UJc8g.PNG.nydelphie/DSC03257.png?type=w800"], contents: "", visitedShop: ShopStore.shop, category: [MyCategory.brunch])

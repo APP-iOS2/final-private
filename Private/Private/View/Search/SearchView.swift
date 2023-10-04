@@ -24,29 +24,30 @@ struct SearchView: View {
                 recentSearchText
                 recentSearchResult
                 // 위 검색어 텍스트 아래 유저 리스트
+                
+                    Spacer()
                 recentUserText
                 resentUserResult
             }
             
-            Spacer()
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .padding(.horizontal)
         .onAppear {
-//            searchViewModel.fetchRecentSearchHistories()
+            searchStore.fetchrecentSearchResult()
             searchTerm = ""
         }
     }
     
+    // seach bar
     var searchTextField: some View {
         VStack {
             HStack {
                 NavigationLink {
                     SearchResultView(searchTerm: trimmedSearchTerm)
                 } label: {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.primary)
+                    EmptyView()
                 }
                 .disabled(isSearchTextEmpty)
                 
@@ -62,7 +63,7 @@ struct SearchView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 12)
-            .padding(.bottom, 30)
+            .padding(.bottom, 70)
         }
     }
     
@@ -71,9 +72,7 @@ struct SearchView: View {
             HStack(alignment: .center) {
                 Text("최근 검색어")
                     .fontWeight(.bold)
-                
                 Spacer()
-                
             }
         }
         .padding()
@@ -104,11 +103,11 @@ struct SearchView: View {
                 }
             } else {
                 Text("최근 검색 기록이 없습니다")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
             }
         }
+        .padding(.bottom, 220)
     }
-    
     
     var recentUserText: some View {
         VStack(alignment: .leading) {
@@ -147,7 +146,7 @@ struct SearchView: View {
                 }
             } else {
                 Text("최근 검색 기록이 없습니다")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
             }
         }
     }

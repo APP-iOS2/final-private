@@ -8,13 +8,25 @@
 import SwiftUI
 
 struct MySavedPlaceView: View {
+    @EnvironmentObject private var userStore: UserStore
     var body: some View {
-        Text("MySavedPlaceView")
+        ScrollView {
+            if userStore.user.bookmark.isEmpty {
+                Text("저장한 북마크가 없습니다.")
+                    .font(.pretendardBold24)
+                    .padding(.top, .screenHeight * 0.2 + 37.2)
+            } else {
+                ShopInfoCardView()
+                Divider()
+                    .background(Color.primary)
+                    .frame(width: .screenWidth * 0.9)
+            }
+        }
     }
 }
 
 struct MySavedPlaceView_Previews: PreviewProvider {
     static var previews: some View {
-        MySavedPlaceView()
+        MySavedPlaceView().environmentObject(UserStore())
     }
 }

@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MyHistoryView: View {
     
-    @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject private var userStore: UserStore
     
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
@@ -28,7 +29,7 @@ struct MyHistoryView: View {
                     Text("피드")
                 }
                 .font(.pretendardBold24)
-                .foregroundColor(isFeed || !isMap ? .white : .white.opacity(0.5))
+                .foregroundColor(isFeed || !isMap ? .primary : .primary.opacity(0.3))
                 Spacer()
                 Button {
                     isFeed = false
@@ -38,7 +39,7 @@ struct MyHistoryView: View {
                     Text("지도")
                 }
                 .font(.pretendardBold24)
-                .foregroundColor(isMap ? .white : .white.opacity(0.5))
+                .foregroundColor(isMap ? .primary : .primary.opacity(0.3))
                 .sheet(isPresented: $isMap){
                     NavigationStack {
                         MapMainView()
@@ -61,25 +62,21 @@ struct MyHistoryView: View {
             }
             if (isFeed == true || isMap == false) {
                 if userStore.user.myFeed.isEmpty {
-                Text("게시물이 존재 하지 않습니다.")
+                    Text("게시물이 존재 하지 않습니다.")
                         .font(.pretendardBold24)
-                        .padding()
+                        .padding(.top, .screenHeight * 0.2)
                 } else {
-                ScrollView {
-                    LazyVGrid(
-                        columns: columns,
-                        alignment: .center,
-                        spacing: 1
-                    ) {
+                    ScrollView {
+                        LazyVGrid(
+                            columns: columns,
+                            alignment: .center,
+                            spacing: 1
+                        ) {
                             ForEach(userStore.user.myFeed, id: \.self) { feed in
-                                AsyncImage(url:URL(string:feed.images[0])) { image in
-                                    image
-                                        .resizable()
-                                        .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
-                                        
-                                } placeholder: {
+                                KFImage(URL(string:feed.images[0])) .placeholder {
                                     Image(systemName: "photo")
-                                }
+                                }.resizable()
+                                    .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
                             }
                         }
                     }
@@ -91,6 +88,6 @@ struct MyHistoryView: View {
 
 struct MyHistoryView_Previews: PreviewProvider {
     static var previews: some View {
-        MyHistoryView()
+        MyHistoryView().environmentObject(UserStore())
     }
 }
