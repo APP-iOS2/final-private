@@ -4,7 +4,6 @@
 //
 //  Created by 변상우 on 2023/09/21.
 //
-
 import SwiftUI
 
 struct SearchView: View {
@@ -14,52 +13,43 @@ struct SearchView: View {
     @Binding var selection: Int
     
     @State private var searchTerm: String = ""
-    @State private var trimmedSearchTerm: String = ""
     @State private var isSearchTextEmpty: Bool = true
     
+    // 추가된 프로퍼티
+    @State private var isNavigationActive: Bool = false
+    
     var body: some View {
-        VStack(spacing: 0) {
-            searchTextField
-            ScrollView(showsIndicators: false) {
-                recentSearchText
-                recentSearchResult
-                // 위 검색어 텍스트 아래 유저 리스트
+        NavigationView {
+            VStack(spacing: 0) {
+                searchTextField
                 
-                    Spacer()
-                recentUserText
-                resentUserResult
+                // 나머지 뷰들
             }
-            
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .padding(.horizontal)
-        .onAppear {
-            searchStore.fetchrecentSearchResult()
-            searchTerm = ""
+            .navigationBarTitle("Search", displayMode: .inline)
+            .navigationBarBackButtonHidden(true)
+            .padding(.horizontal)
+            .onAppear {
+                searchStore.fetchrecentSearchResult()
+                searchTerm = ""
+            }
         }
     }
     
-    // seach bar
     var searchTextField: some View {
         VStack {
             HStack {
-                NavigationLink {
-                    SearchResultView(searchTerm: trimmedSearchTerm)
-                } label: {
-                    EmptyView()
-                }
-                .disabled(isSearchTextEmpty)
-                
                 SearchBarTextField(text: $searchTerm, placeholder: "사용자 검색")
                     .onChange(of: searchTerm) { newValue in
-                        trimmedSearchTerm = searchTerm.trimmingCharacters(in: .whitespaces)
-                        if trimmedSearchTerm.isEmpty {
-                            isSearchTextEmpty = true
-                        } else {
-                            isSearchTextEmpty = false
-                        }
+                        isSearchTextEmpty = newValue.trimmingCharacters(in: .whitespaces).isEmpty
                     }
+                
+                NavigationLink {
+                    SearchResultView(searchTerm: searchTerm)
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.primary)
+                }
+                .disabled(isSearchTextEmpty)
             }
             .padding(.horizontal)
             .padding(.vertical, 12)
@@ -67,87 +57,102 @@ struct SearchView: View {
         }
     }
     
-    var recentSearchText: some View {
-        VStack(alignment: .leading) {
-            HStack(alignment: .center) {
+    
+    struct RecentSearchListView: View {
+        @ObservedObject var searchStore: SearchStore
+        @Binding var searchTerm: String
+        
+        var body: some View {
+            VStack(spacing: 0) {
                 Text("최근 검색어")
                     .fontWeight(.bold)
-                Spacer()
-            }
-        }
-        .padding()
-    }
-    
-    var recentSearchResult: some View {
-        VStack(alignment: .leading) {
-            Divider()
-                .padding()
-            
-            if !searchStore.recentSearchResult.isEmpty {
-                ForEach(searchStore.recentSearchResult, id: \.self) { resultText in
-                    HStack {
-                        NavigationLink {
-                            SearchResultView(searchTerm: resultText)
-                        } label: {
-                            Text(resultText)
-                                .foregroundColor(.gray)
-                        }
-                        Spacer()
-                        Button {
-                            searchStore.removeRecentSearchResult(resultText)
-                        } label: {
-                            Image(systemName: "xmark.fill")
-                        }
+                    .padding()
+                
+                Divider().padding()
+                
+                if !searchStore.recentSearchResult.isEmpty {
+                    ForEach(searchStore.recentSearchResult, id: \.self) { resultText in
+                        RecentSearchRowView(searchStore: searchStore, searchTerm: $searchTerm, resultText: resultText)
                     }
-                    .padding(.bottom, 8)
+                } else {
+                    Text("최근 검색 기록이 없습니다")
+                        .foregroundColor(.secondary)
                 }
-            } else {
-                Text("최근 검색 기록이 없습니다")
-                    .foregroundColor(.secondary)
+                
+                Spacer().padding(.bottom, 220)
             }
         }
-        .padding(.bottom, 220)
     }
     
-    var recentUserText: some View {
-        VStack(alignment: .leading) {
-            HStack(alignment: .center) {
+    struct RecentSearchRowView: View {
+        @ObservedObject var searchStore: SearchStore
+        @Binding var searchTerm: String
+        let resultText: String
+        
+        var body: some View {
+            HStack {
+                NavigationLink(
+                    destination: SearchResultView(searchTerm: resultText),
+                    label: {
+                        Text(resultText)
+                            .foregroundColor(.gray)
+                    }
+                )
+                Spacer()
+                Button {
+                    searchStore.removeRecentSearchResult(resultText)
+                } label: {
+                    Image(systemName: "xmark.fill")
+                }
+            }
+            .padding(.bottom, 8)
+        }
+    }
+    
+    struct RecentUserListView: View {
+        @ObservedObject var searchStore: SearchStore
+        
+        var body: some View {
+            VStack(spacing: 0) {
                 Text("최근 찾은 사용자")
                     .fontWeight(.bold)
+                    .padding()
                 
-                Spacer()
+                Divider().padding()
+                
+                if !searchStore.searchUserLists.isEmpty {
+                    ForEach(searchStore.searchUserLists, id: \.self) { user in
+                        RecentUserRowView(searchStore: searchStore, user: user)
+                    }
+                } else {
+                    Text("최근 검색 기록이 없습니다")
+                        .foregroundColor(.secondary)
+                }
             }
         }
-        .padding()
     }
     
-    var resentUserResult: some View {
-        VStack(alignment: .leading) {
-            Divider()
-                .padding()
-            
-            if !searchStore.searchUserLists.isEmpty {
-                ForEach(searchStore.searchUserLists, id: \.self) { user in
-                    HStack {
-                        NavigationLink {
-                            SearchResultView(searchTerm: user.nickname)
-                        } label: {
-                            Text(user.nickname)
-                                .foregroundColor(.gray)
-                        }
-                        Spacer()
-                        Button {
-                            searchStore.removeRecentSearchResult(user.nickname)
-                        } label: {
-                            Image(systemName: "xmark.fill")
-                        }
+    struct RecentUserRowView: View {
+        @ObservedObject var searchStore: SearchStore
+        let user: User
+        
+        var body: some View {
+            HStack {
+                NavigationLink(
+                    destination: SearchResultView(searchTerm: user.nickname),
+                    label: {
+                        Text(user.nickname)
+                            .foregroundColor(.gray)
                     }
-                    .padding(.bottom, 8)
+                )
+                Spacer()
+                Button {
+                    searchStore.removeRecentSearchResult(user.nickname)
+                } label: {
+                    Image(systemName: "xmark.fill")
                 }
-            } else {
-                Text("최근 검색 기록이 없습니다")
-                    .foregroundColor(.secondary)
             }
+            .padding(.bottom, 8)
         }
     }
 }
