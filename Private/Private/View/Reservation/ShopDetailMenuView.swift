@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ShopDetailMenuView: View {
     
@@ -19,14 +20,13 @@ struct ShopDetailMenuView: View {
             LazyVStack {
                 ForEach(dummyShop.menu, id: \.self) { menu in
                     HStack(spacing: 10) {
-                        AsyncImage(url: URL(string: menu.imageUrl)!) { image in
-                            image.resizable()
-                                .frame(width: 120, height: 120)
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(12)
-                        } placeholder: {
-                            ProgressView()
-                        }
+                        KFImage(URL(string: menu.imageUrl)!)
+                            .placeholder {
+                                ProgressView()
+                            }
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 120, height: 120)                         .cornerRadius(12)
                         
                         VStack(alignment: .leading, spacing: 0) {
                             Text("\(menu.name)")

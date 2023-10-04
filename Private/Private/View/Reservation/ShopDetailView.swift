@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 // Todo: - UI 관련
 /// - Picker 지우고 라이브러리로 변경
@@ -62,13 +63,13 @@ struct ShopDetailView: View {
         let shopDetailImageURL: String
         
         var body: some View {
-            AsyncImage(url: URL(string: shopDetailImageURL)!) { image in
-                image.resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: CGFloat.screenHeight * 0.2)
-            } placeholder: {
-                ProgressView()
-            }
+            KFImage(URL(string: shopDetailImageURL)!)
+                .placeholder({
+                    ProgressView()
+                })
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: CGFloat.screenHeight * 0.2)
         }
     }
     
@@ -129,19 +130,6 @@ struct ShopDetailView: View {
                         
                         Spacer()
                             .frame(height: 10)
-                        
-//                        DisclosureGroup(shopDetailAddress) {
-//                            HStack(spacing: 5) {
-//                                Text(shopDetailAddressDetail)
-//                                    .font(Font.pretendardRegular14)
-//
-//                                Image(systemName: "doc.on.doc")
-//                                    .resizable()
-//                                    .aspectRatio(contentMode: .fit)
-//                                    .frame(width: 15, height: 15)
-//                            }
-//                        }
-//                        .font(Font.pretendardMedium18)
                     }
                     
                     Spacer()

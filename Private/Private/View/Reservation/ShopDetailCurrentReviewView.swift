@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NMapsMap
+import Kingfisher
 
 // Todo: - UI 관련
 /// - ExpandableText 패키지 적용해서 dummyFeed.contents 더보기/접기
@@ -56,15 +57,14 @@ struct ShopDetailCurrentReviewCell: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .center, spacing: 10) {
-                AsyncImage(url: URL(string: dummyFeed.writer.profileImageURL)!) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(width: 70, height: 70)
+                KFImage(URL(string: dummyFeed.writer.profileImageURL)!)
+                    .placeholder({
+                        ProgressView()
+                    })
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(Circle())
+                    .frame(width: 70, height: 70)
                 
                 VStack(alignment: .leading, spacing: 5) {
                     Text("\(dummyFeed.writer.name)")
@@ -92,14 +92,13 @@ struct ShopDetailCurrentReviewCell: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(dummyFeed.images, id: \.self) { imageURL in
-                            AsyncImage(url: URL(string: imageURL)!) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .frame(width: 150, height: 150)
+                            KFImage(URL(string: imageURL)!)
+                                .placeholder({
+                                    ProgressView()
+                                })
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 150, height: 150)
                         }
                     }
                 }
