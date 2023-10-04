@@ -15,7 +15,13 @@ struct SearchResultView: View {
     var body: some View {
         ScrollView {
             VStack {
-                searchUserResult
+                if searchStore.searchUserLists.isEmpty {
+                    Text("해당 사용자가 없습니다.")
+                        .foregroundColor(.gray)
+                        .padding(.top)
+                } else {
+                    searchUserResult
+                }
                 
                 Spacer()
             }
@@ -24,28 +30,25 @@ struct SearchResultView: View {
         .padding(.horizontal)
         .onAppear {
             Task {
-                await searchStore.searchUser(searchTerm: searchTerm)
-                searchStore.addRecentSearch(searchTerm)
+                await fetchSearchResults()
             }
         }
     }
     
+    
     var searchUserResult: some View {
-        ScrollView {
-            if searchStore.searchUserLists.isEmpty {
-                Text("해당 사용자가 없습니다.")
-                    .foregroundColor(.gray)
-                    .padding(.top)
-            } else {
-                ForEach(searchStore.searchUserLists, id: \.self) { user in
-                    NavigationLink {
-//                         MyPageView(user: user)
-                    } label: {
-                        SearchUserCellView(user: user)
-                    }
-                }
+        ForEach(searchStore.searchUserLists, id: \.self) { user in
+            NavigationLink {
+//                MyPageView
+            } label: {
+                SearchUserCellView(user: user)
             }
         }
+    }
+    
+    func fetchSearchResults() async {
+        await searchStore.searchUser(searchTerm: searchTerm)
+        searchStore.addRecentSearch(searchTerm)
     }
 }
 
