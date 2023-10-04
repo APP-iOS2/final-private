@@ -22,10 +22,12 @@ struct SearchResultView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal)
-        .background(.gray.opacity(0.1))
-        .navigationTitle(searchTerm)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
+        .onAppear {
+            Task {
+                await searchStore.searchUser(searchTerm: searchTerm)
+                searchStore.addRecentSearch(searchTerm)
+            }
+        }
     }
     
     var searchUserResult: some View {

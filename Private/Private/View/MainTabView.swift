@@ -16,6 +16,7 @@ struct MainTabView: View {
     @StateObject private var userStore: UserStore = UserStore()
     @StateObject private var shopStore: ShopStore = ShopStore()
     @StateObject private var feedStore: FeedStore = FeedStore()
+    @StateObject private var searchStore: SearchStore = SearchStore()
     @StateObject private var reservationStore: ReservationStore = ReservationStore()
     @StateObject private var chatRoomStore: ChatRoomStore = ChatRoomStore()
     
