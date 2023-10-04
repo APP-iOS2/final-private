@@ -126,18 +126,18 @@ struct SearchView: View {
             Divider()
                 .padding()
             
-            if !searchStore.recentSearchResult.isEmpty {
-                ForEach(searchStore.recentSearchResult, id: \.self) { resultText in
+            if !searchStore.searchUserLists.isEmpty {
+                ForEach(searchStore.searchUserLists, id: \.self) { user in
                     HStack {
                         NavigationLink {
-                            SearchResultView(searchTerm: resultText)
+                            SearchResultView(searchTerm: user.nickname)
                         } label: {
-                            Text(resultText)
+                            Text(user.nickname)
                                 .foregroundColor(.gray)
                         }
                         Spacer()
                         Button {
-                            searchStore.removeRecentSearchResult(resultText)
+                            searchStore.removeRecentSearchResult(user.nickname)
                         } label: {
                             Image(systemName: "xmark.fill")
                         }

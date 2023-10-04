@@ -15,6 +15,8 @@ struct MainTabView: View {
     
     @EnvironmentObject var userStore: UserStore
     @StateObject private var shopStore: ShopStore = ShopStore()
+    @StateObject private var feedStore: FeedStore = FeedStore()
+    @StateObject private var searchStore: SearchStore = SearchStore()
     @StateObject private var reservationStore: ReservationStore = ReservationStore()
      
     @State var selection: Int = 1
