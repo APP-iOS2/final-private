@@ -226,7 +226,7 @@ struct ShopDetailView: View {
             .background(Color.white)
             .frame(alignment: .bottom)
             .navigationDestination(isPresented: $isReservationPresented) {
-                ReservationView()
+                ReservationView(shopId: ShopStore.shop.id)
             }
         }
     }

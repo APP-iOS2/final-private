@@ -14,8 +14,8 @@ struct MainTabView: View {
     }
     
     @EnvironmentObject var userStore: UserStore
-    @StateObject private var shopStore: ShopStore = ShopStore()
-    @StateObject private var reservationStore: ReservationStore = ReservationStore()
+    @EnvironmentObject var shopStore: ShopStore
+    @EnvironmentObject var reservationStore: ReservationStore
      
     @State var selection: Int = 1
     @State private var rootSection1: Bool = false
@@ -48,8 +48,14 @@ struct MainTabView: View {
         }
     )}
     
+    var nicknameIsEmpty: Bool {
+        print("닉네임: \(userStore.user.nickname)")
+        return userStore.user.nickname.isEmpty
+    }
+    
+    
     var body: some View {
-        if userStore.user.nickname == "" {
+        if nicknameIsEmpty {
             SignUpView()
         } else {
             NavigationStack {

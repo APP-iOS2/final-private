@@ -17,15 +17,16 @@ struct ReservationView: View {
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var isSelectedTime: Bool = false
     @State private var isShwoingConfirmView: Bool = false
-    
+    @State private var isShowingMyReservation: Bool = false
     // 임시 예약 Data
     // shopId, reservedUserId는 여기서 정보를 주고 넘겨줘야 함..!
-    @State private var temporaryReservation: Reservation = Reservation(shopId: "가게정보 없음", reservedUserId: "유저정보 없음", date: Date(), time: -1, totalPrice: 30000)
+    @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: -1, totalPrice: 30000)
     
-    // stepper 관련 변수들
     private let step = 1  // 인원선택 stepper의 step
     private let range = 1...6  // stepper 인원제한
-    
+
+    let shopId: String
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -123,32 +124,53 @@ struct ReservationView: View {
                 .cornerRadius(12)
                 .padding(.bottom, 30)
                 
-                Button {
-                    isShwoingConfirmView.toggle()
-                } label: {
-                    Text("예약하기")
-                        .frame(maxWidth: .infinity)
-                        .padding()
+                HStack {
+                    Button {
+                        isShwoingConfirmView.toggle()
+                    } label: {
+                        Text("예약하기")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .tint(.primary)
+                    .background(Color("AccentColor"))
+                    .cornerRadius(12)
+                    .disabled(!isSelectedTime)
+
+                    Button {
+                        isShowingMyReservation.toggle()
+                        reservationStore.fetchReservation()
+                    } label: {
+                        Text("내 예약 보기")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .tint(.primary)
+                    .background(Color.accentColor)
+                    .cornerRadius(12)
+
                 }
-                .tint(.primary)
-                .background(Color("AccentColor"))
-                .cornerRadius(12)
-                .disabled(!isSelectedTime)
                 .fullScreenCover(isPresented: $isShwoingConfirmView) {
                     ReservationConfirmView(temporaryReservation: $temporaryReservation)
+                }
+                .sheet(isPresented: $isShowingMyReservation) {
+                    MyReservation()
                 }
                 
             }// VStack
             
         }// ScrollView
         .padding()
+        .onAppear {
+            self.temporaryReservation.shopId = self.shopId
+        }
         
     }
 }
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView()
+        ReservationView(shopId: "")
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }
