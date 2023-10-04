@@ -6,22 +6,28 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct UserInfoView: View {
     
-    @EnvironmentObject var userStore: UserStore
-    
+    @EnvironmentObject private var userStore: UserStore
+    @State var isModify: Bool = false
     var body: some View {
         HStack {
             VStack() {
                 ZStack {
-                    Circle()
-                        .frame(width: .screenWidth*0.23)
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .frame(width: .screenWidth*0.23,height: 80)
-                        .foregroundColor(.gray)
-                        .clipShape(Circle())
+                    if userStore.user.profileImageURL.isEmpty {
+                        Circle()
+                            .frame(width: .screenWidth*0.23)
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .frame(width: .screenWidth*0.23,height: 80)
+                            .foregroundColor(.gray)
+                            .clipShape(Circle())
+                    } else {
+                        KFImage(URL(string: userStore.user.profileImageURL))
+                            .frame(width: .screenWidth*0.23)
+                    }
                 }
                 .padding(.bottom, 1.0)
                 Text(userStore.user.nickname).font(.pretendardBold24)
@@ -53,15 +59,19 @@ struct UserInfoView: View {
                     }
                 }
                 .padding(.bottom, 10.0)
-                Button(action: {
-                    print("프로필 편집")
-                },label: {
+                Button{
+                    isModify = true
+                } label: {
                     Text("프로필 편집")
                         .font(.pretendardRegular14)
                         .frame(width: .screenWidth*0.5, height: 32)
                         .background(Color.subGrayColor)
                         .cornerRadius(8)
                         .foregroundColor(.primary)
+                }.sheet(isPresented: $isModify, content: {
+                    NavigationStack {
+                        UserInfoModifyView(isModify: $isModify, mypageNickname: "")
+                    }
                 })
             }
             .padding(.top, 40.0)
@@ -71,6 +81,6 @@ struct UserInfoView: View {
 
 struct UserInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        UserInfoView()
+        UserInfoView().environmentObject(UserStore())
     }
 }

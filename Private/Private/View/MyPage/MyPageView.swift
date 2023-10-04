@@ -22,10 +22,10 @@ struct MyPageView: View {
             HStack {
                 Spacer()
                 NavigationLink {
-//                    SettingView()
+                    SettingView()
                 } label: {
                     Image(systemName: "gearshape")
-                        .padding(.trailing,40)
+                        .padding(.trailing,30)
                         .foregroundColor(.primary)
                 }
             }
@@ -60,7 +60,7 @@ struct MyPageView: View {
                     viewNumber = 1
                 }label: {
                     HStack {
-                        isMySavedFeedButton ? Image( systemName: "bookmark.fill") : Image (systemName: "bookmark")
+                        isMySavedFeedButton ? Image(systemName: "bookmark.fill") : Image (systemName: "bookmark")
                         Text("내가 저장한 피드")
                     }.font(.pretendardRegular12)
                         .foregroundColor(.chatTextColor)
@@ -75,7 +75,7 @@ struct MyPageView: View {
                     viewNumber = 2
                 }label: {
                     HStack {
-                        isMySavedPlaceButton ? Image( systemName: "pin.fill")
+                        isMySavedPlaceButton ? Image(systemName: "pin.fill")
                         : Image (systemName: "pin")
                         Text("내가 저장한 장소")
                     }.font(.pretendardRegular12)
@@ -86,25 +86,26 @@ struct MyPageView: View {
                 }
                 Spacer()
             }
-                switch viewNumber {
-                case 0:
-                    MyHistoryView()
-                case 1:
-                    MySavedView()
-                        .padding(.top,37.2)
-                    // MyHistorView 의 피드 지도 버튼 간격을 맞추기 위한 패딩
-                case 2:
-                    MySavedPlaceView()
-                default:
-                    MyHistoryView()
-                }
+            switch viewNumber {
+            case 0:
+                MyHistoryView()
+            case 1:
+                MySavedView()
+                    .padding(.top,37.2)
+                // MyHistorView 의 피드 지도 버튼 간격을 맞추기 위한 패딩
+            case 2:
+                MySavedPlaceView()
+            default:
+                MyHistoryView()
+            }
             Spacer()
+                
         }
     }
 }
 
 struct MyPageView_Previews: PreviewProvider {
     static var previews: some View {
-        MyPageView(root: .constant(true), selection: .constant(5))
+        MyPageView(root: .constant(true), selection: .constant(5)).environmentObject(UserStore())
     }
 }

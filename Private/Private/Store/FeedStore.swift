@@ -25,10 +25,18 @@ final class FeedStore: ObservableObject {
 //        category: [Category.koreanFood]
 //    )
     
-    func addFeed(feedid: String) {
+    
+    
+    // add 구현해야됨
+    func addFeed(_ feed: Feed) {
         
     }
-   
+    //    var writer: User
+    //    var images: [String]
+    //    var contents: String
+    //    var createdAt: Double = Date().timeIntervalSince1970
+    //    var visitedShop: Shop
+    //    var category: [Category]
     func removeImage(_ image: Feed) {
         var index: Int = 0
         
@@ -45,7 +53,7 @@ final class FeedStore: ObservableObject {
     func uploadImageToFirebase (image: UIImage) async -> String? {
 
         guard let imageData = image.jpegData(compressionQuality: 0.4) else { return nil }
-        var imagePath = "images/\(UUID().uuidString).jpg"
+        let imagePath = "images/\(UUID().uuidString).jpg"
         let imageRef = Storage.storage().reference().child(imagePath)
         
         let metaData = StorageMetadata()
@@ -59,5 +67,16 @@ final class FeedStore: ObservableObject {
             print(error.localizedDescription)
             return nil
         }
+    }
+    
+    func updateFeed(_ feed: Feed) {
+        dbRef.document(feed.id).updateData([
+            "writer" : feed.writer,
+            "image" : feed.images,
+            "contents" : feed.contents,
+            "createdAt" : feed.createdAt,
+            "visitedShop": feed.visitedShop,
+            "category": feed.category
+        ])
     }
 }

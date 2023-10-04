@@ -29,6 +29,27 @@ final class UserStore: ObservableObject {
     }
 
     
+    func updateUser(user: User) {
+        Firestore.firestore().collection("User")
+            .document(user.email)
+            .updateData(["email" : user.email,
+                      "name" : user.name,
+                      "nickname" : user.nickname,
+                      "phoneNumber" : user.phoneNumber,
+                      "profileImageURL" : user.profileImageURL,
+                      "follower" : user.follower,
+                      "following" : user.following,
+                      "myFeed" : user.myFeed,
+                      "savedFeed" : user.savedFeed,
+                      "bookmark" : user.bookmark,
+                      "chattingRoom" : user.chattingRoom,
+                      "myReservation" : user.myReservation
+                     ]
+            )
+        
+        fetchCurrentUser(userEmail: user.email)
+    }
+    
     func fetchCurrentUser(userEmail: String) {
         Firestore.firestore().collection("User").document(userEmail).getDocument { snapshot, error in
             if let error = error {
@@ -39,6 +60,10 @@ final class UserStore: ObservableObject {
         }
     }
 
+    func deleteUser(userEmail: String) {
+        Firestore.firestore().collection("User")
+            .document(user.email).delete()
+    }
   
 //    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
   

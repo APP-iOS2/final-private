@@ -9,9 +9,10 @@ import SwiftUI
 import Kingfisher
 
 struct ShopInfoCardView: View {
+    @EnvironmentObject var userStore: UserStore
     var body: some View {
         HStack {
-            KFImage(URL(string:UserStore.user.bookmark[0].shopImageURL)) .placeholder {
+            KFImage(URL(string:userStore.user.bookmark[0].shopImageURL)) .placeholder {
                 Image(systemName: "photo")
             }
             .resizable()
@@ -19,13 +20,13 @@ struct ShopInfoCardView: View {
             .cornerRadius(10)
             .padding(.leading,20)
             VStack(alignment: .leading) {
-                Text(UserStore.user.bookmark[0].name)
+                Text(userStore.user.bookmark[0].name)
                     .font(.pretendardBold18)
                     .padding(.bottom, 2)
                 VStack(alignment: .leading) {
                     HStack {
                         Label(
-                            title: { Text(UserStore.user.bookmark[0].category.categoryName)
+                            title: { Text(userStore.user.bookmark[0].category.categoryName)
                                     .font(.pretendardRegular14)
                             },
                             icon: { Image(systemName: "fork.knife") }
@@ -50,7 +51,7 @@ struct ShopInfoCardView: View {
                             .font(.pretendardRegular14)
                     }
                     Label(
-                        title: { Text(UserStore.user.bookmark[0].address)
+                        title: { Text(userStore.user.bookmark[0].address)
                                 .font(.pretendardRegular14)
                         },
                         icon: { Image(systemName: "mappin") }
@@ -71,6 +72,6 @@ struct ShopInfoCardView: View {
 
 struct ShopInfoCardView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopInfoCardView()
+        ShopInfoCardView().environmentObject(UserStore())
     }
 }
