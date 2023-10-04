@@ -12,13 +12,9 @@ import FirebaseAuth
 import FirebaseFirestore
 
 final class UserStore: ObservableObject {
-    @Published var user: User
+    @Published var user: User = User()
     @Published var follower: [User] = []
     @Published var following: [User] = []
-    
-    init() {
-        user = User()
-    }
     
     func createUser(user: User) {
         Firestore.firestore().collection("User")

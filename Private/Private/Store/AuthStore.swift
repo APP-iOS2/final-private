@@ -14,9 +14,8 @@ import AuthenticationServices
 import CryptoKit
 
 class AuthStore: ObservableObject {
+    @EnvironmentObject var userStore: UserStore
     @Published var currentUser: Firebase.User?
-    
-    let userStore: UserStore = UserStore()
     
     init() {
         currentUser = Auth.auth().currentUser
@@ -75,6 +74,7 @@ class AuthStore: ObservableObject {
                                 print(error.localizedDescription)
                             } else {
                                 if let user = User(document: userData) {
+                                    print("로그인성공1")
                                     self.currentUser = result?.user
                                     self.userStore.createUser(user: user)
                                 }
@@ -84,7 +84,7 @@ class AuthStore: ObservableObject {
                 } else {
                     Firestore.firestore().collection("User").document((user?.profile?.email)!).getDocument { snapshot, error in
                         let currentData = snapshot!.data()
-                        
+
                         Auth.auth().signIn(with: credential) { result, error in
                             if let error = error {
                                 print(error.localizedDescription)
