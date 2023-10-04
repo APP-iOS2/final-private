@@ -22,10 +22,13 @@ struct SearchView: View {
         NavigationView {
             VStack(spacing: 0) {
                 searchTextField
-                
-                // 나머지 뷰들
+                ScrollView(showsIndicators: false) {
+                    RecentSearchListView(searchStore: searchStore, searchTerm: $searchTerm)
+                    Spacer()
+                    RecentUserListView(searchStore: searchStore)
+                }
             }
-            .navigationBarTitle("Search", displayMode: .inline)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .padding(.horizontal)
             .onAppear {

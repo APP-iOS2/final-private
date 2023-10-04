@@ -165,9 +165,7 @@ final class PostStore: ObservableObject {
 //        }
 //    }
 let feedTestData: Feed = Feed(
-    writer: User(email: "test1@test.com", name: "프라이빗", nickname: "Private", phoneNumber: "010-1234-5678", profileImageURL: "https://file.mk.co.kr/meet/neds/2021/07/image_readtop_2021_659579_16257086594710102.jpg", follower: ["1", "2"], following: ["1", "2"], myFeed: [MyFeed(writer: "작성자1", images: [], contents: "좋은 컨텐츠", createdAt: 1.1, visitedShop: "", category: [])],
-                 
-                 savedFeed: [], bookmark: [], chattingRoom: [], myReservation: []),
+    writer: User(),
     images: [],
     contents: "",
     createdAt: 1.1,
