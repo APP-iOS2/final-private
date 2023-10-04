@@ -6,7 +6,9 @@
 //
 import SwiftUI
 import PhotosUI
-
+import NMapsMap
+import FirebaseStorage
+import FirebaseFirestore
 
 struct ImagePickerView: UIViewControllerRepresentable {
     @Binding var selectedImages: [UIImage]?
@@ -58,7 +60,139 @@ struct ImagePickerView: UIViewControllerRepresentable {
     }
 }
 
+final class PostStore: ObservableObject {
+    
+    @Published var feedList: [MyFeed] = []
+    private let dbRef = Firestore.firestore().collection("User")
+    
+    var feedId: String = ""
+    
+    init() {
+        //        feedList.append(FeedStore.feed)
+    }
+    
+    //    static let feed = Feed(
+    //        writer: UserStore.user,
+    //        images: ["userDefault"],
+    //        contents: "데이트하기 좋은곳 찾으신다면 추천! 기본은하고 분위기가 좋음. 오므라이스도 맛있다.",
+    //        visitedShop: ShopStore.shop,
+    //        category: [Category.koreanFood]
+    //    )
+    func fetchFeed() {
+        
+        dbRef.document(feedId).collection("User").getDocuments { (snapshot, error) in
+            self.feedList.removeAll()
+            
+            if let snapshot {
+                var tempReplies: [MyFeed] = []
+                
+                for document in snapshot.documents {
+                    let id: String = document.documentID
+                    
+                    let docData: [String : Any] = document.data()
+                    let writer: String = docData["writer"] as? String ?? ""
+                    let images: [String] = docData["images"] as? [String] ?? []
+                    let contents: String = docData["contents"] as? String ?? ""
+                    let createdAt: Double = docData["createdAt"] as? Double ?? 0
+                    let visitedShop: String = docData["visitedShop"] as? String ?? ""
+                    let category: [String] = docData["category"] as? [String] ?? []
+                    
+                    let myFeed = MyFeed(writer: writer, images: images, contents: contents, createdAt: createdAt, visitedShop: visitedShop, category: category)
+                    
+                    tempReplies.append(myFeed)
+                }
+                
+                self.feedList = tempReplies
+            }
+        }
+    }
+    
+    func addFeed(_ feed: MyFeed) {
+        dbRef.document(feed.id).collection("myFeed")
+            .document(feed.id)
+            .setData(["writer": feed.writer,
+                      "images": feed.images,
+                      "contents": feed.contents,
+                      "createdAt": feed.createdAt,
+                      "visitedShop": feed.visitedShop,
+                      "category": feed.category,
+                     ])
+        
+        
+        fetchFeed()
+    }
+    
+    func uploadImageToFirebase (image: UIImage) async -> String? {
 
+        guard let imageData = image.jpegData(compressionQuality: 0.4) else { return nil }
+        let imagePath = "images/\(UUID().uuidString).jpg"
+        let imageRef = Storage.storage().reference().child(imagePath)
+        
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        
+        do {
+            let _ = try await imageRef.putDataAsync(imageData)
+            let url = try await imageRef.downloadURL()
+            return url.absoluteString
+        } catch let error {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    func updateFeed(_ feed: Feed) {
+        dbRef.document(feed.id).updateData([
+            "writer" : feed.writer,
+            "image" : feed.images,
+            "contents" : feed.contents,
+            "createdAt" : feed.createdAt,
+            "visitedShop": feed.visitedShop,
+            "category": feed.category
+        ])
+    }
+}
+//    func removeImage(_ image: Feed) {
+//        var index: Int = 0
+//
+//        for tempImage in feedList {
+//
+//            if tempImage.id == image.id {
+//                feedList.remove(at: index)
+//                break
+//            }
+//            index += 1
+//        }
+//    }
+let feedTestData: Feed = Feed(
+    writer: User(email: "test1@test.com", name: "프라이빗", nickname: "Private", phoneNumber: "010-1234-5678", profileImageURL: "https://file.mk.co.kr/meet/neds/2021/07/image_readtop_2021_659579_16257086594710102.jpg", follower: ["1", "2"], following: ["1", "2"], myFeed: [MyFeed(writer: "작성자1", images: [], contents: "좋은 컨텐츠", createdAt: 1.1, visitedShop: "", category: [])],
+                 
+                 savedFeed: [], bookmark: [], chattingRoom: [], myReservation: []),
+    images: [],
+    contents: "",
+    createdAt: 1.1,
+    visitedShop: Shop(name: "프라이빗몰", category: .brunch, coord: NMGLatLng(lat: 36.444, lng: 127.332), address: "서울시 은평구", addressDetail: "은평구 아무곳", shopTelNumber: "010-1234-5678", shopInfo: "맛집인증", shopImageURL: "https://post-phinf.pstatic.net/MjAxNzA3MTFfMTA0/MDAxNDk5NzUyNTQ5NzUy.rT1HxpNd3vwvKAMYRKLHjkxiv3D9ymwnHazL2Uf9JKkg.qz5gwLSeDgHluv0xmg95BhD9NYKCbdaN9aQwunYrN1gg.JPEG/GettyImages-467387974.jpg?type=w800_q75", reservationItems: [], bookmarks: [], menu: [
+        ShopItem(name: "돈코츠 라멘", price: 11000, imageUrl: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg"),
+        ShopItem(name: "마제소바", price: 10000, imageUrl: "https://www.kfoodtimes.com/news/photo/202105/16015_27303_5527.png"),
+        ShopItem(name: "차슈덮밥", price: 12000, imageUrl: "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/411/3435af5cc6041f247e89a65b1a1d73c5_res.jpeg")
+    ], regularHoliday: ["토요일"], temporayHoliday: [], breakTimeHours: [
+        "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
+        "화요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
+        "수요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
+        "목요일": BusinessHours(startHour: 10, startMinute: 0, endHour: 18, endMinute: 0),
+        "금요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
+        "토요일": BusinessHours(startHour: 10, startMinute: 0, endHour: 15, endMinute: 0),
+        "일요일": BusinessHours(startHour: 12, startMinute: 0, endHour: 16, endMinute: 0)
+    ], weeklyBusinessHours: [
+        "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
+        "화요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+        "수요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+        "목요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+        "금요일": BusinessHours(startHour:15, startMinute: 0, endHour: 17, endMinute: 0),
+        "토요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+        "일요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0)
+    ]),
+    category: [])
 //MARK: 킹피셔 보류
 //struct ImagePickerView: UIViewControllerRepresentable {
 //    @Binding var selectedImages: [String]?
