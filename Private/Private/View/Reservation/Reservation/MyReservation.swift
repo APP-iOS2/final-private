@@ -26,7 +26,9 @@ struct MyReservation: View {
     }
 }
 
-#Preview {
-    MyReservation()
-        .environmentObject(ReservationStore())
+struct MyReservation_Previews: PreviewProvider {
+    static var previews: some View {
+        MyReservation()
+            .environmentObject(ReservationStore())
+    }
 }
