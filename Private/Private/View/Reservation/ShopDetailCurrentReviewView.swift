@@ -8,9 +8,9 @@
 import SwiftUI
 import NMapsMap
 import Kingfisher
+import ExpandableText
 
 // Todo: - UI 관련
-/// - ExpandableText 패키지 적용해서 dummyFeed.contents 더보기/접기
 /// - dummyFeed.images 적절한 패키지 찾아서 스크롤뷰에서 변경
 
 struct ShopwDetailCurrentReviewView: View {
@@ -104,9 +104,12 @@ struct ShopDetailCurrentReviewCell: View {
                 }
                 .frame(width: 150, height: 150)
                 
-                Text(dummyFeed.contents)
+                ExpandableText(text: dummyFeed.contents)
                     .font(Font.pretendardRegular14)
-                    .multilineTextAlignment(.leading)
+                    .lineLimit(9)
+                    .expandAnimation(.easeOut)
+                    .expandButton(TextSet(text: "더보기", font: Font.pretendardRegular16, color: .blue))
+                    .collapseButton(TextSet(text: "접기", font: Font.pretendardRegular16, color: .blue))
             }
         }
     }
