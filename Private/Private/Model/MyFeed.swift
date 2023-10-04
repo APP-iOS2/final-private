@@ -15,8 +15,8 @@ struct MyFeed: Identifiable, Hashable {
     var images: [String]
     var contents: String
     var createdAt: Double = Date().timeIntervalSince1970
-    var visitedShop: Shop
-    var category: [MyCategory]
+    var visitedShop: String
+    var category: [String]
 }
 
 enum MyCategory: Int, CaseIterable, Hashable {

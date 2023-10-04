@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NMapsMap
 
 struct PostView: View {
     
@@ -16,13 +17,23 @@ struct PostView: View {
     
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var userStore: UserStore
+    @StateObject private var postStore: PostStore = PostStore()
     
     @State private var selectedWriter: String = "김아무개"
     
+    
+    
+    @State private var writer: String = ""
+    @State private var images: [String] = []
+    @State private var createdAt: Double = Date().timeIntervalSince1970
+    @State private var visitedShop: String = ""
+
     @State private var text: String = ""
     @State private var clickLocation: Bool = false
     @State private var isImagePickerPresented: Bool = false
     @State private var ImageViewPresented: Bool = true
+    @State private var feedId: String = ""
+    
     
     @State private var selectedImage: [UIImage]? = []
     @FocusState private var isTextMasterFocused: Bool
@@ -31,30 +42,53 @@ struct PostView: View {
     private let maxLine: Int = 8
     private let fontSize: Double = 24
     
+    @State var selectedCategory: [String] = []
+    @State var myselectedCategory: [MyCategory] = [.koreanFood, .brunch]
+
+//    var categoryString: [String] {
+//        selectedCategory.map { $0.rawValue }
+//    }
+//    let resultString = categoryString.joined(separator: ",")
+    
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(feedStore.feedList) { feed in
-                        HStack {
-                            AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50)
-                            } placeholder: {
-                                Image("userDefault")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50)
-                            }
-                            
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text("\(feed.writer.name)")
-                                Text("\(feed.writer.nickname)")
-                            }
-                        } // HStack
-                    } // foreach
+//                    ForEach(feedStore.feedList) { feed in
+//                        HStack {
+//                            Circle()
+//                                .frame(width: .screenWidth*0.23)
+//                            Image(systemName: "person")
+//                                .resizable()
+//                                .frame(width: .screenWidth*0.23,height: 80)
+//                                .foregroundColor(.gray)
+//                                .clipShape(Circle())
+//                        
+//                            
+//                            VStack(alignment: .leading, spacing: 5) {
+//                                Text(userStore.user.name)
+//                                Text(userStore.user.nickname)
+//                            }
+//                        } // HStack
+//                    } // foreach
+                    
+                    HStack {
+                        ZStack {
+                            Circle()
+                                .frame(width: .screenWidth*0.23)
+                            Image(systemName: "person")
+                                .resizable()
+                                .frame(width: .screenWidth*0.23, height: 80)
+                                .foregroundColor(.gray)
+                                .clipShape(Circle())
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(userStore.user.name)
+                            Text("@\(userStore.user.nickname)")
+                        }
+                    }
+                    
                     //MARK: 내용
                     TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize)
                     
@@ -120,24 +154,26 @@ struct PostView: View {
                     }
                     Divider()
                     //MARK: 카테고리
-                    CatecoryView()
+                    CatecoryView(selectedCategory: $selectedCategory)
                 } // leading VStack
             }
             .fullScreenCover(isPresented: $ImageViewPresented) {
                 ImagePickerView(selectedImages: $selectedImage)
             }
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("취소")
-                            .foregroundStyle(.white)
-                    }
-                }
+//                ToolbarItemGroup(placement: .navigationBarLeading) {
+//                    Button {
+//                        dismiss()
+//                    } label: {
+//                        Text("취소")
+//                            .foregroundStyle(.white)
+//                    }
+//                }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
-                        
+                        let feed = MyFeed(writer: writer, images: images, contents: text, createdAt: createdAt, visitedShop: visitedShop, category: selectedCategory)
+                        postStore.addFeed(feed)
+//                        dismiss()
                     } label: {
                         Text("완료")
                     }

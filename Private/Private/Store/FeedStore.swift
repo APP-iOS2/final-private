@@ -11,7 +11,7 @@ import FirebaseFirestore
 final class FeedStore: ObservableObject {
     
     @Published var feedList: [Feed] = []
-    private let dbRef = Firestore.firestore().collection("Feed")
+    private let dbRef = Firestore.firestore().collection("User")
     
     init() {
 //        feedList.append(FeedStore.feed)
@@ -25,18 +25,9 @@ final class FeedStore: ObservableObject {
 //        category: [Category.koreanFood]
 //    )
     
-    
-    
-    // add 구현해야됨
     func addFeed(_ feed: Feed) {
         
     }
-    //    var writer: User
-    //    var images: [String]
-    //    var contents: String
-    //    var createdAt: Double = Date().timeIntervalSince1970
-    //    var visitedShop: Shop
-    //    var category: [Category]
     func removeImage(_ image: Feed) {
         var index: Int = 0
         
