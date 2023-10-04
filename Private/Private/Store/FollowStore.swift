@@ -18,7 +18,7 @@ final class FollowStore: ObservableObject {
     static var db = Firestore.firestore()
     
     static var following = db.collection("following")
-    static var followers = db.collection("followers")
+    static var followers = db.collection("follower")
     
     static func followingCollection(userid: String) ->  CollectionReference{
         
@@ -27,7 +27,7 @@ final class FollowStore: ObservableObject {
     
     static func followersCollection(userid: String) ->  CollectionReference{
         
-        return followers.document(userid).collection("followers")
+        return followers.document(userid).collection("follower")
     }
     
     static func followingID(userId: String) -> DocumentReference {
@@ -37,7 +37,7 @@ final class FollowStore: ObservableObject {
     
     static func followersID(userId: String) -> DocumentReference {
         
-        return followers.document(userId).collection("followers").document(Auth.auth().currentUser!.uid)
+        return followers.document(userId).collection("follower").document(Auth.auth().currentUser!.uid)
     }
     
     func followState(userid: String) {
