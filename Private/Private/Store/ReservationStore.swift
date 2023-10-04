@@ -45,23 +45,25 @@ final class ReservationStore: ObservableObject {
         self.reservationList.append(reservationData)
     }
     
-    // 시간 순으로 정렬
-    func sortReservationList(reservations: Reservation) {
-        
+    
+    /// 예약 배열을 날짜 및 시간 순으로 정렬
+    func sortReservationList() {
+        self.reservationList.sort { first, second in
+            if first.date != second.date {
+                   first.date > second.date
+               } else {
+                   first.time > second.time
+               }
+        }
     }
-    
-    // 예약 조회 / 등록 / 수정 / 삭제 3개는 있어야 함
-    
-    // 현재 로그인 한 유저의 데이터로
     
     
     // MARK: - 예약 조회
     /// 서버에서 예약내역 가져오기
     func fetchReservation() {
-        // 나의 예약 내역 다 가져오기
         // 아직 종료되지 않은 예약과 끝난 예약은 비교해야함 (isDone 같은 걸 사용하거나, 날짜를 비교하여 지난 날이면 자동 처리)
         
-        // 이거는 나중에 싱글톤패턴으로 가져오면 편할 듯...? (Feed에서 쓸 정보임)
+        // 이거는 나중에 싱글톤패턴으로 가져오면 편할 듯 (Feed에서 쓸 정보임)
         guard let user = Auth.auth().currentUser else {
             print("로그인 정보가 없습니다.")
             return
@@ -82,6 +84,7 @@ final class ReservationStore: ObservableObject {
                 for document in querySnapshop!.documents {
                     let documentID = document.documentID  // document ID 가져오기
                     let data = document.data()  // 문서 데이터 가져오기
+                    self.reservationList.removeAll()
                     
                     guard let dateTime = self.timeStampTodateTime(data: data) else {
                         print("Timestamp 날짜/시간 변환 실패")
@@ -100,6 +103,7 @@ final class ReservationStore: ObservableObject {
                     
                     self.appendReservationList(tempReservation: reservation)
                 }
+                self.sortReservationList()
             }
         }
     }
@@ -109,7 +113,7 @@ final class ReservationStore: ObservableObject {
     /// Firestore Database에 예약 등록
     /// - Parameter reservationData: 예약 데이터
     func addReservationToFirestore(reservationData: Reservation) {
-        let documentRef = db.collection("Reservation").document(reservationData.id)
+        let documentRef = self.db.collection("Reservation").document(reservationData.id)
         
         guard let dateTimestamp: Timestamp = dateTimeStringToTimeStamp(reservationDate: reservationData.date, reservationHour: reservationData.time) else {
             print("예약 등록 실패 - 날짜 변환 실패")
@@ -137,11 +141,15 @@ final class ReservationStore: ObservableObject {
     
     
     // MARK: - 예약 수정
-    
+    func updateReservation(reservaton: Reservation) {
+        
+    }
     
     
     // MARK: - 예약 취소(삭제)
-    
+    func removeReservation(reservation: Reservation) {
+        
+    }
     
     
     // MARK: - Firestore에 등록하기 위한 타입 변환
