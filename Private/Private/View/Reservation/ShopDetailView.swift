@@ -8,14 +8,7 @@
 import SwiftUI
 
 // Todo: - UI 관련
-/// - 헤더뷰 height(CGFloat.screenHeight * 0.1) 수정
-/// - 지역정보 disclosure group을 열면 아래의 뷰가 내려가게 만들고 싶음! -> 헤더뷰 height와 같이 연구,,
-/// - 지역정보 disclosure group width 수정
 /// - Picker 지우고 라이브러리로 변경
-/// - 미묘한 간격,,,,,거슬림
-
-// Todo: - Error fix
-/// - 스크롤뷰가 아래까지 안내려가는 이슈......
 
 enum ShopDetailCategory: String, CaseIterable {
     case shopInfo = "가게 정보"
@@ -81,6 +74,8 @@ struct ShopDetailView: View {
     
     struct ShopDetailBodyView: View {
         
+        @Environment(\.colorScheme) var colorScheme
+        
         let shopDetailName: String
         let shopDetailCategoryName: String
         let shopDetailAddress: String
@@ -98,6 +93,7 @@ struct ShopDetailView: View {
                         
                         HStack(spacing: 10) {
                             Text(shopDetailName)
+                                .foregroundColor(.chatTextColor)
                                 .font(Font.pretendardBold28)
                             
                             Divider()
@@ -158,7 +154,6 @@ struct ShopDetailView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 25, height: 25)
                     }
-                    .foregroundColor(Color("DarkGrayColor"))
                     .padding(.vertical, 20)
                 }
                 .padding(.horizontal, 10)
@@ -167,6 +162,7 @@ struct ShopDetailView: View {
                     ForEach(ShopDetailCategory.allCases, id: \.self) { category in
                         Text(category.rawValue)
                             .font(Font.pretendardRegular16)
+                            .foregroundColor(.chatTextColor)
                     }
                 }
                 .pickerStyle(.segmented)
@@ -186,13 +182,22 @@ struct ShopDetailView: View {
                 .padding([.top, .horizontal], 10)
             }
             .frame(maxWidth: .infinity)
-            .background(Color.white)
+            .background(content: {
+                ZStack {
+                    if colorScheme == ColorScheme.light {
+                        Color.white
+                    } else {
+                        Color.black
+                    }
+                }
+            })
             .cornerRadius(12)
         }
     }
     
     struct ShopDetailFooterView: View {
         
+        @Environment(\.colorScheme) var colorScheme
         @Binding var isReservationPresented: Bool
         
         var body: some View {
@@ -202,7 +207,7 @@ struct ShopDetailView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 25)
-                        .foregroundColor(Color.black)
+                        .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                     
                     Text("\(999)+") // bookmarks count
                         .font(Font.pretendardBold14)
@@ -223,7 +228,15 @@ struct ShopDetailView: View {
             }
             .padding(10)
             .frame(width: CGFloat.screenWidth, height: CGFloat.screenHeight * 0.1)
-            .background(Color.white)
+            .background(content: {
+                ZStack {
+                    if colorScheme == ColorScheme.light {
+                        Color.white
+                    } else {
+                        Color.black
+                    }
+                }
+            })
             .frame(alignment: .bottom)
             .navigationDestination(isPresented: $isReservationPresented) {
                 ReservationView()
