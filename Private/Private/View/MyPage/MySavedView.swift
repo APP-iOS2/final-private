@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct MySavedView: View {
-  
+    
     @EnvironmentObject private var userStore: UserStore
-  
+    
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
     var body: some View {
-        if userStore.user.savedFeed.isEmpty {
-            Text("저장한 피드가 없습니다")
-                .font(.pretendardBold24)
-                .padding(.top, .screenHeight * 0.2)
-        } else {
-            ScrollView {
+        ScrollView {
+            if userStore.user.savedFeed.isEmpty {
+                Text("저장한 피드가 없습니다")
+                    .font(.pretendardBold24)
+                    .padding(.top, .screenHeight * 0.2)
+            } else {
                 LazyVGrid(
                     columns: columns,
                     alignment: .center,
