@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ReservationConfirmView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     @EnvironmentObject var reservationStore: ReservationStore
     @Binding var temporaryReservation: Reservation
     
@@ -16,6 +18,15 @@ struct ReservationConfirmView: View {
     var body: some View {
         VStack(alignment: .leading) {
             VStack {
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                      .font(.title)
+                      .foregroundColor(.white)
+                      .padding(20)
+                }
+                
                 Divider()
                     .opacity(0)
                 Text("예약 날짜: \(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))")

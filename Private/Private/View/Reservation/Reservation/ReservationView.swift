@@ -134,7 +134,7 @@ struct ReservationView: View {
                 .background(Color("AccentColor"))
                 .cornerRadius(12)
                 .disabled(!isSelectedTime)
-                .sheet(isPresented: $isShwoingConfirmView) {
+                .fullScreenCover(isPresented: $isShwoingConfirmView) {
                     ReservationConfirmView(temporaryReservation: $temporaryReservation)
                 }
                 
