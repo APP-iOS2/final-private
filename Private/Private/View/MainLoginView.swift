@@ -11,6 +11,7 @@ import Firebase
 struct MainLoginView: View {
     
     @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var userStore: UserStore
     
     var body: some View {
         VStack {
@@ -19,7 +20,9 @@ struct MainLoginView: View {
             } label: {
                 Text("구글 로그인")
             }
-
+        }
+        .onDisappear {
+            userStore.fetchCurrentUser(userEmail: (authStore.currentUser?.email)!)
         }
     }
 }

@@ -61,7 +61,7 @@ struct UserInfoModifyView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    userStore.updateUser(user: User(email: userStore.user.email, name: userStore.user.name, nickname: mypageNickname, phoneNumber: userStore.user.phoneNumber, profileImageURL: userStore.user.profileImageURL, follower: userStore.user.follower, following: userStore.user.following, myFeed: userStore.user.myFeed, savedFeed: userStore.user.savedFeed, bookmark: userStore.user.bookmark, chattingRoom: userStore.user.chattingRoom, myReservation: userStore.user.myReservation))
+                    userStore.updateUser(user: User())
                     isModify = false
                 } label: {
                     Text("수정")
