@@ -11,13 +11,13 @@ struct ReservationConfirmView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject var reservationStore: ReservationStore
-    @Binding var temporaryReservation: Reservation
     
-    @State private var isShowingMyReservation: Bool = false
+    @State private var isShowingAlert: Bool = false
+    @Binding var temporaryReservation: Reservation
     
     var body: some View {
         VStack(alignment: .leading) {
-            VStack {
+            VStack(alignment: .leading) {
                 Button {
                     presentationMode.wrappedValue.dismiss()
                 } label: {
@@ -39,11 +39,7 @@ struct ReservationConfirmView: View {
             .cornerRadius(8)
             
             Button {
-                print(#fileID, #function, #line, "- 예약 확정 ")
-                reservationStore.addReservationToFirestore(reservationData: temporaryReservation)
-                
-                // 여기서 뷰 한 번 보여줘보자..!
-                isShowingMyReservation.toggle()
+                isShowingAlert.toggle()
             } label: {
                 Text("예약하기")
                     .frame(maxWidth: .infinity)
@@ -52,9 +48,26 @@ struct ReservationConfirmView: View {
             .tint(.primary)
             .background(Color("AccentColor"))
             .cornerRadius(12)
-            .sheet(isPresented: $isShowingMyReservation) {
-                MyReservation()
+            .alert("예약을 확정합니다.", isPresented: $isShowingAlert) {
+                Button(role: .none) {
+                    print(#fileID, #function, #line, "- 예약 확정")
+                    reservationStore.addReservationToFirestore(reservationData: temporaryReservation)
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text("예약하기")
+                }
+                
+                Button(role: .destructive) {
+                    
+                } label: {
+                    Text("취소하기")
+                }
+
+
+            } message: {
+                Text("예약을 확정짓습니다")
             }
+
         }
         .padding()
     }

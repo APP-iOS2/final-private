@@ -55,6 +55,7 @@ final class ReservationStore: ObservableObject {
                    first.time > second.time
                }
         }
+        print(#fileID, #function, #line, "- 내 예약 수: \(reservationList.count) ")
     }
     
     
@@ -74,6 +75,8 @@ final class ReservationStore: ObservableObject {
             return
         }
         
+        self.reservationList.removeAll()
+        
         // Field에 reservedUserId의 값이 현재 로그인한 유저의 email이면 전부 반환됨
         let query = self.db.collection("Reservation").whereField("reservedUserId", isEqualTo: email)
         
@@ -84,7 +87,6 @@ final class ReservationStore: ObservableObject {
                 for document in querySnapshop!.documents {
                     let documentID = document.documentID  // document ID 가져오기
                     let data = document.data()  // 문서 데이터 가져오기
-                    self.reservationList.removeAll()
                     
                     guard let dateTime = self.timeStampTodateTime(data: data) else {
                         print("Timestamp 날짜/시간 변환 실패")
@@ -115,6 +117,16 @@ final class ReservationStore: ObservableObject {
     func addReservationToFirestore(reservationData: Reservation) {
         let documentRef = self.db.collection("Reservation").document(reservationData.id)
         
+        guard let user = Auth.auth().currentUser else {
+            print("로그인 정보가 없습니다.")
+            return
+        }
+        
+        guard let email = user.email  else {
+            print("로그인 한 유저의 email 정보가 없습니다.")
+            return
+        }
+        
         guard let dateTimestamp: Timestamp = dateTimeStringToTimeStamp(reservationDate: reservationData.date, reservationHour: reservationData.time) else {
             print("예약 등록 실패 - 날짜 변환 실패")
             return
@@ -122,7 +134,7 @@ final class ReservationStore: ObservableObject {
         
         let reservationData: [String: Any] = [
             "shopId": reservationData.shopId,
-            "reservedUserId": reservationData.reservedUserId,
+            "reservedUserId": email,
             "date": dateTimestamp,
             "numberOfPeople": reservationData.numberOfPeople,
             "totalPrice": reservationData.totalPrice,

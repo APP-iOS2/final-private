@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
@@ -13,10 +14,14 @@ import GoogleSignIn
 @main
 struct PrivateApp: App {
     
+    @StateObject private var userStore = UserStore()
     @StateObject private var reservationStore = ReservationStore()
     @StateObject private var shopStore = ShopStore()
     
     init() {
+        let providerFactory = AppCheckDebugProviderFactory()
+        AppCheck.setAppCheckProviderFactory(providerFactory)
+        
         FirebaseApp.configure()
     }
     
@@ -24,7 +29,7 @@ struct PrivateApp: App {
         WindowGroup {
             LaunchView()
                 .environmentObject(AuthStore())
-                .environmentObject(UserStore())
+                .environmentObject(userStore)
                 .environmentObject(FeedStore())
                 .environmentObject(SearchStore())
                 .environmentObject(ChatRoomStore())

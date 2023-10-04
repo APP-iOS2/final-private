@@ -9,21 +9,22 @@ import SwiftUI
 
 struct MyReservation: View {
     @EnvironmentObject var reservationStore: ReservationStore
-    
+        
     var body: some View {
-        VStack {
+        List {
             ForEach(reservationStore.reservationList, id: \.self) { reservation in
                 ReservationCardView(reservation: reservation)
             }
         }
         .padding()
         .onAppear {
-            reservationStore.fetchReservation()
+            dump(reservationStore.reservationList)
         }
-        .refreshable {
-            reservationStore.fetchReservation()
-        }
+//        .refreshable {
+//            reservationStore.fetchReservation()
+//        }
     }
+    
 }
 
 struct MyReservation_Previews: PreviewProvider {

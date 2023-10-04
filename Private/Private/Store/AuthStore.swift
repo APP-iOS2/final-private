@@ -14,9 +14,8 @@ import AuthenticationServices
 import CryptoKit
 
 class AuthStore: ObservableObject {
+    @EnvironmentObject var userStore: UserStore
     @Published var currentUser: Firebase.User?
-    
-    let userStore: UserStore = UserStore()
     
     init() {
         currentUser = Auth.auth().currentUser
