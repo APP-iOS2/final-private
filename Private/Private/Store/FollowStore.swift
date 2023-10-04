@@ -9,8 +9,8 @@ import Foundation
 import Firebase
 
 final class FollowStore: ObservableObject {
-    @Published var followers = 0
-    @Published var following = 0
+    @Published var followers: [User] = []
+    @Published var following: [User] = []
     
     @Published var followCheck = false
     
@@ -52,10 +52,10 @@ final class FollowStore: ObservableObject {
         }
     }
     
-
+    
     func updateFollowCount(userId: String, followingCount: @escaping
-    (_ followingCount: Int) -> Void, followersCount: @escaping
-    (_ followingCount: Int) -> Void) {
+                           (_ followingCount: Int) -> Void, followersCount: @escaping
+                           (_ followingCount: Int) -> Void) {
         
         FollowStore.followingCollection(userid: userId).getDocuments { (snap, error) in
             
@@ -71,81 +71,84 @@ final class FollowStore: ObservableObject {
             }
         }
     }
-    //팔로우 상태를 체크후 팔로우 언팔로우 하는 함수
-    func manageFollow(userId: String, followCheck:Bool, followingCount: @escaping
-            (_ followingCount: Int) -> Void, followersCount: @escaping
-            (_ followingCount: Int) -> Void) {
-        
-        if !followCheck {
-            follow(userId: userId, followCheck: followCheck, followingCount: followingCount, followersCount: followersCount)
-        } else {
-            unfollow(userId: userId, followCheck: followCheck, followingCount: followingCount, followersCount: followersCount)
-        }
-    }
-    //팔로우
-    func follow(userId: String, followCheck:Bool, followingCount: @escaping
-                (_ followingCount: Int) -> Void, followersCount: @escaping
-                (_ followingCount: Int) -> Void) {
-        FollowStore.followingID(userId: userId).setData([:]) {
-            (err) in
-            
-            if err == nil {
-                self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
+    
+    func updateFollowCount(userId: String) {
+        FollowStore.followingCollection(userid: userId).getDocuments { (snap, error) in
+            if let error = error {
+                print("Error fetching following users: \(error.localizedDescription)")
+            } else if let documents = snap?.documents {
+                self.following = documents.compactMap { document in
+                    if let user = User(document: document.data()) {
+                        return user
+                    } else {
+                        return nil
+                    }
+                }
             }
         }
         
-        FollowStore.followersID(userId: userId).setData([:]) {
-            (err) in
-            
+        FollowStore.followersCollection(userid: userId).getDocuments { (snap, error) in
+            if let error = error {
+                print("Error fetching followers users: \(error.localizedDescription)")
+            } else if let documents = snap?.documents {
+                self.followers = documents.compactMap { document in
+                    if let user = User(document: document.data()) {
+                        return user
+                    } else {
+                        return nil
+                    }
+                }
+            }
+        }
+    }
+    
+    //팔로우 상태를 체크후 팔로우 언팔로우 하는 함수
+    func manageFollow(userId: String, followCheck:Bool) {
+        if !followCheck {
+            follow(userId: userId)
+        } else {
+            unfollow(userId: userId)
+        }
+        
+        updateFollowCount(userId: userId)
+    }
+    //팔로우
+    func follow(userId: String) {
+        FollowStore.followingID(userId: userId).setData([:]) { (err) in
             if err == nil {
-                self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
+                self.updateFollowCount(userId: userId)
+            }
+        }
+        
+        FollowStore.followersID(userId: userId).setData([:]) { (err) in
+            if err == nil {
+                self.updateFollowCount(userId: userId)
             }
         }
     }
     //언팔로우
-    func unfollow(userId: String, followCheck:Bool, followingCount: @escaping
-                (_ followingCount: Int) -> Void, followersCount: @escaping
-                  (_ followingCount: Int) -> Void) {
-        FollowStore.followingID(userId: userId).getDocument {
-            (document, err) in
-            
+    func unfollow(userId: String) {
+        FollowStore.followingID(userId: userId).getDocument { (document, err) in
             if let doc = document, doc.exists {
                 doc.reference.delete()
-                
-                self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
+                self.updateFollowCount(userId: userId)
             }
         }
-        FollowStore.followersID(userId: userId).getDocument {
-            (document, err) in
-            
+        
+        FollowStore.followersID(userId: userId).getDocument { (document, err) in
             if let doc = document, doc.exists {
                 doc.reference.delete()
-                
-                self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
+                self.updateFollowCount(userId: userId)
             }
         }
     }
     
     func follows(userId: String) {
-        FollowStore.followingCollection(userid: userId).getDocuments { (QuerySnapshot, err) in
-            
-            if let doc = QuerySnapshot?.documents {
-                self.following = doc.count
-            }
-        }
+        updateFollowCount(userId: userId)
     }
     
     func follwers(userId: String) {
-        
-        FollowStore.followersCollection(userid: userId).getDocuments { (QuerySnapshot, err) in
-            
-            if let doc = QuerySnapshot?.documents {
-                self.followers = doc.count
-            }
-        }
+        updateFollowCount(userId: userId)
     }
     
 }
-
-
-

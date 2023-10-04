@@ -21,7 +21,7 @@ struct SignUpView: View {
             TextField("휴대폰 번호를 입력하세요", text: $phoneNumber)
             
             Button {
-                userStore.updateUser(user: User(email: userStore.user.email, name: userStore.user.name, nickname: nickName, phoneNumber: phoneNumber, profileImageURL: "", follower: [], following: [], myFeed: [], savedFeed: [], bookmark: [], chattingRoom: [], myReservation: []))
+                userStore.updateUser(user: User())
             } label: {
                 Text("정보입력 완료하기")
             }

@@ -18,25 +18,27 @@ struct SearchView: View {
     @State private var isSearchTextEmpty: Bool = true
     
     var body: some View {
-        VStack(spacing: 0) {
-            searchTextField
-            ScrollView(showsIndicators: false) {
-                recentSearchText
-                recentSearchResult
-                // 위 검색어 텍스트 아래 유저 리스트
-                
+        NavigationView {
+            VStack(spacing: 0) {
+                searchTextField
+                ScrollView(showsIndicators: false) {
+                    recentSearchText
+                    recentSearchResult
+                    // 위 검색어 텍스트 아래 유저 리스트
+                    
                     Spacer()
-                recentUserText
-                resentUserResult
+                    recentUserText
+                    resentUserResult
+                }
+                
             }
-            
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .padding(.horizontal)
-        .onAppear {
-            searchStore.fetchrecentSearchResult()
-            searchTerm = ""
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .padding(.horizontal)
+            .onAppear {
+                searchStore.fetchrecentSearchResult()
+                searchTerm = ""
+            }
         }
     }
     
@@ -44,13 +46,6 @@ struct SearchView: View {
     var searchTextField: some View {
         VStack {
             HStack {
-                NavigationLink {
-                    SearchResultView(searchTerm: trimmedSearchTerm)
-                } label: {
-                    EmptyView()
-                }
-                .disabled(isSearchTextEmpty)
-                
                 SearchBarTextField(text: $searchTerm, placeholder: "사용자 검색")
                     .onChange(of: searchTerm) { newValue in
                         trimmedSearchTerm = searchTerm.trimmingCharacters(in: .whitespaces)
@@ -60,12 +55,20 @@ struct SearchView: View {
                             isSearchTextEmpty = false
                         }
                     }
+                NavigationLink {
+                    SearchResultView(searchTerm: trimmedSearchTerm)
+                } label: {
+                    EmptyView()
+                }
+                .disabled(isSearchTextEmpty)
             }
             .padding(.horizontal)
             .padding(.vertical, 12)
             .padding(.bottom, 70)
         }
     }
+
+
     
     var recentSearchText: some View {
         VStack(alignment: .leading) {
