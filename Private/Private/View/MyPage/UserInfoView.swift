@@ -42,21 +42,34 @@ struct UserInfoView: View {
                             .font(.pretendardBold14)
                     }
                     .padding(.trailing,19.0 )
-                    VStack {
-                        Text("\(userStore.user.follower.count)")
-                            .font(.pretendardBold18)
-                            .padding(.bottom, 5.0)
-                        Text("팔로워")
-                            .font(.pretendardBold14)
+                    NavigationLink {
+                        MyFollowerFollowingView(viewNumber: 0)
+                    } label: {
+                        VStack {
+                            Text("\(userStore.user.follower.count)")
+                                .font(.pretendardBold18)
+                                .padding(.bottom, 5.0)
+                                .foregroundColor(.primary)
+                            Text("팔로워")
+                                .font(.pretendardBold14)
+                                .foregroundColor(.primary)
+                        }
+                        .padding(.trailing,19.0)
                     }
-                    .padding(.trailing,19.0)
-                    VStack {
-                        Text("\(userStore.user.following.count)")
-                            .font(.pretendardBold18)
-                            .padding(.bottom, 5.0)
-                        Text("팔로잉")
-                            .font(.pretendardBold14)
+                    NavigationLink {
+                        MyFollowerFollowingView(viewNumber: 1)
+                    } label: {
+                        VStack {
+                            Text("\(userStore.user.following.count)")
+                                .font(.pretendardBold18)
+                                .padding(.bottom, 5.0)
+                                .foregroundColor(.primary)
+                            Text("팔로잉")
+                                .font(.pretendardBold14)
+                                .foregroundColor(.primary)
+                        }
                     }
+                    
                 }
                 .padding(.bottom, 10.0)
                 Button{
