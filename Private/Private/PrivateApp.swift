@@ -13,6 +13,7 @@ import GoogleSignIn
 @main
 struct PrivateApp: App {
     
+    @StateObject private var userStore = UserStore()
     @StateObject private var reservationStore = ReservationStore()
     @StateObject private var shopStore = ShopStore()
     
@@ -24,7 +25,7 @@ struct PrivateApp: App {
         WindowGroup {
             LaunchView()
                 .environmentObject(AuthStore())
-                .environmentObject(UserStore())
+                .environmentObject(userStore)
                 .environmentObject(FeedStore())
                 .environmentObject(SearchStore())
                 .environmentObject(ChatRoomStore())
