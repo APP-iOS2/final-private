@@ -9,19 +9,16 @@ import SwiftUI
 
 struct MyReservation: View {
     @EnvironmentObject var reservationStore: ReservationStore
-        
+    
     var body: some View {
-        List {
+        ScrollView {
             ForEach(reservationStore.reservationList, id: \.self) { reservation in
                 ReservationCardView(reservation: reservation)
             }
+            .padding()
         }
-        .padding()
-        .onAppear {
-            dump(reservationStore.reservationList)
-        }
-//        .refreshable {
-//            reservationStore.fetchReservation()
+//        .onAppear {
+//            dump(reservationStore.reservationList)
 //        }
     }
     

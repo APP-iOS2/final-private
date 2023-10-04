@@ -13,14 +13,57 @@ struct ReservationCardView: View {
     let reservation: Reservation
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Divider()
-                .opacity(0)
-            Text("예약 날짜: \(reservationStore.getReservationDate(reservationDate: reservation.date))")
-            Text("예약 시간: \(reservation.time)시")
-            Text("예약 인원: \(reservation.numberOfPeople)명")
-            Text("예약자 이메일: \(reservation.reservedUserId)")
-            Text("총 비용: \(reservation.totalPrice)원")
+        VStack {
+            HStack {
+                Text("예약 날짜")
+                Spacer()
+                Text("\(reservationStore.getReservationDate(reservationDate: reservation.date))")
+            }
+            
+            HStack {
+                Text("예약 시간")
+                Spacer()
+                Text("\(reservation.time)시")
+            }
+            
+            HStack {
+                Text("예약 인원")
+                Spacer()
+                Text("\(reservation.numberOfPeople)명")
+            }
+            
+            HStack {
+                Text("예약자 이메일")
+                Spacer()
+                Text("\(reservation.reservedUserId)")
+            }
+
+            HStack {
+                Text("총 비용")
+                Spacer()
+                Text("\(reservation.totalPrice)원")
+            }
+            
+            HStack {
+                Button {
+                    print(#fileID, #function, #line, "- 예약 수정")
+                } label: {
+                    Text("예약 수정")
+                        .padding()
+                }
+                .tint(Color.primary)
+                .background(Color.yellow)
+                
+                Button{
+                    print(#fileID, #function, #line, "- 예약 취소")
+                } label: {
+                    Text("예약 취소")
+                        .padding()
+                }
+                .tint(Color.blue)
+                .background(Color.red)
+
+            }
         }
         .padding()
         .background(Color.subGrayColor)

@@ -57,7 +57,7 @@ struct ReservationConfirmView: View {
                     Text("예약하기")
                 }
                 
-                Button(role: .destructive) {
+                Button(role: .cancel) {
                     
                 } label: {
                     Text("취소하기")

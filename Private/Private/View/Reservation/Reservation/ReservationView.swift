@@ -12,21 +12,27 @@ struct ReservationView: View {
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
 
-    @State private var reservationDateString: String = ""
+//    @State private var reservationDateString: String = ""
     @State private var showingDate: Bool = false    // 예약 일시 선택
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var isSelectedTime: Bool = false
     @State private var isShwoingConfirmView: Bool = false
     @State private var isShowingMyReservation: Bool = false
-    // 임시 예약 Data
-    // shopId, reservedUserId는 여기서 정보를 주고 넘겨줘야 함..!
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: -1, totalPrice: 30000)
     
     private let step = 1  // 인원선택 stepper의 step
     private let range = 1...6  // stepper 인원제한
 
-    let shopId: String
+    let shopData: Shop
 
+    var reservedTimeString: String {
+        self.temporaryReservation.time > 11 ? "오후" : "오전"
+    }
+    
+    var reservedTimeInt: Int {
+        self.temporaryReservation.time > 12 ? temporaryReservation.time - 12 : temporaryReservation.time
+    }
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -46,7 +52,7 @@ struct ReservationView: View {
                     HStack {
                         Text(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))
                         Text(" / ")
-                        Text(isSelectedTime ? "오후 \(temporaryReservation.time)시": "시간") // 오전 /오후 수정
+                        Text(isSelectedTime ? self.reservedTimeString + " \(self.reservedTimeInt)시" : "시간") // 오전 /오후 수정
                     }
                     Spacer()
                     
@@ -162,7 +168,7 @@ struct ReservationView: View {
         }// ScrollView
         .padding()
         .onAppear {
-            self.temporaryReservation.shopId = self.shopId
+            self.temporaryReservation.shopId = self.shopData.id
         }
         
     }
@@ -170,7 +176,7 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(shopId: "")
+        ReservationView(shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }
