@@ -34,39 +34,83 @@ struct ShopDetailView: View {
     @Binding var selection: Int
     
     @State var isReservationPresented: Bool = false
+    @State private var offsetY: CGFloat = CGFloat.zero
     
     let dummyShop = ShopStore.shop
     
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .top) {
-                AsyncImage(url: URL(string: dummyShop.shopImageURL)!) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 300)
-                } placeholder: {
-                    ProgressView()
+            ScrollView(.vertical) {
+//                LazyVStack(pinnedViews: .sectionHeaders) {
+                ZStack(alignment: .topLeading) {
+                    Section {
+                        ShopDetailBodyView(shopDetailName: dummyShop.name, shopDetailCategoryName: dummyShop.category.categoryName, shopDetailAddress: dummyShop.address, shopDetailAddressDetail: dummyShop.addressDetail, selectedShopDetailCategory: $selectedShopDetailCategory)
+                            .padding(.top, CGFloat.screenHeight * 0.2)
+                    } header: {
+                        ShopDetailHeaderView(shopDetailImageURL: dummyShop.shopImageURL)
+                    }
                 }
-                .frame(maxWidth: .infinity)
-                .ignoresSafeArea()
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(alignment: .center, spacing: 0) {
-                        VStack(alignment: .leading, spacing: 0) {
-                            HStack(spacing: 10) {
-                                Text(dummyShop.name)
-                                    .font(Font.pretendardBold28)
-                                
-                                Divider()
-                                    .frame(height: 25)
-                                
-                                Text(dummyShop.category.categoryName)
-                                    .font(Font.pretendardMedium18)
-                            }
+            }
+            
+            ShopDetailFooterView(isReservationPresented: $isReservationPresented)
+        }
+    }
+    
+    struct ShopDetailView_Previews: PreviewProvider {
+        static var previews: some View {
+            ShopDetailView(root: .constant(true), selection: .constant(4))
+                .environmentObject(ShopStore())
+                .environmentObject(ReservationStore())
+        }
+    }
+    
+    struct ShopDetailHeaderView: View {
+        
+        let shopDetailImageURL: String
+        
+        var body: some View {
+            AsyncImage(url: URL(string: shopDetailImageURL)!) { image in
+                image.resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: CGFloat.screenHeight * 0.2)
+            } placeholder: {
+                ProgressView()
+            }
+        }
+    }
+    
+    struct ShopDetailBodyView: View {
+        
+        let shopDetailName: String
+        let shopDetailCategoryName: String
+        let shopDetailAddress: String
+        let shopDetailAddressDetail: String
+        
+        @Binding var selectedShopDetailCategory: ShopDetailCategory
+        @State var isExpanded: Bool = false
+        
+        var body: some View {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .top, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Spacer()
+                            .frame(height: 10)
+                        
+                        HStack(spacing: 10) {
+                            Text(shopDetailName)
+                                .font(Font.pretendardBold28)
                             
-                            DisclosureGroup(dummyShop.address) {
+                            Divider()
+                                .frame(height: 25)
+                            
+                            Text(shopDetailCategoryName)
+                                .font(Font.pretendardMedium18)
+                        }
+                        
+                        Section {
+                            if isExpanded {
                                 HStack(spacing: 5) {
-                                    Text(dummyShop.addressDetail)
+                                    Text(shopDetailAddressDetail)
                                         .font(Font.pretendardRegular14)
                                     
                                     Image(systemName: "doc.on.doc")
@@ -75,53 +119,83 @@ struct ShopDetailView: View {
                                         .frame(width: 15, height: 15)
                                 }
                             }
-                            .font(Font.pretendardMedium18)
-                            
-                            Spacer()
+                        } header: {
+                            HStack(spacing: 2) {
+                                Text(shopDetailAddress)
+                                    .font(Font.pretendardMedium18)
+                                
+                                Image(systemName: isExpanded ? "chevron.down": "chevron.right")
+                            }
+                            .onTapGesture {
+                                isExpanded.toggle()
+                            }
                         }
                         
                         Spacer()
+                            .frame(height: 10)
                         
-                        Menu {
-                            Text("카카오톡으로 공유하기")
-                        } label: {
-                            Image(systemName: "square.and.arrow.up")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 25, height: 25)
-                        }
-                        .foregroundColor(Color("DarkGrayColor"))
+//                        DisclosureGroup(shopDetailAddress) {
+//                            HStack(spacing: 5) {
+//                                Text(shopDetailAddressDetail)
+//                                    .font(Font.pretendardRegular14)
+//
+//                                Image(systemName: "doc.on.doc")
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fit)
+//                                    .frame(width: 15, height: 15)
+//                            }
+//                        }
+//                        .font(Font.pretendardMedium18)
                     }
-                    .padding(10)
-                    .frame(height: CGFloat.screenHeight * 0.1)
                     
-                    Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(Font.pretendardRegular16)) {
-                        ForEach(ShopDetailCategory.allCases, id: \.self) { category in
-                            Text(category.rawValue)
-                                .font(Font.pretendardRegular16)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .padding(10)
-                    .padding(.bottom, 5)
+                    Spacer()
                     
-                    ScrollView {
-                        switch selectedShopDetailCategory {
-                        case .shopInfo:
-                            ShopwDetailInfoView()
-                        case .shopMenu:
-                            ShopDetailMenuView()
-                        case .shopCurrentReview:
-                            ShopwDetailCurrentReviewView()
-                        }
+                    Menu {
+                        Text("카카오톡으로 공유하기")
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 25, height: 25)
                     }
-                    .padding([.top, .horizontal], 10)
+                    .foregroundColor(Color("DarkGrayColor"))
+                    .padding(.vertical, 20)
                 }
-                .frame(maxWidth: .infinity)
-                .background(Color.white)
-                .offset(CGSize(width: 0, height: CGFloat.screenHeight * 0.2))
+                .padding(.horizontal, 10)
+                
+                Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(Font.pretendardRegular16)) {
+                    ForEach(ShopDetailCategory.allCases, id: \.self) { category in
+                        Text(category.rawValue)
+                            .font(Font.pretendardRegular16)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding(10)
+                .padding(.bottom, 5)
+                
+                ScrollView {
+                    switch selectedShopDetailCategory {
+                    case .shopInfo:
+                        ShopwDetailInfoView()
+                    case .shopMenu:
+                        ShopDetailMenuView()
+                    case .shopCurrentReview:
+                        ShopwDetailCurrentReviewView()
+                    }
+                }
+                .padding([.top, .horizontal], 10)
             }
-            
+            .frame(maxWidth: .infinity)
+            .background(Color.white)
+            .cornerRadius(12)
+        }
+    }
+    
+    struct ShopDetailFooterView: View {
+        
+        @Binding var isReservationPresented: Bool
+        
+        var body: some View {
             HStack(spacing: 10) {
                 VStack(spacing: 2) {
                     Image(systemName: "bookmark")
@@ -155,13 +229,5 @@ struct ShopDetailView: View {
                 ReservationView()
             }
         }
-    }
-}
-
-struct ShopDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        ShopDetailView(root: .constant(true), selection: .constant(4))
-            .environmentObject(ShopStore())
-            .environmentObject(ReservationStore())
     }
 }
