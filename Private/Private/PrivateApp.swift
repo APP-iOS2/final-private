@@ -13,6 +13,9 @@ import GoogleSignIn
 @main
 struct PrivateApp: App {
     
+    @StateObject private var reservationStore = ReservationStore()
+    @StateObject private var shopStore = ShopStore()
+    
     init() {
         FirebaseApp.configure()
     }
@@ -25,7 +28,8 @@ struct PrivateApp: App {
                 .environmentObject(FeedStore())
                 .environmentObject(SearchStore())
                 .environmentObject(ChatRoomStore())
-                .environmentObject(ReservationStore())
+                .environmentObject(reservationStore)
+                .environmentObject(shopStore)
         }
     }
 }

@@ -63,7 +63,7 @@ struct MainTabView: View {
                     PostView(root: $rootSection3, selection: $selection).tabItem {
                         Image(systemName: "plus")
                     }.tag(3)
-                    ShopDetailView(shopStore: shopStore, reservationStore: reservationStore, root: $rootSection4, selection: $selection).tabItem {
+                    ShopDetailView(root: $rootSection4, selection: $selection).tabItem {
                         Image(systemName: "calendar.badge.clock")
                     }.tag(4)
                     MyPageView(root: $rootSection5, selection: $selection).tabItem {
