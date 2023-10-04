@@ -99,7 +99,6 @@ struct MyPageView: View {
                 MyHistoryView()
             }
             Spacer()
-                
         }
     }
 }

@@ -107,6 +107,9 @@
 		E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3876FC22AC294E200CFE728 /* PictureView.swift */; };
 		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
 		E3A786952AC3CE0200644DA4 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		E4778D832ACD33BE0099D924 /* MyFollowerFollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */; };
+		E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D842ACD3E060099D924 /* MyFollowerView.swift */; };
+		E4778D872ACD3EF40099D924 /* MyFollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D862ACD3EF40099D924 /* MyFollowingView.swift */; };
 		E47B3F712AC11C52002164A6 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B3F702AC11C52002164A6 /* UserInfoView.swift */; };
 		E47B3F732AC14A0F002164A6 /* MyHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */; };
 		E47B3F752AC14A22002164A6 /* MySavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B3F742AC14A22002164A6 /* MySavedView.swift */; };
@@ -209,6 +212,9 @@
 		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
 		E3876FC22AC294E200CFE728 /* PictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
+		E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerFollowingView.swift; sourceTree = "<group>"; };
+		E4778D842ACD3E060099D924 /* MyFollowerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerView.swift; sourceTree = "<group>"; };
+		E4778D862ACD3EF40099D924 /* MyFollowingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowingView.swift; sourceTree = "<group>"; };
 		E47B3F702AC11C52002164A6 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHistoryView.swift; sourceTree = "<group>"; };
 		E47B3F742AC14A22002164A6 /* MySavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySavedView.swift; sourceTree = "<group>"; };
@@ -388,6 +394,9 @@
 				3CCD2DF92ABC3588005709F4 /* MyPageView.swift */,
 				3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */,
 				3C91AEA12AC40F6100E60D9B /* SettingView.swift */,
+				E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */,
+				E4778D842ACD3E060099D924 /* MyFollowerView.swift */,
+				E4778D862ACD3EF40099D924 /* MyFollowingView.swift */,
 				E47B3F702AC11C52002164A6 /* UserInfoView.swift */,
 				E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */,
 				E47B3F742AC14A22002164A6 /* MySavedView.swift */,
@@ -829,6 +838,7 @@
 				3CF3D8C52AB82A97003689A6 /* PrivateApp.swift in Sources */,
 				B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */,
 				3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */,
+				E4778D832ACD33BE0099D924 /* MyFollowerFollowingView.swift in Sources */,
 				E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */,
 				069C67372AC26D2D00A5275F /* ShopDetailInfoView.swift in Sources */,
 				3C37B1B42AC02481004A8E7E /* Color+.swift in Sources */,
@@ -839,6 +849,7 @@
 				3CCD2DFE2ABC37F8005709F4 /* TextMaster.swift in Sources */,
 				B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */,
 				3CCD2DE22ABC3177005709F4 /* Feed.swift in Sources */,
+				E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */,
 				06C796CE2ABD5C5C0043C395 /* ShopDetailView.swift in Sources */,
 				3CCD2DE02ABC314A005709F4 /* Shop.swift in Sources */,
 				B5BEAA232AC154430002CC2C /* ReservationConfirmView.swift in Sources */,
@@ -855,6 +866,7 @@
 				3CCD2DE82ABC31FD005709F4 /* Message.swift in Sources */,
 				E47B3F792AC16B61002164A6 /* MyFeed.swift in Sources */,
 				63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */,
+				E4778D872ACD3EF40099D924 /* MyFollowingView.swift in Sources */,
 				3CCD2DFC2ABC37DB005709F4 /* View+.swift in Sources */,
 				63BB099C2ABE825C002CCE4E /* TestMapView.swift in Sources */,
 				E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */,
@@ -1034,10 +1046,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Private/Preview Content\"";
-				DEVELOPMENT_TEAM = 6R3M7VGRP2;
+				DEVELOPMENT_TEAM = Q45H5LWRR7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Private/Info.plist;
@@ -1057,6 +1070,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iOSAppSchoolTechit.Private;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1069,10 +1083,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Private/Preview Content\"";
-				DEVELOPMENT_TEAM = 6R3M7VGRP2;
+				DEVELOPMENT_TEAM = Q45H5LWRR7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Private/Info.plist;
@@ -1092,6 +1107,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iOSAppSchoolTechit.Private;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
