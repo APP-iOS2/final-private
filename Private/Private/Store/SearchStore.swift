@@ -19,7 +19,6 @@ final class SearchStore: ObservableObject {
         
     }
     
-    
     func searchUser(searchTerm: String) async {
         let db = Firestore.firestore()
         
@@ -32,7 +31,7 @@ final class SearchStore: ObservableObject {
             
             // 사용자 정의 초기화 메서드를 사용하여 User 객체 생성 및 추가
             let users: [User] = querySnapshot.documents.compactMap { document in
-                let userData = document.data() 
+                let userData = document.data()
                 if let user = User(document: userData) {
                     return user
                 } else {
@@ -41,46 +40,51 @@ final class SearchStore: ObservableObject {
             }
 
             // searchUserLists 배열에 사용자 추가
-            searchUserLists = users
+            DispatchQueue.main.async {
+                self.searchUserLists = users
+            }
         } catch {
             print("Error fetching users: \(error.localizedDescription)")
         }
     }
     
     func fetchrecentSearchResult() {
-        recentSearchResult = userDefaults.value(forKey: "SearchResult") as? [String] ?? []
+        DispatchQueue.main.async {
+            self.recentSearchResult = self.userDefaults.value(forKey: "SearchResult") as? [String] ?? []
+        }
     }
     
     func addRecentSearch(_ searchText: String) {
-        if recentSearchResult.contains(searchText) {
-            removeRecentSearchResult(searchText)
+        DispatchQueue.main.async {
+            if self.recentSearchResult.contains(searchText) {
+                self.removeRecentSearchResult(searchText)
+            }
+            self.recentSearchResult.insert(searchText, at: 0)
+            self.setUserDefaults()
         }
-        recentSearchResult.insert(searchText, at: 0)
-        setUserDefaults()
     }
     
     func removeRecentSearchResult(_ resultText: String) {
-        for index in 0..<recentSearchResult.count {
-            if recentSearchResult[index] == resultText {
-                recentSearchResult.remove(at: index)
-                break
+        DispatchQueue.main.async {
+            for index in 0..<self.recentSearchResult.count {
+                if self.recentSearchResult[index] == resultText {
+                    self.recentSearchResult.remove(at: index)
+                    break
+                }
             }
+            self.setUserDefaults()
         }
-        setUserDefaults()
     }
     
-    
-    
-    
-    
-    
     func setUserDefaults() {
-        userDefaults.set(recentSearchResult, forKey: "SearchResults")
+        DispatchQueue.main.async {
+            self.userDefaults.set(self.recentSearchResult, forKey: "SearchResults")
+        }
     }
     
     func resetUserDefaults() {
-        UserDefaults.resetStandardUserDefaults()
+        DispatchQueue.main.async {
+            UserDefaults.resetStandardUserDefaults()
+        }
     }
-    
-    
 }
