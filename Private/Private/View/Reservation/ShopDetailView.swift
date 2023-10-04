@@ -87,11 +87,15 @@ struct ShopDetailView: View {
         let shopDetailAddressDetail: String
         
         @Binding var selectedShopDetailCategory: ShopDetailCategory
+        @State var isExpanded: Bool = false
         
         var body: some View {
             VStack(alignment: .leading, spacing: 0) {
-                HStack(alignment: .center, spacing: 0) {
-                    VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .top, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Spacer()
+                            .frame(height: 10)
+                        
                         HStack(spacing: 10) {
                             Text(shopDetailName)
                                 .font(Font.pretendardBold28)
@@ -103,20 +107,45 @@ struct ShopDetailView: View {
                                 .font(Font.pretendardMedium18)
                         }
                         
-                        DisclosureGroup(shopDetailAddress) {
-                            HStack(spacing: 5) {
-                                Text(shopDetailAddressDetail)
-                                    .font(Font.pretendardRegular14)
+                        Section {
+                            if isExpanded {
+                                HStack(spacing: 5) {
+                                    Text(shopDetailAddressDetail)
+                                        .font(Font.pretendardRegular14)
+                                    
+                                    Image(systemName: "doc.on.doc")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 15, height: 15)
+                                }
+                            }
+                        } header: {
+                            HStack(spacing: 2) {
+                                Text(shopDetailAddress)
+                                    .font(Font.pretendardMedium18)
                                 
-                                Image(systemName: "doc.on.doc")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 15, height: 15)
+                                Image(systemName: isExpanded ? "chevron.down": "chevron.right")
+                            }
+                            .onTapGesture {
+                                isExpanded.toggle()
                             }
                         }
-                        .font(Font.pretendardMedium18)
                         
                         Spacer()
+                            .frame(height: 10)
+                        
+//                        DisclosureGroup(shopDetailAddress) {
+//                            HStack(spacing: 5) {
+//                                Text(shopDetailAddressDetail)
+//                                    .font(Font.pretendardRegular14)
+//
+//                                Image(systemName: "doc.on.doc")
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fit)
+//                                    .frame(width: 15, height: 15)
+//                            }
+//                        }
+//                        .font(Font.pretendardMedium18)
                     }
                     
                     Spacer()
@@ -130,10 +159,9 @@ struct ShopDetailView: View {
                             .frame(width: 25, height: 25)
                     }
                     .foregroundColor(Color("DarkGrayColor"))
+                    .padding(.vertical, 20)
                 }
-                .padding(10)
-                .frame(height: CGFloat.screenHeight * 0.1)
-                .padding(.vertical, 10)
+                .padding(.horizontal, 10)
                 
                 Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(Font.pretendardRegular16)) {
                     ForEach(ShopDetailCategory.allCases, id: \.self) { category in
