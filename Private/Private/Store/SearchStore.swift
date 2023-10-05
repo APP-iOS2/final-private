@@ -50,7 +50,7 @@ final class SearchStore: ObservableObject {
     
     func fetchrecentSearchResult() {
         DispatchQueue.main.async {
-            self.recentSearchResult = self.userDefaults.value(forKey: "SearchResult") as? [String] ?? []
+            self.recentSearchResult = self.userDefaults.value(forKey: "SearchResults") as? [String] ?? []
         }
     }
     

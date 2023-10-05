@@ -23,13 +23,29 @@ struct SearchUserCellView: View {
                     .foregroundColor(.secondary)
             }
             .frame(width: 44, height: 44)
-
+            .padding()
+            Text(user.nickname)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+            Spacer()
+            
             Button {
                 followStore.manageFollow(userId: user.id, followCheck: followStore.followCheck)
             } label: {
-                Text("팔로우")
+                Text(followStore.followCheck ? "팔로잉" : "팔로우")
+                    .fontWeight(.bold)
+                    .padding(12)
+                    .foregroundColor(.black)
+                    .background(followStore.followCheck ? Color("AccentColor") : Color.white)
+                    .cornerRadius(18)
             }
-            .background(followStore.followCheck ? Color.primary : Color.subGrayColor)
         }
+    }
+}
+
+struct SearchUserCellView_Previews: PreviewProvider {
+    static var previews: some View {
+        SearchUserCellView(user: User())
+            .environmentObject(FollowStore())
     }
 }
