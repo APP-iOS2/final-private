@@ -86,7 +86,7 @@ struct ShopwDetailInfoView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         ForEach(dummyShop.temporayHoliday, id: \.self) { day in
                             HStack(spacing: 0) {
-                                Text(day.formatted()) // 임시로 해놨습니당. DateFormatter로 9월 27일 와 같은 형식으로 수정할 예정입니다.
+                                Text(dateToFullString(date: day))
                                     .font(Font.pretendardRegular16)
                                 
                                 Spacer()
@@ -130,6 +130,16 @@ struct ShopwDetailInfoView: View {
                 }
             }
         }
+    }
+    
+    func dateToFullString(date: Date) -> String {
+        let formatter = DateFormatter()
+//        formatter.locale = Locale(identifier: Locale.current.identifier)
+        formatter.locale = Locale(identifier: "ko_KR")
+//        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
+        formatter.timeZone = TimeZone(abbreviation: "KST")
+        formatter.dateStyle = .full
+        return formatter.string(from: date)
     }
 }
 
