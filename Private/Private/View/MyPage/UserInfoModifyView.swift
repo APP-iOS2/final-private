@@ -12,50 +12,59 @@ struct UserInfoModifyView: View {
     @EnvironmentObject private var userStore: UserStore
     @Binding var isModify: Bool
     @State var mypageNickname: String
+    @State private var isKeyboardVisible: Bool = false
     var body: some View {
         NavigationStack {
-            ZStack {
-                if userStore.user.profileImageURL.isEmpty {
-                    Circle()
-                        .frame(width: .screenWidth*0.23)
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .frame(width: .screenWidth*0.23,height: 80)
-                        .foregroundColor(.gray)
-                        .clipShape(Circle())
-                    Image(systemName: "photo.fill")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.black)
-                } else {
-                    KFImage(URL(string: userStore.user.profileImageURL))
-                        .frame(width: .screenWidth*0.23)
+            ScrollView {
+                ZStack {
+                    if userStore.user.profileImageURL.isEmpty {
+                        Circle()
+                            .frame(width: .screenWidth*0.23)
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .frame(width: .screenWidth*0.23,height: 80)
+                            .foregroundColor(.gray)
+                            .clipShape(Circle())
+                        Image(systemName: "photo.fill")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.black)
+                    } else {
+                        KFImage(URL(string: userStore.user.profileImageURL))
+                            .frame(width: .screenWidth*0.23)
+                    }
                 }
+                Divider()
+                    .background(Color.primary)
+                    .frame(width: .screenWidth*0.9)
+                    .padding([.top,.bottom],15)
+                HStack {
+                    Text("닉네임")
+                    TextField("\(userStore.user.nickname)", text: $mypageNickname)
+                        .padding(.leading, 5)
+                }
+                
+                .padding([.leading,.trailing], 28)
+                HStack {}
+                HStack {}
+                HStack {}
             }
-            Divider()
-                .background(Color.primary)
-                .frame(width: .screenWidth*0.9)
-                .padding([.top,.bottom],15)
-            HStack {
-                Text("닉네임")
-                TextField("\(userStore.user.nickname)", text: $mypageNickname)
-                    .padding(.leading, 5)
+            .onTapGesture {
+                hideKeyboard()
+                isKeyboardVisible = false
+                print("stack")
             }
-            .padding([.leading,.trailing], 28)
-            HStack {}
-            HStack {}
-            HStack {}
         }
+       
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(Text(userStore.user.nickname))
-        
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
                     isModify = false
                 } label: {
                     Text("취소")
-                        .font(.pretendardBold14)
+                        .font(.pretendardBold18)
                         .foregroundColor(.primary)
                 }
             }
@@ -65,11 +74,12 @@ struct UserInfoModifyView: View {
                     isModify = false
                 } label: {
                     Text("수정")
-                        .font(.pretendardBold14)
+                        .font(.pretendardBold18)
                         .foregroundColor(.accentColor)
                 }
             }
         }
+        
     }
 }
 
