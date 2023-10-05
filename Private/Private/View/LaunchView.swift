@@ -25,7 +25,9 @@ struct LaunchView: View {
         } else {
             if isloading {
                 VStack {
-                    Text("Launch View")
+                    Text("Private")
+                        .font(.pretendardBold28)
+                        .foregroundStyle(.foreground)
                 }
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
