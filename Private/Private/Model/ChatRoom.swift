@@ -8,7 +8,7 @@
 import Foundation
 
 struct ChatRoom: Hashable {
-    var id: String
+    // var id: String  //삭제
     var otherUser: User
     var messages: [Message]
 }
