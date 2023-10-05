@@ -73,9 +73,10 @@ struct ShopwDetailInfoView: View {
                             }) {
                                 Text("정기 휴무")
                             } else {
-                                Text("\(hours.startHour):\(hours.startMinute) - \(hours.endHour):\(hours.endMinute)")
+                                ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
                             }
                         }
+                        .font(Font.pretendardRegular16)
                     }
                 }
             }
@@ -115,9 +116,10 @@ struct ShopwDetailInfoView: View {
                                     }) {
                                         Text("정기 휴무")
                                     } else {
-                                        Text("\(hours.startHour):\(hours.startMinute) - \(hours.endHour):\(hours.endMinute)")
+                                        ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
                                     }
                                 }
+                                .font(Font.pretendardRegular16)
                             }
                         }
                     }
@@ -146,5 +148,17 @@ struct ShopwDetailInfoView: View {
 struct ShopDetailInfoView_Previews: PreviewProvider {
     static var previews: some View {
         ShopwDetailInfoView()
+    }
+}
+
+struct ShopDetailHourTextView: View {
+    
+    let startHour: Int
+    let startMinute: Int
+    let endHour: Int
+    let endMinute: Int
+    
+    var body: some View {
+        Text(String(format: "%02d:%02d - %02d:%02d", startHour, startMinute, endHour, endMinute))
     }
 }
