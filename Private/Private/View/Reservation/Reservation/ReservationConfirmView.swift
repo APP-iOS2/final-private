@@ -18,6 +18,14 @@ struct ReservationConfirmView: View {
     let temporaryReservation: Reservation
     let shopData: Shop
     
+    var reservedTimeString: String {
+        self.temporaryReservation.time > 11 ? "오후" : "오전"
+    }
+    
+    var reservedTimeInt: Int {
+        self.temporaryReservation.time > 12 ? temporaryReservation.time - 12 : temporaryReservation.time
+    }
+    
     var body: some View {
         VStack {
             ScrollView {
@@ -33,7 +41,7 @@ struct ReservationConfirmView: View {
                         HStack {
                             Text("일시:")
                             Text("\(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))")
-                            Text("\(temporaryReservation.time)시")  // 오후 2:00 요런느낌
+                            Text("\(reservedTimeString) \(reservedTimeInt)시")  // 오후 2:00 요런느낌
                             Spacer()
                         }
                         Text("인원: \(temporaryReservation.numberOfPeople)명")
@@ -139,7 +147,7 @@ struct ReservationConfirmView: View {
             .cornerRadius(12)
             .padding()
             .alert("예약 확정", isPresented: $isShowingAlert) {
-                Button(role: .none) {
+                Button() {
                     print(#fileID, #function, #line, "- 예약 확정")
                     reservationStore.addReservationToFirestore(reservationData: temporaryReservation)
                     isShwoingConfirmView.toggle()
@@ -150,8 +158,9 @@ struct ReservationConfirmView: View {
                 Button(role: .cancel) {
                     
                 } label: {
-                    Text("예약취소")
+                    Text("돌아가기")
                 }
+                .foregroundStyle(Color.red)
             }
         }
     }

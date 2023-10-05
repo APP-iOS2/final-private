@@ -37,16 +37,20 @@ struct ReservationView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
+                Text(shopData.name)
+                    .font(.pretendardBold24)
+                    .padding(.bottom)
+                
                 VStack(alignment: .leading) {
                     Divider()
                         .opacity(0)
                     
                     // 메뉴마다 이렇게 있을 수 없음.. 식당에서는 예약 아이템을 어떻게 둬야할지
-                    ItemInfoView()
-                        .padding(.bottom, 20)
+//                    ItemInfoView()
+//                        .padding(.bottom, 20)
                     
                     Text("예약 일시")
-                        .font(Font.pretendardBold24)
+                        .font(Font.pretendardBold18)
                     
                     // 버튼의 범위를 HStack 전체로 할지 고민
                     HStack {
@@ -64,7 +68,7 @@ struct ReservationView: View {
                             Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                         }
                     }
-                    .font(Font.pretendardMedium18)
+                    .font(Font.pretendardMedium24)
                     .padding()
                     .background(Color("SubGrayColor"))
                     .padding(.bottom)
@@ -134,13 +138,13 @@ struct ReservationView: View {
                     
                     HStack {
                         Button {
-                            isShwoingConfirmView.toggle()
+                                isShwoingConfirmView.toggle()
                         } label: {
                             Text("다음단계")
                                 .frame(maxWidth: .infinity)
                                 .padding()
                         }
-                        .tint(.primary)
+                        .foregroundStyle(isSelectedTime ? .primary : Color.gray)
                         .background(Color("AccentColor"))
                         .cornerRadius(12)
                         .disabled(!isSelectedTime)
