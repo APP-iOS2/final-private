@@ -49,27 +49,27 @@ struct UserInfoModifyView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(Text(userStore.user.nickname))
         
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    isModify = false
-                } label: {
-                    Text("취소")
-                        .font(.pretendardBold14)
-                        .foregroundColor(.primary)
-                }
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    userStore.updateUser(user: User(email: userStore.user.email, name: userStore.user.name, nickname: mypageNickname, phoneNumber: userStore.user.phoneNumber, profileImageURL: userStore.user.profileImageURL, follower: userStore.user.follower, following: userStore.user.following, myFeed: userStore.user.myFeed, savedFeed: userStore.user.savedFeed, bookmark: userStore.user.bookmark, chattingRoom: userStore.user.chattingRoom, myReservation: userStore.user.myReservation))
-                    isModify = false
-                } label: {
-                    Text("수정")
-                        .font(.pretendardBold14)
-                        .foregroundColor(.accentColor)
-                }
-            }
-        }
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                Button {
+//                    isModify = false
+//                } label: {
+//                    Text("취소")
+//                        .font(.pretendardBold14)
+//                        .foregroundColor(.primary)
+//                }
+//            }
+//            ToolbarItem(placement: .topBarTrailing) {
+//                Button {
+//                    userStore.updateUser(user: User(email: userStore.user.email, name: userStore.user.name, nickname: mypageNickname, phoneNumber: userStore.user.phoneNumber, profileImageURL: userStore.user.profileImageURL, follower: userStore.user.follower, following: userStore.user.following, myFeed: userStore.user.myFeed, savedFeed: userStore.user.savedFeed, bookmark: userStore.user.bookmark, chattingRoom: userStore.user.chattingRoom, myReservation: userStore.user.myReservation))
+//                    isModify = false
+//                } label: {
+//                    Text("수정")
+//                        .font(.pretendardBold14)
+//                        .foregroundColor(.accentColor)
+//                }
+//            }
+//        }
     }
 }
 
