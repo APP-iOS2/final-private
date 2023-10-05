@@ -15,35 +15,41 @@ struct SearchResultView: View {
     var body: some View {
         ScrollView {
             VStack {
-                searchUserResult
+                if searchStore.searchUserLists.isEmpty {
+                    Text("해당 사용자가 없습니다.")
+                        .foregroundColor(.gray)
+                        .padding(.top)
+                } else {
+                    searchUserResult
+                }
                 
                 Spacer()
             }
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal)
-        .background(.gray.opacity(0.1))
-        .navigationTitle(searchTerm)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-    }
-    
-    var searchUserResult: some View {
-        ScrollView {
-            if searchStore.searchUserLists.isEmpty {
-                Text("해당 사용자가 없습니다.")
-                    .foregroundColor(.gray)
-                    .padding(.top)
-            } else {
-                ForEach(searchStore.searchUserLists, id: \.self) { user in
-                    NavigationLink {
-//                         MyPageView(user: user)
-                    } label: {
-                        SearchUserCellView(user: user)
-                    }
-                }
+        .onAppear {
+            Task {
+                await fetchSearchResults()
             }
         }
+    }
+    
+    
+    var searchUserResult: some View {
+        ForEach(searchStore.searchUserLists, id: \.self) { user in
+            NavigationLink {
+//                MyPageView
+            } label: {
+                SearchUserCellView(user: user)
+                    .environmentObject(FollowStore())
+            }
+        }
+    }
+    
+    func fetchSearchResults() async {
+        await searchStore.searchUser(searchTerm: searchTerm)
+        searchStore.addRecentSearch(searchTerm)
     }
 }
 

@@ -14,62 +14,67 @@ struct UserInfoModifyView: View {
     @State var mypageNickname: String
     var body: some View {
         NavigationStack {
-            ZStack {
-                if userStore.user.profileImageURL.isEmpty {
-                    Circle()
-                        .frame(width: .screenWidth*0.23)
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .frame(width: .screenWidth*0.23,height: 80)
-                        .foregroundColor(.gray)
-                        .clipShape(Circle())
-                    Image(systemName: "photo.fill")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.black)
-                } else {
-                    KFImage(URL(string: userStore.user.profileImageURL))
-                        .frame(width: .screenWidth*0.23)
+            ScrollView {
+                ZStack {
+                    if userStore.user.profileImageURL.isEmpty {
+                        Circle()
+                            .frame(width: .screenWidth*0.23)
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .frame(width: .screenWidth*0.23,height: 80)
+                            .foregroundColor(.gray)
+                            .clipShape(Circle())
+                        Image(systemName: "photo.fill")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.black)
+                    } else {
+                        KFImage(URL(string: userStore.user.profileImageURL))
+                            .frame(width: .screenWidth*0.23)
+                    }
                 }
+                Divider()
+                    .background(Color.primary)
+                    .frame(width: .screenWidth*0.9)
+                    .padding([.top,.bottom],15)
+                HStack {
+                    Text("닉네임")
+                    TextField("\(userStore.user.nickname)", text: $mypageNickname)
+                        .padding(.leading, 5)
+                }
+                .padding([.leading,.trailing], 28)
+                HStack {}
+                HStack {}
+                HStack {}
             }
-            Divider()
-                .background(Color.primary)
-                .frame(width: .screenWidth*0.9)
-                .padding([.top,.bottom],15)
-            HStack {
-                Text("닉네임")
-                TextField("\(userStore.user.nickname)", text: $mypageNickname)
-                    .padding(.leading, 5)
+            .onTapGesture {
+                hideKeyboard()
             }
-            .padding([.leading,.trailing], 28)
-            HStack {}
-            HStack {}
-            HStack {}
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(Text(userStore.user.nickname))
-        
-//        .toolbar {
-//            ToolbarItem(placement: .navigationBarLeading) {
-//                Button {
-//                    isModify = false
-//                } label: {
-//                    Text("취소")
-//                        .font(.pretendardBold14)
-//                        .foregroundColor(.primary)
-//                }
-//            }
-//            ToolbarItem(placement: .topBarTrailing) {
-//                Button {
-//                    userStore.updateUser(user: User(email: userStore.user.email, name: userStore.user.name, nickname: mypageNickname, phoneNumber: userStore.user.phoneNumber, profileImageURL: userStore.user.profileImageURL, follower: userStore.user.follower, following: userStore.user.following, myFeed: userStore.user.myFeed, savedFeed: userStore.user.savedFeed, bookmark: userStore.user.bookmark, chattingRoom: userStore.user.chattingRoom, myReservation: userStore.user.myReservation))
-//                    isModify = false
-//                } label: {
-//                    Text("수정")
-//                        .font(.pretendardBold14)
-//                        .foregroundColor(.accentColor)
-//                }
-//            }
-//        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    isModify = false
+                } label: {
+                    Text("취소")
+                        .font(.pretendardBold18)
+                        .foregroundColor(.primary)
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    userStore.user.nickname = mypageNickname
+                    userStore.updateUser(user: userStore.user)
+                    isModify = false
+                } label: {
+                    Text("수정")
+                        .font(.pretendardBold18)
+                        .foregroundColor(.accentColor)
+                }
+            }
+        }
     }
 }
 

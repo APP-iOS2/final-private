@@ -6,6 +6,12 @@
 //
 
 import SwiftUI
+import NMapsMap
+import FirebaseStorage
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+import FirebaseCore
+import Combine
 
 struct PostView: View {
     
@@ -16,57 +22,93 @@ struct PostView: View {
     
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var userStore: UserStore
+    @StateObject private var postStore: PostStore = PostStore()
     
     @State private var selectedWriter: String = "김아무개"
-    
     @State private var text: String = ""
+    @State private var writer: String = ""
+    @State private var images: [String] = []
+    @State private var createdAt: Double = Date().timeIntervalSince1970
+    @State private var visitedShop: String = ""
+    @State private var feedId: String = ""
+
     @State private var clickLocation: Bool = false
     @State private var isImagePickerPresented: Bool = false
     @State private var ImageViewPresented: Bool = true
+    @State private var showLocation: Bool = false
+    @State private var isshowAlert = false
     
-    @State private var selectedImage: [UIImage]? = []
+    @State private var selectedImage: [UIImage]?
     @FocusState private var isTextMasterFocused: Bool
     
     private let minLine: Int = 7
     private let maxLine: Int = 8
     private let fontSize: Double = 24
     
+    @State var selectedCategory: [String] = []
+    @State var myselectedCategory: [MyCategory] = [.koreanFood, .brunch]
+    
+    var db = Firestore.firestore()
+    var storage = Storage.storage()
+    //    var categoryString: [String] {
+    //        selectedCategory.map { $0.rawValue }
+    //    }
+//    let resultString = categoryString.joined(separator: ",")
+    
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(feedStore.feedList) { feed in
-                        HStack {
-                            AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50)
-                            } placeholder: {
-                                Image("userDefault")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50)
-                            }
-                            
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text("\(feed.writer.name)")
-                                Text("\(feed.writer.nickname)")
-                            }
-                        } // HStack
-                    } // foreach
+                    HStack {
+                        ZStack {
+                            Circle()
+                                .frame(width: .screenWidth*0.19)
+                            Image(systemName: "person")
+                                .resizable()
+                                .frame(width: .screenWidth*0.19, height: 65)
+                                .foregroundColor(.gray)
+                                .clipShape(Circle())
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text(userStore.user.name)
+                            Text("@\(userStore.user.nickname)")
+                        }
+                    }
+                    .padding(.vertical, 10)
+
                     //MARK: 내용
                     TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize)
+                        .onTapGesture {
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        }
+                        .padding(.trailing, 10)
                     
                     //MARK: 장소
                     VStack {
                         Button {
-                            // 맵뷰
+                            showLocation = true
                         } label: {
                             Label("장소", systemImage: "location")
                         }
+                        .sheet(isPresented: $showLocation){
+                            NavigationStack {
+                                MapMainView()
+                                    .toolbar {
+                                        ToolbarItem(placement: .navigationBarLeading) {
+                                            Button {
+                                                showLocation = false
+                                            } label: {
+                                                Text("취소")
+                                            }
+                                        }
+                                    }
+                                    .font(.pretendardBold18)
+                            }
+                        }
                     }
-                    
+                    .padding(.vertical, 10)
+                
                     if clickLocation {
                         Text("해당 장소")
                             .font(.body)
@@ -77,7 +119,8 @@ struct PostView: View {
                             .foregroundColor(.secondary)
                     }
                     Divider()
-                    
+                        .padding(.vertical, 10)
+
                     //MARK: 사진
                     HStack {
                         Label("사진", systemImage: "camera")
@@ -99,7 +142,7 @@ struct PostView: View {
                     
                     ScrollView(.horizontal) {
                         HStack(alignment: .center) {
-                            if let images = selectedImage {
+                            if let images = selectedImage, !images.isEmpty {
                                 ForEach(images, id: \.self) { image in
                                     ZStack {
                                         Image(uiImage: image)
@@ -107,20 +150,30 @@ struct PostView: View {
                                             .aspectRatio(contentMode: .fill)
                                             .frame(width: 150, height: 150)
                                             .clipShape(Rectangle())
-                                        //                                    Button {
-                                        //                                        feedStore.removeImage(imageList)
-                                        //                                    } label: {
-                                        //                                        Image(systemName: "x.circle")
-                                        //                                            .foregroundColor(.black)
-                                        //                                    }
+                                        Button {
+                                            if let index = selectedImage?.firstIndex(of: image) {
+                                                selectedImage?.remove(at: index)
+                                            }
+                                        } label: {
+                                            Image(systemName: "x.circle")
+                                                .font(.pretendardBold24)
+                                                .foregroundColor(.accentColor)
+                                                .padding(8)
+                                        }
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                                     }
                                 }
+                            } else {
+                                Text("최소 1장의 사진이 필요합니다!")
+                                    .foregroundStyle(.red)
                             }
                         }
                     }
                     Divider()
+                        .padding(.vertical, 10)
+
                     //MARK: 카테고리
-                    CatecoryView()
+                    CatecoryView(selectedCategory: $selectedCategory)
                 } // leading VStack
             }
             .fullScreenCover(isPresented: $ImageViewPresented) {
@@ -132,20 +185,70 @@ struct PostView: View {
                         dismiss()
                     } label: {
                         Text("취소")
-                            .foregroundStyle(.white)
                     }
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
-                        
+                        isshowAlert = true
                     } label: {
                         Text("완료")
                     }
                 }
             }
+            .alert(isPresented: $isshowAlert) {
+                let firstButton = Alert.Button.cancel(Text("취소")) {
+                    print("primary button pressed")
+                }
+                let secondButton = Alert.Button.default(Text("완료")) {
+                    fetch()
+                    print("secondary button pressed")
+                }
+                return Alert(title: Text("게시물 작성"),
+                             message: Text("작성을 완료하시겠습니까?"),
+                             primaryButton: firstButton, secondaryButton: secondButton)
+            }
             .padding(.leading, 12)
             .navigationTitle("글쓰기")
             .navigationBarTitleDisplayMode(.inline)
+        } // navigationStack
+    } // body
+    
+    //MARK: 파베함수
+    func fetch() {
+        //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
+        var feed = MyFeed(writer: writer, images: images, contents: text, createdAt: createdAt, visitedShop: visitedShop, category: selectedCategory)
+        
+        if let selectedImages = selectedImage {
+            var imageUrls: [String] = []
+
+            for image in selectedImages {
+                guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
+
+                let storageRef = storage.reference().child(UUID().uuidString) //
+
+                storageRef.putData(imageData) { _, error in
+                    if let error = error {
+                        print("Error uploading image: \(error)")
+                        return
+                    }
+
+                    storageRef.downloadURL { url, error in
+                        guard let imageUrl = url?.absoluteString else { return }
+                        imageUrls.append(imageUrl)
+
+                        if imageUrls.count == selectedImages.count {
+  
+                            feed.images = imageUrls
+
+                            do {
+                                try db.collection("User").document(feed.id).setData(from: feed)
+                            } catch {
+                                print("Error saving feed: \(error)")
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

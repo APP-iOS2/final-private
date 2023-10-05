@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CatecoryView: View {
     
-    @State private var selectedCategory: Category = .koreanFood
+    @Binding var selectedCategory: [String]
     @State private var selectedCategories: Set<Category> = []
     @State private var showAlert = false
 
@@ -73,7 +73,6 @@ struct CatecoryView: View {
                             dismissButton: .default(Text("확인"))
                         )
                     }
-
                 }
             }
         }
@@ -92,6 +91,6 @@ struct CatecoryView: View {
 
 struct CatecoryView_Previews: PreviewProvider {
     static var previews: some View {
-        CatecoryView()
+        CatecoryView(selectedCategory: .constant([]))
     }
 }

@@ -47,41 +47,51 @@ class AuthStore: ObservableObject {
     }
     
     private func authenticateUser(for user: GIDGoogleUser?, with error: Error?) {
-        if let error = error {
-            print(error.localizedDescription)
-            return
-        }
-        
-        guard let idToken = user?.idToken?.tokenString, let accessToken = user?.accessToken.tokenString else {
-            return
-        }
-        
-        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
-        
-        Firestore.firestore().collection("User").whereField("email", isEqualTo: (user?.profile?.email)!).getDocuments { snapshot, error in
-            if snapshot!.documents.isEmpty {
-                if let error = error {
-                    print(error.localizedDescription)
-                } else {
-                    Auth.auth().signIn(with: credential) { [unowned self] (result, error) in
-                        if let error = error {
-                            print(error.localizedDescription)
-                        } else {
-                            self.currentUser = result?.user
-                            self.userStore.createUser(user: User(email: (user?.profile?.email)!, name: (user?.profile?.name)!, nickname: "", phoneNumber: "", profileImageURL: "", follower: [], following: [], myFeed: [], savedFeed: [], bookmark: [], chattingRoom: [], myReservation: []))
+        if let googleUser = user {
+            let email = googleUser.profile?.email ?? ""
+            let name = googleUser.profile?.name ?? ""
+            
+            let userData: [String: Any] = ["email": email, "name": name]
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            guard let idToken = user?.idToken?.tokenString, let accessToken = user?.accessToken.tokenString else {
+                return
+            }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+            
+            Firestore.firestore().collection("User").whereField("email", isEqualTo: (user?.profile?.email)!).getDocuments { snapshot, error in
+                if snapshot!.documents.isEmpty {
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        Auth.auth().signIn(with: credential) { [unowned self] (result, error) in
+                            if let error = error {
+                                print(error.localizedDescription)
+                            } else {
+                                if let user = User(document: userData) {
+                                    print("로그인성공1")
+                                    self.currentUser = result?.user
+                                    self.userStore.createUser(user: user)
+                                }
+                            }
                         }
                     }
-                }
-            } else {
-                Firestore.firestore().collection("User").document((user?.profile?.email)!).getDocument { snapshot, error in
-                    let currentData = snapshot!.data()
-                    
-                    Auth.auth().signIn(with: credential) { result, error in
-                        if let error = error {
-                            print(error.localizedDescription)
-                            return
-                        } else {
-                            self.currentUser = result?.user
+                } else {
+                    Firestore.firestore().collection("User").document((user?.profile?.email)!).getDocument { snapshot, error in
+                        let currentData = snapshot!.data()
+
+                        Auth.auth().signIn(with: credential) { result, error in
+                            if let error = error {
+                                print(error.localizedDescription)
+                                return
+                            } else {
+                                self.currentUser = result?.user
+                            }
                         }
                     }
                 }

@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct MyFeed: Identifiable, Hashable {
+struct MyFeed: Identifiable, Codable, Hashable {
     
-    let id: String = UUID().uuidString
+    var id: String = UUID().uuidString
     
     var writer: String
     var images: [String]
     var contents: String
     var createdAt: Double = Date().timeIntervalSince1970
-    var visitedShop: Shop
-    var category: [MyCategory]
+    var visitedShop: String
+    var category: [String]
 }
 
 enum MyCategory: Int, CaseIterable, Hashable {

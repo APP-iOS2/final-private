@@ -16,6 +16,9 @@ struct MainTabView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
+  
+    @StateObject private var feedStore: FeedStore = FeedStore()
+    @StateObject private var searchStore: SearchStore = SearchStore()
      
     @State var selection: Int = 1
     @State private var rootSection1: Bool = false
