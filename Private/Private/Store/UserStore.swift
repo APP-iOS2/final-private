@@ -19,7 +19,21 @@ final class UserStore: ObservableObject {
     func createUser(user: User) {
         Firestore.firestore().collection("User")
             .document(user.email)
-            .setData(user.toDictionary())
+//            .setData(user.toDictionary())
+            .setData(["email" : user.email,
+                      "name" : user.name,
+                      "nickname" : user.nickname,
+                      "phoneNumber" : user.phoneNumber,
+                      "profileImageURL" : user.profileImageURL,
+                      "follower" : user.follower,
+                      "following" : user.following,
+                      "myFeed" : user.myFeed,
+                      "savedFeed" : user.savedFeed,
+                      "bookmark" : user.bookmark,
+                      "chattingRoom" : user.chattingRoom,
+                      "myReservation" : user.myReservation
+                     ]
+            )
         
         fetchCurrentUser(userEmail: user.email)
     }
