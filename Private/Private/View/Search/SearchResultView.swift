@@ -42,6 +42,7 @@ struct SearchResultView: View {
 //                MyPageView
             } label: {
                 SearchUserCellView(user: user)
+                    .environmentObject(FollowStore())
             }
         }
     }
