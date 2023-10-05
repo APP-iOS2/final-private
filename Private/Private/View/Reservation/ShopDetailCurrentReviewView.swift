@@ -10,9 +10,6 @@ import NMapsMap
 import Kingfisher
 import ExpandableText
 
-// Todo: - UI 관련
-/// - dummyFeed.images 적절한 패키지 찾아서 스크롤뷰에서 변경
-
 struct ShopwDetailCurrentReviewView: View {
     
     var body: some View {

@@ -52,13 +52,13 @@ final class ReservationStore: ObservableObject {
     
     /// 예약 배열을 날짜 및 시간 순으로 정렬
     func sortReservationList() {
-        self.reservationList.sort { first, second in
-            if first.date != second.date {
-                   first.date > second.date
-               } else {
-                   first.time > second.time
-               }
-        }
+//        self.reservationList.sort { first, second in
+//            if first.date != second.date {
+//                   first.date > second.date
+//               } else {
+//                   first.time > second.time
+//               }
+//        }
         print(#fileID, #function, #line, "- 내 예약 수: \(reservationList.count) ")
     }
     

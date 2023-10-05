@@ -9,64 +9,20 @@ import SwiftUI
 
 struct ReservationCardView: View {
     @EnvironmentObject var reservationStore: ReservationStore
-
+    
     let reservation: Reservation
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("예약 날짜")
-                Spacer()
-                Text("\(reservationStore.getReservationDate(reservationDate: reservation.date))")
-            }
-            
-            HStack {
-                Text("예약 시간")
-                Spacer()
-                Text("\(reservation.time)시")
-            }
-            
-            HStack {
-                Text("예약 인원")
-                Spacer()
-                Text("\(reservation.numberOfPeople)명")
-            }
-            
-            HStack {
-                Text("예약자 이메일")
-                Spacer()
-                Text("\(reservation.reservedUserId)")
-            }
-
-            HStack {
-                Text("총 비용")
-                Spacer()
-                Text("\(reservation.totalPrice)원")
-            }
-            
-            HStack {
-                Button {
-                    print(#fileID, #function, #line, "- 예약 수정")
-                } label: {
-                    Text("예약 수정")
-                        .padding()
-                }
-                .tint(Color.primary)
-                .background(Color.yellow)
-                
-                Button{
-                    print(#fileID, #function, #line, "- 예약 취소")
-                } label: {
-                    Text("예약 취소")
-                        .padding()
-                }
-                .tint(Color.blue)
-                .background(Color.red)
-
-            }
+        VStack(alignment: .leading, spacing: 5) {
+            ReservationCardCell(title: "예약 날짜", content: reservation.date.description)
+            ReservationCardCell(title: "예약 시간", content: "\(reservation.time)시")
+            ReservationCardCell(title: "예약 인원", content: "\(reservation.numberOfPeople)명")
+            ReservationCardCell(title: "예약자 이메일", content: "\(reservation.reservedUserId)")
+            ReservationCardCell(title: "총 비용", content: "\(reservation.totalPrice)원")
         }
         .padding()
-        .background(Color.subGrayColor)
+        .background(Color("SubGrayColor"))
+        .cornerRadius(12)
     }
 }
 
@@ -74,5 +30,22 @@ struct ReservationCardView_Previews: PreviewProvider {
     static var previews: some View {
         ReservationCardView(reservation: ReservationStore.tempReservation)
             .environmentObject(ReservationStore())
+    }
+}
+
+struct ReservationCardCell: View {
+    let title: String
+    let content: String
+    
+    var body: some View {
+        HStack(alignment: .center, spacing: 0) {
+            Text("\(title)")
+                .font(Font.pretendardMedium18)
+            
+            Spacer()
+            
+            Text("\(content)")
+                .font(Font.pretendardMedium16)
+        }
     }
 }
