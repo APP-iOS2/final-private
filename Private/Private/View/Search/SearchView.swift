@@ -8,6 +8,7 @@ import SwiftUI
 
 struct SearchView: View {
     @EnvironmentObject private var searchStore: SearchStore
+    @EnvironmentObject private var followStore: FollowStore
     
     @Binding var root: Bool
     @Binding var selection: Int
@@ -25,7 +26,7 @@ struct SearchView: View {
                 ScrollView(showsIndicators: false) {
                     RecentSearchListView(searchStore: searchStore, searchTerm: $searchTerm)
                     Spacer()
-                    RecentUserListView(searchStore: searchStore)
+                    RecentUserListView(searchStore: searchStore, searchTerm: $searchTerm)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -114,7 +115,8 @@ struct SearchView: View {
     
     struct RecentUserListView: View {
         @ObservedObject var searchStore: SearchStore
-        
+        @Binding var searchTerm: String
+
         var body: some View {
             VStack(spacing: 0) {
                 Text("최근 찾은 사용자")
@@ -134,20 +136,20 @@ struct SearchView: View {
             }
         }
     }
-    
+
     struct RecentUserRowView: View {
         @ObservedObject var searchStore: SearchStore
         let user: User
-        
+        @State private var isNavigationActive = false
+
         var body: some View {
             HStack {
-                NavigationLink(
-                    destination: SearchResultView(searchTerm: user.nickname),
-                    label: {
-                        Text(user.nickname)
-                            .foregroundColor(.gray)
-                    }
-                )
+                Button {
+                    isNavigationActive = true
+                } label: {
+                    SearchUserCellView(user: user)
+                        .environmentObject(FollowStore())
+                }
                 Spacer()
                 Button {
                     searchStore.removeRecentSearchResult(user.nickname)
@@ -156,8 +158,13 @@ struct SearchView: View {
                 }
             }
             .padding(.bottom, 8)
+            .background(
+//                NavigationLink("", destination: MyPageView(user: user), isActive: $isNavigationActive)
+                    .opacity(0)
+            )
         }
     }
+
 }
 
 
