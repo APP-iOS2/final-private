@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06194EB72ACDC94A0017262D /* ExpandableText in Frameworks */ = {isa = PBXBuildFile; productRef = 06194EB62ACDC94A0017262D /* ExpandableText */; };
 		0679CAC22ABD876400F48BE4 /* ShopDetailMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */; };
 		0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */; };
 		069C67372AC26D2D00A5275F /* ShopDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */; };
@@ -94,6 +95,7 @@
 		63BB099C2ABE825C002CCE4E /* TestMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB099B2ABE825C002CCE4E /* TestMapView.swift */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
+		B54DE4A42ACD5E2400278FF3 /* ExpandableText in Frameworks */ = {isa = PBXBuildFile; productRef = B54DE4A32ACD5E2400278FF3 /* ExpandableText */; };
 		B591C7202ACC59E700602727 /* MyReservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B591C71F2ACC59E700602727 /* MyReservation.swift */; };
 		B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B591C7212ACC5C1B00602727 /* ReservationCardView.swift */; };
 		B59853642AC3BE4E00C45E76 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59853632AC3BE4E00C45E76 /* String+.swift */; };
@@ -257,6 +259,7 @@
 				3CA303882AB8376700FEC7BD /* FirebasePerformance in Frameworks */,
 				3CA303802AB8376700FEC7BD /* FirebaseInAppMessagingSwift-Beta in Frameworks */,
 				3CA3038E2AB8376700FEC7BD /* FirebaseStorage in Frameworks */,
+				06194EB72ACDC94A0017262D /* ExpandableText in Frameworks */,
 				3CA303722AB8376700FEC7BD /* FirebaseDynamicLinks in Frameworks */,
 				3CA303762AB8376700FEC7BD /* FirebaseFirestoreCombine-Community in Frameworks */,
 				3CA303862AB8376700FEC7BD /* FirebaseMessaging in Frameworks */,
@@ -595,6 +598,7 @@
 				3CDE564E2AB89F1D00594DF9 /* PopupView */,
 				3C5789362AC2604600D8B7EA /* GoogleSignIn */,
 				3C5789382AC2604600D8B7EA /* GoogleSignInSwift */,
+				06194EB62ACDC94A0017262D /* ExpandableText */,
 			);
 			productName = Private;
 			productReference = 3CF3D8C12AB82A97003689A6 /* Private.app */;
@@ -676,6 +680,7 @@
 				3CDE564A2AB89EF600594DF9 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				3CDE564D2AB89F1D00594DF9 /* XCRemoteSwiftPackageReference "PopupView" */,
 				3C5789352AC2604600D8B7EA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				06194EB52ACDC94A0017262D /* XCRemoteSwiftPackageReference "ExpandableText" */,
 			);
 			productRefGroup = 3CF3D8C22AB82A97003689A6 /* Products */;
 			projectDirPath = "";
@@ -1240,6 +1245,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		06194EB52ACDC94A0017262D /* XCRemoteSwiftPackageReference "ExpandableText" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NuPlay/ExpandableText.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		3C5789352AC2604600D8B7EA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -1272,9 +1285,22 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		B54DE4A22ACD5E2300278FF3 /* XCRemoteSwiftPackageReference "ExpandableText" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NuPlay/ExpandableText";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		06194EB62ACDC94A0017262D /* ExpandableText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06194EB52ACDC94A0017262D /* XCRemoteSwiftPackageReference "ExpandableText" */;
+			productName = ExpandableText;
+		};
 		3C5789362AC2604600D8B7EA /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3C5789352AC2604600D8B7EA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
@@ -1429,6 +1455,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3CDE564D2AB89F1D00594DF9 /* XCRemoteSwiftPackageReference "PopupView" */;
 			productName = PopupView;
+		};
+		B54DE4A32ACD5E2400278FF3 /* ExpandableText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54DE4A22ACD5E2300278FF3 /* XCRemoteSwiftPackageReference "ExpandableText" */;
+			productName = ExpandableText;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

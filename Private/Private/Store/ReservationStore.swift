@@ -16,9 +16,13 @@ final class ReservationStore: ObservableObject {
     
     private let db = Firestore.firestore()
     
+    static let user = Auth.auth().currentUser
+    
     init() {
         
     }
+    
+    static let tempReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     
     /// Double 타입의 날짜를 String으로 변형
     /// 만약, 예약 날짜가 오늘이면 오늘(요일) 형태로 바꿔줌
@@ -55,6 +59,7 @@ final class ReservationStore: ObservableObject {
                    first.time > second.time
                }
         }
+        print(#fileID, #function, #line, "- 내 예약 수: \(reservationList.count) ")
     }
     
     
@@ -74,6 +79,8 @@ final class ReservationStore: ObservableObject {
             return
         }
         
+        self.reservationList.removeAll()
+        
         // Field에 reservedUserId의 값이 현재 로그인한 유저의 email이면 전부 반환됨
         let query = self.db.collection("Reservation").whereField("reservedUserId", isEqualTo: email)
         
@@ -84,7 +91,6 @@ final class ReservationStore: ObservableObject {
                 for document in querySnapshop!.documents {
                     let documentID = document.documentID  // document ID 가져오기
                     let data = document.data()  // 문서 데이터 가져오기
-                    self.reservationList.removeAll()
                     
                     guard let dateTime = self.timeStampTodateTime(data: data) else {
                         print("Timestamp 날짜/시간 변환 실패")
@@ -115,6 +121,16 @@ final class ReservationStore: ObservableObject {
     func addReservationToFirestore(reservationData: Reservation) {
         let documentRef = self.db.collection("Reservation").document(reservationData.id)
         
+        guard let user = Self.user else {
+            print("로그인 정보가 없습니다.")
+            return
+        }
+        
+        guard let email = user.email  else {
+            print("로그인 한 유저의 email 정보가 없습니다.")
+            return
+        }
+        
         guard let dateTimestamp: Timestamp = dateTimeStringToTimeStamp(reservationDate: reservationData.date, reservationHour: reservationData.time) else {
             print("예약 등록 실패 - 날짜 변환 실패")
             return
@@ -122,7 +138,7 @@ final class ReservationStore: ObservableObject {
         
         let reservationData: [String: Any] = [
             "shopId": reservationData.shopId,
-            "reservedUserId": reservationData.reservedUserId,
+            "reservedUserId": email,
             "date": dateTimestamp,
             "numberOfPeople": reservationData.numberOfPeople,
             "totalPrice": reservationData.totalPrice,
@@ -199,6 +215,45 @@ final class ReservationStore: ObservableObject {
             return (date, hour)
         }
         return nil
+    }
+
+    
+    /// 예약가능한 시간을 배열로 리턴
+    /// - Parameters:
+    ///   - open: 오픈시간
+    ///   - close: 마감시간
+    ///   - date: 예약 날짜
+    /// - Returns: 예약 가능 시간대
+    func getAvailableTimeSlots(open: Int, close: Int, date: Date) -> [Int] {  // 브레이크 타임 받아야 함
+        let reservationDate: Date = date
+        let openTime: Int = open
+        let closeTime: Int = close
+        
+        if Calendar.current.isDateInToday(reservationDate) {
+            let nowInt = Int("HH".stringFromDate())
+            
+            if let nowInt {
+                // 현재 시간이 마감시간보다 같거나 늦으면 빈 배열 반환
+                guard nowInt <= closeTime else {
+                    return []
+                }
+                
+                // 현재 시간이 오픈시간 전이거나 같을 때
+                guard nowInt >= openTime else {
+                    let times = Array(openTime...closeTime - 1)
+                    return times
+                }
+                
+                // 오픈시간 ~ 마감시간 전일 때
+                let times = Array(nowInt + 1...closeTime - 1)
+                return times
+            }
+        } else {
+            // 선택한 날짜가 미래 일 때
+            let times = Array(openTime...closeTime - 1)
+            return times
+        }
+        return [0]
     }
      
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
@@ -18,6 +19,9 @@ struct PrivateApp: App {
     @StateObject private var shopStore = ShopStore()
     
     init() {
+        let providerFactory = AppCheckDebugProviderFactory()
+        AppCheck.setAppCheckProviderFactory(providerFactory)
+        
         FirebaseApp.configure()
     }
     
