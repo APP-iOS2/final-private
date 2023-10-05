@@ -12,7 +12,6 @@ struct UserInfoModifyView: View {
     @EnvironmentObject private var userStore: UserStore
     @Binding var isModify: Bool
     @State var mypageNickname: String
-    @State private var isKeyboardVisible: Bool = false
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -43,7 +42,6 @@ struct UserInfoModifyView: View {
                     TextField("\(userStore.user.nickname)", text: $mypageNickname)
                         .padding(.leading, 5)
                 }
-                
                 .padding([.leading,.trailing], 28)
                 HStack {}
                 HStack {}
@@ -51,11 +49,8 @@ struct UserInfoModifyView: View {
             }
             .onTapGesture {
                 hideKeyboard()
-                isKeyboardVisible = false
-                print("stack")
             }
         }
-       
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(Text(userStore.user.nickname))
         .toolbar {
@@ -79,7 +74,6 @@ struct UserInfoModifyView: View {
                 }
             }
         }
-        
     }
 }
 
