@@ -17,20 +17,43 @@ struct SignUpView: View {
     
     var body: some View {
         VStack {
+            Spacer()
+            
+            Text("Private")
+                .font(.pretendardBold28)
+                .foregroundStyle(.primary)
+            
+            Spacer()
+            
             TextField("닉네임을 입력하세요", text: $nickName)
+                .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
+                .disableAutocorrection(true) // 자동수정 비활성화
+                .padding(10)
+                .padding(.leading, 5)
+                .background(Color.lightGrayColor)
+                .cornerRadius(20)
+            
             TextField("휴대폰 번호를 입력하세요", text: $phoneNumber)
+                .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
+                .disableAutocorrection(true) // 자동수정 비활성화
+                .padding(10)
+                .padding(.leading, 5)
+                .background(Color.lightGrayColor)
+                .cornerRadius(20)
             
             Button {
-                userStore.updateUser(user: User())
+                userStore.user.nickname = nickName
+                userStore.user.phoneNumber = phoneNumber
+                
+                userStore.updateUser(user: userStore.user)
             } label: {
                 Text("정보입력 완료하기")
+                    .foregroundStyle(.primary)
             }
+            .buttonStyle(.borderedProminent)
+            .padding()
             
-            Button {
-                authStore.signOutGoogle()
-            } label: {
-                Text("구글 아이디 로그아웃")
-            }
+            Spacer()
 
         }
     }
