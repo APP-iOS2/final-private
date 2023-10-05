@@ -76,7 +76,7 @@ struct ReservationConfirmView: View {
                     HStack {
                         Text("요구사항")
                         Spacer()
-                        Text("업체에 요청하실 내용을 적어주세요")
+                        Text("업체에 요청하실 내용을 적어주세요")  // 텍스트필드로 변경
                     }
                 }
                 .padding(.bottom)
@@ -101,7 +101,7 @@ struct ReservationConfirmView: View {
                     HStack {
                         Text("대표자명")
                         Spacer()
-                        Text("라땡")
+                        Text(shopData.shopOwner)
                         
                     }
                     
@@ -114,8 +114,8 @@ struct ReservationConfirmView: View {
                     HStack {
                         Text("사업자번호")
                         Spacer()
-                        Text("1234-12-124")
-                    }   
+                        Text(shopData.businessNumber)
+                    }
                 }
                 
             }

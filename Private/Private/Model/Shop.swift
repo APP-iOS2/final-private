@@ -18,6 +18,8 @@ struct Shop: Hashable {
     var shopTelNumber: String
     var shopInfo: String
     var shopImageURL: String
+    var shopOwner: String   // 대표자명
+    var businessNumber: String  // 사업자번호
     var reservationItems: [ShopItem]?  // 예약항목
 //    var numberOfBookmark: Int     // 실험용
     var bookmarks: [String]

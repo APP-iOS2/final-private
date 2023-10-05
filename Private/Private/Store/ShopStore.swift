@@ -24,6 +24,8 @@ final class ShopStore: ObservableObject {
         shopTelNumber: "010-1234-5678",
         shopInfo: "미슐랭 맛집",
         shopImageURL: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg",
+        shopOwner: "백종원",
+        businessNumber: "123-12-1234",
         bookmarks: [],
         menu: [
             ShopItem(name: "돈코츠 라멘", price: 11000, imageUrl: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg"),
