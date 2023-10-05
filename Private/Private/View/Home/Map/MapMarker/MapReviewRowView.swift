@@ -81,11 +81,11 @@ struct MapReviewRowView: View {
     }
 }
 
-struct MapReviewRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(dummyFeeds, id: \.id) { feed in
-            MapReviewRowView(feed: feed)
-                .environmentObject(ChatRoomStore()) // 미리보기에 ChatRoomStore를 주입
-        }
-    }
-}
+//struct MapReviewRowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ForEach(dummyFeeds, id: \.id) { feed in
+//            MapReviewRowView(feed: feed)
+//                .environmentObject(ChatRoomStore()) // 미리보기에 ChatRoomStore를 주입
+//        }
+//    }
+//}
