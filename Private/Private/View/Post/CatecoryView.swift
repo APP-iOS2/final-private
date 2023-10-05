@@ -12,17 +12,9 @@ struct CatecoryView: View {
     @Binding var selectedCategory: [String]
     @State private var selectedCategories: Set<Category> = []
     @State private var showAlert = false
-
+    @State private var myselectedCategory: [MyCategory] = MyCategory.allCases
+    @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     private let maxSelectedCategories = 3
-    
-    private let gridItems: [GridItem] = [
-        GridItem(.adaptive(minimum: 70))
-        //        .init(.flexible(), spacing: 10),
-        //        .init(.flexible(), spacing: 10),
-        //        .init(.flexible(), spacing: 10),
-        //        .init(.flexible(), spacing: 10),
-        //        .init(.flexible(), spacing: 10)
-    ]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -35,19 +27,21 @@ struct CatecoryView: View {
                     .foregroundColor(.secondary)
             }
             
-            LazyVGrid(columns: gridItems) {
-                ForEach (Category.allCases, id: \.rawValue) { category in
+            LazyVGrid(columns: createGridColumns(), spacing: 20) {
+                ForEach (Category.allCases.indices, id: \.self) { index in
                     VStack {
-                        if selectedCategories.contains(category) {
-                            Text(category.categoryName)
+                        if selectedToggle[index] {
+                            Text(Category.allCases[index].categoryName)
                                 .font(.body)
                                 .foregroundColor(.black)
+                                .frame(width: 70, height: 30)
                                 .padding(.vertical, 4)
                                 .padding(.horizontal, 4)
                                 .background(Color.accentColor)
                                 .cornerRadius(7)
                         } else {
-                            Text(category.categoryName)
+                            Text(Category.allCases[index].categoryName)
+                                .frame(width: 70, height: 30)
                                 .padding(.vertical, 4)
                                 .padding(.horizontal, 4)
                                 .cornerRadius(7)
@@ -58,8 +52,8 @@ struct CatecoryView: View {
                         }
                     }
                     .onTapGesture {
-                        if selectedCategories.count < maxSelectedCategories || selectedCategories.contains(category) {
-                            toggleCategorySelection(category)
+                        if selectedCategories.count < maxSelectedCategories || selectedToggle[index] {
+                            toggleCategorySelection(at: index)
                             print(selectedCategories)
                         } else {
                             showAlert = true
@@ -76,18 +70,20 @@ struct CatecoryView: View {
                 }
             }
         }
+    } // body
+    func toggleCategorySelection(at index: Int) {
+        selectedToggle[index].toggle()
+        selectedCategories = Set(Category.allCases.indices
+            .filter { selectedToggle[$0] }
+            .map { Category.allCases[$0] }
+        )
     }
     
-    private func toggleCategorySelection(_ category: Category) {
-        if selectedCategories.contains(category) {
-            selectedCategories.remove(category)
-        } else {
-            selectedCategories.insert(category)
-        }
+    func createGridColumns() -> [GridItem] {
+        let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
+        return columns
     }
 }
-
-
 
 struct CatecoryView_Previews: PreviewProvider {
     static var previews: some View {

@@ -15,8 +15,8 @@ struct TestMapView: View {
     @State private var coord: NMGLatLng = NMGLatLng(lat: 36.444, lng: 127.332)
     var body: some View {
         ZStack {
-            NaverMap(coord: $coord ,isSheetPresented: $isSheetPresented)
-                .ignoresSafeArea(.all, edges: .top)
+//            NaverMap(coord: $coord ,isSheetPresented: $isSheetPresented)
+//                .ignoresSafeArea(.all, edges: .top)
         }
         .zIndex(1)
         .onAppear{

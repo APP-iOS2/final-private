@@ -15,8 +15,8 @@ struct ImagePickerView: UIViewControllerRepresentable {
     
     func makeUIViewController(context: Context) -> PHPickerViewController {
         var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 0  // Set the desired selection limit (0 for unlimited)
-        configuration.filter = .images  // Filter for images only
+        configuration.selectionLimit = 0
+        configuration.filter = .images 
         
         let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = context.coordinator
@@ -78,34 +78,31 @@ final class PostStore: ObservableObject {
     //        visitedShop: ShopStore.shop,
     //        category: [Category.koreanFood]
     //    )
-    func fetchFeed() {
-        
-        dbRef.document(feedId).collection("User").getDocuments { (snapshot, error) in
-            self.feedList.removeAll()
-            
-            if let snapshot {
-                var tempReplies: [MyFeed] = []
-                
-                for document in snapshot.documents {
-                    let id: String = document.documentID
-                    
-                    let docData: [String : Any] = document.data()
-                    let writer: String = docData["writer"] as? String ?? ""
-                    let images: [String] = docData["images"] as? [String] ?? []
-                    let contents: String = docData["contents"] as? String ?? ""
-                    let createdAt: Double = docData["createdAt"] as? Double ?? 0
-                    let visitedShop: String = docData["visitedShop"] as? String ?? ""
-                    let category: [String] = docData["category"] as? [String] ?? []
-                    
-                    let myFeed = MyFeed(writer: writer, images: images, contents: contents, createdAt: createdAt, visitedShop: visitedShop, category: category)
-                    
-                    tempReplies.append(myFeed)
-                }
-                
-                self.feedList = tempReplies
-            }
-        }
-    }
+//    func fetchFeed() {
+//        dbRef.document(feedId).collection("User").getDocuments { (snapshot, error) in
+//            self.feedList.removeAll()
+//            if let snapshot {
+//                var tempReplies: [MyFeed] = []
+//                
+//                for document in snapshot.documents {
+//                    let id: String = document.documentID
+//                    
+//                    let docData: [String : Any] = document.data()
+//                    let writer: String = docData["writer"] as? String ?? ""
+//                    let images: [String] = docData["images"] as? [String] ?? []
+//                    let contents: String = docData["contents"] as? String ?? ""
+//                    let createdAt: Double = docData["createdAt"] as? Double ?? 0
+//                    let visitedShop: String = docData["visitedShop"] as? String ?? ""
+//                    let category: [String] = docData["category"] as? [String] ?? []
+//                    
+//                    let myFeed = MyFeed(writer: writer, images: images, contents: contents, createdAt: createdAt, visitedShop: visitedShop, category: category)
+//                    
+//                    tempReplies.append(myFeed)
+//                }
+//                self.feedList = tempReplies
+//            }
+//        }
+//    }
     
     func addFeed(_ feed: MyFeed) {
         dbRef.document(feed.id).collection("myFeed")
@@ -119,7 +116,7 @@ final class PostStore: ObservableObject {
                      ])
         
         
-        fetchFeed()
+//        fetchFeed()
     }
     
     func uploadImageToFirebase (image: UIImage) async -> String? {
@@ -152,18 +149,7 @@ final class PostStore: ObservableObject {
         ])
     }
 }
-//    func removeImage(_ image: Feed) {
-//        var index: Int = 0
-//
-//        for tempImage in feedList {
-//
-//            if tempImage.id == image.id {
-//                feedList.remove(at: index)
-//                break
-//            }
-//            index += 1
-//        }
-//    }
+
 let feedTestData: Feed = Feed(
     writer: User(),
     images: [],

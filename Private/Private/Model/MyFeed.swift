@@ -16,29 +16,16 @@ struct MyFeed: Identifiable, Codable, Hashable {
     var contents: String
     var createdAt: Double = Date().timeIntervalSince1970
     var visitedShop: String
-    var category: [String]
+    var category: [MyCategory]
 }
 
-enum MyCategory: Int, CaseIterable, Hashable {
-    case koreanFood
-    case westernFood
-    case japaneseFood
-    case chinessFood
-    case dessert
-    case pub
-    case brunch
-    case cafe
-
-    var categoryName: String {
-        switch self {
-        case .koreanFood : return "한식"
-        case .westernFood : return "양식"
-        case .japaneseFood : return "일식"
-        case .chinessFood : return "중식"
-        case .dessert : return "디저트"
-        case .pub : return "술집"
-        case .brunch : return "브런치"
-        case .cafe : return "카페"
-        }
-    }
+enum MyCategory: String, CaseIterable, Hashable, Codable {
+    case koreanFood = "한식"
+    case westernFood = "양식"
+    case japaneseFood = "일식"
+    case chinessFood = "중식"
+    case dessert = "디저트"
+    case pub = "술집"
+    case brunch = "브런치"
+    case cafe = "카페"
 }
