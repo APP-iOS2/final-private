@@ -25,7 +25,7 @@ struct Shop: Hashable {
     var bookmarks: [String]
     var menu: [ShopItem]
     var regularHoliday: [String] // 정기 휴무일
-    var temporayHoliday: [Date] // 특정 휴무일
+    var temporaryHoliday: [Date] // 특정 휴무일
     var breakTimeHours: [String: BusinessHours]  // 브레이크타임
     var weeklyBusinessHours: [String: BusinessHours]  // 영업시간
 }

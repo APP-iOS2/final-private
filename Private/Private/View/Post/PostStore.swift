@@ -173,7 +173,7 @@ let feedTestData: Feed = Feed(
         ShopItem(name: "돈코츠 라멘", price: 11000, imageUrl: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg"),
         ShopItem(name: "마제소바", price: 10000, imageUrl: "https://www.kfoodtimes.com/news/photo/202105/16015_27303_5527.png"),
         ShopItem(name: "차슈덮밥", price: 12000, imageUrl: "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/411/3435af5cc6041f247e89a65b1a1d73c5_res.jpeg")
-    ], regularHoliday: ["토요일"], temporayHoliday: [], breakTimeHours: [
+    ], regularHoliday: ["토요일"], temporaryHoliday: [], breakTimeHours: [
         "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
         "화요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
         "수요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
