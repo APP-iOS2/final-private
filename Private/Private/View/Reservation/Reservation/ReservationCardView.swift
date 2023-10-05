@@ -14,7 +14,7 @@ struct ReservationCardView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            ReservationCardCell(title: "예약 날짜", content: reservation.date.description)
+            ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: reservation.date))
             ReservationCardCell(title: "예약 시간", content: "\(reservation.time)시")
             ReservationCardCell(title: "예약 인원", content: "\(reservation.numberOfPeople)명")
             ReservationCardCell(title: "예약자 이메일", content: "\(reservation.reservedUserId)")
@@ -23,6 +23,16 @@ struct ReservationCardView: View {
         .padding()
         .background(Color("SubGrayColor"))
         .cornerRadius(12)
+    }
+    
+    func dateToFullString(date: Date) -> String {
+        let formatter = DateFormatter()
+//        formatter.locale = Locale(identifier: Locale.current.identifier)
+        formatter.locale = Locale(identifier: "ko_KR")
+//        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
+        formatter.timeZone = TimeZone(abbreviation: "KST")
+        formatter.dateStyle = .full
+        return formatter.string(from: date)
     }
 }
 

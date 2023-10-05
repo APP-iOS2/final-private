@@ -161,11 +161,9 @@ struct ReservationView: View {
                         ReservationConfirmView(isShwoingConfirmView: $isShwoingConfirmView, temporaryReservation: temporaryReservation, shopData: shopData)
                     }
                     .sheet(isPresented: $isShowingMyReservation) {
-                        MyReservation()
+                         MyReservation(isShowingMyReservation: $isShowingMyReservation)
                     }
-                    
                 }// VStack
-                
             }// ScrollView
             .padding()
             .onAppear {
