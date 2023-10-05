@@ -10,6 +10,16 @@ import SwiftUI
 struct MyReservation: View {
     @EnvironmentObject var reservationStore: ReservationStore
     
+//     var body: some View {
+//         ScrollView {
+//             ForEach(reservationStore.reservationList, id: \.self) { reservation in
+//                 ReservationCardView(reservation: reservation)
+//             }
+//             .padding()
+//         }
+//        .onAppear {
+//            dump(reservationStore.reservationList)
+//        }
     let dummyReservationList: [Reservation] = [
         Reservation(shopId: "1234-1234-1234", reservedUserId: "5678-5678-5678", date: Date(), time: 10, totalPrice: 100000),
         Reservation(shopId: "1234-1234-1234", reservedUserId: "5678-5678-5678", date: Date(), time: 10, totalPrice: 100000),
