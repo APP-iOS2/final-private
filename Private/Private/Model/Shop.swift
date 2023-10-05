@@ -42,5 +42,42 @@ struct BusinessHours: Hashable {
     var endHour: Int
     var endMinute: Int
 }
-
-
+extension Shop {
+    init?(documentData: [String: Any]) {
+        guard
+            let name = documentData["name"] as? String,
+            let categoryRawValue = documentData["category"] as? Int,
+            let category = Category(rawValue: categoryRawValue),
+            let coordData = documentData["coord"] as? [String: Any],
+            let lat = coordData["lat"] as? Double,
+            let lng = coordData["lng"] as? Double,
+            let address = documentData["address"] as? String,
+            let addressDetail = documentData["addressDetail"] as? String,
+            let shopTelNumber = documentData["shopTelNumber"] as? String,
+            let shopInfo = documentData["shopInfo"] as? String,
+            let shopImageURL = documentData["shopImageURL"] as? String
+        else {
+            print("Failed to initialize Feed with shopdata: \(documentData)")
+            return nil
+        }
+        
+        self.name = name
+        self.category = category
+        self.coord = NMGLatLng(lat: lat, lng: lng)
+        self.address = address
+        self.addressDetail = addressDetail
+        self.shopTelNumber = shopTelNumber
+        self.shopInfo = shopInfo
+        self.shopImageURL = shopImageURL
+        
+        // 여기서 나머지 프로퍼티들을 초기화해야 합니다.
+        // 만약 Firestore에 해당 정보가 없다면 기본값이나 빈 배열, 빈 문자열 등을 할당하세요.
+        self.bookmarks = documentData["bookmarks"] as? [String] ?? []
+        self.menu = [] // 여기는 어떻게 초기화할지 명시해야 합니다.
+        self.regularHoliday = documentData["regularHoliday"] as? [String] ?? []
+        self.temporayHoliday = documentData["temporayHoliday"] as? [Date] ?? []
+        self.breakTimeHours = documentData["breakTimeHours"] as? [String: BusinessHours] ?? [:]
+        self.weeklyBusinessHours = documentData["weeklyBusinessHours"] as? [String: BusinessHours] ?? [:]
+        self.reservationItems = [] // 여기도 적절한 초기화가 필요합니다.
+    }
+}

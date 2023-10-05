@@ -9,7 +9,7 @@ import Foundation
 
 struct Feed: Identifiable, Hashable {
     
-    let id: String = UUID().uuidString
+    var id: String = UUID().uuidString
     
     var writer: User
     var images: [String]
@@ -40,5 +40,34 @@ enum Category: Int, CaseIterable, Hashable {
         case .brunch : return "브런치"
         case .cafe : return "카페"
         }
+    }
+    
+    
+}
+
+
+extension Feed {
+    init?(documentData: [String: Any]) {
+        guard
+            let writerData = documentData["writer"] as? [String: Any],
+            let writer = User(document: writerData),
+            let images = documentData["images"] as? [String],
+            let contents = documentData["contents"] as? String,
+            let createdAt = documentData["createdAt"] as? Double,
+            let visitedShopData = documentData["visitedShop"] as? [String: Any],
+            let visitedShop = Shop(documentData: visitedShopData),
+            let categoryInts = documentData["category"] as? [Int]
+        else {
+            print("Failed to initialize Feed with feeddata: \(documentData)")
+            return nil
+        }
+        
+        self.id = UUID().uuidString
+        self.writer = writer
+        self.images = images
+        self.contents = contents
+        self.createdAt = createdAt
+        self.visitedShop = visitedShop
+        self.category = categoryInts.compactMap { Category(rawValue: $0) }
     }
 }

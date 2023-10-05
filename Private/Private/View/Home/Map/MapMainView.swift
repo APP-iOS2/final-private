@@ -20,7 +20,9 @@ struct MapMainView: View {
             }
             .zIndex(1)
             Spacer()
-            UIMapView(coord: coord)
+            //UIMapView(coord: coord)
+            //    .edgesIgnoringSafeArea(.vertical)
+            TestMapView()
                 .edgesIgnoringSafeArea(.vertical)
         }
        

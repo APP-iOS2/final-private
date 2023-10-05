@@ -11,10 +11,11 @@ import FirebaseFirestore
 final class FeedStore: ObservableObject {
     
     @Published var feedList: [Feed] = []
-    private let dbRef = Firestore.firestore().collection("User")
+    private let dbRef = Firestore.firestore().collection("Feed")
     
     init() {
 //        feedList.append(FeedStore.feed)
+        fetchFeeds()
     }
     
 //    static let feed = Feed(
@@ -69,5 +70,24 @@ final class FeedStore: ObservableObject {
             "visitedShop": feed.visitedShop,
             "category": feed.category
         ])
+    }
+    
+    func fetchFeeds() {
+        dbRef.addSnapshotListener { (querySnapshot, error) in
+            if let error = error {
+                print("Error fetching documents: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+                print("No documents")
+                return
+            }
+            
+            self.feedList = documents.compactMap { (queryDocumentSnapshot) -> Feed? in
+                let data = queryDocumentSnapshot.data()
+                return Feed(documentData: data)
+            }
+        }
     }
 }
