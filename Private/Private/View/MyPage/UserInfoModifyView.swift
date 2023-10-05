@@ -50,7 +50,7 @@ struct UserInfoModifyView: View {
         .navigationTitle(Text(userStore.user.nickname))
         
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .topBarLeading) {
                 Button {
                     isModify = false
                 } label: {
