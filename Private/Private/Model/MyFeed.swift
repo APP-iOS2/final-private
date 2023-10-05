@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct MyFeed: Identifiable, Hashable {
+struct MyFeed: Identifiable, Codable, Hashable {
     
-    let id: String = UUID().uuidString
+    var id: String = UUID().uuidString
     
     var writer: String
     var images: [String]
