@@ -16,9 +16,13 @@ final class ReservationStore: ObservableObject {
     
     private let db = Firestore.firestore()
     
+    static let user = Auth.auth().currentUser
+    
     init() {
         
     }
+    
+    static let tempReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     
     /// Double 타입의 날짜를 String으로 변형
     /// 만약, 예약 날짜가 오늘이면 오늘(요일) 형태로 바꿔줌
@@ -117,7 +121,7 @@ final class ReservationStore: ObservableObject {
     func addReservationToFirestore(reservationData: Reservation) {
         let documentRef = self.db.collection("Reservation").document(reservationData.id)
         
-        guard let user = Auth.auth().currentUser else {
+        guard let user = Self.user else {
             print("로그인 정보가 없습니다.")
             return
         }

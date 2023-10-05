@@ -72,7 +72,7 @@ struct ReservationCardView: View {
 
 struct ReservationCardView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationCardView(reservation: Reservation(shopId: "맛집", reservedUserId: "멋쟁이토마토", date: Date(), time: 18, totalPrice: 30000))
+        ReservationCardView(reservation: ReservationStore.tempReservation)
             .environmentObject(ReservationStore())
     }
 }

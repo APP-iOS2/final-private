@@ -7,9 +7,6 @@
 
 import SwiftUI
 
-// 예약일이 날짜, 시간까지 통채로 있어서 한 번에 동기화되도록 가능할까..
-
-// 오늘의 목표 버튼까지 만들기
 struct DateTimePickerView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     
@@ -26,46 +23,8 @@ struct DateTimePickerView: View {
     
     let colums = [GridItem(.adaptive(minimum: 80))] // 레이아웃 최소 사이즈
     
-    /// 현재 시간 기준으로 +1 시간하여 예약 가능한 시간대를 배열로 변환
-//    var timeSlots: [Int] {
-//        // 오늘이 아니라면 -> 전체 시간을 일단 띄워야 함
-//        let reservationDate = temporaryReservation.date
-//        
-//        let openTime: Int = 9
-//        let closeTime: Int = 21
-//        
-//        if Calendar.current.isDateInToday(reservationDate) {
-//            let nowInt = Int("HH".stringFromDate())
-//
-//            
-//            if let nowInt {
-//                // 현재 시간이 마감시간보다 같거나 늦으면 빈 배열 반환
-//                guard nowInt <= closeTime else {
-//                    return []
-//                }
-//                
-//                // 현재 시간이 오픈시간 전이거나 같을 때
-//                guard nowInt >= openTime else {
-//                    let times = Array(openTime...closeTime - 1)
-//                    return times
-//                }
-//                
-//                // 오픈시간 ~ 마감시간 전일 때
-//                let times = Array(nowInt + 1...closeTime - 1)
-//                return times
-//            }
-//        } else {
-//            // 선택한 날짜가 미래 일 때
-//            let times = Array(openTime...closeTime - 1)
-//            return times
-//        }
-//        return [0]
-//    }
-    
     var body: some View {
         ScrollView {
-            
-            // 날짜 선택 버튼
             Button {
                 showingDate.toggle()
             } label: {
@@ -231,7 +190,7 @@ struct DateTimePickerView: View {
 
 struct DateTimePickerView_Previews: PreviewProvider {
     static var previews: some View {
-        DateTimePickerView(temporaryReservation: .constant(Reservation(shopId: "shopId", reservedUserId: "userId", date: Date(), time: 16, numberOfPeople: 5, totalPrice: 30000)), isSelectedTime: .constant(true))
+        DateTimePickerView(temporaryReservation: .constant(ReservationStore.tempReservation), isSelectedTime: .constant(true))
             .environmentObject(ReservationStore())
     }
 }
