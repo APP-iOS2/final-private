@@ -234,7 +234,7 @@ final class ReservationStore: ObservableObject {
             
             if let nowInt {
                 // 현재 시간이 마감시간보다 같거나 늦으면 빈 배열 반환
-                guard nowInt <= closeTime else {
+                guard nowInt < closeTime else {
                     return []
                 }
                 

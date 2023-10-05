@@ -43,12 +43,12 @@ struct ReservationConfirmView: View {
                     .cornerRadius(8)
                     .padding(.bottom)
                     
-                    //                HStack {
-                    //                    Text("최종 결제할 금액")
-                    //                    Spacer()
-                    //                    Text("\(temporaryReservation.numberOfPeople) 원")  // 무한루프
-                    //                }
-                    //                padding(.bottom)
+                    HStack {
+                        Text("최종 결제할 금액")
+                        Spacer()
+                        Text("\(temporaryReservation.numberOfPeople) 원")
+                    }
+                    .padding(.bottom)
                 }
                 
                 Divider()
