@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import GoogleSignInSwift
 
 struct MainLoginView: View {
     
@@ -15,11 +16,30 @@ struct MainLoginView: View {
     
     var body: some View {
         VStack {
-            Button {
-                authStore.signInGoogle()
-            } label: {
-                Text("구글 로그인")
+            Spacer()
+            Text("Private.")
+                .font(.pretendardBold28)
+                .foregroundStyle(.primary)
+            
+            Spacer()
+            HStack {
+                ZStack {
+                    Divider()
+                        .foregroundStyle(.primary)
+                    Text("간편 로그인")
+                        .font(.pretendardBold14)
+                        .foregroundStyle(.primary)
+                        .padding()
+                        .background(Color.tabColor)
+                }
             }
+            .padding()
+            
+            GoogleSignInButton {
+                authStore.signInGoogle()
+            }
+            .frame(width: .screenWidth * 0.9)
+            Spacer()
         }
         .onDisappear {
             userStore.fetchCurrentUser(userEmail: (authStore.currentUser?.email)!)
