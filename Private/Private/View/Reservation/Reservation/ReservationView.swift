@@ -154,7 +154,7 @@ struct ReservationView: View {
                     ReservationConfirmView(temporaryReservation: $temporaryReservation)
                 }
                 .sheet(isPresented: $isShowingMyReservation) {
-                    MyReservation()
+                    MyReservation(isShowingMyReservation: $isShowingMyReservation)
                 }
                 
             }// VStack
