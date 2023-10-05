@@ -73,7 +73,6 @@ struct CatecoryView: View {
                             dismissButton: .default(Text("확인"))
                         )
                     }
-
                 }
             }
         }
