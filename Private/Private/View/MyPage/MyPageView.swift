@@ -98,6 +98,9 @@ struct MyPageView: View {
                             .onEnded { value in
                                 if value.translation.width < -50 {
                                     // 스와이프 제스처를 위로 움직였을 때 뷰 전환
+                                    isMyhistoryButton = false
+                                    isMySavedFeedButton = true
+                                    isMySavedPlaceButton = false
                                     viewNumber = 1
                                 }
                             }
@@ -114,12 +117,18 @@ struct MyPageView: View {
                             .onEnded { value in
                                 if value.translation.width < -50 {
                                     // 스와이프 제스처를 위로 움직였을 때 뷰 전환
+                                    isMyhistoryButton = false
+                                    isMySavedFeedButton = false
+                                    isMySavedPlaceButton = true
                                     viewNumber = 2
                                 }
                             }
                             .onEnded { value in
                                 if value.translation.width > 50 {
                                     // 스와이프 제스처를 위로 움직였을 때 뷰 전환
+                                    isMyhistoryButton = true
+                                    isMySavedFeedButton = false
+                                    isMySavedPlaceButton = false
                                     viewNumber = 0
                                 }
                             }
@@ -134,6 +143,9 @@ struct MyPageView: View {
                             .onEnded { value in
                                 if value.translation.width > 50 {
                                     // 스와이프 제스처를 위로 움직였을 때 뷰 전환
+                                    isMyhistoryButton = false
+                                    isMySavedFeedButton = true
+                                    isMySavedPlaceButton = false
                                     viewNumber = 1
                                 }
                             }
