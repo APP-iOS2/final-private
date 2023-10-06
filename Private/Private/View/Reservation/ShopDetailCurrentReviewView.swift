@@ -54,7 +54,7 @@ struct ShopDetailCurrentReviewCell: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .center, spacing: 10) {
-                KFImage(URL(string: dummyFeed.writer.profileImageURL)!)
+                KFImage(URL(string: "https://i.pinimg.com/564x/d7/fd/a8/d7fda819308b8998288990b28e7f509d.jpg")!)
                     .placeholder({
                         ProgressView()
                     })
