@@ -10,6 +10,8 @@ import Firebase
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
+import KakaoSDKCommon
+import KakaoSDKAuth
 
 @main
 struct PrivateApp: App {
@@ -23,6 +25,10 @@ struct PrivateApp: App {
         AppCheck.setAppCheckProviderFactory(providerFactory)
         
         FirebaseApp.configure()
+        
+        // Kakao SDK 초기화
+        let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_APP_KEY"] as? String ?? "KAKAO_APP_KEY is nil"
+        KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
     }
     
     var body: some Scene {
@@ -35,6 +41,13 @@ struct PrivateApp: App {
                 .environmentObject(ChatRoomStore())
                 .environmentObject(reservationStore)
                 .environmentObject(shopStore)
+                .onOpenURL { url in
+                    // 뷰가 속한 Window에 대한 URL을 받았을 때 호출할 Handler를 등록하는 함수
+                    // 카카오 로그인을 위해선 웹 혹은 카카오톡 앱으로 이동한 다음, 다시 앱으로 돌아오는 과정을 거쳐야 한다. 따라서 Handler를 추가로 등록해준다.
+                    if AuthApi.isKakaoTalkLoginUrl(url) {
+                        _ = AuthController.handleOpenUrl(url: url)
+                    }
+                }
         }
     }
 }
