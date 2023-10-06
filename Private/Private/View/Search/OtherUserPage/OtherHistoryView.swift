@@ -1,16 +1,15 @@
 //
-//  MyHistoryView.swift
+//  OtherHistoryView.swift
 //  Private
 //
-//  Created by 주진형 on 2023/09/25.
+//  Created by 박범수 on 10/5/23.
 //
 
 import SwiftUI
 import Kingfisher
 
-struct MyHistoryView: View {
-    
-    @EnvironmentObject private var userStore: UserStore
+struct OtherHistoryView: View {
+
     @EnvironmentObject private var reservationStore: ReservationStore
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
@@ -18,6 +17,8 @@ struct MyHistoryView: View {
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
+    let user: User
+    
     var body: some View {
         VStack{
             HStack {
@@ -76,7 +77,7 @@ struct MyHistoryView: View {
             }
             if (isFeed == true) {
                 ScrollView {
-                if userStore.user.myFeed.isEmpty {
+                if user.myFeed.isEmpty {
                     Text("게시물이 존재 하지 않습니다.")
                         .font(.pretendardBold24)
                         .padding(.top, .screenHeight * 0.2)
@@ -86,7 +87,7 @@ struct MyHistoryView: View {
                             alignment: .center,
                             spacing: 1
                         ) {
-                            ForEach(userStore.user.myFeed, id: \.self) { feed in
+                            ForEach(user.myFeed, id: \.self) { feed in
                                 KFImage(URL(string:feed.images[0])) .placeholder {
                                     Image(systemName: "photo")
                                 }.resizable()
@@ -111,8 +112,8 @@ struct MyHistoryView: View {
     }
 }
 
-struct MyHistoryView_Previews: PreviewProvider {
+struct OtherHistoryView_Previews: PreviewProvider {
     static var previews: some View {
-        MyHistoryView().environmentObject(UserStore())
+        OtherHistoryView(user: User())
     }
 }

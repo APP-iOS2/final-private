@@ -41,23 +41,18 @@ final class ReservationStore: ObservableObject {
         return dateString
     }
     
-    
-    /// ReservationList에 추가하기
-    /// - Parameter tempReservation: 임시 예약 데이터
-    func appendReservationList(tempReservation: Reservation) {
+    private func appendReservationList(tempReservation: Reservation) {
         let reservationData = tempReservation
         self.reservationList.append(reservationData)
     }
     
-    
-    /// 예약 배열을 날짜 및 시간 순으로 정렬
-    func sortReservationList() {
+    private func sortReservationList() {
         self.reservationList.sort { first, second in
             if first.date != second.date {
-                   first.date > second.date
-               } else {
-                   first.time > second.time
-               }
+                first.date > second.date
+            } else {
+                first.time > second.time
+            }
         }
         print(#fileID, #function, #line, "- 내 예약 수: \(reservationList.count) ")
     }
@@ -119,7 +114,7 @@ final class ReservationStore: ObservableObject {
     /// Firestore Database에 예약 등록
     /// - Parameter reservationData: 예약 데이터
     func addReservationToFirestore(reservationData: Reservation) {
-        let documentRef = self.db.collection("Reservation").document(reservationData.id)
+        let docRef = self.db.collection("Reservation").document(reservationData.id)
         
         guard let user = Self.user else {
             print("로그인 정보가 없습니다.")
@@ -146,7 +141,7 @@ final class ReservationStore: ObservableObject {
         ]
         
         // Firestore에 예약 정보 추가
-        documentRef.setData(reservationData) { error in
+        docRef.setData(reservationData) { error in
             if let error = error {
                 print("Error adding reservation: \(error.localizedDescription)")
             } else {
@@ -157,35 +152,118 @@ final class ReservationStore: ObservableObject {
     
     
     // MARK: - 예약 수정
-    func updateReservation(reservaton: Reservation) {
+    func updateReservation(reservation: Reservation) {
+        // 수정할 문서의 참조를 얻습니다.
+        let docRef = db.collection("Reservation").document(reservation.id)
         
+        guard let user = Self.user else {
+            print("로그인 정보가 없습니다.")
+            return
+        }
+        
+        guard let email = user.email  else {
+            print("로그인 한 유저의 email 정보가 없습니다.")
+            return
+        }
+        
+        guard let dateTimestamp: Timestamp = dateTimeStringToTimeStamp(reservationDate: reservation.date, reservationHour: reservation.time) else {
+            print("예약 등록 실패 - 날짜 변환 실패")
+            return
+        }
+        
+        // 업데이트할 데이터를 만듭니다.
+        let reservationData: [String: Any] = [
+            "shopId": reservation.shopId,
+            "reservedUserId": email,  // userEmail
+            "date": dateTimestamp,    // 
+            "numberOfPeople": reservation.numberOfPeople,
+            "totalPrice": reservation.totalPrice,
+            "requirement": reservation.requirement ?? "요구사항 없음"
+        ]
+        
+        // 문서 업데이트
+        docRef.updateData(reservationData) { error in
+            if let error = error {
+                print("문서 업데이트 오류: \(error.localizedDescription)")
+            } else {
+                print("문서 업데이트 성공")
+                // 배열에 해당 내용 이거로 바꿔버려
+            }
+        }
     }
     
     
-    // MARK: - 예약 취소(삭제)
+    // MARK: - 예약 취소
     func removeReservation(reservation: Reservation) {
-        
+        // 삭제할 문서의 참조를 얻습니다.
+        let docRef = db.collection("Reservation").document(reservation.id)
+
+        // 문서 삭제
+        docRef.delete { error in
+            if let error = error {
+                print("문서 삭제 오류: \(error.localizedDescription)")
+            } else {
+                print("문서 삭제 성공")
+                // 배열에서도 삭제
+                
+            }
+        }
     }
     
     
-    // MARK: - Firestore에 등록하기 위한 타입 변환
-    /// Date 타입의 날짜와 Int 타입의 시간을 Timestamp 타입으로 리턴
-    /// - Parameters:
-    ///   - reservationDate: 예약 날짜(Date)
-    ///   - reservationHour: 예약 시간(Int)
-    /// - Returns: Timestamp?
-    func dateTimeStringToTimeStamp(reservationDate: Date, reservationHour: Int) -> Timestamp? {
+    
+    func dateTimeStringToDate(date: Date, time: Int) -> Date? {
         // Date 객체에서 시간 구성 요소 가져오기
         let calendar = Calendar.current
-        var dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: reservationDate)
+        var dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
         
         // 시간 구성 요소의 시간 부분을 Int 타입의 시간으로 설정
-        dateComponents.hour = reservationHour
+        dateComponents.hour = time
         dateComponents.minute = 0
         dateComponents.second = 0
         
+        return calendar.date(from: dateComponents)
+    }
+    
+    
+    func isFinishedReservation(date: Date, time: Int) -> String {
+        let reservationTime: Date? = self.dateTimeStringToDate(date: date, time: time)
+        
+        guard let reservationTime else {
+            print("예약 시간 가져오기 실패")
+            return "예약"
+        }
+        
+        let currentDate = Date()
+        
+        // Calendar 객체를 사용하여 예약 시간과 현재 시간 간의 차이를 계산합니다.
+        let calendar = Calendar.current
+        guard let twoHoursLater = calendar.date(byAdding: .hour, value: 2, to: reservationTime) else {
+            return "error"
+        }
+        if currentDate >= twoHoursLater {
+            return "이용 완료"
+        } else if currentDate > reservationTime && currentDate < twoHoursLater {
+            return "이용 중"
+        } else {
+            // 아직 2시간이 지나지 않았으면 예약 시간을 출력합니다.
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let formattedReservationTime = dateFormatter.string(from: reservationTime)
+            print("예약 시간: \(formattedReservationTime)")
+            return "이용 전"
+        }
+    }
+    
+    
+    
+    // MARK: - Firestore에 등록하기 위한 타입 변환
+    private func dateTimeStringToTimeStamp(reservationDate: Date, reservationHour: Int) -> Timestamp? {
+        
+        let date = dateTimeStringToDate(date: reservationDate, time: reservationHour)
+        
         // Timestamp 생성
-        if let combinedDate = calendar.date(from: dateComponents) {
+        if let combinedDate = date {
             let timestamp = Timestamp(date: combinedDate)
             return timestamp
         } else {
@@ -194,11 +272,10 @@ final class ReservationStore: ObservableObject {
         }
     }
     
-    
     /// Firebase의 Timestamp 타입을 Date 타입의 날짜와 Int 타입의 시간으로 리턴
     /// - Parameter data: Firebase에서 query의 결과로 가져온 데이터
     /// - Returns: (Date, Int)?
-    func timeStampTodateTime(data: [String : Any]) -> (Date, Int)? {
+    private func timeStampTodateTime(data: [String : Any]) -> (Date, Int)? {
         // Firestore Timestamp를 Date로 변환
         if let timestamp = data["date"] as? Timestamp {
             let date = timestamp.dateValue()
@@ -206,17 +283,17 @@ final class ReservationStore: ObservableObject {
             // Date와 time 프로퍼티로 나누기 (예: 시간은 Int 타입으로 저장)
             let calendar = Calendar.current
             let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
-//            let year = components.year ?? 0
-//            let month = components.month ?? 0
-//            let day = components.day ?? 0
+            //            let year = components.year ?? 0
+            //            let month = components.month ?? 0
+            //            let day = components.day ?? 0
             let hour = components.hour ?? 0
-//            let minute = components.minute ?? 0
+            //            let minute = components.minute ?? 0
             
             return (date, hour)
         }
         return nil
     }
-
+    
     
     /// 예약가능한 시간을 배열로 리턴
     /// - Parameters:
@@ -234,7 +311,7 @@ final class ReservationStore: ObservableObject {
             
             if let nowInt {
                 // 현재 시간이 마감시간보다 같거나 늦으면 빈 배열 반환
-                guard nowInt <= closeTime else {
+                guard nowInt < closeTime else {
                     return []
                 }
                 
@@ -255,5 +332,5 @@ final class ReservationStore: ObservableObject {
         }
         return [0]
     }
-     
+    
 }

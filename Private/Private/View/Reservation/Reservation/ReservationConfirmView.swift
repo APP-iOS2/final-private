@@ -11,12 +11,25 @@ struct ReservationConfirmView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var userStore: UserStore
     
+    @FocusState private var isTextMasterFocused: Bool
+
     @State private var isShowingAlert: Bool = false
-    
+    @State private var text: String = ""
     @Binding var isShwoingConfirmView: Bool
+    
+    private let maxLine: Int = 5
+    private let fontSize: Double = 24
     
     let temporaryReservation: Reservation
     let shopData: Shop
+    
+    var reservedTimeString: String {
+        self.temporaryReservation.time > 11 ? "오후" : "오전"
+    }
+    
+    var reservedTimeInt: Int {
+        self.temporaryReservation.time > 12 ? temporaryReservation.time - 12 : temporaryReservation.time
+    }
     
     var body: some View {
         VStack {
@@ -33,7 +46,7 @@ struct ReservationConfirmView: View {
                         HStack {
                             Text("일시:")
                             Text("\(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))")
-                            Text("\(temporaryReservation.time)시")  // 오후 2:00 요런느낌
+                            Text("\(reservedTimeString) \(reservedTimeInt)시")  // 오후 2:00 요런느낌
                             Spacer()
                         }
                         Text("인원: \(temporaryReservation.numberOfPeople)명")
@@ -43,12 +56,12 @@ struct ReservationConfirmView: View {
                     .cornerRadius(8)
                     .padding(.bottom)
                     
-                    //                HStack {
-                    //                    Text("최종 결제할 금액")
-                    //                    Spacer()
-                    //                    Text("\(temporaryReservation.numberOfPeople) 원")  // 무한루프
-                    //                }
-                    //                padding(.bottom)
+                    HStack {
+                        Text("최종 결제할 금액")
+                        Spacer()
+                        Text("\(temporaryReservation.numberOfPeople) 원")
+                    }
+                    .padding(.bottom)
                 }
                 
                 Divider()
@@ -76,6 +89,11 @@ struct ReservationConfirmView: View {
                     HStack {
                         Text("요구사항")
                         Spacer()
+                        TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: maxLine, fontSize: fontSize)
+                        
+                            .onTapGesture {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            }
                         Text("업체에 요청하실 내용을 적어주세요")  // 텍스트필드로 변경
                     }
                 }
@@ -139,7 +157,7 @@ struct ReservationConfirmView: View {
             .cornerRadius(12)
             .padding()
             .alert("예약 확정", isPresented: $isShowingAlert) {
-                Button(role: .none) {
+                Button() {
                     print(#fileID, #function, #line, "- 예약 확정")
                     reservationStore.addReservationToFirestore(reservationData: temporaryReservation)
                     isShwoingConfirmView.toggle()
@@ -150,8 +168,9 @@ struct ReservationConfirmView: View {
                 Button(role: .cancel) {
                     
                 } label: {
-                    Text("예약취소")
+                    Text("돌아가기")
                 }
+                .foregroundStyle(Color.red)
             }
         }
     }

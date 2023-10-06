@@ -39,7 +39,7 @@ struct SearchResultView: View {
     var searchUserResult: some View {
         ForEach(searchStore.searchUserLists, id: \.self) { user in
             NavigationLink {
-//                MyPageView
+                OtherPageView(user: user)
             } label: {
                 SearchUserCellView(user: user)
                     .environmentObject(FollowStore())

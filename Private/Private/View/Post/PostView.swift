@@ -46,7 +46,8 @@ struct PostView: View {
     private let fontSize: Double = 24
     
     @State var selectedCategory: [String] = []
-    @State var myselectedCategory: [MyCategory] = [.koreanFood, .brunch]
+    @State private var myselectedCategory: [MyCategory] = []
+    @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
     var db = Firestore.firestore()
     var storage = Storage.storage()
@@ -155,10 +156,14 @@ struct PostView: View {
                                                 selectedImage?.remove(at: index)
                                             }
                                         } label: {
-                                            Image(systemName: "x.circle")
-                                                .font(.pretendardBold24)
-                                                .foregroundColor(.accentColor)
-                                                .padding(8)
+                                            ZStack {
+                                                Circle()
+                                                    .frame(width: .screenWidth*0.06)
+                                                Image(systemName: "x.circle")
+                                                    .font(.pretendardBold24)
+                                                    .foregroundColor(.primary)
+                                                    .padding(8)
+                                            }
                                         }
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                                     }
@@ -174,6 +179,7 @@ struct PostView: View {
 
                     //MARK: 카테고리
                     CatecoryView(selectedCategory: $selectedCategory)
+                        .padding(.trailing, 8)
                 } // leading VStack
             }
             .fullScreenCover(isPresented: $ImageViewPresented) {
@@ -216,7 +222,13 @@ struct PostView: View {
     //MARK: 파베함수
     func fetch() {
         //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
-        var feed = MyFeed(writer: writer, images: images, contents: text, createdAt: createdAt, visitedShop: visitedShop, category: selectedCategory)
+        
+        var feed = MyFeed(writer: userStore.user.name,
+                          images: images,
+                          contents: text,
+                          createdAt: createdAt,
+                          visitedShop: visitedShop,
+                          category: myselectedCategory)
         
         if let selectedImages = selectedImage {
             var imageUrls: [String] = []
@@ -241,7 +253,12 @@ struct PostView: View {
                             feed.images = imageUrls
 
                             do {
-                                try db.collection("User").document(feed.id).setData(from: feed)
+                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
+                            } catch {
+                                print("Error saving feed: \(error)")
+                            }
+                            do {
+                                try db.collection("Feed").document(feed.id).setData(from: feed)
                             } catch {
                                 print("Error saving feed: \(error)")
                             }

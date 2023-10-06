@@ -16,28 +16,16 @@ struct NaverMap: UIViewRepresentable {
     
     @EnvironmentObject var userDataStore: UserStore
     
-    // test
-    @Binding var coord: NMGLatLng
-    @Binding var isSheetPresented: Bool
-    
     func makeCoordinator() -> Coordinator {
-            let coordinator = Coordinator.shared
-            coordinator.isSheetPresentedBinding = $isSheetPresented
-            return coordinator
-        }
-    //init 메서드에 isSheetPresented 바인딩을 추가.
-    init(coord: Binding<NMGLatLng>, isSheetPresented: Binding<Bool>) {
-        self._coord = coord
-        self._isSheetPresented = isSheetPresented
+        Coordinator.shared
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
         context.coordinator.getNaverMapView()
     }
     
-    func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
-        
-    }
+    func updateUIView(_ uiView: NMFNaverMapView, context: Context) {}
+    
 }
 
 final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NMFMapViewTouchDelegate, CLLocationManagerDelegate {
@@ -46,12 +34,10 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     
     let view = NMFNaverMapView(frame: .zero)
     
-    var userDataStore: UserStore = UserStore()
+    var feedStore: FeedStore = FeedStore()
     
-    var markers: [NMFMarker] = []
     var bookMarkedMarkers: [NMFMarker] = []
     var locationManager: CLLocationManager?
-    var isSheetPresentedBinding: Binding<Bool>?//
     
     @Published var currentShopId: String = "보리마루"
     @Published var isBookMarkTapped: Bool = false
@@ -59,29 +45,30 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     @Published var coord: NMGLatLng = NMGLatLng(lat: 36.444, lng: 127.332)
     @Published var userLocation: (Double, Double) = (0.0, 0.0)
     
+    let constantCenter = NMGLatLng(lat: 37.572389, lng: 126.9769117)
+    
     private override init() {
         super.init()
         
         view.showZoomControls = true
         view.mapView.positionMode = .direction
         view.mapView.isNightModeEnabled = true
-        // MARK: - 줌 레벨 제한
+        
         view.mapView.zoomLevel = 15 // 기본 카메라 줌 레벨
         view.mapView.minZoomLevel = 10 // 최소 줌 레벨
         view.mapView.maxZoomLevel = 17 // 최대 줌 레벨
-        // MARK: - 현 위치 추적 버튼
+        
         view.showLocationButton = true
+        view.showZoomControls = true // 줌 확대, 축소 버튼 활성화
         view.showCompass = false
+        view.showScaleBar = false
         
-        // MARK: - NMFMapViewCameraDelegate를 상속 받은 Coordinator 클래스 넘겨주기
         view.mapView.addCameraDelegate(delegate: self)
-        
-        // MARK: - 지도 터치 시 발생하는 touchDelegate
         view.mapView.touchDelegate = self
-    }
-    
-    deinit {
-        print("Coordinator deinit!")
+        
+        let cameraUpdate = NMFCameraUpdate(scrollTo: constantCenter, zoomTo: 15)
+        
+        view.mapView.moveCamera(cameraUpdate)
     }
     
     func checkIfLocationServicesIsEnabled() {
@@ -105,17 +92,16 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .restricted:
-            print("Your location is restricted likely due to parental controls.")
+            print("위치 정보 접근이 제한되었습니다.")
         case .denied:
-            print("You have denied this app location permission. Go into setting to change it.")
+            print("위치 정보 접근을 거절했습니다. 설정에 가서 변경하세요.")
         case .authorizedAlways, .authorizedWhenInUse:
             print("Success")
             //현재위치로 좌표 설정
             coord = NMGLatLng(lat: locationManager.location?.coordinate.latitude ?? 0.0, lng: locationManager.location?.coordinate.longitude ?? 0.0)
-            print("LocationManager-coord: \(coord)")
             userLocation = (Double(locationManager.location?.coordinate.latitude ?? 0.0), Double(locationManager.location?.coordinate.longitude ?? 0.0))
-            print("LocationManager-userLocation: \(userLocation)")
             fetchUserLocation()
+            
         @unknown default:
             break
         }
@@ -125,28 +111,68 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         checkLocationAuthorization()
     }
     
+    func fetchUserLocation() {
+        if let locationManager = locationManager {
+            let lat = locationManager.location?.coordinate.latitude
+            let lng = locationManager.location?.coordinate.longitude
+            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: lat ?? 0.0, lng: lng ?? 0.0))
+            cameraUpdate.animation = .fly
+            cameraUpdate.animationDuration = 1
+            
+            // MARK: - 현재 위치 좌표 overlay 마커 표시
+            let locationOverlay = view.mapView.locationOverlay
+            locationOverlay.location = NMGLatLng(lat: lat ?? 0.0, lng: lng ?? 0.0)
+            locationOverlay.hidden = false
+            
+            // MARK: - 내 주변 5km 반경 overlay 표시
+            let circle = NMFCircleOverlay()
+            circle.center = NMGLatLng(lat: lat ?? 0.0, lng: lng ?? 0.0)
+            circle.radius = 5000
+            circle.mapView = nil
+            
+            view.mapView.moveCamera(cameraUpdate)
+        }
+    }
+    
     // NaverMapView를 반환
     func getNaverMapView() -> NMFNaverMapView {
         view
     }
     
     func makeMarkers() {
-        for shopMarker in userDataStore.user.bookmark {
+        
+        var tempMarkers: [NMFMarker] = []
+        
+        for shopMarker in feedStore.feedList {
             let marker = NMFMarker()
             
-            marker.position = shopMarker.coord
+            marker.position = shopMarker.visitedShop.coord
             marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
-            marker.captionText = shopMarker.name
+            marker.captionText = shopMarker.visitedShop.name
             marker.captionMinZoom = 10
             marker.captionMaxZoom = 17
             marker.iconImage = NMFOverlayImage(name: "placeholder")
             marker.width = CGFloat(40)
             marker.height = CGFloat(40)
             
-            markers.append(marker)
+            tempMarkers.append(marker)
         }
         
-        for marker in markers {
+        let marker = NMFMarker()
+        marker.position = NMGLatLng(lat: 37.572389, lng: 126.9769117)
+        marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
+        marker.captionText = "광화문광장"
+        marker.captionMinZoom = 10
+        marker.captionMaxZoom = 17
+        marker.iconImage = NMFOverlayImage(name: "placeholder")
+        marker.width = CGFloat(40)
+        marker.height = CGFloat(40)
+        
+        tempMarkers.append(marker)
+        
+        bookMarkedMarkers = tempMarkers
+        
+        for marker in bookMarkedMarkers {
             marker.mapView = view.mapView
         }
         markerTapped()
@@ -173,48 +199,27 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     //        markerTapped()
     //    }
     
-    func fetchUserLocation() {
-        if let locationManager = locationManager {
-            let lat = locationManager.location?.coordinate.latitude
-            let lng = locationManager.location?.coordinate.longitude
-            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: lat ?? 0.0, lng: lng ?? 0.0))
-            cameraUpdate.animation = .fly
-            cameraUpdate.animationDuration = 1
-            
-            // MARK: - 현재 위치 좌표 overlay 마커 표시
-            let locationOverlay = view.mapView.locationOverlay
-            locationOverlay.location = NMGLatLng(lat: lat ?? 0.0, lng: lng ?? 0.0)
-            locationOverlay.hidden = false
-            
-            // MARK: - 내 주변 5km 반경 overlay 표시
-            let circle = NMFCircleOverlay()
-            circle.center = NMGLatLng(lat: lat ?? 0.0, lng: lng ?? 0.0)
-            circle.radius = 5000
-            circle.mapView = nil
-            
-            view.mapView.moveCamera(cameraUpdate)
-        }
-    }
-    
     // MARK: - Mark 터치 시 이벤트 발생
     func markerTapped() {
         if !isBookMarkTapped {
-            print(markers)
-            for marker in markers {
+            for marker in bookMarkedMarkers {
                 marker.touchHandler = { [self] (overlay) -> Bool in
+                    
                     let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: marker.position.lat, lng: marker.position.lng))
                     cameraUpdate.animation = .fly
                     cameraUpdate.animationDuration = 1
+                    
                     self.view.mapView.moveCamera(cameraUpdate)
                     self.showMarkerDetailView = true
                     self.currentShopId = marker.captionText
+                    
                     print("showMarkerDetailView : \(self.showMarkerDetailView)")
                     //print(currentShopId)
-                    DispatchQueue.main.async {
-                        print("Before setting isSheetPresentedBinding to true")
-                        self.isSheetPresentedBinding?.wrappedValue = true
-                        print("After setting isSheetPresentedBinding to true")
-                                       }
+//                    DispatchQueue.main.async {
+//                        print("Before setting isSheetPresentedBinding to true")
+//                        self.isSheetPresentedBinding?.wrappedValue = true
+//                        print("After setting isSheetPresentedBinding to true")
+//                                       }
            
                     return true
                 }

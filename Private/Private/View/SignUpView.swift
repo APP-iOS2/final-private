@@ -53,6 +53,17 @@ struct SignUpView: View {
             .buttonStyle(.borderedProminent)
             .padding()
             
+            Button{
+                print("로그아웃")
+                authStore.signOutGoogle()
+            } label: {
+                HStack {
+                    Text("로그아웃")
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                }
+            }
+            
             Spacer()
 
         }

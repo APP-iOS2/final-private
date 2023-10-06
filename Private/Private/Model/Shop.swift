@@ -43,4 +43,78 @@ struct BusinessHours: Hashable {
     var endMinute: Int
 }
 
+extension Shop {
+    init?(documentData: [String: Any]) {
+        guard
+            let name = documentData["name"] as? String,
+            let categoryRawValue = documentData["category"] as? Int,
+            let category = Category(rawValue: categoryRawValue),
+            let coordData = documentData["coord"] as? [String: Any],
+            let lat = coordData["lat"] as? Double,
+            let lng = coordData["lng"] as? Double,
+            let address = documentData["address"] as? String,
+            let addressDetail = documentData["addressDetail"] as? String,
+            let shopTelNumber = documentData["shopTelNumber"] as? String,
+            let shopInfo = documentData["shopInfo"] as? String,
+            let shopImageURL = documentData["shopImageURL"] as? String,
+            let shopOwner = documentData["shopOwner"] as? String,
+            let businessNumber = documentData["businessNumber"] as? String
+        else {
+            print("Failed to initialize Shop with data: \(documentData)")
+            return nil
+        }
+        
+        // 기본 프로퍼티 초기화
+        self.name = name
+        self.category = category
+        self.coord = NMGLatLng(lat: lat, lng: lng)
+        self.address = address
+        self.addressDetail = addressDetail
+        self.shopTelNumber = shopTelNumber
+        self.shopInfo = shopInfo
+        self.shopImageURL = shopImageURL
+        self.shopOwner = shopOwner
+        self.businessNumber = businessNumber
+
+        // 나머지 프로퍼티 초기화
+        self.bookmarks = documentData["bookmarks"] as? [String] ?? []
+        self.menu = [] // 여기는 어떻게 초기화할지 명시해야 함
+        self.regularHoliday = documentData["regularHoliday"] as? [String] ?? []
+        self.temporaryHoliday = documentData["temporaryHoliday"] as? [Date] ?? []
+        self.breakTimeHours = documentData["breakTimeHours"] as? [String: BusinessHours] ?? [:]
+        self.weeklyBusinessHours = documentData["weeklyBusinessHours"] as? [String: BusinessHours] ?? [:]
+        self.reservationItems = [] // 여기도 적절한 초기화가 필요.
+
+        // menu와 reservationItems 초기화
+        if let menuData = documentData["menu"] as? [[String: Any]] {
+            self.menu = menuData.compactMap { ShopItem(documentData: $0) }
+        } else {
+            self.menu = []
+        }
+
+        if let reservationItemsData = documentData["reservationItems"] as? [[String: Any]] {
+            self.reservationItems = reservationItemsData.compactMap { ShopItem(documentData: $0) }
+        } else {
+            self.reservationItems = nil
+        }
+    }
+}
+
+
+extension ShopItem {
+    init?(documentData: [String: Any]) {
+        guard
+            let name = documentData["name"] as? String,
+            let price = documentData["price"] as? Int,
+            let imageUrl = documentData["imageUrl"] as? String
+        else {
+            return nil
+        }
+        
+        self.name = name
+        self.price = price
+        self.imageUrl = imageUrl
+    }
+}
+
 
