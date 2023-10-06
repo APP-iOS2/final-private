@@ -55,12 +55,15 @@ extension Shop {
             let addressDetail = documentData["addressDetail"] as? String,
             let shopTelNumber = documentData["shopTelNumber"] as? String,
             let shopInfo = documentData["shopInfo"] as? String,
-            let shopImageURL = documentData["shopImageURL"] as? String
+            let shopImageURL = documentData["shopImageURL"] as? String,
+            let shopOwner = documentData["shopOwner"] as? String,
+            let businessNumber = documentData["businessNumber"] as? String
         else {
-            print("Failed to initialize Feed with shopdata: \(documentData)")
+            print("Failed to initialize Shop with data: \(documentData)")
             return nil
         }
         
+        // 기본 프로퍼티 초기화
         self.name = name
         self.category = category
         self.coord = NMGLatLng(lat: lat, lng: lng)
@@ -69,15 +72,45 @@ extension Shop {
         self.shopTelNumber = shopTelNumber
         self.shopInfo = shopInfo
         self.shopImageURL = shopImageURL
-        
-        // 여기서 나머지 프로퍼티들을 초기화해야 합니다.
-        // 만약 Firestore에 해당 정보가 없다면 기본값이나 빈 배열, 빈 문자열 등을 할당하세요.
+        self.shopOwner = shopOwner
+        self.businessNumber = businessNumber
+
+        // 나머지 프로퍼티 초기화
         self.bookmarks = documentData["bookmarks"] as? [String] ?? []
-        self.menu = [] // 여기는 어떻게 초기화할지 명시해야 합니다.
         self.regularHoliday = documentData["regularHoliday"] as? [String] ?? []
-        self.temporayHoliday = documentData["temporayHoliday"] as? [Date] ?? []
+        self.temporaryHoliday = documentData["temporaryHoliday"] as? [Date] ?? []
         self.breakTimeHours = documentData["breakTimeHours"] as? [String: BusinessHours] ?? [:]
         self.weeklyBusinessHours = documentData["weeklyBusinessHours"] as? [String: BusinessHours] ?? [:]
-        self.reservationItems = [] // 여기도 적절한 초기화가 필요합니다.
+
+        // menu와 reservationItems 초기화
+        if let menuData = documentData["menu"] as? [[String: Any]] {
+            self.menu = menuData.compactMap { ShopItem(documentData: $0) }
+        } else {
+            self.menu = []
+        }
+
+        if let reservationItemsData = documentData["reservationItems"] as? [[String: Any]] {
+            self.reservationItems = reservationItemsData.compactMap { ShopItem(documentData: $0) }
+        } else {
+            self.reservationItems = nil
+        }
     }
 }
+
+
+extension ShopItem {
+    init?(documentData: [String: Any]) {
+        guard
+            let name = documentData["name"] as? String,
+            let price = documentData["price"] as? Int,
+            let imageUrl = documentData["imageUrl"] as? String
+        else {
+            return nil
+        }
+        
+        self.name = name
+        self.price = price
+        self.imageUrl = imageUrl
+    }
+}
+
