@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchUserCellView: View {
     @EnvironmentObject private var followStore: FollowStore
     var user: User
-
+    
     var body: some View {
         HStack {
             AsyncImage(url: URL(string: user.profileImageURL)) { image in
@@ -29,16 +29,13 @@ struct SearchUserCellView: View {
                 .foregroundColor(.white)
             Spacer()
             
-            Button {
-                followStore.manageFollow(userId: user.id, followCheck: followStore.followCheck)
-            } label: {
-                Text(followStore.followCheck ? "팔로잉" : "팔로우")
-                    .font(.pretendardBold18)
-                    .padding(12)
-                    .foregroundColor(.black)
-                    .background(followStore.followCheck ? Color("AccentColor") : Color.white)
-                    .cornerRadius(18)
-            }
+            FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers, followCheck: $followStore.followCheck)
+                .font(.pretendardBold18)
+                .frame(width: .screenWidth * 0.2, height: 12)
+                .padding(12)
+                .foregroundColor(.black)
+                .background(followStore.followCheck ? Color("AccentColor") : Color.white)
+                .cornerRadius(18)
         }
     }
 }
@@ -49,3 +46,5 @@ struct SearchUserCellView_Previews: PreviewProvider {
             .environmentObject(FollowStore())
     }
 }
+
+
