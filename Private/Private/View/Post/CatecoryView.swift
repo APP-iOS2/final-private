@@ -10,9 +10,10 @@ import SwiftUI
 struct CatecoryView: View {
     
     @Binding var selectedCategory: [String]
+    @State private var categoryAlert: Bool = false
+
     @State private var selectedCategories: Set<Category> = []
-    @State private var showAlert = false
-    @State private var myselectedCategory: [MyCategory] = MyCategory.allCases
+    @State private var myselectedCategory: [MyCategory] = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     private let maxSelectedCategories = 3
     
@@ -52,15 +53,15 @@ struct CatecoryView: View {
                         }
                     }
                     .onTapGesture {
-                        if selectedCategories.count < maxSelectedCategories || selectedToggle[index] {
+                        if myselectedCategory.count < maxSelectedCategories || selectedToggle[index] {
                             toggleCategorySelection(at: index)
-                            print(selectedCategories)
+                            print(myselectedCategory)
                         } else {
-                            showAlert = true
+                            categoryAlert.toggle()
                             print("3개 초과 선택")
                         }
                     }
-                    .alert(isPresented: $showAlert) {
+                    .alert(isPresented: $categoryAlert) {
                         Alert(
                             title: Text("선택 초과"),
                             message: Text("최대 3개까지 선택 가능합니다."),
@@ -73,11 +74,23 @@ struct CatecoryView: View {
     } // body
     func toggleCategorySelection(at index: Int) {
         selectedToggle[index].toggle()
-        selectedCategories = Set(Category.allCases.indices
-            .filter { selectedToggle[$0] }
-            .map { Category.allCases[$0] }
-        )
+        
+        if selectedToggle[index] {
+            // If the category is selected, add it to myselectedCategory
+            myselectedCategory.append(MyCategory.allCases[index])
+        } else {
+            // If the category is deselected, remove it from myselectedCategory
+            if let selectedIndex = myselectedCategory.firstIndex(of: MyCategory.allCases[index]) {
+                myselectedCategory.remove(at: selectedIndex)
+            }
+        }
+        
+        // Ensure that myselectedCategory doesn't exceed the maximum allowed categories
+        if myselectedCategory.count > maxSelectedCategories {
+            myselectedCategory.removeFirst() // Remove the oldest selected category if it exceeds the limit
+        }
     }
+
     
     func createGridColumns() -> [GridItem] {
         let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)

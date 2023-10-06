@@ -228,20 +228,3 @@ let feedTestData: Feed = Feed(
 //    }
 //}
 
-// 킹피셔 예제코드
-//if let imageURL = URL(string: "\(shopData.picture)") {
-//                    KFImage(imageURL)
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(width: 130, height: 130)
-//                        .cornerRadius(7)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 7)
-//                                .foregroundColor(Color.black.opacity(0.7))
-//                                .overlay(
-//                                    Text("이용 가능한\n요일이 아닙니다")
-//                                        .font(.pretendardSemiBold14)
-//                                        .foregroundColor(.white)
-//                                )
-//                        )
-//                }

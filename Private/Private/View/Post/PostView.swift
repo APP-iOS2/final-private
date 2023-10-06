@@ -9,7 +9,6 @@ import SwiftUI
 import NMapsMap
 import FirebaseStorage
 import FirebaseFirestore
-import FirebaseFirestoreSwift
 import FirebaseCore
 import Combine
 
@@ -31,13 +30,14 @@ struct PostView: View {
     @State private var createdAt: Double = Date().timeIntervalSince1970
     @State private var visitedShop: String = ""
     @State private var feedId: String = ""
+    @State private var myselectedCategory: [MyCategory] = []
 
     @State private var clickLocation: Bool = false
     @State private var isImagePickerPresented: Bool = false
     @State private var ImageViewPresented: Bool = true
     @State private var showLocation: Bool = false
     @State private var isshowAlert = false
-    
+
     @State private var selectedImage: [UIImage]?
     @FocusState private var isTextMasterFocused: Bool
     
@@ -45,8 +45,7 @@ struct PostView: View {
     private let maxLine: Int = 8
     private let fontSize: Double = 24
     
-    @State var selectedCategory: [String] = []
-    @State private var myselectedCategory: [MyCategory] = []
+    @State private var selectedCategory: [String] = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
     var db = Firestore.firestore()
@@ -81,7 +80,7 @@ struct PostView: View {
                     //MARK: 내용
                     TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize)
                         .onTapGesture {
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            hideKeyboard()
                         }
                         .padding(.trailing, 10)
                     
@@ -176,38 +175,53 @@ struct PostView: View {
                     }
                     Divider()
                         .padding(.vertical, 10)
-
+                    
                     //MARK: 카테고리
                     CatecoryView(selectedCategory: $selectedCategory)
                         .padding(.trailing, 8)
+                    
+                    //MARK: 업로드
+                    Text("업로드")
+                        .font(.pretendardBold18)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .foregroundColor(.white)
+                        .background(text == "" || selectedImage == [] ? Color.gray : Color.accentColor)
+                        .cornerRadius(7)
+                        .padding(EdgeInsets(top: 25, leading: 0, bottom: 0, trailing: 13))
+                        .onTapGesture {
+                            if text != "" && selectedImage != [] {
+                                isshowAlert = true
+                            }
+                        }
                 } // leading VStack
+                
             }
             .fullScreenCover(isPresented: $ImageViewPresented) {
                 ImagePickerView(selectedImages: $selectedImage)
             }
-            .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("취소")
-                    }
-                }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button {
-                        isshowAlert = true
-                    } label: {
-                        Text("완료")
-                    }
-                }
-            }
+            //            .toolbar {
+            //                ToolbarItem(placement: .navigationBarLeading) {
+            //                    Button {
+            //                        dismiss()
+            //                    } label: {
+            //                        Text("취소")
+            //                    }
+            //                }
+            //                ToolbarItem(placement: .navigationBarTrailing) {
+//                    Button {
+//                        isshowAlert = true
+//                    } label: {
+//                        Text("완료")
+//                    }
+//                }
+//            }
             .alert(isPresented: $isshowAlert) {
                 let firstButton = Alert.Button.cancel(Text("취소")) {
-                    print("primary button pressed")
+                    print("취소 버튼 클릭")
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
                     fetch()
-                    print("secondary button pressed")
+                    print("완료 버튼 클릭")
                 }
                 return Alert(title: Text("게시물 작성"),
                              message: Text("작성을 완료하시겠습니까?"),
