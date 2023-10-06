@@ -46,8 +46,8 @@ struct ReservationView: View {
                         .opacity(0)
                     
                     // 메뉴마다 이렇게 있을 수 없음.. 식당에서는 예약 아이템을 어떻게 둬야할지
-//                    ItemInfoView()
-//                        .padding(.bottom, 20)
+                    //                    ItemInfoView()
+                    //                        .padding(.bottom, 20)
                     
                     Text("예약 일시")
                         .font(Font.pretendardBold18)
@@ -138,7 +138,7 @@ struct ReservationView: View {
                     
                     HStack {
                         Button {
-                                isShwoingConfirmView.toggle()
+                            isShwoingConfirmView.toggle()
                         } label: {
                             Text("다음단계")
                                 .frame(maxWidth: .infinity)
@@ -165,7 +165,7 @@ struct ReservationView: View {
                         ReservationConfirmView(isShwoingConfirmView: $isShwoingConfirmView, temporaryReservation: temporaryReservation, shopData: shopData)
                     }
                     .sheet(isPresented: $isShowingMyReservation) {
-                         MyReservation(isShowingMyReservation: $isShowingMyReservation)
+                        MyReservation(isShowingMyReservation: $isShowingMyReservation)
                     }
                 }// VStack
             }// ScrollView

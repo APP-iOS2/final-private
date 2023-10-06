@@ -11,9 +11,14 @@ struct ReservationConfirmView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var userStore: UserStore
     
+    @FocusState private var isTextMasterFocused: Bool
+
     @State private var isShowingAlert: Bool = false
-    
+    @State private var text: String = ""
     @Binding var isShwoingConfirmView: Bool
+    
+    private let maxLine: Int = 5
+    private let fontSize: Double = 24
     
     let temporaryReservation: Reservation
     let shopData: Shop
@@ -84,6 +89,11 @@ struct ReservationConfirmView: View {
                     HStack {
                         Text("요구사항")
                         Spacer()
+                        TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: maxLine, fontSize: fontSize)
+                        
+                            .onTapGesture {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            }
                         Text("업체에 요청하실 내용을 적어주세요")  // 텍스트필드로 변경
                     }
                 }
