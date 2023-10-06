@@ -87,7 +87,7 @@ struct ShopDetailInfoView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         ForEach(dummyShop.temporayHoliday, id: \.self) { day in
                             HStack(spacing: 0) {
-                                Text(dateToFullString(date: day))
+                                Text(AppDateFormatter.shared.fullDateString(from: day))
                                     .font(Font.pretendardRegular16)
                                 
                                 Spacer()
@@ -132,16 +132,6 @@ struct ShopDetailInfoView: View {
                 }
             }
         }
-    }
-    
-    func dateToFullString(date: Date) -> String {
-        let formatter = DateFormatter()
-//        formatter.locale = Locale(identifier: Locale.current.identifier)
-        formatter.locale = Locale(identifier: "ko_KR")
-//        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
-        formatter.timeZone = TimeZone(abbreviation: "KST")
-        formatter.dateStyle = .full
-        return formatter.string(from: date)
     }
 }
 
