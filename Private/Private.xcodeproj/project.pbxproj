@@ -118,6 +118,7 @@
 		D1DC8D552ACEAE910087CBD7 /* OtherHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D542ACEAE910087CBD7 /* OtherHistoryView.swift */; };
 		D1DC8D572ACEAEBE0087CBD7 /* OtherSavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D562ACEAEBE0087CBD7 /* OtherSavedView.swift */; };
 		D1DC8D592ACEAEF40087CBD7 /* OtherSavedPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D582ACEAEF40087CBD7 /* OtherSavedPlaceView.swift */; };
+		D1DC8D5B2ACFC67E0087CBD7 /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */; };
 		D1EC43922AC16E2900B088EA /* FollowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43912AC16E2900B088EA /* FollowStore.swift */; };
 		D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43992AC2D42F00B088EA /* SearchView.swift */; };
 		E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E385FAB42AC161EE00AC7255 /* PostStore.swift */; };
@@ -238,6 +239,7 @@
 		D1DC8D542ACEAE910087CBD7 /* OtherHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherHistoryView.swift; sourceTree = "<group>"; };
 		D1DC8D562ACEAEBE0087CBD7 /* OtherSavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSavedView.swift; sourceTree = "<group>"; };
 		D1DC8D582ACEAEF40087CBD7 /* OtherSavedPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSavedPlaceView.swift; sourceTree = "<group>"; };
+		D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
 		D1EC43912AC16E2900B088EA /* FollowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowStore.swift; sourceTree = "<group>"; };
 		D1EC43992AC2D42F00B088EA /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		DCBBE0A1367066F0B655E6C5 /* Pods-Private-PrivateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.release.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				3CB7340B2ABEFEBC00D82503 /* CGFloat+.swift */,
 				B59853632AC3BE4E00C45E76 /* String+.swift */,
 				D18A012F2ACE38C1009F07F8 /* Button.swift */,
+				D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -908,6 +911,7 @@
 				D1DC8D512ACEAE2C0087CBD7 /* OtherPageView.swift in Sources */,
 				3CB734082ABD6EEF00D82503 /* MapMainView.swift in Sources */,
 				3C37162C2ABD1789004E8419 /* ChatRoomStore.swift in Sources */,
+				D1DC8D5B2ACFC67E0087CBD7 /* FollowButton.swift in Sources */,
 				3C3716242ABD15A4004E8419 /* UserStore.swift in Sources */,
 				3CF3D8C72AB82A97003689A6 /* LaunchView.swift in Sources */,
 				3CCD2DFA2ABC3588005709F4 /* MyPageView.swift in Sources */,
