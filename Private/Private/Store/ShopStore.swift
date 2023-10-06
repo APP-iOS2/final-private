@@ -24,6 +24,8 @@ final class ShopStore: ObservableObject {
         shopTelNumber: "010-1234-5678",
         shopInfo: "미슐랭 맛집",
         shopImageURL: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg",
+        shopOwner: "백종원",
+        businessNumber: "123-12-1234",
         bookmarks: [],
         menu: [
             ShopItem(name: "돈코츠 라멘", price: 11000, imageUrl: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg"),
@@ -31,7 +33,7 @@ final class ShopStore: ObservableObject {
             ShopItem(name: "차슈덮밥", price: 12000, imageUrl: "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/411/3435af5cc6041f247e89a65b1a1d73c5_res.jpeg")
         ],
         regularHoliday: ["월요일", "화요일", "수요일", "목요일"],
-        temporayHoliday: [Date()],
+        temporaryHoliday: [Date()],
         breakTimeHours:  [
             "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
             "화요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),

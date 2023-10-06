@@ -10,7 +10,6 @@ import UIKit
 import NMapsMap
 
 struct MapMainView: View {
-    @State var coord: (Double, Double) = (126.9784147, 37.5666805)
     
     @StateObject var coordinator: Coordinator = Coordinator.shared
     
@@ -19,12 +18,13 @@ struct MapMainView: View {
             NaverMap()
         }
         .onAppear {
+            coordinator.checkIfLocationServicesIsEnabled()
             coordinator.makeMarkers()
         }
         
         .sheet(isPresented: $coordinator.showMarkerDetailView) {
-            MapReviewSheetView()
-                .presentationDetents([.height(400)])
+            MapFeedSheetView()
+                .presentationDetents([.height(400), .large])
         }
     }
 }
