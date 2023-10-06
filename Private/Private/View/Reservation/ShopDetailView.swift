@@ -159,7 +159,7 @@ struct ShopDetailBodyView: View {
             ScrollView {
                 switch selectedShopDetailCategory {
                 case .shopInfo:
-                    ShopwDetailInfoView()
+                    ShopDetailInfoView()
                 case .shopMenu:
                     ShopDetailMenuView()
                 case .shopCurrentReview:
