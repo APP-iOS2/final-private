@@ -85,7 +85,7 @@ struct ShopwDetailInfoView: View {
             VStack(spacing: 10) {
                 DisclosureGroup {
                     VStack(alignment: .leading, spacing: 2) {
-                        ForEach(dummyShop.temporayHoliday, id: \.self) { day in
+                        ForEach(dummyShop.temporaryHoliday, id: \.self) { day in
                             HStack(spacing: 0) {
                                 Text(dateToFullString(date: day))
                                     .font(Font.pretendardRegular16)

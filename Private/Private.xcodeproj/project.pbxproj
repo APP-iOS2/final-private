@@ -407,6 +407,7 @@
 		3CCD2DEA2ABC34C1005709F4 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				A69D51442ACF95EC00F27533 /* Feed */,
 				3CCD2DF12ABC3546005709F4 /* MainHomeView.swift */,
 				3CB734092ABD6F0100D82503 /* FeedMainView.swift */,
 				3CB734072ABD6EEF00D82503 /* MapMainView.swift */,
@@ -590,6 +591,13 @@
 				63BB099B2ABE825C002CCE4E /* TestMapView.swift */,
 			);
 			path = Map;
+			sourceTree = "<group>";
+		};
+		A69D51442ACF95EC00F27533 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Feed;
 			sourceTree = "<group>";
 		};
 		B591C7232ACC608B00602727 /* Reservation */ = {
