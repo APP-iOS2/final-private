@@ -16,6 +16,7 @@
 			dependencies = (
 			);
 			name = NMapsGeometry;
+			productName = NMapsGeometry;
 		};
 		8E049F5F4E3BDC647F924FEF22D49D90 /* NMapsMap */ = {
 			isa = PBXAggregateTarget;
@@ -27,6 +28,7 @@
 				258F097AFE79EE06421A954BF7063DC2 /* PBXTargetDependency */,
 			);
 			name = NMapsMap;
+			productName = NMapsMap;
 		};
 /* End PBXAggregateTarget section */
 
@@ -37,6 +39,7 @@
 		8685AA223B4A9E681B7C7D500D737599 /* Pods-PrivateTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E6FC8B90E8FC22E559E57BC75747C /* Pods-PrivateTests-dummy.m */; };
 		8F9C357334962EC5AE140D6A75B466FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		972A0658CE168928D5B6B0435DE1D305 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
+		A69D51432ACF8EBB00F27533 /* ExpandableText in Frameworks */ = {isa = PBXBuildFile; productRef = A69D51422ACF8EBB00F27533 /* ExpandableText */; };
 		B97692F539B4B3444015FAB2038975C9 /* Pods-Private-PrivateUITests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 65092E9F5A93B2CF76CE68450591FD8F /* Pods-Private-PrivateUITests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C77DDC28A98CF5448BE8DBA4FE63F296 /* Pods-Private-PrivateUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FB51EDF8D7068F23A348657B8EC8870D /* Pods-Private-PrivateUITests-dummy.m */; };
 		D78BBA0A9A3B4529050BBCDE853A0FED /* Pods-PrivateTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 80A7B532E0BF15F9B1B39F35ADE584CE /* Pods-PrivateTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -101,9 +104,9 @@
 		38593AB6B3BC0A58FDA4C2BC844C0CB2 /* Pods-Private.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Private.release.xcconfig"; sourceTree = "<group>"; };
 		43B32CDF8BFC8AA21F5259F0C699881C /* Pods-Private-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Private-umbrella.h"; sourceTree = "<group>"; };
 		45D3035E9741DF9332EF9B7181D30D9D /* Pods-Private-PrivateUITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Private-PrivateUITests.modulemap"; sourceTree = "<group>"; };
-		485FAE6318CCD7779377C7AA4A7B3528 /* NMapsGeometry.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = NMapsGeometry.xcframework; path = framework/NMapsGeometry.xcframework; sourceTree = "<group>"; };
+		485FAE6318CCD7779377C7AA4A7B3528 /* NMapsGeometry.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = NMapsGeometry.xcframework; path = framework/NMapsGeometry.xcframework; sourceTree = "<group>"; };
 		4D17F43B4F6DCB1BAA6FBBF06912CD6D /* Pods-Private-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Private-acknowledgements.plist"; sourceTree = "<group>"; };
-		4F0C55D25B9900DE7936740E68EFDFCF /* NMapsMap.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = NMapsMap.xcframework; path = framework/NMapsMap.xcframework; sourceTree = "<group>"; };
+		4F0C55D25B9900DE7936740E68EFDFCF /* NMapsMap.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = NMapsMap.xcframework; path = framework/NMapsMap.xcframework; sourceTree = "<group>"; };
 		51D94205B59B5E4DAEA94A8D88DF5B5D /* Pods-PrivateTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PrivateTests-acknowledgements.plist"; sourceTree = "<group>"; };
 		53BB18D8DE6118DEC0AAC01027DBECA8 /* NMapsMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NMapsMap.release.xcconfig; sourceTree = "<group>"; };
 		65092E9F5A93B2CF76CE68450591FD8F /* Pods-Private-PrivateUITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Private-PrivateUITests-umbrella.h"; sourceTree = "<group>"; };
@@ -115,7 +118,7 @@
 		90156E2BB910B2CFA5030285B6AED417 /* Pods-Private-PrivateUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Private-PrivateUITests-acknowledgements.plist"; sourceTree = "<group>"; };
 		92D43825D48B49BFCD787085405C6C97 /* Pods-Private-PrivateUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Private-PrivateUITests-Info.plist"; sourceTree = "<group>"; };
 		983FCEF2808419DF12F69DFEBD7685D4 /* NMapsMap-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "NMapsMap-xcframeworks.sh"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A4D6C395B95C7C0C86616692CC5AB957 /* Pods-PrivateTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-PrivateTests.modulemap"; sourceTree = "<group>"; };
 		A95BA91D8C0232F0658B2E826D7D7E13 /* Pods-PrivateTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PrivateTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		AC66500ECF66EC6166BD2C6722502C93 /* Pods-Private-PrivateUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Private-PrivateUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -135,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F9C357334962EC5AE140D6A75B466FF /* Foundation.framework in Frameworks */,
+				A69D51432ACF8EBB00F27533 /* ExpandableText in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +205,6 @@
 				DC955F600E602E5041F1000DC79753BB /* Frameworks */,
 				169A894F474781F666BE8D90408D3828 /* Support Files */,
 			);
-			name = NMapsGeometry;
 			path = NMapsGeometry;
 			sourceTree = "<group>";
 		};
@@ -221,7 +224,6 @@
 				2ED541A35C7BD1778556550CF4846D2F /* Frameworks */,
 				A3E28C362EAC5C5A2CCC22EE5E2FDA30 /* Support Files */,
 			);
-			name = NMapsMap;
 			path = NMapsMap;
 			sourceTree = "<group>";
 		};
@@ -406,6 +408,9 @@
 				D0A2E28402E9F955305740519059186D /* PBXTargetDependency */,
 			);
 			name = "Pods-Private";
+			packageProductDependencies = (
+				A69D51422ACF8EBB00F27533 /* ExpandableText */,
+			);
 			productName = Pods_Private;
 			productReference = 685704B4886CBB6BAD24FABD4B055372 /* Pods-Private */;
 			productType = "com.apple.product-type.framework";
@@ -428,6 +433,9 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			packageReferences = (
+				A69D51412ACF8EBB00F27533 /* XCRemoteSwiftPackageReference "ExpandableText" */,
+			);
 			productRefGroup = 29129A116AE43157B1ED23003DEF7F18 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1046,6 +1054,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A69D51412ACF8EBB00F27533 /* XCRemoteSwiftPackageReference "ExpandableText" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NuPlay/ExpandableText.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A69D51422ACF8EBB00F27533 /* ExpandableText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A69D51412ACF8EBB00F27533 /* XCRemoteSwiftPackageReference "ExpandableText" */;
+			productName = ExpandableText;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 }
