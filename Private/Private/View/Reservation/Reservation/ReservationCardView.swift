@@ -52,22 +52,11 @@ struct ReservationCardView: View {
             ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: reservation.date))
             ReservationCardCell(title: "예약 시간", content: "\(reservation.time)시")
             ReservationCardCell(title: "예약 인원", content: "\(reservation.numberOfPeople)명")
-            ReservationCardCell(title: "예약자 이메일", content: "\(reservation.reservedUserId)")
-            ReservationCardCell(title: "총 비용", content: "\(reservation.totalPrice)원")
+            //ReservationCardCell(title: "총 비용", content: "\(reservation.totalPrice)원")
         }
         .padding()
         .background(Color("SubGrayColor"))
         .cornerRadius(12)
-    }
-    
-    func dateToFullString(date: Date) -> String {
-        let formatter = DateFormatter()
-        //        formatter.locale = Locale(identifier: Locale.current.identifier)
-        formatter.locale = Locale(identifier: "ko_KR")
-        //        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
-        formatter.timeZone = TimeZone(abbreviation: "KST")
-        formatter.dateStyle = .full
-        return formatter.string(from: date)
     }
 }
 
