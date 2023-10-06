@@ -17,7 +17,7 @@ struct ReservationView: View {
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var isSelectedTime: Bool = false
     @State private var isShwoingConfirmView: Bool = false
-    @State private var isShowingMyReservation: Bool = false
+//    @State private var isShowingMyReservation: Bool = false
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     //ReservationStore.tempReservation
     
@@ -148,24 +148,9 @@ struct ReservationView: View {
                         .background(Color("AccentColor"))
                         .cornerRadius(12)
                         .disabled(!isSelectedTime)
-                        
-                        Button {
-                            isShowingMyReservation.toggle()
-                            reservationStore.fetchReservation()
-                        } label: {
-                            Text("내 예약 보기")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                        }
-                        .tint(.primary)
-                        .background(Color.accentColor)
-                        .cornerRadius(12)
                     }
                     .navigationDestination(isPresented: $isShwoingConfirmView) {
                         ReservationConfirmView(isShwoingConfirmView: $isShwoingConfirmView, temporaryReservation: temporaryReservation, shopData: shopData)
-                    }
-                    .sheet(isPresented: $isShowingMyReservation) {
-                        MyReservation(isShowingMyReservation: $isShowingMyReservation)
                     }
                 }// VStack
             }// ScrollView

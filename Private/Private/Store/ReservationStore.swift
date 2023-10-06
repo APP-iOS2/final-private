@@ -15,7 +15,6 @@ final class ReservationStore: ObservableObject {
     @Published var reservationList: [Reservation] = []
     
     private let db = Firestore.firestore()
-    
     static let user = Auth.auth().currentUser
     
     init() {
@@ -76,8 +75,7 @@ final class ReservationStore: ObservableObject {
         
         self.reservationList.removeAll()
         
-        // Field에 reservedUserId의 값이 현재 로그인한 유저의 email이면 전부 반환됨
-        let query = self.db.collection("Reservation").whereField("reservedUserId", isEqualTo: email)
+        let query = self.db.collection("User").document(email).collection("MyReservation")
         
         query.getDocuments { querySnapshop, error in
             if let error {
@@ -114,8 +112,6 @@ final class ReservationStore: ObservableObject {
     /// Firestore Database에 예약 등록
     /// - Parameter reservationData: 예약 데이터
     func addReservationToFirestore(reservationData: Reservation) {
-        let docRef = self.db.collection("Reservation").document(reservationData.id)
-        
         guard let user = Self.user else {
             print("로그인 정보가 없습니다.")
             return
@@ -125,6 +121,9 @@ final class ReservationStore: ObservableObject {
             print("로그인 한 유저의 email 정보가 없습니다.")
             return
         }
+        
+        let docRef = self.db.collection("Reservation").document(reservationData.id)
+        let userDocRef = self.db.collection("User").document(email).collection("MyReservation").document(reservationData.id)
         
         guard let dateTimestamp: Timestamp = dateTimeStringToTimeStamp(reservationDate: reservationData.date, reservationHour: reservationData.time) else {
             print("예약 등록 실패 - 날짜 변환 실패")
@@ -140,8 +139,17 @@ final class ReservationStore: ObservableObject {
             "requirement": reservationData.requirement ?? "요구사항 없음"  // 나중에 수정
         ]
         
-        // Firestore에 예약 정보 추가
+        // Firestore Reservation에 추가
         docRef.setData(reservationData) { error in
+            if let error = error {
+                print("Error adding reservation: \(error.localizedDescription)")
+            } else {
+                print("Reservation added to Firestore")
+            }
+        }
+        
+        // Firestore User의 서브 컬렉션에 추가
+        userDocRef.setData(reservationData) { error in
             if let error = error {
                 print("Error adding reservation: \(error.localizedDescription)")
             } else {
@@ -195,8 +203,13 @@ final class ReservationStore: ObservableObject {
     
     // MARK: - 예약 취소
     func removeReservation(reservation: Reservation) {
-        // 삭제할 문서의 참조를 얻습니다.
+        guard let email = Self.user!.email  else {
+            print("로그인 한 유저의 email 정보가 없습니다.")
+            return
+        }
+        
         let docRef = db.collection("Reservation").document(reservation.id)
+        let userDocRef = self.db.collection("User").document(email).collection("MyReservation").document(reservation.id)
 
         // 문서 삭제
         docRef.delete { error in
@@ -204,10 +217,39 @@ final class ReservationStore: ObservableObject {
                 print("문서 삭제 오류: \(error.localizedDescription)")
             } else {
                 print("문서 삭제 성공")
-                // 배열에서도 삭제
-                
             }
         }
+        
+        userDocRef.delete { error in
+            if let error = error {
+                print("문서 삭제 오류: \(error.localizedDescription)")
+            } else {
+                print("문서 삭제 성공")
+            }
+        }
+        
+        fetchReservation()
+    }
+    
+    
+    /// 나의 예약 내역을 삭제
+    func deleteMyReservations(reservation: Reservation) {
+        guard let email = Self.user!.email  else {
+            print("로그인 한 유저의 email 정보가 없습니다.")
+            return
+        }
+        
+        let userDocRef = self.db.collection("User").document(email).collection("MyReservation").document(reservation.id)
+        
+        userDocRef.delete { error in
+            if let error = error {
+                print("문서 삭제 오류: \(error.localizedDescription)")
+            } else {
+                print("문서 삭제 성공")
+            }
+        }
+        
+        fetchReservation()
     }
     
     

@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ReservationCardView: View {
     @EnvironmentObject var reservationStore: ReservationStore
-//    @State private var status: String = ""
-
+    @State private var isShowDeleteAlert: Bool = false
+    
     let reservation: Reservation
-        
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             // ~ 예약시간 이용 전
@@ -22,7 +22,7 @@ struct ReservationCardView: View {
             HStack {
                 Text(reservationStore.isFinishedReservation(date: reservation.date, time: reservation.time))
                     .font(.pretendardMedium20)
-
+                
                 Spacer()
                 Menu {
                     Button {
@@ -52,12 +52,47 @@ struct ReservationCardView: View {
             ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: reservation.date))
             ReservationCardCell(title: "예약 시간", content: "\(reservation.time)시")
             ReservationCardCell(title: "예약 인원", content: "\(reservation.numberOfPeople)명")
-            ReservationCardCell(title: "예약자 이메일", content: "\(reservation.reservedUserId)")
             ReservationCardCell(title: "총 비용", content: "\(reservation.totalPrice)원")
+            
+            
+            Button {
+                print(#fileID, #function, #line, "- 예약 변경하기 ")
+            } label: {
+                Text("예약 변경")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            }
+            .background(Color("AccentColor"))
+            .cornerRadius(12)
+            
+            Button {
+                print(#fileID, #function, #line, "- 예약 취소하기 ")
+                isShowDeleteAlert.toggle()
+            } label: {
+                Text("예약 취소")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            }
+            .background(Color("AccentColor"))
+            .cornerRadius(12)
         }
         .padding()
         .background(Color("SubGrayColor"))
         .cornerRadius(12)
+        .alert("예약 취소", isPresented: $isShowDeleteAlert) {
+            Button(role: .destructive) {
+                reservationStore.removeReservation(reservation: reservation)
+            } label: {
+                Text("취소하기")
+            }
+            
+            Button(role: .cancel) {
+                
+            } label: {
+                Text("돌아가기")
+            }
+            .foregroundStyle(Color.red)
+        }
     }
     
     func dateToFullString(date: Date) -> String {
