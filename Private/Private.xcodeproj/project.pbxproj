@@ -95,7 +95,6 @@
 		63BB099C2ABE825C002CCE4E /* TestMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB099B2ABE825C002CCE4E /* TestMapView.swift */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
-		B54DE4A42ACD5E2400278FF3 /* ExpandableText in Frameworks */ = {isa = PBXBuildFile; productRef = B54DE4A32ACD5E2400278FF3 /* ExpandableText */; };
 		B591C7202ACC59E700602727 /* MyReservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B591C71F2ACC59E700602727 /* MyReservation.swift */; };
 		B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B591C7212ACC5C1B00602727 /* ReservationCardView.swift */; };
 		B59853642AC3BE4E00C45E76 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59853632AC3BE4E00C45E76 /* String+.swift */; };
@@ -110,6 +109,7 @@
 		E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3876FC22AC294E200CFE728 /* PictureView.swift */; };
 		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
 		E3A786952AC3CE0200644DA4 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		E421E2D52ACE9FF800FE1DAD /* UserImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */; };
 		E4778D832ACD33BE0099D924 /* MyFollowerFollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */; };
 		E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D842ACD3E060099D924 /* MyFollowerView.swift */; };
 		E4778D872ACD3EF40099D924 /* MyFollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D862ACD3EF40099D924 /* MyFollowingView.swift */; };
@@ -216,6 +216,7 @@
 		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
 		E3876FC22AC294E200CFE728 /* PictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
+		E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImagePickerView.swift; sourceTree = "<group>"; };
 		E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerFollowingView.swift; sourceTree = "<group>"; };
 		E4778D842ACD3E060099D924 /* MyFollowerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerView.swift; sourceTree = "<group>"; };
 		E4778D862ACD3EF40099D924 /* MyFollowingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowingView.swift; sourceTree = "<group>"; };
@@ -399,6 +400,7 @@
 			children = (
 				3CCD2DF92ABC3588005709F4 /* MyPageView.swift */,
 				3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */,
+				E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */,
 				3C91AEA12AC40F6100E60D9B /* SettingView.swift */,
 				E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */,
 				E4778D842ACD3E060099D924 /* MyFollowerView.swift */,
@@ -839,6 +841,7 @@
 				3C3716262ABD15CD004E8419 /* ShopStore.swift in Sources */,
 				3CB734082ABD6EEF00D82503 /* MapMainView.swift in Sources */,
 				3C37162C2ABD1789004E8419 /* ChatRoomStore.swift in Sources */,
+				E421E2D52ACE9FF800FE1DAD /* UserImagePickerView.swift in Sources */,
 				3C3716242ABD15A4004E8419 /* UserStore.swift in Sources */,
 				3CF3D8C72AB82A97003689A6 /* LaunchView.swift in Sources */,
 				3CCD2DFA2ABC3588005709F4 /* MyPageView.swift in Sources */,
@@ -1285,14 +1288,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		B54DE4A22ACD5E2300278FF3 /* XCRemoteSwiftPackageReference "ExpandableText" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/NuPlay/ExpandableText";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1455,11 +1450,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3CDE564D2AB89F1D00594DF9 /* XCRemoteSwiftPackageReference "PopupView" */;
 			productName = PopupView;
-		};
-		B54DE4A32ACD5E2400278FF3 /* ExpandableText */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B54DE4A22ACD5E2300278FF3 /* XCRemoteSwiftPackageReference "ExpandableText" */;
-			productName = ExpandableText;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
