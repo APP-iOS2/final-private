@@ -33,7 +33,7 @@ struct SearchUserCellView: View {
                 followStore.manageFollow(userId: user.id, followCheck: followStore.followCheck)
             } label: {
                 Text(followStore.followCheck ? "팔로잉" : "팔로우")
-                    .fontWeight(.bold)
+                    .font(.pretendardBold18)
                     .padding(12)
                     .foregroundColor(.black)
                     .background(followStore.followCheck ? Color("AccentColor") : Color.white)
