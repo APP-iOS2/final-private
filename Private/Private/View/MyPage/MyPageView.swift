@@ -32,10 +32,10 @@ struct MyPageView: View {
             }
             UserInfoView()
                 .padding(.top,-15.0)
-            Divider()
-                .background(Color.primary)
-                .frame(width: .screenWidth*0.9)
-                .padding([.top,.bottom],15)
+//            Divider()
+//                .background(Color.primary)
+//                .frame(width: .screenWidth*0.9)
+//                .padding([.top,.bottom],15)
             HStack {
                 Spacer()
                 Button {
@@ -54,6 +54,7 @@ struct MyPageView: View {
                     .padding(.bottom,15.0)
                     .modifier(BottomBorder(showBorder: viewNumber == 0))
                 }
+                Spacer()
                 Button {
                     isMyhistoryButton = false
                     isMySavedFeedButton = true
@@ -69,6 +70,7 @@ struct MyPageView: View {
                         .padding(.bottom,15.0)
                         .modifier(BottomBorder(showBorder: viewNumber == 1))
                 }
+                Spacer()
                 Button {
                     isMyhistoryButton = false
                     isMySavedFeedButton = false
@@ -87,6 +89,11 @@ struct MyPageView: View {
                 }
                 Spacer()
             }
+            .padding(.top, 37)
+            Divider()
+                .background(Color.primary)
+                .frame(width: .screenWidth*0.925)
+                .padding(.top, -8)
             switch viewNumber {
             case 0:
                 MyHistoryView()
