@@ -47,6 +47,8 @@ struct DateTimePickerView: View {
                 .datePickerStyle(.graphical)
                 .padding(.bottom)
                 .onChange(of: temporaryReservation.date) { newValue in
+                    self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: temporaryReservation.date)
+                    
                     separateReservationTime(timeSlots: availableTimeSlots)
                     print(temporaryReservation.date)
                 }
