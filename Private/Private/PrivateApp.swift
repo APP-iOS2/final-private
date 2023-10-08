@@ -27,7 +27,7 @@ struct PrivateApp: App {
         FirebaseApp.configure()
         
         // Kakao SDK 초기화
-        let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_APP_KEY"] as? String ?? "KAKAO_APP_KEY is nil"
+        let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String ?? "KAKAO_NATIVE_APP_KEY is nil"
         KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
     }
     
