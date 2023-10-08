@@ -13,9 +13,6 @@ struct MyPageView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
-    @State var isMyhistoryButton: Bool = true
-    @State var isMySavedFeedButton: Bool = false
-    @State var isMySavedPlaceButton: Bool = false
     @State var viewNumber: Int = 0
     
     var body: some View {
@@ -39,13 +36,10 @@ struct MyPageView: View {
             HStack {
                 Spacer()
                 Button {
-                    isMyhistoryButton = true
-                    isMySavedFeedButton = false
-                    isMySavedPlaceButton = false
                     viewNumber = 0
                 }label: {
                     HStack {
-                        isMyhistoryButton ? Image( systemName: "location.fill") : Image (systemName: "location")
+                        viewNumber == 0 ? Image( systemName: "location.fill") : Image (systemName: "location")
                         Text("내 기록")
                     }
                     .font(.pretendardRegular12)
@@ -56,13 +50,10 @@ struct MyPageView: View {
                 }
                 Spacer()
                 Button {
-                    isMyhistoryButton = false
-                    isMySavedFeedButton = true
-                    isMySavedPlaceButton = false
                     viewNumber = 1
                 }label: {
                     HStack {
-                        isMySavedFeedButton ? Image(systemName: "bookmark.fill") : Image (systemName: "bookmark")
+                        viewNumber == 1 ? Image(systemName: "bookmark.fill") : Image (systemName: "bookmark")
                         Text("내가 저장한 피드")
                     }.font(.pretendardRegular12)
                         .foregroundColor(.chatTextColor)
@@ -72,13 +63,10 @@ struct MyPageView: View {
                 }
                 Spacer()
                 Button {
-                    isMyhistoryButton = false
-                    isMySavedFeedButton = false
-                    isMySavedPlaceButton = true
                     viewNumber = 2
                 }label: {
                     HStack {
-                        isMySavedPlaceButton ? Image(systemName: "pin.fill")
+                        viewNumber == 2 ? Image(systemName: "pin.fill")
                         : Image (systemName: "pin")
                         Text("내가 저장한 장소")
                     }.font(.pretendardRegular12)
@@ -94,7 +82,7 @@ struct MyPageView: View {
                 .background(Color.primary)
                 .frame(width: .screenWidth*0.925)
                 .padding(.top, -8)
-            switch viewNumber {
+            /*switch viewNumber {
             case 0:
                 MyHistoryView()
                     .gesture(
@@ -159,7 +147,14 @@ struct MyPageView: View {
                     )
             default:
                 MyHistoryView()
+            }*/
+            TabView(selection: $viewNumber) {
+                MyHistoryView().tag(0)
+                MySavedView().tag(1)
+                MySavedPlaceView().tag(2)
             }
+            .tabViewStyle(PageTabViewStyle())
+            .tabViewStyle(.page)
             Spacer()
         }
     }
