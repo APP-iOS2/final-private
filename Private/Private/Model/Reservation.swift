@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct Reservation {
-    var shop: Shop
-    var date: Double
-    var time: String
-    var isOpen: Bool
-    var numberOfPeople: Int
-    var totalPrice: String
-    var reservedUser: User
+struct Reservation: Hashable {
+    var id: String = UUID().uuidString
+    var shopId: String
+    var reservedUserId: String
+    var date: Date  // 예약일
+    var time: Int  // 예약시간
+    var numberOfPeople: Int = 1  // 예약인원
+    var totalPrice: Int   // 총 가격
+    var requirement: String? // 요구사항
 }

@@ -9,31 +9,25 @@ import SwiftUI
 
 struct LaunchView: View {
     
-    init() {
-        UITabBar.appearance().backgroundColor = UIColor(Color.white)
-    }
+    @EnvironmentObject var authStore: AuthStore
+    @EnvironmentObject var userStore: UserStore
     
     @State private var isActive = false
     @State private var isloading = true
     
     var body: some View {
         if isActive {
-            /// 로그인 한 유저가 있으면 MainTabView로 이동
-            /// 로그인 한 유저가 없으면 MainLoginView로 이동
-            // if currentUser != nil {
-            //     MainTabView()
-            // } else {
-            //     MainLoginView()
-            // }
-            if true {
-                MainTabView()
-            } else {
-//                MainLoginView()
-            }
+            if authStore.currentUser != nil {
+                 MainTabView()
+             } else {
+                 MainLoginView()
+             }
         } else {
             if isloading {
                 VStack {
-                    Text("Launch View")
+                    Text("Private")
+                        .font(.pretendardBold28)
+                        .foregroundStyle(.foreground)
                 }
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -41,6 +35,14 @@ struct LaunchView: View {
                             self.isActive = true
                             self.isloading.toggle()
                         }
+                    }
+                    if let email = authStore.currentUser?.email {
+                        userStore.fetchCurrentUser(userEmail: email)
+                    }
+                }
+                .onDisappear {
+                    if let email = authStore.currentUser?.email {
+                        userStore.fetchCurrentUser(userEmail: email)
                     }
                 }
             }

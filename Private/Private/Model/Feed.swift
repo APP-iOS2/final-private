@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import Firebase
 
-struct Feed {
+struct Feed: Identifiable, Hashable {
+    
     let id: String = UUID().uuidString
+    
     var writer: User
     var images: [String]
     var contents: String
@@ -17,7 +20,7 @@ struct Feed {
     var category: [Category]
 }
 
-enum Category: Int, CaseIterable {
+enum Category: Int, CaseIterable, Hashable {
     case koreanFood
     case westernFood
     case japaneseFood
@@ -38,5 +41,44 @@ enum Category: Int, CaseIterable {
         case .brunch : return "브런치"
         case .cafe : return "카페"
         }
+    }
+}
+extension Feed {
+    init?(documentData: [String: Any]) {
+        guard
+           
+            let visitedShopData = documentData["visitedShop"] as? [String: Any],
+            let visitedShop = Shop(documentData: visitedShopData),
+            
+            let writerData = documentData["writer"] as? [String: Any],
+            let writer = User(document: writerData), // User 초기화 메서드도 구현해야함.
+            let contents = documentData["contents"] as? String,
+            let images = documentData["images"] as? [String],
+            let createdAt = documentData["createdAt"] as? Timestamp, // Firestore의 Timestamp를 사용
+            let categoryData = documentData["category"] as? [String]
+        else {
+            print("Failed to initialize Feed with feeddata: \(documentData)")
+            return nil
+        }
+        // 여기서 나머지 프로퍼티들을 초기화
+        self.visitedShop = visitedShop
+        self.writer = writer
+        self.contents = contents
+        
+        self.images = images
+        //self.createdAt = createdAt.dateValue() // Firestore Timestamp를 Swift Date로 변환
+        self.createdAt = createdAt.dateValue().timeIntervalSince1970
+        //self.category = categoryData.compactMap { Category(rawValue: $0) }
+        //compactMap 를 사용해 String ->Int -> Category 타입으로 변환하였다
+        self.category = categoryData.compactMap { categoryName in
+            if let intValue = Int(categoryName) {
+                return Category(rawValue: intValue)
+            } else {
+                // String을 Int로 변환하는 데 실패했습니다.
+                print("Failed to :String을 Int로 변환하는 데 실패했습니다.")
+                return nil
+            }
+        }
+
     }
 }
