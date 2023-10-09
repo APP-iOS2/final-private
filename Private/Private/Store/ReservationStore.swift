@@ -232,8 +232,9 @@ final class ReservationStore: ObservableObject {
     }
     
     
-    /// 나의 예약 내역을 삭제
-    func deleteMyReservations(reservation: Reservation) {
+    
+    // MARK: - 예약 내역 삭제
+    func deleteMyReservation(reservation: Reservation) {
         guard let email = Self.user!.email  else {
             print("로그인 한 유저의 email 정보가 없습니다.")
             return

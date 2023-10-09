@@ -39,6 +39,7 @@ struct ReservationCardView: View {
                     
                     Button(role: .destructive) {
                         print(#fileID, #function, #line, "- 예약내역 삭제")
+                        reservationStore.deleteMyReservation(reservation: reservation)
                     } label: {
                         Text("예약내역 삭제")
                     }

@@ -20,6 +20,7 @@ struct ReservationView: View {
 //    @State private var isShowingMyReservation: Bool = false
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     //ReservationStore.tempReservation
+    @Binding var isReservationPresented: Bool
     
     private let step = 1  // 인원선택 stepper의 step
     private let range = 1...6  // stepper 인원제한
@@ -150,7 +151,7 @@ struct ReservationView: View {
                         .disabled(!isSelectedTime)
                     }
                     .navigationDestination(isPresented: $isShwoingConfirmView) {
-                        ReservationConfirmView(isShwoingConfirmView: $isShwoingConfirmView, temporaryReservation: temporaryReservation, shopData: shopData)
+                        ReservationConfirmView(isShwoingConfirmView: $isShwoingConfirmView, isReservationPresented: $isReservationPresented, temporaryReservation: temporaryReservation, shopData: shopData)
                     }
                 }// VStack
             }// ScrollView
@@ -164,7 +165,7 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(shopData: ShopStore.shop)
+        ReservationView(isReservationPresented: .constant(true), shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }

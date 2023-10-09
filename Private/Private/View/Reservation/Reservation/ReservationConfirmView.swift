@@ -16,6 +16,7 @@ struct ReservationConfirmView: View {
     @State private var isShowingAlert: Bool = false
     @State private var text: String = ""
     @Binding var isShwoingConfirmView: Bool
+    @Binding var isReservationPresented: Bool
     
     private let maxLine: Int = 5
     private let fontSize: Double = 24
@@ -161,6 +162,7 @@ struct ReservationConfirmView: View {
                     print(#fileID, #function, #line, "- 예약 확정")
                     reservationStore.addReservationToFirestore(reservationData: temporaryReservation)
                     isShwoingConfirmView.toggle()
+                    isReservationPresented.toggle()
                 } label: {
                     Text("예약하기")
                 }
@@ -178,7 +180,7 @@ struct ReservationConfirmView: View {
 
 struct ReservationConfirmView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationConfirmView(isShwoingConfirmView: .constant(true), temporaryReservation: ReservationStore.tempReservation, shopData: ShopStore.shop)
+        ReservationConfirmView(isShwoingConfirmView: .constant(true), isReservationPresented: .constant(true), temporaryReservation: ReservationStore.tempReservation, shopData: ShopStore.shop)
             .environmentObject(ReservationStore())
             .environmentObject(UserStore())
     }

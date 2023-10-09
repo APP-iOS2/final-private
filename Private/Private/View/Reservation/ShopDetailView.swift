@@ -227,7 +227,7 @@ struct ShopDetailView: View {
             })
             .frame(alignment: .bottom)
             .sheet(isPresented: $isReservationPresented) {
-                ReservationView(shopData: ShopStore.shop)
+                ReservationView(isReservationPresented: $isReservationPresented, shopData: ShopStore.shop)
             }
         }
     }
