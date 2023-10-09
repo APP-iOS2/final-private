@@ -27,7 +27,10 @@ struct OtherInfoView: View {
                             .clipShape(Circle())
                     } else {
                         KFImage(URL(string: user.profileImageURL))
-                            .frame(width: .screenWidth*0.23)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: .screenWidth*0.23, height: .screenWidth*0.23)
+                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                     }
                 }
                 .padding(.bottom, 1.0)

@@ -16,7 +16,8 @@ struct SearchUserCellView: View {
             AsyncImage(url: URL(string: user.profileImageURL)) { image in
                 image
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 44, height: 44)
+                    .aspectRatio(contentMode: .fill)
                     .clipShape(Circle())
             } placeholder: {
                 Circle()
