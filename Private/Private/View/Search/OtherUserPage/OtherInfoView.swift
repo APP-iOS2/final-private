@@ -10,7 +10,7 @@ import Kingfisher
 
 struct OtherInfoView: View {
     @State var isModify: Bool = false
-    @EnvironmentObject var followStore:FollowStore
+    @StateObject var followStore = FollowStore()
     
     let user:User
     var body: some View {

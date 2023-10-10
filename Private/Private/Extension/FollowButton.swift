@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FollowButton: View {
+    @EnvironmentObject var userStore: UserStore
     @ObservedObject  var followStore = FollowStore()
     
     var user:User
@@ -25,7 +26,7 @@ struct FollowButton: View {
     
     func follow(){
         if !self.followCheck {
-            followStore.follow(userId: user.id, followingCount: {
+            followStore.follow(userId: user.nickname, myNickName: userStore.user.nickname, OtherEmail: user.email, followingCount: {
                 (followingCount) in
                 self.followingCount = followingCount
             }) {
@@ -35,7 +36,7 @@ struct FollowButton: View {
             
             self.followCheck = true
         } else {
-            followStore.unfollow(userId: user.id, followingCount: {
+            followStore.unfollow(userId: user.nickname, myNickName: userStore.user.nickname,  userEmail: user.email, followingCount: {
                 (followingCount) in
                 self.followingCount = followingCount
             }) {
@@ -45,7 +46,6 @@ struct FollowButton: View {
             self.followCheck = false
         }
     }
-    
     
     var body: some View {
         Button(action: follow) {
