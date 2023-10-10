@@ -9,12 +9,13 @@ import SwiftUI
 
 struct MyReservation: View {
     @EnvironmentObject var reservationStore: ReservationStore
+    
     @Binding var isShowingMyReservation: Bool
     
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack {
+                VStack {
                     ForEach(reservationStore.reservationList, id: \.self) { reservation in
                         ReservationCardView(reservation: reservation)
                     }

@@ -223,6 +223,11 @@ struct ShopDetailFooterView: View {
                 } else {
                     Color.black
                 }
+//             })
+//             .frame(alignment: .bottom)
+//             .sheet(isPresented: $isReservationPresented) {
+//                 ReservationView(isReservationPresented: $isReservationPresented, shopData: ShopStore.shop)
+
             }
         })
         .frame(alignment: .bottom)
