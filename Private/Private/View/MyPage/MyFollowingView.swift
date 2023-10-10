@@ -6,24 +6,51 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+import Kingfisher
 
 struct MyFollowingView: View {
     @EnvironmentObject var userStore: UserStore
+    @State private var followingUserList: [User] = []
     var body: some View {
         ScrollView {
-            ForEach(userStore.user.following, id:\.self) { following in
+            ForEach(followingUserList, id:\.self) { following in
                 HStack {
-                    Text("\(following)")
-                        .foregroundColor(.primary)
+                    NavigationLink() {
+                        OtherPageView(user:following)
+                    } label: {
+                        if following.profileImageURL.isEmpty {
+                            ZStack {
+                                Circle()
+                                    .frame(width: .screenWidth*0.13)
+                                    .foregroundColor(.primary)
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .frame(width: .screenWidth*0.115,height: .screenWidth*0.115)
+                                    .foregroundColor(.gray)
+                                    .clipShape(Circle())
+                            }
+                        } else {
+                            KFImage(URL(string: following.profileImageURL))
+                                .resizable()
+                                .clipShape(Circle())
+                                .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
+                        }
+                        Text("\(following.nickname)")
+                            .font(.pretendardMedium18)
+                            .foregroundColor(.primary)
+                            .padding(.leading, 15)
+                    }
                     Spacer()
                     Button {
                         
                     } label: {
-                        Text("팔로우")
+                        Text("언팔로우")
                             .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
                             .font(.pretendardBold14)
                             .foregroundColor(.black)
-                            .background(Color.primary)
+                            .background(Color.yellow)
                             .cornerRadius(20)
                         
                     }
@@ -32,6 +59,36 @@ struct MyFollowingView: View {
                 Divider()
                     .background(Color.primary)
                     .frame(width: .screenWidth*0.9)
+            }
+        }
+        .onAppear {
+            if followingUserList.count != userStore.user.following.count {
+                searchFollowingUser(searchNickname: userStore.user.following)
+            }
+        }
+        .refreshable {
+            followingUserList = []
+            searchFollowingUser(searchNickname: userStore.user.following)
+        }
+    }
+    func searchFollowingUser(searchNickname: [String]) {
+        let db = Firestore.firestore()
+        
+        for index in searchNickname {
+            let query = db.collection("User")
+                .whereField("nickname",isEqualTo: index)
+                .limit(to: 10)
+            
+            query.getDocuments { (querySnapshot,error) in
+                if let error = error {
+                    print("데이터 가져오기 실패: \(error.localizedDescription)")
+                    return
+                }
+                for document in querySnapshot!.documents {
+                    let data = document.data()
+                    let user = User(document: data)
+                    followingUserList.append(user ?? User())
+                }
             }
         }
     }
