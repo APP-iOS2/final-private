@@ -357,7 +357,9 @@ final class ReservationStore: ObservableObject {
     ///   - close: 마감시간
     ///   - date: 예약 날짜
     /// - Returns: 예약 가능 시간대
-    func getAvailableTimeSlots(open: Int, close: Int, date: Date) -> [Int] {  // 브레이크 타임 받아야 함
+    func getAvailableTimeSlots(open: Int, close: Int, date: Date) -> [Int] {  
+        // 브레이크 타임 적용 -> Shop 데이터 받아야 함
+        // 예약된 타임은 disable 시키기
         let reservationDate: Date = date
         let openTime: Int = open
         let closeTime: Int = close
@@ -392,8 +394,8 @@ final class ReservationStore: ObservableObject {
     
     // 예약 시간을 오전/오후 x시로 바꿔줌
     func conversionReservedTime(time: Int) -> (String, Int) {
-        var when = time > 11 ? "오후" : "오전"
-        var hour = time > 12 ? time - 12 : time
+        let when = time > 11 ? "오후" : "오전"
+        let hour = time > 12 ? time - 12 : time
         
         return (when, hour)
     }
