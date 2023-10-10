@@ -40,7 +40,11 @@ struct RequirementTextEditor: View {
                     .padding(.top, 10)
                     .padding(.leading, 10)
                     .onTapGesture {
-                        self.focusedField = .requirement
+                        if self.focusedField == .requirement {
+                            hideKeyboard()
+                        } else {
+                            self.focusedField = .requirement
+                        }
                     }
             }
         }

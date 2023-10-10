@@ -119,6 +119,10 @@ struct ModifyReservationView: View {
                 }
             }
         }
+//        .onTapGesture {
+//            hideKeyboard()
+//            print(#fileID, #function, #line, "- OnTabGesture")
+//        }
         .padding()
         .onAppear {
             self.reservedTime = reservationStore.conversionReservedTime(time: temporaryReservation.time).0
