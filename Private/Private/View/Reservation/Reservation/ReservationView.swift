@@ -40,7 +40,6 @@ struct ReservationView: View {
                     Text("예약 일시")
                         .font(Font.pretendardBold18)
                     
-                    // 버튼의 범위를 HStack 전체로 할지 고민
                     HStack {
                         Image(systemName: "calendar")
                         HStack {

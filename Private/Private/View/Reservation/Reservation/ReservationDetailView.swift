@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ReservationDetailView: View {
-    enum Field: Hashable {
-        case requirement
-    }
+//    enum Field: Hashable {
+//        case requirement
+//    }
     
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var userStore: UserStore
     
-    @FocusState private var focusedField: Field?
+//    @FocusState private var focusedField: Field?
     
     @State private var isShowingAlert: Bool = false
     @State private var requirementText: String = ""  // TextField의 Text
@@ -27,8 +27,8 @@ struct ReservationDetailView: View {
     
     @Binding var reservationData: Reservation  // 예약 데이터
     let shopData: Shop  // 가게 데이터
-    let placeholder: String = "업체에 요청하실 내용을 적어주세요"
-    let limitChar: Int = 100
+//    let placeholder: String = "업체에 요청하실 내용을 적어주세요"
+//    let limitChar: Int = 100
 
     var body: some View {
         VStack {
@@ -69,37 +69,7 @@ struct ReservationDetailView: View {
                     ReservationCardCell(title: "이메일", content: userStore.user.email)
                     
                     Text("요구사항")
-                    
-                    // TextEditor 부분
-                    ZStack(alignment: .topLeading) {
-                        TextEditor(text: $requirementText)
-                            .foregroundStyle(.primary)
-                            .keyboardType(.default)
-                            .frame(height: 80)
-                            .lineSpacing(10)
-                            .focused($focusedField, equals: .requirement)
-                            .onChange(of: self.requirementText, perform: {
-                                if $0.count > limitChar {
-                                    self.requirementText = String($0.prefix(limitChar))
-                                }
-                            })
-                            .border(.secondary)
-                        
-                        if requirementText.isEmpty {
-                            Text(placeholder)
-                                .lineSpacing(10)
-                                .foregroundColor(Color.primary.opacity(0.25))
-                                .padding(.top, 10)
-                                .padding(.leading, 10)
-                                .onTapGesture {
-                                    self.focusedField = .requirement
-                                }
-                        }
-                    }
-//                    .onTapGesture {
-//                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-//                    }
-                    
+                    RequirementTextEditor(requirementText: $requirementText)
                 }
                 .padding(.bottom)
                 

@@ -13,79 +13,107 @@ struct ReservationCardView: View {
     @State private var isShowDeleteMyReservationAlert: Bool = false
     @State private var isShowRemoveReservationAlert: Bool = false
     @State private var isShowModifyView: Bool = false
+    @State private var disableReservationButton: Bool = false
     
+    @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
+
+    @State private var reservationState: String = ""
     var reservation: Reservation
-    
+    private let currentDate = Date()
+
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
-                Text(reservationStore.isFinishedReservation(date: reservation.date, time: reservation.time))
+                Text(reservationState)
                     .font(.pretendardMedium20)
                 
                 Spacer()
                 Menu {
                     Button {
                         print(#fileID, #function, #line, "- 가게보기")
+                        // Shop 가져와야 함
                     } label: {
                         Text("가게보기")
                     }
                     
                     NavigationLink {
-                        ReservationConfirmView(reservationData: reservation, shopData: ShopStore.shop)
+                        ReservationConfirmView(reservationData: temporaryReservation, shopData: ShopStore.shop)
                     } label: {
                         Text("예약상세")
                     }
                     
-                    Button(role: .destructive) {
-                        print(#fileID, #function, #line, "- 예약내역 삭제")
-                        isShowDeleteMyReservationAlert.toggle()
-                    } label: {
-                        Text("예약내역 삭제")
+                    if disableReservationButton {
+                        Button(role: .destructive) {
+                            print(#fileID, #function, #line, "- 예약내역 삭제")
+                            isShowDeleteMyReservationAlert.toggle()
+                        } label: {
+                            Text("예약내역 삭제")
+                        }
                     }
                 } label: {
                     Image(systemName: "ellipsis")
-                        .padding(20)  // 버튼 터치 영역을 넓히기 위함
+                        .padding(20)
                 }
                 .foregroundColor(Color.secondary)
             }
-            
-            ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: reservation.date))
-            ReservationCardCell(title: "예약 시간", content: "\(reservation.time)시")
-            ReservationCardCell(title: "예약 인원", content: "\(reservation.numberOfPeople)명")
-            ReservationCardCell(title: "총 비용", content: "\(reservation.totalPrice)원")
+            Text(ShopStore.shop.name)
+                .font(.pretendardMedium18)
             
             
-            Button {
-                print(#fileID, #function, #line, "- 예약 변경하기 ")
-                isShowModifyView.toggle()  // 여기서부터가 문제넹 찾아보자
-            } label: {
-                Text("예약 변경")
-                    .frame(maxWidth: .infinity)
-                    .padding()
+            ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: temporaryReservation.date))
+            ReservationCardCell(title: "예약 시간", content: "\(temporaryReservation.time)시")
+            ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
+            ReservationCardCell(title: "총 비용", content: "\(temporaryReservation.totalPrice)원")
+                .padding(.bottom)
+            
+            HStack {
+                Button {
+                    isShowModifyView.toggle()
+                } label: {
+                    Text("예약 변경")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .foregroundStyle(disableReservationButton ? Color.gray : .black)
+                .background(Color("AccentColor"))
+                .cornerRadius(12)
+                .disabled(disableReservationButton)
+                
+                Button {
+                    isShowRemoveReservationAlert.toggle()
+                } label: {
+                    Text("예약 취소")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .foregroundStyle(disableReservationButton ? Color.gray : .black)
+                .background(Color("AccentColor"))
+                .cornerRadius(12)
+                .disabled(disableReservationButton)
+
             }
-            .background(Color("AccentColor"))
-            .cornerRadius(12)
-            
-            Button {  // navigationLink로 해도 될듯
-                print(#fileID, #function, #line, "- 예약 취소하기 ")
-                isShowRemoveReservationAlert.toggle()
-            } label: {
-                Text("예약 취소")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-            }
-            .background(Color("AccentColor"))
-            .cornerRadius(12)
         }
         .padding()
         .background(Color("SubGrayColor"))
         .cornerRadius(12)
+        .onAppear {
+            self.temporaryReservation = self.reservation
+            self.reservationState = reservationStore.isFinishedReservation(date: temporaryReservation.date, time: temporaryReservation.time)
+            
+            // 현재시간과 예약시간이 1시간 이내이면 disable
+            let changeableTime = temporaryReservation.date.addingTimeInterval(-3600) // 예약시간 -1시간
+            if changeableTime <= currentDate {
+                disableReservationButton = true
+            }
+            
+            print("새로 그려짐")
+        }
         .navigationDestination(isPresented: $isShowModifyView, destination: {
-            ModifyReservationView(isShowModifyView: $isShowModifyView, reservationData: reservation)
+            ModifyReservationView(temporaryReservation: $temporaryReservation, isShowModifyView: $isShowModifyView)
         })
         .alert("예약 내역 삭제", isPresented: $isShowDeleteMyReservationAlert) {
             Button(role: .destructive) {
-                reservationStore.deleteMyReservation(reservation: reservation)
+                reservationStore.deleteMyReservation(reservation: temporaryReservation)
             } label: {
                 Text("삭제하기")
             }
@@ -98,7 +126,7 @@ struct ReservationCardView: View {
         }
         .alert("예약 취소", isPresented: $isShowRemoveReservationAlert) {
             Button(role: .destructive) {
-                reservationStore.removeReservation(reservation: reservation)
+                reservationStore.removeReservation(reservation: temporaryReservation)
             } label: {
                 Text("취소하기")
             }
@@ -113,9 +141,7 @@ struct ReservationCardView: View {
     
     func dateToFullString(date: Date) -> String {
         let formatter = DateFormatter()
-        //        formatter.locale = Locale(identifier: Locale.current.identifier)
         formatter.locale = Locale(identifier: "ko_KR")
-        //        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
         formatter.timeZone = TimeZone(abbreviation: "KST")
         formatter.dateStyle = .full
         return formatter.string(from: date)

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MyReservation: View {
     @EnvironmentObject var reservationStore: ReservationStore
+    
     @Binding var isShowingMyReservation: Bool
     
     var body: some View {
