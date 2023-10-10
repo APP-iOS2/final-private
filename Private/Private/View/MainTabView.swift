@@ -69,7 +69,7 @@ struct MainTabView: View {
                     SearchView(root: $rootSection2, selection: $selection).tabItem {
                         Image(systemName: "magnifyingglass")
                     }.tag(2)
-                    PostView(root: $rootSection3, selection: $selection).tabItem {
+                    UploadView(root: .constant(true), selection: .constant(3), isImagePickerPresented: .constant(true), isPostViewPresented: .constant(true)).tabItem {
                         Image(systemName: "plus")
                     }.tag(3)
                     ShopDetailView(root: $rootSection4, selection: $selection).tabItem {

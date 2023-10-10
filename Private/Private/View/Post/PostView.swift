@@ -16,7 +16,8 @@ import Combine
 struct PostView: View {
     
     @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.presentationMode) var presentationMode
+
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     
     @Binding var root: Bool
@@ -33,13 +34,16 @@ struct PostView: View {
     @State private var createdAt: Double = Date().timeIntervalSince1970
     @State private var visitedShop: String = ""
     @State private var feedId: String = ""
+    @State private var myselectedCategory: [String] = []
 
+    @State private var isPostViewPresented: Bool = true /// PostView
     @State private var clickLocation: Bool = false
-    @State private var isImagePickerPresented: Bool = false
-    @State private var ImageViewPresented: Bool = true
+    @State private var isImagePickerPresented: Bool = false /// 업로드뷰에서 이미지 선택 뷰
+    @State private var ImageViewPresented: Bool = true /// 처음 이미지 뷰
     @State private var showLocation: Bool = false
-    @State private var isshowAlert = false
-    
+    @State private var isshowAlert = false /// 업로드 알럿
+    @State private var categoryAlert: Bool = false /// 카테고리 초과 알럿
+
     @State private var selectedImage: [UIImage]?
     @FocusState private var isTextMasterFocused: Bool
     
@@ -49,16 +53,12 @@ struct PostView: View {
     private let maxLine: Int = 8
     private let fontSize: Double = 24
     
-    @State var selectedCategory: [String] = []
-    @State private var myselectedCategory: [MyCategory] = []
+    @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
+    private let maxSelectedCategories = 3
     
     var db = Firestore.firestore()
     var storage = Storage.storage()
-    //    var categoryString: [String] {
-    //        selectedCategory.map { $0.rawValue }
-    //    }
-//    let resultString = categoryString.joined(separator: ",")
     
     var body: some View {
         NavigationStack {
@@ -96,21 +96,9 @@ struct PostView: View {
                         } label: {
                             Label("장소", systemImage: "location")
                         }
-                        .sheet(isPresented: $showLocation){
+                        .sheet(isPresented: $showLocation) {
                             LocationSearchView(showLocation: $showLocation, searchResult: $searchResult)
-//                            NavigationStack {
-//                                MapMainView()
-//                                    .toolbar {
-//                                        ToolbarItem(placement: .navigationBarLeading) {
-//                                            Button {
-//                                                showLocation = false
-//                                            } label: {
-//                                                Text("취소")
-//                                            }
-//                                        }
-//                                    }
-//                                    .font(.pretendardBold18)
-//                            }
+                                .presentationDetents([.fraction(0.75), .large])
                         }
                     }
                     .padding(.vertical, 10)
@@ -120,8 +108,12 @@ struct PostView: View {
                             .font(.body)
                             .foregroundColor(.secondary)
                     } else {
-                        Text("\(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                        Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                             .font(.body)
+                        Text(searchResult.address)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            
                     }
                     Divider()
                         .padding(.vertical, 10)
@@ -129,12 +121,11 @@ struct PostView: View {
                     //MARK: 사진
                     HStack {
                         Label("사진", systemImage: "camera")
-                        Text("(최대 10장)")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                        
+//                        Text("(최대 10장)")
+//                            .font(.caption)
+//                            .foregroundColor(.secondary)
                         Spacer()
-                        
+
                         Button {
                             isImagePickerPresented.toggle()
                         } label: {
@@ -142,6 +133,9 @@ struct PostView: View {
                         }
                         .sheet(isPresented: $isImagePickerPresented) {
                             ImagePickerView(selectedImages: $selectedImage)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(Color.white)
+                                .transition(.move(edge: .leading))
                         }
                     }
                     
@@ -182,45 +176,97 @@ struct PostView: View {
                         .padding(.vertical, 10)
 
                     //MARK: 카테고리
-                    CatecoryView(selectedCategory: $selectedCategory)
-                        .padding(.trailing, 8)
+                        
+                    HStack {
+                        Text("카테고리")
+                            .font(.title2).fontWeight(.semibold)
+                        Text("(최대 3개)")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    LazyVGrid(columns: createGridColumns(), spacing: 20) {
+                        ForEach (Category.allCases.indices, id: \.self) { index in
+                            VStack {
+                                if selectedToggle[index] {
+                                    Text(Category.allCases[index].categoryName)
+                                        .font(.body)
+                                        .foregroundColor(.black)
+                                        .frame(width: 70, height: 30)
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 4)
+                                        .background(Color.accentColor)
+                                        .cornerRadius(7)
+                                } else {
+                                    Text(Category.allCases[index].categoryName)
+                                        .frame(width: 70, height: 30)
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 4)
+                                        .cornerRadius(7)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 7)
+                                                .stroke(Color.darkGrayColor, lineWidth: 1.5)
+                                        )
+                                }
+                            }
+                            .onTapGesture {
+                                if myselectedCategory.count < maxSelectedCategories || selectedToggle[index] {
+                                    toggleCategorySelection(at: index)
+                                    print(myselectedCategory)
+                                } else {
+                                    categoryAlert = true
+                                    print("3개 초과 선택")
+                                }
+                            }
+                            
+                        }
+                    }
+                    .padding(.trailing, 8)
+                    
+                    //MARK: 업로드
+                    Text("업로드")
+                        .font(.pretendardBold18)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .foregroundColor(.white)
+                        .background(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty ? Color.gray : Color.accentColor)
+                        .cornerRadius(7)
+                        .padding(EdgeInsets(top: 25, leading: 0, bottom: 0, trailing: 13))
+                        .onTapGesture {
+                                isshowAlert = true
+                        }
+                        
+                        .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty)
                 } // leading VStack
             }
             .fullScreenCover(isPresented: $ImageViewPresented) {
                 ImagePickerView(selectedImages: $selectedImage)
             }
-            .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("취소")
-                    }
-                }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button {
-                        isshowAlert = true
-                    } label: {
-                        Text("완료")
-                    }
-                }
-            }
+            // toolbar 자리
             .alert(isPresented: $isshowAlert) {
                 let firstButton = Alert.Button.cancel(Text("취소")) {
-                    print("primary button pressed")
+                    print("취소 버튼 클릭")
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
                     fetch()
-                    print("secondary button pressed")
+                    print("완료 버튼 클릭")
+                    
                 }
                 return Alert(title: Text("게시물 작성"),
                              message: Text("작성을 완료하시겠습니까?"),
                              primaryButton: firstButton, secondaryButton: secondButton)
             }
+            
             .padding(.leading, 12)
             .navigationTitle("글쓰기")
             .navigationBarTitleDisplayMode(.inline)
         } // navigationStack
+        .alert(isPresented: $categoryAlert) {
+            Alert(
+                title: Text("선택 초과"),
+                message: Text("최대 3개까지 선택 가능합니다."),
+                dismissButton: .default(Text("확인"))
+            )
+        }
     } // body
     
     //MARK: 파베함수
@@ -231,8 +277,13 @@ struct PostView: View {
                           images: images,
                           contents: text,
                           createdAt: createdAt,
-                          visitedShop: visitedShop,
-                          category: myselectedCategory)
+                          title: searchResult.title,
+                          category: myselectedCategory,
+                          address: searchResult.address,
+                          roadAddress: searchResult.roadAddress,
+                          mapx: searchResult.mapx,
+                          mapy: searchResult.mapy
+        )
         
         if let selectedImages = selectedImage {
             var imageUrls: [String] = []
@@ -271,6 +322,23 @@ struct PostView: View {
                 }
             }
         }
+    }
+    func toggleCategorySelection(at index: Int) {
+        selectedToggle[index].toggle()
+        if selectedToggle[index] {
+            
+            myselectedCategory.append(MyCategory.allCases[index].rawValue)
+        } else {
+            
+            if let selectedIndex = myselectedCategory.firstIndex(of: MyCategory.allCases[index].rawValue) {
+                myselectedCategory.remove(at: selectedIndex)
+            }
+        }
+    }
+    
+    func createGridColumns() -> [GridItem] {
+        let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
+        return columns
     }
 }
 
