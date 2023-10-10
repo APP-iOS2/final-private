@@ -30,8 +30,8 @@ struct ReservationCardView: View {
                         Text("가게보기")
                     }
                     
-                    Button {
-                        print(#fileID, #function, #line, "- 예약 상세내역 보기")
+                    NavigationLink {
+                        ReservationConfirmView(reservationData: reservation, shopData: ShopStore.shop)
                     } label: {
                         Text("예약상세")
                     }

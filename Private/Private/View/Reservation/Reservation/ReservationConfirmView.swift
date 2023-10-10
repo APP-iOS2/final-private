@@ -2,8 +2,10 @@
 //  ReservationConfirmView.swift
 //  Private
 //
-//  Created by 박성훈 on 2023/09/25.
+//  Created by 박성훈 on 10/10/23.
 //
+
+import SwiftUI
 
 import SwiftUI
 
@@ -15,27 +17,11 @@ struct ReservationConfirmView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var userStore: UserStore
     
-    @FocusState private var focusedField: Field?
+    @State private var reservedTime: String = ""
+    @State private var reservedHour: Int = 0
     
-    @State private var isShowingAlert: Bool = false
-    @State private var requirementText: String = ""  // TextField의 Text
-    
-    @Binding var isShwoingConfirmView: Bool  // 해당 뷰를 내리기 위함
-    @Binding var isReservationPresented: Bool  // ReservationView를 내리기 위함
-    
-    @Binding var reservationData: Reservation  // 예약 데이터
+    let reservationData: Reservation  // 예약 데이터
     let shopData: Shop  // 가게 데이터
-    let placeholder: String = "업체에 요청하실 내용을 적어주세요"
-    let limitChar: Int = 100
-    
-    // 여기 손봐야 함 -> 전체적으로 이렇게 보여야 하기 때문
-    var reservedTimeString: String {
-        self.reservationData.time > 11 ? "오후" : "오전"
-    }
-    
-    var reservedTimeInt: Int {
-        self.reservationData.time > 12 ? reservationData.time - 12 : reservationData.time
-    }
     
     var body: some View {
         VStack {
@@ -51,7 +37,7 @@ struct ReservationConfirmView: View {
                     HStack {
                         Text("일시:")
                         Text("\(reservationStore.getReservationDate(reservationDate: reservationData.date))")
-                        Text("\(reservedTimeString) \(reservedTimeInt):00")
+                        Text("\(reservedTime) \(reservedHour):00")
                         Spacer()
                     }
                     Text("인원: \(reservationData.numberOfPeople)명")
@@ -74,39 +60,7 @@ struct ReservationConfirmView: View {
                     
                     ReservationCardCell(title: "예약자", content: userStore.user.name)
                     ReservationCardCell(title: "이메일", content: userStore.user.email)
-                    
-                    Text("요구사항")
-                    
-                    // TextEditor 부분
-                    ZStack(alignment: .topLeading) {
-                        TextEditor(text: $requirementText)
-                            .foregroundStyle(.primary)
-                            .keyboardType(.default)
-                            .foregroundColor(Color.black)
-                            .frame(height: 80)
-                            .lineSpacing(10)
-                            .focused($focusedField, equals: .requirement)
-                            .onChange(of: self.requirementText, perform: {
-                                if $0.count > limitChar {
-                                    self.requirementText = String($0.prefix(limitChar))
-                                }
-                            })
-                            .border(.secondary)
-                        
-                        if requirementText.isEmpty {
-                            Text(placeholder)
-                                .lineSpacing(10)
-                                .foregroundColor(Color.primary.opacity(0.25))
-                                .padding(.top, 10)
-                                .padding(.leading, 10)
-                                .onTapGesture {
-                                    self.focusedField = .requirement
-                                }
-                        }
-                    }
-                    .onTapGesture {
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                    }
+                    ReservationCardCell(title: "요구사항", content: reservationData.requirement ?? "요구사항 없음")
                     
                 }
                 .padding(.bottom)
@@ -131,47 +85,18 @@ struct ReservationConfirmView: View {
                     return
                 }
                 userStore.fetchCurrentUser(userEmail: email)
+                
+                self.reservedTime = reservationStore.conversionReservedTime(time: reservationData.time).0
+                self.reservedHour = reservationStore.conversionReservedTime(time: reservationData.time).1
             }
             
-            Button {
-                isShowingAlert.toggle()
-            } label: {
-                Text("예약하기")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-            }
-            .tint(.primary)
-            .background(Color("AccentColor"))
-            .cornerRadius(12)
-            .padding()
-            .alert("예약 확정", isPresented: $isShowingAlert) {
-                Button() {
-                    print(#fileID, #function, #line, "- 예약 확정")
-                    reservationData.requirement = requirementText
-                    reservationStore.addReservationToFirestore(reservationData: reservationData)
-                    isShwoingConfirmView.toggle()
-                    isReservationPresented.toggle()
-                } label: {
-                    Text("예약하기")
-                }
-                
-                Button(role: .cancel) {
-                    
-                } label: {
-                    Text("돌아가기")
-                }
-            }
         }
-        .onTapGesture {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        }
+        
     }
 }
 
 struct ReservationConfirmView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationConfirmView(isShwoingConfirmView: .constant(true), isReservationPresented: .constant(true), reservationData: .constant(ReservationStore.tempReservation), shopData: ShopStore.shop)
-            .environmentObject(ReservationStore())
-            .environmentObject(UserStore())
+        ReservationConfirmView(reservationData: ReservationStore.tempReservation, shopData: ShopStore.shop)
     }
 }

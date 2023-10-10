@@ -141,7 +141,7 @@ struct ReservationView: View {
                         .disabled(!isSelectedTime)
                     }
                     .navigationDestination(isPresented: $isShwoingConfirmView) {
-                        ReservationConfirmView(isShwoingConfirmView: $isShwoingConfirmView, isReservationPresented: $isReservationPresented, reservationData: $temporaryReservation, shopData: shopData)
+                        ReservationDetailView(isShwoingConfirmView: $isShwoingConfirmView, isReservationPresented: $isReservationPresented, reservationData: $temporaryReservation, shopData: shopData)
                     }
                 }// VStack
             }// ScrollView

@@ -137,9 +137,9 @@ struct ModifyReservationView: View {
                             }
                     }
                 }
-                .onTapGesture {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                }
+//                .onTapGesture {
+//                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+//                }
                 
                 Button {
                     isShowingAlert.toggle()
@@ -169,6 +169,9 @@ struct ModifyReservationView: View {
                     }
                 }
             }
+        }
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
         .onAppear {
             self.temporaryReservation = reservationData
