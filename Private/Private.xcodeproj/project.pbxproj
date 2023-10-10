@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		06194EB72ACDC94A0017262D /* ExpandableText in Frameworks */ = {isa = PBXBuildFile; productRef = 06194EB62ACDC94A0017262D /* ExpandableText */; };
+		06628C1F2ACF8FDE009373DD /* AppDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */; };
 		0679CAC22ABD876400F48BE4 /* ShopDetailMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */; };
 		0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */; };
 		069C67372AC26D2D00A5275F /* ShopDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */; };
@@ -156,6 +157,7 @@
 
 /* Begin PBXFileReference section */
 		065480ED2AC3CC9F009781B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDateFormatter.swift; sourceTree = "<group>"; };
 		0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailMenuView.swift; sourceTree = "<group>"; };
 		0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailCurrentReviewView.swift; sourceTree = "<group>"; };
 		069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailInfoView.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 				3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */,
 				3C93B5072AC1549200788633 /* SendMessageTextField.swift */,
 				B5549FBC2AD59E3000695A8F /* RequirementTextEditor.swift */,
+				06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -960,6 +963,7 @@
 				B54C14BF2AD45CC300E45636 /* ModifyReservationView.swift in Sources */,
 				3C2FC8F42ACE9B750034F561 /* MapReviewRowView.swift in Sources */,
 				D1EC43922AC16E2900B088EA /* FollowStore.swift in Sources */,
+				06628C1F2ACF8FDE009373DD /* AppDateFormatter.swift in Sources */,
 				3CA30E1F2AC3B686002B7A8B /* SignUpView.swift in Sources */,
 				3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */,
 				3CCD2DFE2ABC37F8005709F4 /* TextMaster.swift in Sources */,

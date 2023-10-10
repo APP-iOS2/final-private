@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ShopwDetailInfoView: View {
+struct ShopDetailInfoView: View {
     
     let dummyShop = ShopStore.shop
     let sortedWeekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
@@ -87,7 +87,7 @@ struct ShopwDetailInfoView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         ForEach(dummyShop.temporaryHoliday, id: \.self) { day in
                             HStack(spacing: 0) {
-                                Text(dateToFullString(date: day))
+                                Text(AppDateFormatter.shared.fullDateString(from: day))
                                     .font(Font.pretendardRegular16)
                                 
                                 Spacer()
@@ -133,21 +133,11 @@ struct ShopwDetailInfoView: View {
             }
         }
     }
-    
-    func dateToFullString(date: Date) -> String {
-        let formatter = DateFormatter()
-//        formatter.locale = Locale(identifier: Locale.current.identifier)
-        formatter.locale = Locale(identifier: "ko_KR")
-//        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
-        formatter.timeZone = TimeZone(abbreviation: "KST")
-        formatter.dateStyle = .full
-        return formatter.string(from: date)
-    }
 }
 
 struct ShopDetailInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopwDetailInfoView()
+        ShopDetailInfoView()
     }
 }
 

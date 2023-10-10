@@ -10,10 +10,10 @@ import Kingfisher
 
 struct ShopDetailMenuView: View {
     
-    let dummyShop = ShopStore.shop
-    
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
+    
+    let dummyShop = ShopStore.shop
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

@@ -63,7 +63,7 @@ struct ReservationCardView: View {
             ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: temporaryReservation.date))
             ReservationCardCell(title: "예약 시간", content: "\(temporaryReservation.time)시")
             ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
-            ReservationCardCell(title: "총 비용", content: "\(temporaryReservation.totalPrice)원")
+            //ReservationCardCell(title: "총 비용", content: "\(temporaryReservation.totalPrice)원")
                 .padding(.bottom)
             
             HStack {
