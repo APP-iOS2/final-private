@@ -17,6 +17,8 @@ struct PostView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    @StateObject private var locationSearchStore = LocationSearchStore.shared
+    
     @Binding var root: Bool
     @Binding var selection: Int
     
@@ -40,6 +42,8 @@ struct PostView: View {
     
     @State private var selectedImage: [UIImage]?
     @FocusState private var isTextMasterFocused: Bool
+    
+    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     
     private let minLine: Int = 7
     private let maxLine: Int = 8
@@ -93,31 +97,31 @@ struct PostView: View {
                             Label("장소", systemImage: "location")
                         }
                         .sheet(isPresented: $showLocation){
-                            NavigationStack {
-                                MapMainView()
-                                    .toolbar {
-                                        ToolbarItem(placement: .navigationBarLeading) {
-                                            Button {
-                                                showLocation = false
-                                            } label: {
-                                                Text("취소")
-                                            }
-                                        }
-                                    }
-                                    .font(.pretendardBold18)
-                            }
+                            LocationSearchView(showLocation: $showLocation, searchResult: $searchResult)
+//                            NavigationStack {
+//                                MapMainView()
+//                                    .toolbar {
+//                                        ToolbarItem(placement: .navigationBarLeading) {
+//                                            Button {
+//                                                showLocation = false
+//                                            } label: {
+//                                                Text("취소")
+//                                            }
+//                                        }
+//                                    }
+//                                    .font(.pretendardBold18)
+//                            }
                         }
                     }
                     .padding(.vertical, 10)
                 
-                    if clickLocation {
-                        Text("해당 장소")
-                            .font(.body)
-                        // 맵 관련 로직
-                    } else {
+                    if searchResult.title.isEmpty {
                         Text("장소를 선택해주세요")
                             .font(.body)
                             .foregroundColor(.secondary)
+                    } else {
+                        Text("\(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                            .font(.body)
                     }
                     Divider()
                         .padding(.vertical, 10)
