@@ -46,6 +46,11 @@
 		3C93B5062AC13E7200788633 /* ChatRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C93B5052AC13E7200788633 /* ChatRoomView.swift */; };
 		3C93B5082AC1549200788633 /* SendMessageTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C93B5072AC1549200788633 /* SendMessageTextField.swift */; };
 		3C94275B2ACF9C1800EECCD8 /* MapMarkerFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C94275A2ACF9C1800EECCD8 /* MapMarkerFeedView.swift */; };
+		3C97476E2AD4DC4E007AE3CB /* Bundle+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C97476D2AD4DC4E007AE3CB /* Bundle+.swift */; };
+		3C9747702AD4E07D007AE3CB /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C97476F2AD4E07D007AE3CB /* Search.swift */; };
+		3C9747722AD4E1AE007AE3CB /* LocationSearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9747712AD4E1AE007AE3CB /* LocationSearchStore.swift */; };
+		3C9747752AD4E201007AE3CB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 3C9747742AD4E201007AE3CB /* Alamofire */; };
+		3C9747772AD4E309007AE3CB /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9747762AD4E309007AE3CB /* LocationSearchView.swift */; };
 		3CA3035C2AB8376700FEC7BD /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA3035B2AB8376700FEC7BD /* FirebaseAnalytics */; };
 		3CA3035E2AB8376700FEC7BD /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA3035D2AB8376700FEC7BD /* FirebaseAnalyticsOnDeviceConversion */; };
 		3CA303602AB8376700FEC7BD /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3CA3035F2AB8376700FEC7BD /* FirebaseAnalyticsSwift */; };
@@ -193,6 +198,10 @@
 		3C9427582ACF965B00EECCD8 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		3C9427592ACF965B00EECCD8 /* Pretendard-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.otf"; sourceTree = "<group>"; };
 		3C94275A2ACF9C1800EECCD8 /* MapMarkerFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerFeedView.swift; sourceTree = "<group>"; };
+		3C97476D2AD4DC4E007AE3CB /* Bundle+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+.swift"; sourceTree = "<group>"; };
+		3C97476F2AD4E07D007AE3CB /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		3C9747712AD4E1AE007AE3CB /* LocationSearchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchStore.swift; sourceTree = "<group>"; };
+		3C9747762AD4E309007AE3CB /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
 		3C9816AC39F3302EDB88BA8A /* Pods_Private_PrivateUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private_PrivateUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CA30E1E2AC3B686002B7A8B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		3CB734072ABD6EEF00D82503 /* MapMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMainView.swift; sourceTree = "<group>"; };
@@ -298,6 +307,7 @@
 				3CA3038E2AB8376700FEC7BD /* FirebaseStorage in Frameworks */,
 				06194EB72ACDC94A0017262D /* ExpandableText in Frameworks */,
 				3CA303722AB8376700FEC7BD /* FirebaseDynamicLinks in Frameworks */,
+				3C9747752AD4E201007AE3CB /* Alamofire in Frameworks */,
 				3CA303762AB8376700FEC7BD /* FirebaseFirestoreCombine-Community in Frameworks */,
 				3CA303862AB8376700FEC7BD /* FirebaseMessaging in Frameworks */,
 				3CA303822AB8376700FEC7BD /* FirebaseInstallations in Frameworks */,
@@ -368,6 +378,7 @@
 				B59853632AC3BE4E00C45E76 /* String+.swift */,
 				D18A012F2ACE38C1009F07F8 /* Button.swift */,
 				D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */,
+				3C97476D2AD4DC4E007AE3CB /* Bundle+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -382,6 +393,7 @@
 				3CCD2DE32ABC3185005709F4 /* Reservation.swift */,
 				3CCD2DE52ABC319C005709F4 /* ChatRoom.swift */,
 				3CCD2DE72ABC31FD005709F4 /* Message.swift */,
+				3C97476F2AD4E07D007AE3CB /* Search.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -397,6 +409,7 @@
 				3C37162B2ABD1789004E8419 /* ChatRoomStore.swift */,
 				D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */,
 				D1EC43912AC16E2900B088EA /* FollowStore.swift */,
+				3C9747712AD4E1AE007AE3CB /* LocationSearchStore.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -454,6 +467,7 @@
 				3CCD2DF52ABC3572005709F4 /* PostView.swift */,
 				E3876FC22AC294E200CFE728 /* PictureView.swift */,
 				E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */,
+				3C9747762AD4E309007AE3CB /* LocationSearchView.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -698,6 +712,7 @@
 				3C5789362AC2604600D8B7EA /* GoogleSignIn */,
 				3C5789382AC2604600D8B7EA /* GoogleSignInSwift */,
 				06194EB62ACDC94A0017262D /* ExpandableText */,
+				3C9747742AD4E201007AE3CB /* Alamofire */,
 			);
 			productName = Private;
 			productReference = 3CF3D8C12AB82A97003689A6 /* Private.app */;
@@ -780,6 +795,7 @@
 				3CDE564D2AB89F1D00594DF9 /* XCRemoteSwiftPackageReference "PopupView" */,
 				3C5789352AC2604600D8B7EA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				06194EB52ACDC94A0017262D /* XCRemoteSwiftPackageReference "ExpandableText" */,
+				3C9747732AD4E201007AE3CB /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 3CF3D8C22AB82A97003689A6 /* Products */;
 			projectDirPath = "";
@@ -965,6 +981,7 @@
 				06C796CE2ABD5C5C0043C395 /* ShopDetailView.swift in Sources */,
 				3CCD2DE02ABC314A005709F4 /* Shop.swift in Sources */,
 				B5BEAA232AC154430002CC2C /* ReservationConfirmView.swift in Sources */,
+				3C9747772AD4E309007AE3CB /* LocationSearchView.swift in Sources */,
 				E47B3F752AC14A22002164A6 /* MySavedView.swift in Sources */,
 				3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */,
 				3CB7340A2ABD6F0100D82503 /* FeedMainView.swift in Sources */,
@@ -973,6 +990,7 @@
 				3CCD2DF82ABC357C005709F4 /* ReservationView.swift in Sources */,
 				E47B3F712AC11C52002164A6 /* UserInfoView.swift in Sources */,
 				3CCD2E032ABC3B64005709F4 /* Font+.swift in Sources */,
+				3C9747702AD4E07D007AE3CB /* Search.swift in Sources */,
 				0679CAC22ABD876400F48BE4 /* ShopDetailMenuView.swift in Sources */,
 				3CB7340C2ABEFEBC00D82503 /* CGFloat+.swift in Sources */,
 				3CCD2DE82ABC31FD005709F4 /* Message.swift in Sources */,
@@ -990,6 +1008,7 @@
 				3C2FC8F32ACE9B750034F561 /* MapDetailButtonView.swift in Sources */,
 				E47B3F772AC14A3B002164A6 /* MySavedPlaceView.swift in Sources */,
 				3CCD2DE42ABC3185005709F4 /* Reservation.swift in Sources */,
+				3C9747722AD4E1AE007AE3CB /* LocationSearchStore.swift in Sources */,
 				D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */,
 				3C37162A2ABD176E004E8419 /* ReservationStore.swift in Sources */,
 				3C2FC8F22ACE9B750034F561 /* MapReview.swift in Sources */,
@@ -1002,6 +1021,7 @@
 				3C91AEA32AC40F6100E60D9B /* ShopInfoCardView.swift in Sources */,
 				3CCD2DF62ABC3572005709F4 /* PostView.swift in Sources */,
 				3C94275B2ACF9C1800EECCD8 /* MapMarkerFeedView.swift in Sources */,
+				3C97476E2AD4DC4E007AE3CB /* Bundle+.swift in Sources */,
 				3C2FC8F52ACE9B750034F561 /* MapReviewEmptyView.swift in Sources */,
 				E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */,
 				D1DC8D592ACEAEF40087CBD7 /* OtherSavedPlaceView.swift in Sources */,
@@ -1376,6 +1396,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		3C9747732AD4E201007AE3CB /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.8.0;
+			};
+		};
 		3CA3035A2AB8376700FEC7BD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -1417,6 +1445,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3C5789352AC2604600D8B7EA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		3C9747742AD4E201007AE3CB /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3C9747732AD4E201007AE3CB /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 		3CA3035B2AB8376700FEC7BD /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
