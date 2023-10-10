@@ -9,16 +9,15 @@ import SwiftUI
 
 struct ReservationCardView: View {
     @EnvironmentObject var reservationStore: ReservationStore
-    @State private var isShowDeleteAlert: Bool = false
     
-    let reservation: Reservation
+    @State private var isShowDeleteMyReservationAlert: Bool = false
+    @State private var isShowRemoveReservationAlert: Bool = false
+    @State private var isShowModifyView: Bool = false
+    
+    var reservation: Reservation
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            // ~ 예약시간 이용 전
-            // 예약 시간 ~ 2시간까지 이용 중
-            // 이용시간 2시간 후 이용 완료로 바꾸기
-            
             HStack {
                 Text(reservationStore.isFinishedReservation(date: reservation.date, time: reservation.time))
                     .font(.pretendardMedium20)
@@ -39,7 +38,7 @@ struct ReservationCardView: View {
                     
                     Button(role: .destructive) {
                         print(#fileID, #function, #line, "- 예약내역 삭제")
-                        reservationStore.deleteMyReservation(reservation: reservation)
+                        isShowDeleteMyReservationAlert.toggle()
                     } label: {
                         Text("예약내역 삭제")
                     }
@@ -58,6 +57,7 @@ struct ReservationCardView: View {
             
             Button {
                 print(#fileID, #function, #line, "- 예약 변경하기 ")
+                isShowModifyView.toggle()  // 여기서부터가 문제넹 찾아보자
             } label: {
                 Text("예약 변경")
                     .frame(maxWidth: .infinity)
@@ -66,9 +66,9 @@ struct ReservationCardView: View {
             .background(Color("AccentColor"))
             .cornerRadius(12)
             
-            Button {
+            Button {  // navigationLink로 해도 될듯
                 print(#fileID, #function, #line, "- 예약 취소하기 ")
-                isShowDeleteAlert.toggle()
+                isShowRemoveReservationAlert.toggle()
             } label: {
                 Text("예약 취소")
                     .frame(maxWidth: .infinity)
@@ -80,13 +80,28 @@ struct ReservationCardView: View {
         .padding()
         .background(Color("SubGrayColor"))
         .cornerRadius(12)
-        .alert("예약 취소", isPresented: $isShowDeleteAlert) {
+        .navigationDestination(isPresented: $isShowModifyView, destination: {
+            ModifyReservationView(isShowModifyView: $isShowModifyView, reservationData: reservation)
+        })
+        .alert("예약 내역 삭제", isPresented: $isShowDeleteMyReservationAlert) {
+            Button(role: .destructive) {
+                reservationStore.deleteMyReservation(reservation: reservation)
+            } label: {
+                Text("삭제하기")
+            }
+            Button(role: .cancel) {
+                
+            } label: {
+                Text("돌아가기")
+            }
+            .foregroundStyle(Color.red)
+        }
+        .alert("예약 취소", isPresented: $isShowRemoveReservationAlert) {
             Button(role: .destructive) {
                 reservationStore.removeReservation(reservation: reservation)
             } label: {
                 Text("취소하기")
             }
-            
             Button(role: .cancel) {
                 
             } label: {

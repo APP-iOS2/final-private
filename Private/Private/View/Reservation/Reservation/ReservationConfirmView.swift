@@ -8,28 +8,33 @@
 import SwiftUI
 
 struct ReservationConfirmView: View {
+    enum Field: Hashable {
+        case requirement
+    }
+    
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var userStore: UserStore
     
-    @FocusState private var isTextMasterFocused: Bool
-
+    @FocusState private var focusedField: Field?
+    
     @State private var isShowingAlert: Bool = false
-    @State private var text: String = ""
-    @Binding var isShwoingConfirmView: Bool
-    @Binding var isReservationPresented: Bool
+    @State private var requirementText: String = ""  // TextField의 Text
     
-    private let maxLine: Int = 5
-    private let fontSize: Double = 24
+    @Binding var isShwoingConfirmView: Bool  // 해당 뷰를 내리기 위함
+    @Binding var isReservationPresented: Bool  // ReservationView를 내리기 위함
     
-    let temporaryReservation: Reservation
-    let shopData: Shop
+    @Binding var reservationData: Reservation  // 예약 데이터
+    let shopData: Shop  // 가게 데이터
+    let placeholder: String = "업체에 요청하실 내용을 적어주세요"
+    let limitChar: Int = 100
     
+    // 여기 손봐야 함 -> 전체적으로 이렇게 보여야 하기 때문
     var reservedTimeString: String {
-        self.temporaryReservation.time > 11 ? "오후" : "오전"
+        self.reservationData.time > 11 ? "오후" : "오전"
     }
     
     var reservedTimeInt: Int {
-        self.temporaryReservation.time > 12 ? temporaryReservation.time - 12 : temporaryReservation.time
+        self.reservationData.time > 12 ? reservationData.time - 12 : reservationData.time
     }
     
     var body: some View {
@@ -42,101 +47,83 @@ struct ReservationConfirmView: View {
                 Divider()
                     .padding(.bottom)
                 
-                VStack {
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text("일시:")
-                            Text("\(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))")
-                            Text("\(reservedTimeString) \(reservedTimeInt)시")  // 오후 2:00 요런느낌
-                            Spacer()
-                        }
-                        Text("인원: \(temporaryReservation.numberOfPeople)명")
-                    }
-                    .padding()
-                    .background(Color.subGrayColor)
-                    .cornerRadius(8)
-                    .padding(.bottom)
-                    
+                VStack(alignment: .leading) {
                     HStack {
-                        Text("최종 결제할 금액")
+                        Text("일시:")
+                        Text("\(reservationStore.getReservationDate(reservationDate: reservationData.date))")
+                        Text("\(reservedTimeString) \(reservedTimeInt):00")
                         Spacer()
-                        Text("\(temporaryReservation.numberOfPeople) 원")
                     }
-                    .padding(.bottom)
+                    Text("인원: \(reservationData.numberOfPeople)명")
                 }
+                .padding()
+                .background(Color.subGrayColor)
+                .cornerRadius(8)
+                .padding(.bottom)
+                
+                ReservationCardCell(title: "최종 결제할 금액", content: "\(reservationData.numberOfPeople) 원")
+                    .padding(.bottom)
                 
                 Divider()
-                    .padding(.bottom)
+                    .padding(.bottom, 12)
                 
                 VStack(alignment: .leading) {
-                    Divider()
-                        .opacity(0)
                     Text("예약자 정보")
                         .font(.pretendardMedium20)
                         .padding(.bottom, 2)
                     
-                    HStack {
-                        Text("예약자")
-                        Spacer()
-                        Text(userStore.user.name)
-                    }
+                    ReservationCardCell(title: "예약자", content: userStore.user.name)
+                    ReservationCardCell(title: "이메일", content: userStore.user.email)
                     
-                    HStack {
-                        Text("이메일")
-                        Spacer()
-                        Text(userStore.user.email)
-                    }
+                    Text("요구사항")
                     
-                    HStack {
-                        Text("요구사항")
-                        Spacer()
-                        TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: maxLine, fontSize: fontSize)
+                    // TextEditor 부분
+                    ZStack(alignment: .topLeading) {
+                        TextEditor(text: $requirementText)
+                            .foregroundStyle(.primary)
+                            .keyboardType(.default)
+                            .foregroundColor(Color.black)
+                            .frame(height: 80)
+                            .lineSpacing(10)
+                            .focused($focusedField, equals: .requirement)
+                            .onChange(of: self.requirementText, perform: {
+                                if $0.count > limitChar {
+                                    self.requirementText = String($0.prefix(limitChar))
+                                }
+                            })
+                            .border(.secondary)
                         
-                            .onTapGesture {
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                            }
-                        Text("업체에 요청하실 내용을 적어주세요")  // 텍스트필드로 변경
+                        if requirementText.isEmpty {
+                            Text(placeholder)
+                                .lineSpacing(10)
+                                .foregroundColor(Color.primary.opacity(0.25))
+                                .padding(.top, 10)
+                                .padding(.leading, 10)
+                                .onTapGesture {
+                                    self.focusedField = .requirement
+                                }
+                        }
                     }
+                    .onTapGesture {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }
+                    
                 }
                 .padding(.bottom)
                 
                 Divider()
-                    .padding(.bottom)
+                    .padding(.bottom, 12)
                 
                 VStack(alignment: .leading) {
-                    Divider()
-                        .opacity(0)
-                    
                     Text("판매자 정보")
                         .font(.pretendardMedium20)
                         .padding(.bottom, 2)
                     
-                    HStack {
-                        Text("상호")
-                        Spacer()
-                        Text(shopData.name)
-                    }
-                    
-                    HStack {
-                        Text("대표자명")
-                        Spacer()
-                        Text(shopData.shopOwner)
-                        
-                    }
-                    
-                    HStack {
-                        Text("소재지")
-                        Spacer()
-                        Text(shopData.address)
-                    }
-                    
-                    HStack {
-                        Text("사업자번호")
-                        Spacer()
-                        Text(shopData.businessNumber)
-                    }
+                    ReservationCardCell(title: "상호", content: shopData.name)
+                    ReservationCardCell(title: "대표자명", content: shopData.shopOwner)
+                    ReservationCardCell(title: "소재지", content: shopData.address)
+                    ReservationCardCell(title: "사업자번호", content: shopData.businessNumber)
                 }
-                
             }
             .padding()
             .onAppear {
@@ -160,7 +147,8 @@ struct ReservationConfirmView: View {
             .alert("예약 확정", isPresented: $isShowingAlert) {
                 Button() {
                     print(#fileID, #function, #line, "- 예약 확정")
-                    reservationStore.addReservationToFirestore(reservationData: temporaryReservation)
+                    reservationData.requirement = requirementText
+                    reservationStore.addReservationToFirestore(reservationData: reservationData)
                     isShwoingConfirmView.toggle()
                     isReservationPresented.toggle()
                 } label: {
@@ -172,15 +160,17 @@ struct ReservationConfirmView: View {
                 } label: {
                     Text("돌아가기")
                 }
-                .foregroundStyle(Color.red)
             }
+        }
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
     }
 }
 
 struct ReservationConfirmView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationConfirmView(isShwoingConfirmView: .constant(true), isReservationPresented: .constant(true), temporaryReservation: ReservationStore.tempReservation, shopData: ShopStore.shop)
+        ReservationConfirmView(isShwoingConfirmView: .constant(true), isReservationPresented: .constant(true), reservationData: .constant(ReservationStore.tempReservation), shopData: ShopStore.shop)
             .environmentObject(ReservationStore())
             .environmentObject(UserStore())
     }

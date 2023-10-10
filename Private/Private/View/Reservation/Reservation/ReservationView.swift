@@ -8,32 +8,23 @@
 import SwiftUI
 
 struct ReservationView: View {
-    
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
     
-    //    @State private var reservationDateString: String = ""
     @State private var showingDate: Bool = false    // 예약 일시 선택
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var isSelectedTime: Bool = false
     @State private var isShwoingConfirmView: Bool = false
-//    @State private var isShowingMyReservation: Bool = false
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
-    //ReservationStore.tempReservation
+    @State private var reservedTime: String = ""
+    @State private var reservedHour: Int = 0
+    
     @Binding var isReservationPresented: Bool
     
     private let step = 1  // 인원선택 stepper의 step
     private let range = 1...6  // stepper 인원제한
     
     let shopData: Shop
-    
-    var reservedTimeString: String {
-        self.temporaryReservation.time > 11 ? "오후" : "오전"
-    }
-    
-    var reservedTimeInt: Int {
-        self.temporaryReservation.time > 12 ? temporaryReservation.time - 12 : temporaryReservation.time
-    }
     
     var body: some View {
         NavigationStack {
@@ -46,10 +37,6 @@ struct ReservationView: View {
                     Divider()
                         .opacity(0)
                     
-                    // 메뉴마다 이렇게 있을 수 없음.. 식당에서는 예약 아이템을 어떻게 둬야할지
-                    //                    ItemInfoView()
-                    //                        .padding(.bottom, 20)
-                    
                     Text("예약 일시")
                         .font(Font.pretendardBold18)
                     
@@ -59,7 +46,7 @@ struct ReservationView: View {
                         HStack {
                             Text(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))
                             Text(" / ")
-                            Text(isSelectedTime ? self.reservedTimeString + " \(self.reservedTimeInt)시" : "시간") // 오전 /오후 수정
+                            Text(isSelectedTime ? self.reservedTime + " \(self.reservedHour)시" : "시간")
                         }
                         Spacer()
                         
@@ -76,6 +63,10 @@ struct ReservationView: View {
                     
                     if showingDate {
                         DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: $isSelectedTime)
+                            .onChange(of: temporaryReservation.time) { newValue in
+                                self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
+                                self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1
+                            }
                     }
                     
                     Text("인원")
@@ -108,7 +99,6 @@ struct ReservationView: View {
                         
                         Divider()
                         
-                        //                    Text("방문하시는 인원을 선택하세요")
                         Stepper(value: $temporaryReservation.numberOfPeople, in: range, step: step) {
                             Text("\(temporaryReservation.numberOfPeople)")
                         }
@@ -151,7 +141,7 @@ struct ReservationView: View {
                         .disabled(!isSelectedTime)
                     }
                     .navigationDestination(isPresented: $isShwoingConfirmView) {
-                        ReservationConfirmView(isShwoingConfirmView: $isShwoingConfirmView, isReservationPresented: $isReservationPresented, temporaryReservation: temporaryReservation, shopData: shopData)
+                        ReservationConfirmView(isShwoingConfirmView: $isShwoingConfirmView, isReservationPresented: $isReservationPresented, reservationData: $temporaryReservation, shopData: shopData)
                     }
                 }// VStack
             }// ScrollView

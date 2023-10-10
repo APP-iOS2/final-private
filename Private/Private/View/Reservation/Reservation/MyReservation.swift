@@ -14,7 +14,7 @@ struct MyReservation: View {
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack {
+                VStack {
                     ForEach(reservationStore.reservationList, id: \.self) { reservation in
                         ReservationCardView(reservation: reservation)
                     }

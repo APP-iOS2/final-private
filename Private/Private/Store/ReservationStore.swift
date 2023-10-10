@@ -161,9 +161,14 @@ final class ReservationStore: ObservableObject {
     
     // MARK: - 예약 수정
     func updateReservation(reservation: Reservation) {
-        // 수정할 문서의 참조를 얻습니다.
-        let docRef = db.collection("Reservation").document(reservation.id)
+        guard let email = Self.user!.email  else {
+            print("로그인 한 유저의 email 정보가 없습니다.")
+            return
+        }
         
+        let docRef = db.collection("Reservation").document(reservation.id)
+        let userDocRef = self.db.collection("User").document(email).collection("MyReservation").document(reservation.id)
+
         guard let user = Self.user else {
             print("로그인 정보가 없습니다.")
             return
@@ -195,7 +200,15 @@ final class ReservationStore: ObservableObject {
                 print("문서 업데이트 오류: \(error.localizedDescription)")
             } else {
                 print("문서 업데이트 성공")
-                // 배열에 해당 내용 이거로 바꿔버려
+            }
+        }
+        
+        userDocRef.updateData(reservationData) { error in
+            if let error = error {
+                print("문서 업데이트 오류: \(error.localizedDescription)")
+            } else {
+                print("문서 업데이트 성공")
+                self.fetchReservation()
             }
         }
     }
@@ -374,6 +387,15 @@ final class ReservationStore: ObservableObject {
             return times
         }
         return [0]
+    }
+    
+    
+    // 예약 시간을 오전/오후 x시로 바꿔줌
+    func conversionReservedTime(time: Int) -> (String, Int) {
+        var when = time > 11 ? "오후" : "오전"
+        var hour = time > 12 ? time - 12 : time
+        
+        return (when, hour)
     }
     
 }
