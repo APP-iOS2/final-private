@@ -96,16 +96,10 @@ struct ModifyReservationView: View {
                 Text("요구사항")
                 RequirementTextEditor(requirementText: $requirementText)
                 
-                Button {
+                ReservationButton(text: "예약 변경하기") {
                     isShowingAlert.toggle()
-                } label: {
-                    Text("예약 변경하기")
-                        .frame(maxWidth: .infinity)
-                        .padding()
                 }
                 .tint(.primary)
-                .background(Color("AccentColor"))
-                .cornerRadius(12)
                 .padding()
                 .alert("예약 변경", isPresented: $isShowingAlert) {
                     Button() {

@@ -47,6 +47,8 @@ struct RequirementTextEditor: View {
     }
 }
 
-#Preview {
-    RequirementTextEditor(requirementText: .constant(""))
+struct RequirementTextEditor_Previews: PreviewProvider {
+    static var previews: some View {
+        RequirementTextEditor(requirementText: .constant(""))
+    }
 }

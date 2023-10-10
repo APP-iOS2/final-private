@@ -127,16 +127,10 @@ struct ReservationView: View {
                     .padding(.bottom, 30)
                     
                     HStack {
-                        Button {
+                        ReservationButton(text: "다음단계") {
                             isShwoingConfirmView.toggle()
-                        } label: {
-                            Text("다음단계")
-                                .frame(maxWidth: .infinity)
-                                .padding()
                         }
                         .foregroundStyle(isSelectedTime ? .primary : Color.gray)
-                        .background(Color("AccentColor"))
-                        .cornerRadius(12)
                         .disabled(!isSelectedTime)
                     }
                     .navigationDestination(isPresented: $isShwoingConfirmView) {

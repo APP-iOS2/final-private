@@ -67,30 +67,17 @@ struct ReservationCardView: View {
                 .padding(.bottom)
             
             HStack {
-                Button {
+                ReservationButton(text: "예약 변경") {
                     isShowModifyView.toggle()
-                } label: {
-                    Text("예약 변경")
-                        .frame(maxWidth: .infinity)
-                        .padding()
                 }
                 .foregroundStyle(disableReservationButton ? Color.gray : .black)
-                .background(Color("AccentColor"))
-                .cornerRadius(12)
                 .disabled(disableReservationButton)
                 
-                Button {
+                ReservationButton(text: "예약 취소") {
                     isShowRemoveReservationAlert.toggle()
-                } label: {
-                    Text("예약 취소")
-                        .frame(maxWidth: .infinity)
-                        .padding()
                 }
                 .foregroundStyle(disableReservationButton ? Color.gray : .black)
-                .background(Color("AccentColor"))
-                .cornerRadius(12)
                 .disabled(disableReservationButton)
-
             }
         }
         .padding()

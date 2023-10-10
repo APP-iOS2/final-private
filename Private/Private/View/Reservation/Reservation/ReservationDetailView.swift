@@ -98,16 +98,10 @@ struct ReservationDetailView: View {
                 self.reservedHour = reservationStore.conversionReservedTime(time: reservationData.time).1
             }
             
-            Button {
+            ReservationButton(text: "예약하기") {
                 isShowingAlert.toggle()
-            } label: {
-                Text("예약하기")
-                    .frame(maxWidth: .infinity)
-                    .padding()
             }
             .tint(.primary)
-            .background(Color("AccentColor"))
-            .cornerRadius(12)
             .padding()
             .alert("예약 확정", isPresented: $isShowingAlert) {
                 Button() {
