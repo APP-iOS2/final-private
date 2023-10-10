@@ -15,10 +15,14 @@ struct MyFeed: Identifiable, Codable, Hashable {
     var images: [String]
     var contents: String
     var createdAt: Double = Date().timeIntervalSince1970
-    var visitedShop: String
-    var category: [MyCategory]
-}
+    var title: String
+    var category: [String]
+    var address: String
+    var roadAddress: String
+    var mapx: String
+    var mapy: String
 
+}
 enum MyCategory: String, CaseIterable, Hashable, Codable {
     case koreanFood = "한식"
     case westernFood = "양식"

@@ -12,35 +12,38 @@ struct PictureView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var isImagePickerPresented: Bool
+    @Binding var isPostViewPresented: Bool /// PostView
 
     
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedImage: [UIImage]? = []
     
+    @State private var selectedImage: [UIImage]? = []
+    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var feedStore: FeedStore
-
-
+    @EnvironmentObject private var userStore: UserStore
     
     var body: some View {
         NavigationStack {
-            VStack {
-//                NavigationLink {
-//                    PostView(root: $root, selection: $selection)
-//                } label: {
-//                    Text("dd")
-//                }
+            Button {
+                isImagePickerPresented.toggle()
+            } label: {
+                Label("", systemImage: "plus")
             }
-            .fullScreenCover(isPresented: $isImagePickerPresented) {
+            .sheet(isPresented: $isImagePickerPresented) {
                 ImagePickerView(selectedImages: $selectedImage)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.white)
+                    .transition(.move(edge: .leading))
             }
-            .navigationTitle("사진 선택")
         }
     }
 }
 
 struct PictureView_Previews: PreviewProvider {
     static var previews: some View {
-        PictureView(root: .constant(true), selection: .constant(3), isImagePickerPresented: .constant(true))
+        PictureView(root: .constant(true), selection: .constant(3), isImagePickerPresented: .constant(true), isPostViewPresented: .constant(true))
             .environmentObject(FeedStore())
+            .environmentObject(UserStore())
+
     }
 }
