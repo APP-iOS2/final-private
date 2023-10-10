@@ -56,16 +56,18 @@ struct ChatRoomListView: View {
         .onAppear{
             // authStore.userStore.user -> userStore.user
             chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
-            let chatRoom = ChatRoom(otherUser: otherUser, messages: [message1, message2])
 
         }
         .navigationTitle("채팅방")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: EditButton().foregroundColor(.accentColor))
-        .navigationBarItems(trailing: Button{print(":::chatRoom")
-            print("\(chatRoom)")
-            chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)} label: {
-            Image(systemName: "plus.bubble")
+        .navigationBarItems(trailing:
+                                Button{print(":::chatRoom")
+                                print("\(chatRoom)")
+                                // 테스트를 위한 더미데이터
+                                let chatRoom = ChatRoom(otherUser: otherUser, messages: [Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)])
+                                chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)} label: {
+                                Image(systemName: "plus.bubble")
         }
                             )
                             

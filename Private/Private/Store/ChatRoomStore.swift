@@ -12,11 +12,17 @@ final class ChatRoomStore: ObservableObject {
     @Published var chatRoomList: [ChatRoom] = []
     @Published var messageList: [Message] = []
     
+    let userCollection = Firestore.firestore().collection("User")
+//    var ref = Database.database().reference()
+    let docRef = Firestore.firestore().collection("User")
 //    @EnvironmentObject var userStore: UserStore
 
     func subscribeToChatRoomChanges(user: User) {
         print("email")
         print(user.email)
+        print("count")
+        print(chatRoomList.count)
+        
         let userCollection = Firestore.firestore().collection("User")
         let subCollection = userCollection.document(user.email).collection("chattingRoom")
 
@@ -33,21 +39,24 @@ final class ChatRoomStore: ObservableObject {
                     print("chattingRoom is nil")
                     continue
                 }
-
+                print("chattingRooms")
+                print("\(chattingRooms)")
+                
                 for chatRoomData in chattingRooms {
                     guard let otherUserDict = chatRoomData["otherUser"] as? [String: Any],
                           let otherUser = User(document: otherUserDict),
-                          let messagesData = chatRoomData["messages"] as? [[String: Any]] else {
+                          let messagesData = chatRoomData["messages"] as? [Any] else {
                         print("Invalid chat room data")
                         continue
                     }
 
                     var messages: [Message] = []
 
-                    for messageData in messagesData {
-                        guard let sender = messageData["sender"] as? String,
-                              let content = messageData["content"] as? String,
-                              let timestamp = messageData["timestamp"] as? Double else {
+                    for messageItem in messagesData {
+                        guard let messageDict = messageItem as? [String: Any],
+                              let sender = messageDict["sender"] as? String,
+                              let content = messageDict["content"] as? String,
+                              let timestamp = messageDict["timestamp"] as? Double else {
                             print("Invalid message data")
                             continue
                         }
@@ -61,11 +70,44 @@ final class ChatRoomStore: ObservableObject {
                     let chatRoom = ChatRoom(otherUser: otherUser, messages: messages)
                     chatRooms.append(chatRoom)
                 }
+
+                
+//                for chatRoomData in chattingRooms {
+//                    guard let otherUserDict = chatRoomData["otherUser"] as? [String: Any],
+//                          let otherUser = User(document: otherUserDict),
+//                          let messagesData = chatRoomData["messages"] as? [[String: Any]] else {
+//                        print("Invalid chat room data")
+//                        continue
+//                    }
+//
+//                    var messages: [Message] = []
+//
+//                    for messageData in messagesData {
+//                        guard let sender = messageData["sender"] as? String,
+//                              let content = messageData["content"] as? String,
+//                              let timestamp = messageData["timestamp"] as? Double else {
+//                            print("Invalid message data")
+//                            continue
+//                        }
+//
+//                        // Message 객체 생성 및 배열에 추가
+//                        let message = Message(sender: sender, content: content, timestamp: timestamp)
+//                        messages.append(message)
+//                    }
+//
+//                    // ChatRoom 객체 생성 및 chatRooms 배열에 추가
+//                    let chatRoom = ChatRoom(otherUser: otherUser, messages: messages)
+//                    chatRooms.append(chatRoom)
+//                }
             }
             
             // 새로운 채팅방 목록을 사용하여 필요한 작업 수행
             
         }
+        
+        print("count::")
+        print(chatRoomList.count)
+        
     }
     
     //chatRoom추가
@@ -150,6 +192,42 @@ final class ChatRoomStore: ObservableObject {
            // 추가적인 속성들...
        ]
     }
+    // 231010
+    func fetchChatRoom(sender: User) {
+        Firestore.firestore().document("\(sender.email)").getDocument { snapshot, error in
+            if let error = error {
+                print("Error fetching user: \(error.localizedDescription)")
+            } else if let chatRoomData = snapshot?.data() {
+                if let chatroomDictArray = chatRoomData["chattingRoom"] as? [[String: Any]] {
+                    for dict in chatroomDictArray {
+                        if let chatroom = ChatRoom(document: dict) {
+                            self.chatRoomList.append(chatroom)
+                        }
+                    }
+                }
+            }
+        }
+        print("\(chatRoomList)")
+    }
+    
+//    func addChatRoom(sender: User, receiver: User) {
+//        docRef.document("\(sender.email)").getDocument { document, error in
+//            if let error = error as NSError? {
+//                print("Error getting document: \(error.localizedDescription)")
+//            }
+//            else {
+//                if let document = document {
+//                    do {
+//                        let newDoc = try document.data(as: ChatRoom.self)
+//                        print("newDoc")
+//                    }
+//                    catch {
+//                        print(error)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
     
