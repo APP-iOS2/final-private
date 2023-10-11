@@ -12,6 +12,13 @@
 		0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */; };
 		069C67372AC26D2D00A5275F /* ShopDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */; };
 		06C796CE2ABD5C5C0043C395 /* ShopDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C796CD2ABD5C5C0043C395 /* ShopDetailView.swift */; };
+		26357CE22AD532B70098C8F5 /* FeedMainDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CE12AD532B70098C8F5 /* FeedMainDetailView.swift */; };
+		26357CE42AD532D50098C8F5 /* FeedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CE32AD532D50098C8F5 /* FeedListView.swift */; };
+		26357CE62AD532E70098C8F5 /* FeedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CE52AD532E70098C8F5 /* FeedCellView.swift */; };
+		26357CE82AD533010098C8F5 /* EmptyFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CE72AD533010098C8F5 /* EmptyFeed.swift */; };
+		26357CEA2AD5395C0098C8F5 /* AddFeedTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CE92AD5395C0098C8F5 /* AddFeedTest.swift */; };
+		26357CEC2AD53FEA0098C8F5 /* FirestoreUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CEB2AD53FEA0098C8F5 /* FirestoreUtil.swift */; };
+		26357CEE2AD54B8B0098C8F5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26357CED2AD54B8B0098C8F5 /* GoogleService-Info.plist */; };
 		28034BDEF553D5A60DC0545C /* Pods_Private_PrivateUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C9816AC39F3302EDB88BA8A /* Pods_Private_PrivateUITests.framework */; };
 		2B94F31896BF6D54ABB35E08 /* Pods_Private.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87739F481181992B30A0E64A /* Pods_Private.framework */; };
 		3864D85AA2BBF6F3F6082E7D /* Pods_PrivateTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A395D3AA2009366C31BCDB6 /* Pods_PrivateTests.framework */; };
@@ -35,7 +42,6 @@
 		3C5789372AC2604600D8B7EA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3C5789362AC2604600D8B7EA /* GoogleSignIn */; };
 		3C5789392AC2604600D8B7EA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3C5789382AC2604600D8B7EA /* GoogleSignInSwift */; };
 		3C57893B2AC27BAF00D8B7EA /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C57893A2AC27BAF00D8B7EA /* AuthStore.swift */; };
-		3C78368B2ACCFAFF0055A418 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C78368A2ACCFAFF0055A418 /* GoogleService-Info.plist */; };
 		3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */; };
 		3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */; };
 		3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */; };
@@ -164,6 +170,13 @@
 		0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailCurrentReviewView.swift; sourceTree = "<group>"; };
 		069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailInfoView.swift; sourceTree = "<group>"; };
 		06C796CD2ABD5C5C0043C395 /* ShopDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailView.swift; sourceTree = "<group>"; };
+		26357CE12AD532B70098C8F5 /* FeedMainDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMainDetailView.swift; sourceTree = "<group>"; };
+		26357CE32AD532D50098C8F5 /* FeedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListView.swift; sourceTree = "<group>"; };
+		26357CE52AD532E70098C8F5 /* FeedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellView.swift; sourceTree = "<group>"; };
+		26357CE72AD533010098C8F5 /* EmptyFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFeed.swift; sourceTree = "<group>"; };
+		26357CE92AD5395C0098C8F5 /* AddFeedTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeedTest.swift; sourceTree = "<group>"; };
+		26357CEB2AD53FEA0098C8F5 /* FirestoreUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreUtil.swift; sourceTree = "<group>"; };
+		26357CED2AD54B8B0098C8F5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3C2FC8EA2ACE9B740034F561 /* MapMarkerDetailStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMarkerDetailStore.swift; sourceTree = "<group>"; };
 		3C2FC8EB2ACE9B740034F561 /* MapReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapReview.swift; sourceTree = "<group>"; };
 		3C2FC8EC2ACE9B740034F561 /* MapDetailButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapDetailButtonView.swift; sourceTree = "<group>"; };
@@ -182,7 +195,6 @@
 		3C37162B2ABD1789004E8419 /* ChatRoomStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomStore.swift; sourceTree = "<group>"; };
 		3C37B1B32AC02481004A8E7E /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		3C57893A2AC27BAF00D8B7EA /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
-		3C78368A2ACCFAFF0055A418 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
 		3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
@@ -346,6 +358,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		26357CE02AD532A00098C8F5 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				26357CE12AD532B70098C8F5 /* FeedMainDetailView.swift */,
+				26357CE32AD532D50098C8F5 /* FeedListView.swift */,
+				26357CE52AD532E70098C8F5 /* FeedCellView.swift */,
+				26357CE72AD533010098C8F5 /* EmptyFeed.swift */,
+				26357CE92AD5395C0098C8F5 /* AddFeedTest.swift */,
+				26357CEB2AD53FEA0098C8F5 /* FirestoreUtil.swift */,
+			);
+			path = Feed;
+			sourceTree = "<group>";
+		};
 		3C2FC8D52ACE9AFA0034F561 /* MapMarker */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,7 +467,7 @@
 		3CCD2DEA2ABC34C1005709F4 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				A69D51442ACF95EC00F27533 /* Feed */,
+				26357CE02AD532A00098C8F5 /* Feed */,
 				3CCD2DF12ABC3546005709F4 /* MainHomeView.swift */,
 				3CB734092ABD6F0100D82503 /* FeedMainView.swift */,
 				63BB09982ABD8783002CCE4E /* Map */,
@@ -510,7 +535,7 @@
 		3CCD2DFF2ABC3A3F005709F4 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
-				3C78368A2ACCFAFF0055A418 /* GoogleService-Info.plist */,
+				26357CED2AD54B8B0098C8F5 /* GoogleService-Info.plist */,
 				3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */,
 				3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */,
 				3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */,
@@ -631,13 +656,6 @@
 				3C2FC8D52ACE9AFA0034F561 /* MapMarker */,
 			);
 			path = Map;
-			sourceTree = "<group>";
-		};
-		A69D51442ACF95EC00F27533 /* Feed */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Feed;
 			sourceTree = "<group>";
 		};
 		B591C7232ACC608B00602727 /* Reservation */ = {
@@ -818,8 +836,7 @@
 			files = (
 				3CF3D8CC2AB82A99003689A6 /* Preview Assets.xcassets in Resources */,
 				3CF3D8C92AB82A99003689A6 /* Assets.xcassets in Resources */,
-				E3A786952AC3CE0200644DA4 /* (null) in Resources */,
-				3C78368B2ACCFAFF0055A418 /* GoogleService-Info.plist in Resources */,
+				26357CEE2AD54B8B0098C8F5 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -964,6 +981,7 @@
 				3CCD2DFA2ABC3588005709F4 /* MyPageView.swift in Sources */,
 				0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */,
 				3CF3D8C52AB82A97003689A6 /* PrivateApp.swift in Sources */,
+				26357CE22AD532B70098C8F5 /* FeedMainDetailView.swift in Sources */,
 				B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */,
 				3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */,
 				E4778D832ACD33BE0099D924 /* MyFollowerFollowingView.swift in Sources */,
@@ -977,6 +995,7 @@
 				3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */,
 				3CCD2DFE2ABC37F8005709F4 /* TextMaster.swift in Sources */,
 				3C2FC8F12ACE9B750034F561 /* MapMarkerDetailStore.swift in Sources */,
+				26357CEC2AD53FEA0098C8F5 /* FirestoreUtil.swift in Sources */,
 				B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */,
 				3CCD2DE22ABC3177005709F4 /* Feed.swift in Sources */,
 				E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */,
@@ -1011,13 +1030,17 @@
 				3C2FC8F32ACE9B750034F561 /* MapDetailButtonView.swift in Sources */,
 				E47B3F772AC14A3B002164A6 /* MySavedPlaceView.swift in Sources */,
 				3CCD2DE42ABC3185005709F4 /* Reservation.swift in Sources */,
+				26357CE82AD533010098C8F5 /* EmptyFeed.swift in Sources */,
 				3C9747722AD4E1AE007AE3CB /* LocationSearchStore.swift in Sources */,
 				D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */,
 				3C37162A2ABD176E004E8419 /* ReservationStore.swift in Sources */,
 				3C2FC8F22ACE9B750034F561 /* MapReview.swift in Sources */,
 				3C93B5082AC1549200788633 /* SendMessageTextField.swift in Sources */,
+				26357CE62AD532E70098C8F5 /* FeedCellView.swift in Sources */,
 				3C91AEA42AC40F6100E60D9B /* SettingView.swift in Sources */,
 				3C93B5062AC13E7200788633 /* ChatRoomView.swift in Sources */,
+				26357CEA2AD5395C0098C8F5 /* AddFeedTest.swift in Sources */,
+				26357CE42AD532D50098C8F5 /* FeedListView.swift in Sources */,
 				3C2FC8FB2ACE9B950034F561 /* MapToChatRoomView.swift in Sources */,
 				3C3716282ABD1762004E8419 /* FeedStore.swift in Sources */,
 				D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */,

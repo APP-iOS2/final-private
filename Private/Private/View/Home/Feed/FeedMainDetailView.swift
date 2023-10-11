@@ -1,13 +1,13 @@
 //
-//  FeedMainView.swift
+//  FeedMainDetailView.swift
 //  Private
 //
-//  Created by 변상우 on 2023/09/22.
+//  Created by yeon on 10/10/23.
 //
 
 import SwiftUI
 
-struct FeedMainView: View {
+struct FeedMainDetailView: View {
     
     @EnvironmentObject var feedStore: FeedStore
     
@@ -25,9 +25,9 @@ struct FeedMainView: View {
     }
 }
 
-struct FeedMainView_Previews: PreviewProvider {
+struct FeedMainDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        FeedMainView()
+        FeedMainDetailView()
             .environmentObject(FeedStore())
     }
 }

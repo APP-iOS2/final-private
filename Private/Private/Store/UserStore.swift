@@ -115,9 +115,5 @@ final class UserStore: ObservableObject {
 //        myReservation: []
 //    )
 
-    static let dummyFeed = MyFeed(writer: "카리나", images: ["https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/advices/166557187458549420.jpg?gif=1&w=480&webp=1"], contents: "아주 굿굿이에용", title: "맛집쓰", category: ["브런치", "카페"], address: "이마트24 청계천점", roadAddress: "서울특별시 종로구 청계천로 35 관정빌딩 1층", mapx: "1269814912", mapy: "375692629")
-//    static let dummyFeed1 = MyFeed(writer: "me", images: ["https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/advices/166557187458549420.jpg?gif=1&w=480&webp=1"], contents: "", visitedShop: "", category: [])
-//    static let dummyFeed2 = MyFeed(writer: "me", images: ["https://mblogthumb-phinf.pstatic.net/MjAxNzAzMjZfMTM5/MDAxNDkwNDYxMDM1NzE4.sdrUUcAQOXtk6xZ7FJcEyyq-7P9kbo9OJ-GdKuWMfcYg.F9ljFIbwPQ25fdCXYUvN8fbC0Aun5UhHjVq_JE3UJc8g.PNG.nydelphie/DSC03257.png?type=w800"], contents: "", visitedShop: "", category: [])
-//    static let dummyFeed3 = MyFeed(writer: "me", images: ["https://mblogthumb-phinf.pstatic.net/MjAxNzAzMjZfMTM5/MDAxNDkwNDYxMDM1NzE4.sdrUUcAQOXtk6xZ7FJcEyyq-7P9kbo9OJ-GdKuWMfcYg.F9ljFIbwPQ25fdCXYUvN8fbC0Aun5UhHjVq_JE3UJc8g.PNG.nydelphie/DSC03257.png?type=w800"], contents: "", visitedShop: "", category: [])
 }
 
