@@ -57,20 +57,20 @@ struct ShopDetailCurrentReviewCell: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .center, spacing: 10) {
-//                KFImage(URL(string: dummyFeed.writer.profileImageURL)!)
-//                    .placeholder({
-//                        ProgressView()
-//                    })
-//                    .resizable()
-//                    .scaledToFit()
-//                    .clipShape(Circle())
-//                    .frame(width: 70, height: 70)
+                KFImage(URL(string: dummyFeed.writerProfileImage)!)
+                    .placeholder({
+                        ProgressView()
+                    })
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(Circle())
+                    .frame(width: 70, height: 70)
                 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("\(dummyFeed.writer)")
+                    Text("\(dummyFeed.writerNickname)")
                         .font(Font.pretendardBold18)
-//                    Text("@\(dummyFeed.writer.nickname)")
-//                        .font(Font.pretendardRegular16)
+                    Text("@\(dummyFeed.writerName)")
+                        .font(Font.pretendardRegular16)
                 }
                 
                 Spacer()

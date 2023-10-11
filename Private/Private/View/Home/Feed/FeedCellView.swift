@@ -14,21 +14,21 @@ struct FeedCellView: View {
     var body: some View {
         VStack {
             HStack {
-//                AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
-//                    image
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 50)
-//                } placeholder: {
-//                    Image("userDefault")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 50)
-//                }
+                AsyncImage(url: URL(string: feed.writerProfileImage)) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 50)
+                } placeholder: {
+                    Image("userDefault")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 50)
+                }
                 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("\(feed.writer)")
-                  
+                    Text("\(feed.writerNickname)")
+                    Text("\(feed.writerName)")
                     Text("\(feed.createdAt)")
                 }
                 Spacer()

@@ -20,15 +20,15 @@ struct ReviewSheetView: View {
                         ForEach(feed.images, id: \.self) { imageName in
                             HStack {
                                 VStack(alignment: .leading, spacing: 10) {
-//                                    Image(feed.writer.profileImageURL)
-//                                        .resizable()
-//                                        .aspectRatio(contentMode: .fit)
-//                                        .frame(height: 70)
-//                                        .clipShape(Circle())
+                                    Image(feed.writerProfileImage)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height: 70)
+                                        .clipShape(Circle())
                                 }
                                 VStack {
-                                    Text(feed.writer).font(.pretendardBold18)
-//                                    Text(feed.writer.name).font(.pretendardRegular14)
+                                    Text(feed.writerNickname).font(.pretendardBold18)
+                                    Text(feed.writerName).font(.pretendardRegular14)
                                 }
                             }
                             HStack{

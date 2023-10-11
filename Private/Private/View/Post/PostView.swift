@@ -295,7 +295,9 @@ struct PostView: View {
     func fetch() {
         //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
         
-        var feed = MyFeed(writer: userStore.user.name,
+        var feed = MyFeed(writerNickname: userStore.user.nickname,
+                          writerName: userStore.user.name,
+                          writerProfileImage: userStore.user.profileImageURL,
                           images: images,
                           contents: text,
                           createdAt: createdAt,

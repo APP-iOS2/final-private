@@ -107,7 +107,9 @@ final class PostStore: ObservableObject {
     func addFeed(_ feed: MyFeed) {
         dbRef.document(feed.id).collection("myFeed")
             .document(feed.id)
-            .setData(["writer": feed.writer,
+            .setData(["writerNickname": feed.writerNickname,
+                      "writerName": feed.writerName,
+                      "writerProfileImage": feed.writerProfileImage,
                       "images": feed.images,
                       "contents": feed.contents,
                       "createdAt": feed.createdAt,

@@ -46,7 +46,9 @@ final class FeedStore: ObservableObject {
     // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
         return [
-            "writer": feed.writer,
+            "writerNickname": feed.writerNickname,
+            "writerName": feed.writerName,
+            "writerProfileImage": feed.writerProfileImage,
             "images": feed.images,
             "contents": feed.contents,
             "createdAt": Timestamp(date: Date(timeIntervalSince1970: feed.createdAt)),

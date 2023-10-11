@@ -11,7 +11,9 @@ struct MyFeed: Identifiable, Codable, Hashable {
     
     var id: String = UUID().uuidString
 
-    var writer: String
+    var writerNickname: String
+    var writerName: String
+    var writerProfileImage: String
     var images: [String]
     var contents: String
     var createdAt: Double = Date().timeIntervalSince1970
@@ -37,7 +39,9 @@ enum MyCategory: String, CaseIterable, Hashable, Codable {
 extension MyFeed {
     init?(documentData: [String: Any]) {
         guard
-            let writer = documentData["writer"] as? String,
+            let writerNickname = documentData["writerNickname"] as? String,
+            let writerName = documentData["writerName"] as? String,
+            let writerProfileImage = documentData["writerProfileImage"] as? String,
             let images = documentData["images"] as? [String],
             let contents = documentData["contents"] as? String,
             let title = documentData["title"] as? String,
@@ -51,7 +55,9 @@ extension MyFeed {
             return nil
         }
         
-        self.writer = writer
+        self.writerNickname = writerNickname
+        self.writerName = writerName
+        self.writerProfileImage = writerProfileImage
         self.images = images
         self.contents = contents
         self.title = title
@@ -64,7 +70,9 @@ extension MyFeed {
     }
     
     init() {
-        self.writer = ""
+        self.writerNickname = ""
+        self.writerName = ""
+        self.writerProfileImage = ""
         self.images = []
         self.contents = ""
         self.title = ""
