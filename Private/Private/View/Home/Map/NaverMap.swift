@@ -146,7 +146,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         for shopMarker in feedStore.feedList {
             let marker = NMFMarker()
             
-            marker.position = shopMarker.visitedShop.coord
+            marker.position = shopMarker.visitedShop.coord.toNMGLatLng()
             marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
             marker.captionText = shopMarker.visitedShop.name
             marker.captionMinZoom = 10

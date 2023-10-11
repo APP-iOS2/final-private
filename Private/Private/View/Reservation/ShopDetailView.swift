@@ -25,8 +25,7 @@ struct ShopDetailView: View {
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     @State var isReservationPresented: Bool = false
     
-    @Binding var root: Bool
-    @Binding var selection: Int
+    let shop: Shop
     
     let dummyShop = ShopStore.shop
     
@@ -46,12 +45,15 @@ struct ShopDetailView: View {
             
             ShopDetailFooterView(isReservationPresented: $isReservationPresented)
         }
+        .task {
+            await shopStore.getAllShopData()
+        }
     }
 }
 
 struct ShopDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailView(root: .constant(true), selection: .constant(4))
+        ShopDetailView(shop: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }

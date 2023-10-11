@@ -20,7 +20,7 @@ struct Feed: Identifiable, Hashable {
     var category: [Category]
 }
 
-enum Category: Int, CaseIterable, Hashable {
+enum Category: Int, CaseIterable, Hashable, Codable {
     case koreanFood
     case westernFood
     case japaneseFood
