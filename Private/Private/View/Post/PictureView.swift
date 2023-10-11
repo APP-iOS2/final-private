@@ -25,16 +25,16 @@ struct PictureView: View {
     var body: some View {
         NavigationStack {
             Button {
-                isImagePickerPresented.toggle()
+                presentationMode.wrappedValue.dismiss()
             } label: {
-                Label("", systemImage: "plus")
+                Label("", systemImage: "person")
             }
-            .sheet(isPresented: $isImagePickerPresented) {
-                ImagePickerView(selectedImages: $selectedImage)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.white)
-                    .transition(.move(edge: .leading))
-            }
+//            .sheet(isPresented: $isImagePickerPresented) {
+//                ImagePickerView(selectedImages: $selectedImage, isPostViewPresented: $isPostViewPresented)
+//                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                    .background(Color.white)
+//                    .transition(.move(edge: .leading))
+//            }
         }
     }
 }
