@@ -14,14 +14,14 @@ struct FeedMainView: View {
     var body: some View {
         VStack {
             Text("feedStore.feedList.count : \(feedStore.feedList.count)")
-            Circle()
+            //Circle()
+            ScrollView {
+                ForEach(feedStore.feedList) { feed in
+                    
+                    FeedCellView(feed: feed)
+                }
+            }
         }
-//        ScrollView {
-//            ForEach(feedStore.feedList) { feed in
-//
-//                FeedCellView(feed: feed)  // FeedCellView를 호출, feed 데이터를 전달
-//            }
-//        }
     }
 }
 
