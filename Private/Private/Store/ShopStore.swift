@@ -161,6 +161,17 @@ final class ShopStore: ObservableObject {
         }
         return businessHours
     }
+    
+    /// reservation의 id를 가지고 Shop 데이터 반환
+    func getReservedShop(reservationData: Reservation) -> Shop {
+         let reservedShops = self.shopList.filter { $0.id == reservationData.shopId }
+        
+        if let reservedShop = reservedShops.first {
+            return reservedShop
+        } else {
+            return Self.shop
+        }
+    }
 }
 
 

@@ -24,9 +24,11 @@ struct ModifyReservationView: View {
     private let step = 1  // 인원선택 stepper의 step
     private let range = 1...6  // stepper 인원제한
     
+    let shopData: Shop
+    
     var body: some View {
         ScrollView {
-            Text("예약 수정")
+            Text(shopData.name)
                 .font(.pretendardBold24)
                 .padding(.bottom)
             
@@ -138,7 +140,7 @@ struct ModifyReservationView: View {
 
 struct ModifyReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ModifyReservationView(temporaryReservation: .constant(ReservationStore.tempReservation), isShowModifyView: .constant(true))
+        ModifyReservationView(temporaryReservation: .constant(ReservationStore.tempReservation), isShowModifyView: .constant(true), shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }

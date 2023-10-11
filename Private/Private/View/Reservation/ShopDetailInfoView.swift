@@ -122,6 +122,9 @@ struct ShopDetailInfoView: View {
                                 .font(Font.pretendardRegular16)
                             }
                         }
+                        if shopData.breakTimeHours.isEmpty {
+                            Text("브레이크 타임이 없습니다.")
+                        }
                     }
                     .padding(10)
                 } label: {

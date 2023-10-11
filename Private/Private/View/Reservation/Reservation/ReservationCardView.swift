@@ -9,18 +9,20 @@ import SwiftUI
 
 struct ReservationCardView: View {
     @EnvironmentObject var reservationStore: ReservationStore
+    @EnvironmentObject var shopStore: ShopStore
     
     @State private var isShowDeleteMyReservationAlert: Bool = false
     @State private var isShowRemoveReservationAlert: Bool = false
     @State private var isShowModifyView: Bool = false
     @State private var disableReservationButton: Bool = false
+    @State private var reservationState: String = ""
     
+    @State private var shopData: Shop = ShopStore.shop
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
 
-    @State private var reservationState: String = ""
-    var reservation: Reservation
     private let currentDate = Date()
-
+    var reservation: Reservation
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
@@ -29,15 +31,14 @@ struct ReservationCardView: View {
                 
                 Spacer()
                 Menu {
-                    Button {
-                        print(#fileID, #function, #line, "- 가게보기")
-                        // Shop 가져와야 함
+                    NavigationLink {
+                        ShopDetailView(shopData: shopData)
                     } label: {
                         Text("가게보기")
                     }
                     
                     NavigationLink {
-                        ReservationConfirmView(reservationData: temporaryReservation, shopData: ShopStore.shop)
+                        ReservationConfirmView(reservationData: temporaryReservation, shopData: shopData)
                     } label: {
                         Text("예약상세")
                     }
@@ -56,7 +57,7 @@ struct ReservationCardView: View {
                 }
                 .foregroundColor(Color.secondary)
             }
-            Text(ShopStore.shop.name)
+            Text(shopData.name)
                 .font(.pretendardMedium18)
             
             
@@ -93,10 +94,10 @@ struct ReservationCardView: View {
                 disableReservationButton = true
             }
             
-            print("새로 그려짐")
+            self.shopData = shopStore.getReservedShop(reservationData: self.reservation)
         }
         .navigationDestination(isPresented: $isShowModifyView, destination: {
-            ModifyReservationView(temporaryReservation: $temporaryReservation, isShowModifyView: $isShowModifyView)
+            ModifyReservationView(temporaryReservation: $temporaryReservation, isShowModifyView: $isShowModifyView, shopData: shopData)
         })
         .alert("예약 내역 삭제", isPresented: $isShowDeleteMyReservationAlert) {
             Button(role: .destructive) {
@@ -139,6 +140,7 @@ struct ReservationCardView_Previews: PreviewProvider {
     static var previews: some View {
         ReservationCardView(reservation: ReservationStore.tempReservation)
             .environmentObject(ReservationStore())
+            .environmentObject(ShopStore())
     }
 }
 

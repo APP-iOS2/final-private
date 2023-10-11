@@ -26,9 +26,7 @@ struct ShopDetailView: View {
     @State var isReservationPresented: Bool = false
     
     let shopData: Shop
-    
-    let dummyShop = ShopStore.shop
-    
+        
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
@@ -38,12 +36,12 @@ struct ShopDetailView: View {
                         ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopData: shopData)
                             .padding(.top, CGFloat.screenHeight * 0.2)
                     } header: {
-                        ShopDetailHeaderView(shopData: shopData, shopDetailImageURL: dummyShop.shopImageURL)
+                        ShopDetailHeaderView(shopData: shopData)
                     }
                 }
             }
             
-            ShopDetailFooterView(isReservationPresented: $isReservationPresented)
+            ShopDetailFooterView(isReservationPresented: $isReservationPresented, shopData: shopData)
         }
         .task {
             await shopStore.getAllShopData()
@@ -62,7 +60,6 @@ struct ShopDetailView_Previews: PreviewProvider {
 struct ShopDetailHeaderView: View {
     
     let shopData: Shop
-    let shopDetailImageURL: String
     
     var body: some View {
         KFImage(URL(string: shopData.shopImageURL)!)
@@ -188,6 +185,8 @@ struct ShopDetailFooterView: View {
     
     @Binding var isReservationPresented: Bool
     
+    let shopData: Shop
+    
     var body: some View {
         HStack(spacing: 10) {
             VStack(spacing: 2) {
@@ -227,7 +226,7 @@ struct ShopDetailFooterView: View {
         })
         .frame(alignment: .bottom)
         .sheet(isPresented: $isReservationPresented) {
-            ReservationView(isReservationPresented: $isReservationPresented, shopData: ShopStore.shop)
+            ReservationView(isReservationPresented: $isReservationPresented, shopData: shopData)
             
         }
     }

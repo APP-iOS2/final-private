@@ -20,7 +20,8 @@ struct ShopDetailMenuView: View {
             LazyVStack {
                 ForEach(shopData.menu, id: \.self) { menu in
                     HStack(spacing: 10) {
-                        KFImage(URL(string: menu.imageUrl)!)
+//                        KFImage(URL(string: menu.imageUrl)!)  // 파베에 있는 Key 값을 잘못올림
+                        KFImage(getImageString(url: menu.imageUrl))
                             .placeholder {
                                 ProgressView()
                             }
@@ -43,6 +44,13 @@ struct ShopDetailMenuView: View {
                 }
             }
         }
+    }
+    
+    func getImageString(url: String) -> URL {
+        guard let myUrl = URL(string: url) else {
+            return URL(string: "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_28dp.png")!
+        }
+        return myUrl
     }
 }
 

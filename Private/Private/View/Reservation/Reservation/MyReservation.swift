@@ -9,9 +9,10 @@ import SwiftUI
 
 struct MyReservation: View {
     @EnvironmentObject var reservationStore: ReservationStore
+    @EnvironmentObject var shopStore: ShopStore
     
     @Binding var isShowingMyReservation: Bool
-    
+        
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
@@ -41,5 +42,6 @@ struct MyReservation_Previews: PreviewProvider {
     static var previews: some View {
         MyReservation(isShowingMyReservation: Binding.constant(true))
             .environmentObject(ReservationStore())
+            .environmentObject(ShopStore())
     }
 }
