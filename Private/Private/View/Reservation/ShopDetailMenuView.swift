@@ -13,12 +13,12 @@ struct ShopDetailMenuView: View {
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
     
-    let dummyShop = ShopStore.shop
+    let shopData: Shop
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             LazyVStack {
-                ForEach(dummyShop.menu, id: \.self) { menu in
+                ForEach(shopData.menu, id: \.self) { menu in
                     HStack(spacing: 10) {
                         KFImage(URL(string: menu.imageUrl)!)
                             .placeholder {
@@ -26,7 +26,8 @@ struct ShopDetailMenuView: View {
                             }
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 120, height: 120)                         .cornerRadius(12)
+                            .frame(width: 120, height: 120)                         
+                            .cornerRadius(12)
                         
                         VStack(alignment: .leading, spacing: 0) {
                             Text("\(menu.name)")
@@ -47,7 +48,7 @@ struct ShopDetailMenuView: View {
 
 struct ShopDetailMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailMenuView()
+        ShopDetailMenuView(shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }

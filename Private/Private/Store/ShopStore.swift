@@ -57,43 +57,6 @@ final class ShopStore: ObservableObject {
         ])
     
     
-    // menu, item 받아오는 메소드
-    private func getReservationItems(document: String, data: [String: Any]) -> [ShopItem] {
-        let reservationItem = data[document] as? [[String: Any]] ?? []
-            
-            let items = reservationItem.compactMap { itemData in
-                if let name = itemData["name"] as? String,
-                   let price = itemData["price"] as? Int,
-                   let imageUrl = itemData["imageUrl"] as? String {
-                    return ShopItem(name: name, price: price, imageUrl: imageUrl)
-                } else {
-                    print("\(document) 데이터 없음")
-                    return ShopItem(name: "error", price: 0, imageUrl: "")
-                }
-            }
-        return items
-    }
-    
-    private func getBusinessTime(document: String, data: [String: Any]) -> [String: BusinessHours] {
-        let businessHourDatas = data[document] as? [String: [String: Int]] ?? [:]
-        
-        // Dictionary를 "BusinessHours" 구조체로 변환
-        var businessHours: [String: BusinessHours] = [:]
-        
-        for (day, businessTimeData) in businessHourDatas {
-            if let startHour = businessTimeData["startHour"],
-               let startMinute = businessTimeData["startMinute"],
-               let endHour = businessTimeData["endHour"],
-               let endMinute = businessTimeData["endMinute"] {
-                
-                let businessTime: BusinessHours = BusinessHours(startHour: startHour, startMinute: startMinute, endHour: endHour, endMinute: endMinute)  // 여기에는 데이터가 잘 들어옴
-                businessHours[day] = businessTime
-            }
-        }
-        return businessHours
-    }
-    
-    
     // 로그인 시 전체 패치 실행
     // MARK: - Fetch ShopData
     @MainActor
@@ -160,6 +123,43 @@ final class ShopStore: ObservableObject {
             print(error.localizedDescription)
         }
         
+    }
+    
+    // menu, item 받아오는 메소드
+    private func getReservationItems(document: String, data: [String: Any]) -> [ShopItem] {
+        let reservationItem = data[document] as? [[String: Any]] ?? []
+            
+            let items = reservationItem.compactMap { itemData in
+                if let name = itemData["name"] as? String,
+                   let price = itemData["price"] as? Int,
+                   let imageUrl = itemData["imageUrl"] as? String {
+                    return ShopItem(name: name, price: price, imageUrl: imageUrl)
+                } else {
+                    print("\(document) 데이터 없음")
+                    return ShopItem(name: "error", price: 0, imageUrl: "")
+                }
+            }
+        return items
+    }
+    
+    // 영업시간, 브레이크타임 받아오는 메소드
+    private func getBusinessTime(document: String, data: [String: Any]) -> [String: BusinessHours] {
+        let businessHourDatas = data[document] as? [String: [String: Int]] ?? [:]
+        
+        // Dictionary를 "BusinessHours" 구조체로 변환
+        var businessHours: [String: BusinessHours] = [:]
+        
+        for (day, businessTimeData) in businessHourDatas {
+            if let startHour = businessTimeData["startHour"],
+               let startMinute = businessTimeData["startMinute"],
+               let endHour = businessTimeData["endHour"],
+               let endMinute = businessTimeData["endMinute"] {
+                
+                let businessTime: BusinessHours = BusinessHours(startHour: startHour, startMinute: startMinute, endHour: endHour, endMinute: endMinute)  // 여기에는 데이터가 잘 들어옴
+                businessHours[day] = businessTime
+            }
+        }
+        return businessHours
     }
 }
 

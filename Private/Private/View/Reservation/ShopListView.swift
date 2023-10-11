@@ -18,9 +18,9 @@ struct ShopListView: View {
         List {
             ForEach(shopStore.shopList, id: \.self) { shopData in
                 NavigationLink {
-                    ShopDetailView(shop: shopData)
+                    ShopDetailView(shopData: shopData)
                 } label: {
-                    HStack {
+                    HStack(alignment: .top){
                         KFImage(URL(string: shopData.shopImageURL)!)
                                         .onFailure({ error in
                                             print("Error : \(error)")
@@ -28,9 +28,10 @@ struct ShopListView: View {
                                         .resizable()
                                         .frame(width: 80, height: 80)
                                         .clipped()
+                                        .padding(.trailing)
                         
                         VStack(alignment: .leading) {
-                            Text("\(shopData.category.rawValue)")
+                            Text("\(shopData.category.categoryName)")
                             Text(shopData.name)
                         }
                     }
@@ -41,7 +42,9 @@ struct ShopListView: View {
     }
 }
 
-#Preview {
-    ShopListView(root: .constant(true), selection: .constant(4))
-        .environmentObject(ShopStore())
+struct ShopListView_Previews: PreviewProvider {
+    static var previews: some View {
+        ShopListView(root: .constant(true), selection: .constant(4))
+            .environmentObject(ShopStore())
+    }
 }

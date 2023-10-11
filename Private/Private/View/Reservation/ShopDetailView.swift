@@ -25,7 +25,7 @@ struct ShopDetailView: View {
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     @State var isReservationPresented: Bool = false
     
-    let shop: Shop
+    let shopData: Shop
     
     let dummyShop = ShopStore.shop
     
@@ -35,10 +35,10 @@ struct ShopDetailView: View {
                 //                LazyVStack(pinnedViews: .sectionHeaders) {
                 ZStack(alignment: .topLeading) {
                     Section {
-                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopDetailName: dummyShop.name, shopDetailCategoryName: dummyShop.category.categoryName, shopDetailAddress: dummyShop.address, shopDetailAddressDetail: dummyShop.addressDetail)
+                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopData: shopData)
                             .padding(.top, CGFloat.screenHeight * 0.2)
                     } header: {
-                        ShopDetailHeaderView(shopDetailImageURL: dummyShop.shopImageURL)
+                        ShopDetailHeaderView(shopData: shopData, shopDetailImageURL: dummyShop.shopImageURL)
                     }
                 }
             }
@@ -53,7 +53,7 @@ struct ShopDetailView: View {
 
 struct ShopDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailView(shop: ShopStore.shop)
+        ShopDetailView(shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }
@@ -61,10 +61,11 @@ struct ShopDetailView_Previews: PreviewProvider {
 
 struct ShopDetailHeaderView: View {
     
+    let shopData: Shop
     let shopDetailImageURL: String
     
     var body: some View {
-        KFImage(URL(string: shopDetailImageURL)!)
+        KFImage(URL(string: shopData.shopImageURL)!)
             .placeholder({
                 ProgressView()
             })
@@ -81,10 +82,7 @@ struct ShopDetailBodyView: View {
     @State var isExpanded: Bool = false
     @Binding var selectedShopDetailCategory: ShopDetailCategory
     
-    let shopDetailName: String
-    let shopDetailCategoryName: String
-    let shopDetailAddress: String
-    let shopDetailAddressDetail: String
+    let shopData: Shop
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -94,21 +92,21 @@ struct ShopDetailBodyView: View {
                         .frame(height: 10)
                     
                     HStack(spacing: 10) {
-                        Text(shopDetailName)
+                        Text(shopData.name)
                             .foregroundColor(.chatTextColor)
                             .font(Font.pretendardBold28)
                         
                         Divider()
                             .frame(height: 25)
                         
-                        Text(shopDetailCategoryName)
+                        Text(shopData.category.categoryName)
                             .font(Font.pretendardMedium18)
                     }
                     
                     Section {
                         if isExpanded {
                             HStack(spacing: 5) {
-                                Text(shopDetailAddressDetail)
+                                Text(shopData.addressDetail)
                                     .font(Font.pretendardRegular14)
                                 
                                 Image(systemName: "doc.on.doc")
@@ -119,7 +117,7 @@ struct ShopDetailBodyView: View {
                         }
                     } header: {
                         HStack(spacing: 2) {
-                            Text(shopDetailAddress)
+                            Text(shopData.address)
                                 .font(Font.pretendardMedium18)
                             
                             Image(systemName: isExpanded ? "chevron.down": "chevron.right")
@@ -161,9 +159,9 @@ struct ShopDetailBodyView: View {
             ScrollView {
                 switch selectedShopDetailCategory {
                 case .shopInfo:
-                    ShopDetailInfoView()
+                    ShopDetailInfoView(shopData: shopData)
                 case .shopMenu:
-                    ShopDetailMenuView()
+                    ShopDetailMenuView(shopData: shopData)
                 case .shopCurrentReview:
                     ShopwDetailCurrentReviewView()
                 }
