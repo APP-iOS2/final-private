@@ -12,6 +12,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseCore
 import Combine
+import Kingfisher
 
 struct PostView: View {
     
@@ -22,7 +23,8 @@ struct PostView: View {
     
     @Binding var root: Bool
     @Binding var selection: Int
-    
+    @Binding var isPostViewPresented: Bool /// PostView
+
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var userStore: UserStore
     @StateObject private var postStore: PostStore = PostStore()
@@ -36,7 +38,6 @@ struct PostView: View {
     @State private var feedId: String = ""
     @State private var myselectedCategory: [String] = []
 
-    @State private var isPostViewPresented: Bool = true /// PostView
     @State private var clickLocation: Bool = false
     @State private var isImagePickerPresented: Bool = false /// 업로드뷰에서 이미지 선택 뷰
     @State private var ImageViewPresented: Bool = true /// 처음 이미지 뷰
@@ -66,13 +67,21 @@ struct PostView: View {
                 VStack(alignment: .leading) {
                     HStack {
                         ZStack {
-                            Circle()
-                                .frame(width: .screenWidth*0.19)
-                            Image(systemName: "person")
-                                .resizable()
-                                .frame(width: .screenWidth*0.19, height: 65)
-                                .foregroundColor(.gray)
-                                .clipShape(Circle())
+                            if userStore.user.profileImageURL.isEmpty {
+                                Circle()
+                                    .frame(width: .screenWidth*0.23)
+                                Image(systemName: "person")
+                                    .resizable()
+                                    .frame(width: .screenWidth*0.23, height: .screenWidth*0.23)
+                                    .foregroundColor(Color.darkGraySubColor)
+                                    .clipShape(Circle())
+                            } else {
+                                KFImage(URL(string: userStore.user.profileImageURL))
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: .screenWidth*0.23, height: .screenWidth*0.23)
+                                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                            }
                         }
                         
                         VStack(alignment: .leading, spacing: 5) {
@@ -84,9 +93,9 @@ struct PostView: View {
 
                     //MARK: 내용
                     TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize)
-                        .onTapGesture {
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                        }
+//                        .onTapGesture {
+//                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+//                        }
                         .padding(.trailing, 10)
                     
                     //MARK: 장소
@@ -121,11 +130,7 @@ struct PostView: View {
                     //MARK: 사진
                     HStack {
                         Label("사진", systemImage: "camera")
-//                        Text("(최대 10장)")
-//                            .font(.caption)
-//                            .foregroundColor(.secondary)
                         Spacer()
-
                         Button {
                             isImagePickerPresented.toggle()
                         } label: {
@@ -237,17 +242,34 @@ struct PostView: View {
                         
                         .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty)
                 } // leading VStack
+               
             }
-            .fullScreenCover(isPresented: $ImageViewPresented) {
+            .sheet(isPresented: $ImageViewPresented) {
                 ImagePickerView(selectedImages: $selectedImage)
             }
             // toolbar 자리
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        isPostViewPresented = false
+                        selection = 1
+                        print("뷰 닫기")
+                    } label: {
+                        Text("취소")
+                    }
+                }
+            }
+            .onTapGesture {
+                hideKeyboard()
+            }
             .alert(isPresented: $isshowAlert) {
                 let firstButton = Alert.Button.cancel(Text("취소")) {
                     print("취소 버튼 클릭")
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
                     fetch()
+                    isPostViewPresented = false
+                    selection = 1
                     print("완료 버튼 클릭")
                     
                 }
@@ -277,7 +299,7 @@ struct PostView: View {
                           images: images,
                           contents: text,
                           createdAt: createdAt,
-                          title: searchResult.title,
+                          title: searchResult.title.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""),
                           category: myselectedCategory,
                           address: searchResult.address,
                           roadAddress: searchResult.roadAddress,
@@ -344,7 +366,7 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(root: .constant(true), selection: .constant(3))
+        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
     }
