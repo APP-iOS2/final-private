@@ -16,21 +16,21 @@ struct MapMarkerFeedView: View {
     var body: some View {
         VStack {
             HStack {
-                AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50)
-                } placeholder: {
-                    Image("userDefault")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50)
-                }
+//                AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
+//                    image
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 50)
+//                } placeholder: {
+//                    Image("userDefault")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 50)
+//                }
 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("\(feed.writer.name)")
-                    Text("\(feed.writer.nickname)")
+                    Text("\(feed.writer)")
+//                    Text("\(feed.writer.nickname)")
                     Text("\(feed.createdAt)")
                 }
                 

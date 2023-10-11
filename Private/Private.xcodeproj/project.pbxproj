@@ -16,7 +16,6 @@
 		26357CE42AD532D50098C8F5 /* FeedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CE32AD532D50098C8F5 /* FeedListView.swift */; };
 		26357CE62AD532E70098C8F5 /* FeedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CE52AD532E70098C8F5 /* FeedCellView.swift */; };
 		26357CE82AD533010098C8F5 /* EmptyFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CE72AD533010098C8F5 /* EmptyFeed.swift */; };
-		26357CEA2AD5395C0098C8F5 /* AddFeedTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CE92AD5395C0098C8F5 /* AddFeedTest.swift */; };
 		26357CEC2AD53FEA0098C8F5 /* FirestoreUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26357CEB2AD53FEA0098C8F5 /* FirestoreUtil.swift */; };
 		26357CEE2AD54B8B0098C8F5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26357CED2AD54B8B0098C8F5 /* GoogleService-Info.plist */; };
 		28034BDEF553D5A60DC0545C /* Pods_Private_PrivateUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C9816AC39F3302EDB88BA8A /* Pods_Private_PrivateUITests.framework */; };
@@ -134,7 +133,6 @@
 		E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E385FAB42AC161EE00AC7255 /* PostStore.swift */; };
 		E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3876FC22AC294E200CFE728 /* PictureView.swift */; };
 		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
-		E3A786952AC3CE0200644DA4 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		E3EB7BC92AD53BAC00D9DF8B /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EB7BC82AD53BAC00D9DF8B /* UploadView.swift */; };
 		E421E2D52ACE9FF800FE1DAD /* UserImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */; };
 		E4778D832ACD33BE0099D924 /* MyFollowerFollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */; };
@@ -174,7 +172,6 @@
 		26357CE32AD532D50098C8F5 /* FeedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListView.swift; sourceTree = "<group>"; };
 		26357CE52AD532E70098C8F5 /* FeedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellView.swift; sourceTree = "<group>"; };
 		26357CE72AD533010098C8F5 /* EmptyFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFeed.swift; sourceTree = "<group>"; };
-		26357CE92AD5395C0098C8F5 /* AddFeedTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeedTest.swift; sourceTree = "<group>"; };
 		26357CEB2AD53FEA0098C8F5 /* FirestoreUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreUtil.swift; sourceTree = "<group>"; };
 		26357CED2AD54B8B0098C8F5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3C2FC8EA2ACE9B740034F561 /* MapMarkerDetailStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMarkerDetailStore.swift; sourceTree = "<group>"; };
@@ -365,7 +362,6 @@
 				26357CE32AD532D50098C8F5 /* FeedListView.swift */,
 				26357CE52AD532E70098C8F5 /* FeedCellView.swift */,
 				26357CE72AD533010098C8F5 /* EmptyFeed.swift */,
-				26357CE92AD5395C0098C8F5 /* AddFeedTest.swift */,
 				26357CEB2AD53FEA0098C8F5 /* FirestoreUtil.swift */,
 			);
 			path = Feed;
@@ -1039,7 +1035,6 @@
 				26357CE62AD532E70098C8F5 /* FeedCellView.swift in Sources */,
 				3C91AEA42AC40F6100E60D9B /* SettingView.swift in Sources */,
 				3C93B5062AC13E7200788633 /* ChatRoomView.swift in Sources */,
-				26357CEA2AD5395C0098C8F5 /* AddFeedTest.swift in Sources */,
 				26357CE42AD532D50098C8F5 /* FeedListView.swift in Sources */,
 				3C2FC8FB2ACE9B950034F561 /* MapToChatRoomView.swift in Sources */,
 				3C3716282ABD1762004E8419 /* FeedStore.swift in Sources */,
