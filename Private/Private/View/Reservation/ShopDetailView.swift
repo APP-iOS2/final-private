@@ -25,33 +25,33 @@ struct ShopDetailView: View {
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     @State var isReservationPresented: Bool = false
     
-    @Binding var root: Bool
-    @Binding var selection: Int
-    
-    let dummyShop = ShopStore.shop
-    
+    let shopData: Shop
+        
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
                 //                LazyVStack(pinnedViews: .sectionHeaders) {
                 ZStack(alignment: .topLeading) {
                     Section {
-                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopDetailName: dummyShop.name, shopDetailCategoryName: dummyShop.category.categoryName, shopDetailAddress: dummyShop.address, shopDetailAddressDetail: dummyShop.addressDetail)
+                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopData: shopData)
                             .padding(.top, CGFloat.screenHeight * 0.2)
                     } header: {
-                        ShopDetailHeaderView(shopDetailImageURL: dummyShop.shopImageURL)
+                        ShopDetailHeaderView(shopData: shopData)
                     }
                 }
             }
             
-            ShopDetailFooterView(isReservationPresented: $isReservationPresented)
+            ShopDetailFooterView(isReservationPresented: $isReservationPresented, shopData: shopData)
+        }
+        .task {
+            await shopStore.getAllShopData()
         }
     }
 }
 
 struct ShopDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailView(root: .constant(true), selection: .constant(4))
+        ShopDetailView(shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }
@@ -59,10 +59,10 @@ struct ShopDetailView_Previews: PreviewProvider {
 
 struct ShopDetailHeaderView: View {
     
-    let shopDetailImageURL: String
+    let shopData: Shop
     
     var body: some View {
-        KFImage(URL(string: shopDetailImageURL)!)
+        KFImage(URL(string: shopData.shopImageURL)!)
             .placeholder({
                 ProgressView()
             })
@@ -79,10 +79,7 @@ struct ShopDetailBodyView: View {
     @State var isExpanded: Bool = false
     @Binding var selectedShopDetailCategory: ShopDetailCategory
     
-    let shopDetailName: String
-    let shopDetailCategoryName: String
-    let shopDetailAddress: String
-    let shopDetailAddressDetail: String
+    let shopData: Shop
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -92,21 +89,21 @@ struct ShopDetailBodyView: View {
                         .frame(height: 10)
                     
                     HStack(spacing: 10) {
-                        Text(shopDetailName)
+                        Text(shopData.name)
                             .foregroundColor(.chatTextColor)
                             .font(Font.pretendardBold28)
                         
                         Divider()
                             .frame(height: 25)
                         
-                        Text(shopDetailCategoryName)
+                        Text(shopData.category.categoryName)
                             .font(Font.pretendardMedium18)
                     }
                     
                     Section {
                         if isExpanded {
                             HStack(spacing: 5) {
-                                Text(shopDetailAddressDetail)
+                                Text(shopData.addressDetail)
                                     .font(Font.pretendardRegular14)
                                 
                                 Image(systemName: "doc.on.doc")
@@ -117,7 +114,7 @@ struct ShopDetailBodyView: View {
                         }
                     } header: {
                         HStack(spacing: 2) {
-                            Text(shopDetailAddress)
+                            Text(shopData.address)
                                 .font(Font.pretendardMedium18)
                             
                             Image(systemName: isExpanded ? "chevron.down": "chevron.right")
@@ -159,9 +156,9 @@ struct ShopDetailBodyView: View {
             ScrollView {
                 switch selectedShopDetailCategory {
                 case .shopInfo:
-                    ShopDetailInfoView()
+                    ShopDetailInfoView(shopData: shopData)
                 case .shopMenu:
-                    ShopDetailMenuView()
+                    ShopDetailMenuView(shopData: shopData)
                 case .shopCurrentReview:
                     ShopwDetailCurrentReviewView()
                 }
@@ -187,6 +184,8 @@ struct ShopDetailFooterView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var isReservationPresented: Bool
+    
+    let shopData: Shop
     
     var body: some View {
         HStack(spacing: 10) {
@@ -227,7 +226,7 @@ struct ShopDetailFooterView: View {
         })
         .frame(alignment: .bottom)
         .sheet(isPresented: $isReservationPresented) {
-            ReservationView(isReservationPresented: $isReservationPresented, shopData: ShopStore.shop)
+            ReservationView(isReservationPresented: $isReservationPresented, shopData: shopData)
             
         }
     }

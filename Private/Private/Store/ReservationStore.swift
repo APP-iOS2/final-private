@@ -60,9 +60,6 @@ final class ReservationStore: ObservableObject {
     // MARK: - 예약 조회
     /// 서버에서 예약내역 가져오기
     func fetchReservation() {
-        // 아직 종료되지 않은 예약과 끝난 예약은 비교해야함 (isDone 같은 걸 사용하거나, 날짜를 비교하여 지난 날이면 자동 처리)
-        
-        // 이거는 나중에 싱글톤패턴으로 가져오면 편할 듯 (Feed에서 쓸 정보임)
         guard let user = Auth.auth().currentUser else {
             print("로그인 정보가 없습니다.")
             return

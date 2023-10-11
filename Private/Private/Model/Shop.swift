@@ -8,11 +8,11 @@
 import SwiftUI
 import NMapsMap
 
-struct Shop: Hashable {
-    let id: String = UUID().uuidString
+struct Shop: Codable, Hashable {
+    var id: String = UUID().uuidString
     var name: String
     var category: Category
-    var coord: NMGLatLng
+    var coord: CodableNMGLatLng    // NMGLatLng 타입을 Codable하게 할 수 없어서 새로 만듦
     var address: String
     var addressDetail: String
     var shopTelNumber: String
@@ -21,7 +21,6 @@ struct Shop: Hashable {
     var shopOwner: String   // 대표자명
     var businessNumber: String  // 사업자번호
     var reservationItems: [ShopItem]?  // 예약항목
-//    var numberOfBookmark: Int     // 실험용
     var bookmarks: [String]
     var menu: [ShopItem]
     var regularHoliday: [String] // 정기 휴무일
@@ -30,17 +29,22 @@ struct Shop: Hashable {
     var weeklyBusinessHours: [String: BusinessHours]  // 영업시간
 }
 
-struct ShopItem: Hashable {
+struct ShopItem: Codable, Hashable {
     var name: String
     var price: Int
     var imageUrl: String
 }
 
-struct BusinessHours: Hashable {
+struct BusinessHours: Codable, Hashable {
     var startHour: Int
     var startMinute: Int
     var endHour: Int
     var endMinute: Int
+}
+
+struct CodableNMGLatLng: Codable, Hashable {
+    var lat: Double
+    var lng: Double
 }
 
 extension Shop {
@@ -67,7 +71,7 @@ extension Shop {
         // 기본 프로퍼티 초기화
         self.name = name
         self.category = category
-        self.coord = NMGLatLng(lat: lat, lng: lng)
+        self.coord = CodableNMGLatLng(lat: lat, lng: lng)
         self.address = address
         self.addressDetail = addressDetail
         self.shopTelNumber = shopTelNumber
@@ -118,3 +122,18 @@ extension ShopItem {
 }
 
 
+//extension NMGLatLng: Codable {
+//    public func encode(to encoder: Encoder) throws {
+//            var container = encoder.singleValueContainer()
+//            try container.encode("\(self.lat),\(self.lng)")
+//        }
+//    
+//    public convenience init(from decoder: Decoder) throws {
+//        let container = try decoder.singleValueContainer()
+//        let coordinates = try container.decode(String.self).split(separator: ",").compactMap { Double($0) }
+//        guard coordinates.count == 2 else {
+//            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid coordinates")
+//        }
+//        self.init(lat: coordinates[0], lng: coordinates[1])
+//    }
+//}
