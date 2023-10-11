@@ -154,7 +154,6 @@ struct MyPageView: View {
                 MySavedPlaceView().tag(2)
             }
             .tabViewStyle(PageTabViewStyle())
-            .tabViewStyle(.page)
             Spacer()
         }
     }

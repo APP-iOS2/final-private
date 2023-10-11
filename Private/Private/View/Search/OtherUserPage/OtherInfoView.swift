@@ -50,7 +50,7 @@ struct OtherInfoView: View {
                         MyFollowerFollowingView(viewNumber: 0)
                     } label: {
                         VStack {
-                            Text("\(user.follower.count)")
+                            Text("\(followStore.followers)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)
@@ -64,7 +64,7 @@ struct OtherInfoView: View {
                         MyFollowerFollowingView(viewNumber: 1)
                     } label: {
                         VStack {
-                            Text("\(user.following.count)")
+                            Text("\(followStore.following)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)

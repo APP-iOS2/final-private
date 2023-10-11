@@ -24,7 +24,7 @@ struct NoReviewView: View {
                
                 Button {
                     //ChatRoomView()
-                    PostView(root: .constant(true), selection: .constant(3))
+//                    PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: Binding<Bool>)
                 } label: {
                    
                     Text("리뷰쓰러가기")

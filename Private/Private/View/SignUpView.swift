@@ -25,7 +25,7 @@ struct SignUpView: View {
             
             Spacer()
             
-            TextField("닉네임을 입력하세요", text: $nickName)
+            TextField("닉네임을 입력하세요", text: $nickName) // 이 부분에 중복확인
                 .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
                 .disableAutocorrection(true) // 자동수정 비활성화
                 .padding(10)

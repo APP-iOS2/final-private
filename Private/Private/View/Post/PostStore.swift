@@ -111,14 +111,28 @@ final class PostStore: ObservableObject {
                       "images": feed.images,
                       "contents": feed.contents,
                       "createdAt": feed.createdAt,
-                      "visitedShop": feed.visitedShop,
+                      "title": feed.title,
                       "category": feed.category,
+                      "address": feed.address,
+                      "roadAddress": feed.roadAddress,
+                      "mapx": feed.mapx,
+                      "mapy": feed.mapy,
                      ])
         
         
 //        fetchFeed()
     }
-    
+//    var feed = MyFeed(writer: userStore.user.name,
+//                      images: images,
+//                      contents: text,
+//                      createdAt: createdAt,
+//                      title: searchResult.title,
+//                      category: myselectedCategory,
+//                      address: searchResult.address,
+//                      roadAddress: searchResult.roadAddress,
+//                      mapx: searchResult.mapx,
+//                      mapy: searchResult.mapy
+//    )
     func uploadImageToFirebase (image: UIImage) async -> String? {
 
         guard let imageData = image.jpegData(compressionQuality: 0.4) else { return nil }

@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseAuth
 
 final class SearchStore: ObservableObject {
     @Published var recentSearchResult: [String] = []
@@ -29,10 +30,13 @@ final class SearchStore: ObservableObject {
         do {
             let querySnapshot = try await query.getDocuments()
             
+            // 현재 사용자의 ID 가져오기
+            guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+            
             // 사용자 정의 초기화 메서드를 사용하여 User 객체 생성 및 추가
             let users: [User] = querySnapshot.documents.compactMap { document in
                 let userData = document.data()
-                if let user = User(document: userData) {
+                if let user = User(document: userData), user.id != currentUserId {
                     return user
                 } else {
                     return nil
