@@ -9,26 +9,26 @@ import SwiftUI
 import NMapsMap
 
 struct FeedCellView: View {
-    var feed: Feed
+    var feed: MyFeed
     
     var body: some View {
         VStack {
             HStack {
-                AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50)
-                } placeholder: {
-                    Image("userDefault")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50)
-                }
+//                AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
+//                    image
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 50)
+//                } placeholder: {
+//                    Image("userDefault")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 50)
+//                }
                 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("\(feed.writer.name)")
-                    Text("\(feed.writer.nickname)")
+                    Text("\(feed.writer)")
+                  
                     Text("\(feed.createdAt)")
                 }
                 Spacer()
@@ -74,10 +74,10 @@ struct FeedCellView: View {
                 }
                 .padding(.leading, 15)
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("\(feed.visitedShop.name)")
+                    Text("\(feed.title)")
                         .font(.pretendardMedium16)
                         .foregroundColor(.primary)
-                    Text("\(feed.visitedShop.address)")
+                    Text("\(feed.roadAddress)")
                         .font(.pretendardRegular12)
                         .foregroundColor(.primary)
                 }
