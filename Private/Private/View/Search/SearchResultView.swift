@@ -9,8 +9,8 @@ import SwiftUI
 
 struct SearchResultView: View {
     var searchTerm: String
-    
     @EnvironmentObject var searchStore: SearchStore
+    @EnvironmentObject private var followStore: FollowStore
     
     var body: some View {
         ScrollView {
@@ -37,7 +37,6 @@ struct SearchResultView: View {
     
     
     var searchUserResult: some View {
-        // 팔로잉 되어있는 사람 체크 함수 plus
         ForEach(searchStore.searchUserLists, id: \.self) { user in
             NavigationLink {
                 OtherPageView(user: user)
@@ -52,6 +51,8 @@ struct SearchResultView: View {
         await searchStore.searchUser(searchTerm: searchTerm)
         searchStore.addRecentSearch(searchTerm)
     }
+    
+    
 }
 
 struct SearchResultView_Previews: PreviewProvider {
