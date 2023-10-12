@@ -29,10 +29,6 @@ struct MyPageView: View {
             }
             UserInfoView()
                 .padding(.top,-15.0)
-//            Divider()
-//                .background(Color.primary)
-//                .frame(width: .screenWidth*0.9)
-//                .padding([.top,.bottom],15)
             HStack {
                 Spacer()
                 Button {
@@ -82,72 +78,7 @@ struct MyPageView: View {
                 .background(Color.primary)
                 .frame(width: .screenWidth*0.925)
                 .padding(.top, -8)
-            /*switch viewNumber {
-            case 0:
-                MyHistoryView()
-                    .gesture(
-                        DragGesture()
-                            .updating($swipeOffset) { value, state, _ in
-                                state = value.translation.width
-                            }
-                            .onEnded { value in
-                                if value.translation.width < -50 {
-                                    // 스와이프 제스처를 위로 움직였을 때 뷰 전환
-                                    isMyhistoryButton = false
-                                    isMySavedFeedButton = true
-                                    isMySavedPlaceButton = false
-                                    viewNumber = 1
-                                }
-                            }
-                    )
-            case 1:
-                MySavedView()
-                    .padding(.top,37.2)
-                // MyHistorView 의 피드 지도 버튼 간격을 맞추기 위한 패딩
-                    .gesture(
-                        DragGesture()
-                            .updating($swipeOffset) { value, state, _ in
-                                state = value.translation.width
-                            }
-                            .onEnded { value in
-                                if value.translation.width < -50 {
-                                    // 스와이프 제스처를 위로 움직였을 때 뷰 전환
-                                    isMyhistoryButton = false
-                                    isMySavedFeedButton = false
-                                    isMySavedPlaceButton = true
-                                    viewNumber = 2
-                                }
-                            }
-                            .onEnded { value in
-                                if value.translation.width > 50 {
-                                    // 스와이프 제스처를 위로 움직였을 때 뷰 전환
-                                    isMyhistoryButton = true
-                                    isMySavedFeedButton = false
-                                    isMySavedPlaceButton = false
-                                    viewNumber = 0
-                                }
-                            }
-                    )
-            case 2:
-                MySavedPlaceView()
-                    .gesture(
-                        DragGesture()
-                            .updating($swipeOffset) { value, state, _ in
-                                state = value.translation.width
-                            }
-                            .onEnded { value in
-                                if value.translation.width > 50 {
-                                    // 스와이프 제스처를 위로 움직였을 때 뷰 전환
-                                    isMyhistoryButton = false
-                                    isMySavedFeedButton = true
-                                    isMySavedPlaceButton = false
-                                    viewNumber = 1
-                                }
-                            }
-                    )
-            default:
-                MyHistoryView()
-            }*/
+            
             TabView(selection: $viewNumber) {
                 MyHistoryView().tag(0)
                 MySavedView().tag(1)
