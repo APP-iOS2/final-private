@@ -21,12 +21,15 @@ struct UserInfoView: View {
                             .frame(width: .screenWidth*0.23)
                         Image(systemName: "person.fill")
                             .resizable()
-                            .frame(width: .screenWidth*0.23,height: 80)
+                            .frame(width: .screenWidth*0.23,height: .screenWidth*0.23)
                             .foregroundColor(.gray)
                             .clipShape(Circle())
                     } else {
                         KFImage(URL(string: userStore.user.profileImageURL))
-                            .frame(width: .screenWidth*0.23)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: .screenWidth*0.23, height: .screenWidth*0.23)
+                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                     }
                 }
                 .padding(.bottom, 1.0)

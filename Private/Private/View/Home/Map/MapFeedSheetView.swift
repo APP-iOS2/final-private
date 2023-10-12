@@ -12,7 +12,7 @@ struct MapFeedSheetView: View {
     
     var body: some View {
         List(feedStore.feedList) { feed in
-            MapMarkerFeedView()
+//            MapMarkerFeedView(feed: feed)
         }
         .listStyle(.plain)
         .clipShape(RoundedRectangle(cornerRadius: 20))

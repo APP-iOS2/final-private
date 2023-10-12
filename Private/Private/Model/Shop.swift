@@ -105,6 +105,28 @@ extension Shop {
 }
 
 
+extension Shop {
+    init() {
+        //self.id = UUID().uuidString
+        self.name = "Unknown"
+        self.category = .koreanFood
+        self.coord = NMGLatLng(lat: 0.0, lng: 0.0)
+        self.address = "Unknown Address"
+        self.addressDetail = "Unknown Address Detail"
+        self.shopTelNumber = "Unknown Number"
+        self.shopInfo = "Unknown Info"
+        self.shopImageURL = "Unknown URL"
+        self.shopOwner = "Unknown Owner"
+        self.businessNumber = "Unknown Business Number"
+        self.bookmarks = []
+        self.menu = []
+        self.regularHoliday = []
+        self.temporaryHoliday = []
+        self.breakTimeHours = [:]
+        self.weeklyBusinessHours = [:]
+        self.reservationItems = nil
+    }
+}
 extension ShopItem {
     init?(documentData: [String: Any]) {
         guard
@@ -120,20 +142,3 @@ extension ShopItem {
         self.imageUrl = imageUrl
     }
 }
-
-
-//extension NMGLatLng: Codable {
-//    public func encode(to encoder: Encoder) throws {
-//            var container = encoder.singleValueContainer()
-//            try container.encode("\(self.lat),\(self.lng)")
-//        }
-//    
-//    public convenience init(from decoder: Decoder) throws {
-//        let container = try decoder.singleValueContainer()
-//        let coordinates = try container.decode(String.self).split(separator: ",").compactMap { Double($0) }
-//        guard coordinates.count == 2 else {
-//            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid coordinates")
-//        }
-//        self.init(lat: coordinates[0], lng: coordinates[1])
-//    }
-//}

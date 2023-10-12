@@ -10,6 +10,7 @@ import Kingfisher
 
 struct OtherInfoView: View {
     @State var isModify: Bool = false
+    @StateObject var followStore = FollowStore()
     
     let user:User
     var body: some View {
@@ -26,7 +27,10 @@ struct OtherInfoView: View {
                             .clipShape(Circle())
                     } else {
                         KFImage(URL(string: user.profileImageURL))
-                            .frame(width: .screenWidth*0.23)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: .screenWidth*0.23, height: .screenWidth*0.23)
+                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                     }
                 }
                 .padding(.bottom, 1.0)
@@ -46,7 +50,7 @@ struct OtherInfoView: View {
                         MyFollowerFollowingView(viewNumber: 0)
                     } label: {
                         VStack {
-                            Text("\(user.follower.count)")
+                            Text("\(followStore.followers)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)
@@ -60,7 +64,7 @@ struct OtherInfoView: View {
                         MyFollowerFollowingView(viewNumber: 1)
                     } label: {
                         VStack {
-                            Text("\(user.following.count)")
+                            Text("\(followStore.following)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)
@@ -72,18 +76,13 @@ struct OtherInfoView: View {
                     
                 }
                 .padding(.bottom, 10.0)
-                // 팔로우 기능인데 오류 발생~~~ ㅜㅜ
-//                Button{
-//                    isModify = true
-//                    followStore.manageFollow(userId: user.id, followCheck: followStore.followCheck)
-//                } label: {
-//                    Text(followStore.followCheck ? "팔로잉" : "팔로우")
-//                        .font(.pretendardRegular14)
-//                        .frame(width: .screenWidth*0.5, height: 32)
-//                        .background(followStore.followCheck ? Color("AccentColor") : Color.white)
-//                        .cornerRadius(8)
-//                        .foregroundColor(.primary)
-//                }
+                
+                FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers, followCheck: $followStore.followCheck)
+                        .font(.pretendardRegular14)
+                        .frame(width: .screenWidth*0.5, height: 32)
+                        .background(followStore.followCheck ? Color("AccentColor") : Color.white)
+                        .cornerRadius(8)
+                        .foregroundColor(.black)
             }
             .padding(.top, 40.0)
         }
