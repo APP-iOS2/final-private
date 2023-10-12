@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FollowButton: View {
     @EnvironmentObject var userStore: UserStore
-    @EnvironmentObject  var followStore: FollowStore
+    @EnvironmentObject var followStore: FollowStore
 
     var user:User
     @Binding var followingCount: Int
@@ -23,9 +23,9 @@ struct FollowButton: View {
         self._followingCount = followingCount
         
         // Initialize the background color state property based on the value of the followCheck property.
-        if followStore.followCheck {
-            backgroundColor = Color("AccentColor")
-        }
+//        if followStore.followCheck {
+//            backgroundColor = Color("AccentColor")
+//        }
     }
 
     func follow(){

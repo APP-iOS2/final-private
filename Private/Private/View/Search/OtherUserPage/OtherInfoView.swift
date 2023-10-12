@@ -9,8 +9,10 @@ import SwiftUI
 import Kingfisher
 
 struct OtherInfoView: View {
+    
+    @EnvironmentObject private var followStore: FollowStore
+    
     @State var isModify: Bool = false
-    @StateObject var followStore = FollowStore()
     
     let user:User
     var body: some View {
@@ -77,7 +79,7 @@ struct OtherInfoView: View {
                 }
                 .padding(.bottom, 10.0)
                 
-                FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers, followCheck: $followStore.followCheck)
+                FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers)
                         .font(.pretendardRegular14)
                         .frame(width: .screenWidth*0.5, height: 32)
                         .background(followStore.followCheck ? Color("AccentColor") : Color.white)

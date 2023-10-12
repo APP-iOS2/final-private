@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct SearchUserCellView: View {
+    
     @EnvironmentObject private var followStore: FollowStore
+    
     var user: User
     
     var body: some View {
