@@ -121,6 +121,8 @@
 		B591C7202ACC59E700602727 /* MyReservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B591C71F2ACC59E700602727 /* MyReservation.swift */; };
 		B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B591C7212ACC5C1B00602727 /* ReservationCardView.swift */; };
 		B59853642AC3BE4E00C45E76 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59853632AC3BE4E00C45E76 /* String+.swift */; };
+		D1811CCF2AD78029006D2ECF /* PrivateIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1811CCE2AD78029006D2ECF /* PrivateIdentifiable.swift */; };
+		D1811CD12AD7C56C006D2ECF /* SearchUserCellView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1811CD02AD7C56C006D2ECF /* SearchUserCellView2.swift */; };
 		B5BEAA232AC154430002CC2C /* ReservationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEAA222AC154430002CC2C /* ReservationDetailView.swift */; };
 		D18A01302ACE38C1009F07F8 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18A012F2ACE38C1009F07F8 /* Button.swift */; };
 		D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */; };
@@ -262,6 +264,8 @@
 		B59853632AC3BE4E00C45E76 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		B5BEAA222AC154430002CC2C /* ReservationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationDetailView.swift; sourceTree = "<group>"; };
 		BD81231EFA3DC67095A11398 /* Pods-PrivateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrivateTests.release.xcconfig"; path = "Target Support Files/Pods-PrivateTests/Pods-PrivateTests.release.xcconfig"; sourceTree = "<group>"; };
+		D1811CCE2AD78029006D2ECF /* PrivateIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateIdentifiable.swift; sourceTree = "<group>"; };
+		D1811CD02AD7C56C006D2ECF /* SearchUserCellView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCellView2.swift; sourceTree = "<group>"; };
 		D18A012F2ACE38C1009F07F8 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStore.swift; sourceTree = "<group>"; };
 		D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
@@ -408,6 +412,7 @@
 				D18A012F2ACE38C1009F07F8 /* Button.swift */,
 				D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */,
 				3C97476D2AD4DC4E007AE3CB /* Bundle+.swift */,
+				D1811CCE2AD78029006D2ECF /* PrivateIdentifiable.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -484,6 +489,7 @@
 				D1EC43992AC2D42F00B088EA /* SearchView.swift */,
 				D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */,
 				D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */,
+				D1811CD02AD7C56C006D2ECF /* SearchUserCellView2.swift */,
 				D1DC8D4F2ACEAE180087CBD7 /* OtherUserPage */,
 			);
 			path = Search;
@@ -520,17 +526,13 @@
 			isa = PBXGroup;
 			children = (
 				3CCD2DF92ABC3588005709F4 /* MyPageView.swift */,
-				3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */,
-				E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */,
-				3C91AEA12AC40F6100E60D9B /* SettingView.swift */,
-				E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */,
-				E4778D842ACD3E060099D924 /* MyFollowerView.swift */,
-				E4778D862ACD3EF40099D924 /* MyFollowingView.swift */,
 				E47B3F702AC11C52002164A6 /* UserInfoView.swift */,
-				E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */,
-				E47B3F742AC14A22002164A6 /* MySavedView.swift */,
-				E47B3F762AC14A3B002164A6 /* MySavedPlaceView.swift */,
-				3C91AEA02AC40F6100E60D9B /* ShopInfoCardView.swift */,
+				3C91AEA12AC40F6100E60D9B /* SettingView.swift */,
+				E470899C2AD7BD8800D168BA /* UserModify */,
+				E470899D2AD7BDD400D168BA /* Follow */,
+				E470899E2AD7D12000D168BA /* History */,
+				E470899F2AD7D16D00D168BA /* SavedFeed */,
+				E47089A02AD7D18C00D168BA /* SavedPlace */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -688,6 +690,50 @@
 				D1DC8D582ACEAEF40087CBD7 /* OtherSavedPlaceView.swift */,
 			);
 			path = OtherUserPage;
+			sourceTree = "<group>";
+		};
+		E470899C2AD7BD8800D168BA /* UserModify */ = {
+			isa = PBXGroup;
+			children = (
+				3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */,
+				E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */,
+			);
+			path = UserModify;
+			sourceTree = "<group>";
+		};
+		E470899D2AD7BDD400D168BA /* Follow */ = {
+			isa = PBXGroup;
+			children = (
+				E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */,
+				E4778D842ACD3E060099D924 /* MyFollowerView.swift */,
+				E4778D862ACD3EF40099D924 /* MyFollowingView.swift */,
+			);
+			path = Follow;
+			sourceTree = "<group>";
+		};
+		E470899E2AD7D12000D168BA /* History */ = {
+			isa = PBXGroup;
+			children = (
+				E47B3F722AC14A0F002164A6 /* MyHistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		E470899F2AD7D16D00D168BA /* SavedFeed */ = {
+			isa = PBXGroup;
+			children = (
+				E47B3F742AC14A22002164A6 /* MySavedView.swift */,
+			);
+			path = SavedFeed;
+			sourceTree = "<group>";
+		};
+		E47089A02AD7D18C00D168BA /* SavedPlace */ = {
+			isa = PBXGroup;
+			children = (
+				E47B3F762AC14A3B002164A6 /* MySavedPlaceView.swift */,
+				3C91AEA02AC40F6100E60D9B /* ShopInfoCardView.swift */,
+			);
+			path = SavedPlace;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -991,6 +1037,7 @@
 				0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */,
 				3CF3D8C52AB82A97003689A6 /* PrivateApp.swift in Sources */,
 				B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */,
+				D1811CD12AD7C56C006D2ECF /* SearchUserCellView2.swift in Sources */,
 				3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */,
 				E4778D832ACD33BE0099D924 /* MyFollowerFollowingView.swift in Sources */,
 				E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */,
@@ -1008,6 +1055,7 @@
 				3C2FC8F12ACE9B750034F561 /* MapMarkerDetailStore.swift in Sources */,
 				B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */,
 				3CCD2DE22ABC3177005709F4 /* Feed.swift in Sources */,
+				D1811CCF2AD78029006D2ECF /* PrivateIdentifiable.swift in Sources */,
 				E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */,
 				3C2FC9042ACE9BC40034F561 /* SendMessageTextFieldModifier.swift in Sources */,
 				06C796CE2ABD5C5C0043C395 /* ShopDetailView.swift in Sources */,

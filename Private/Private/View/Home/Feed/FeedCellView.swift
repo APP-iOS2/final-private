@@ -11,9 +11,9 @@ import Kingfisher
 
 struct FeedCellView: View {
     var feed: MyFeed
-    //@ObservedObject var feed: MyFeed  // @ObservedObject 추가? 프로필 사진 ,닉넴 바뀌게 하고파요
-    
-    
+  
+    @State private var currentPicture = 0
+
     var body: some View {
         VStack {
             HStack {
@@ -38,26 +38,43 @@ struct FeedCellView: View {
                 }
                 Spacer()
             }
-        }
-        .padding(.leading, 20)
-        .padding(.horizontal, 10)
-        
-        ForEach(feed.images, id: \.self) { imageUrlString in
-            KFImage(URL(string: imageUrlString )) .placeholder {
-                Image(systemName: "photo")
-            }
-            .resizable()
-                   .scaledToFill()
-                   .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)  // 너비와 높이를 화면 너비의 90%로 설정
-                   .clipped()
-                   .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
-                   .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
-        }
-        .padding(.bottom, 10)
-        HStack(alignment: .top) {
-            Text("\(feed.contents)")
-            
-                .font(.pretendardRegular16)
+            .padding(.leading, 20)
+          
+            TabView(selection: $currentPicture) {
+                ForEach(feed.images, id: \.self) { image in
+                    KFImage(URL(string: image )) .placeholder {
+                        Image(systemName: "photo")
+                    }
+                    .resizable()
+                           .scaledToFill()
+                           .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)  // 너비와 높이를 화면 너비의 90%로 설정
+                           .clipped()
+                           .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
+                           .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
+                    }.tag(image)
+                }
+            }.tabViewStyle(PageTabViewStyle())
+                .frame(width: .screenWidth, height: .screenWidth)
+      
+            HStack(alignment: .top) {
+                Text("\(feed.contents)")
+                    .font(.pretendardRegular16)
+                    .foregroundColor(.primary)
+                    .frame(width: UIScreen.main.bounds.width * 0.7, alignment: .leading)
+                
+                Group {
+                    Button {
+                        print("북마크, 피드 저장")
+                    } label: {
+                        Image(systemName: "bookmark")
+                    }
+                    Button {
+                        print("DM 보내기")
+                    } label: {
+                        Image(systemName: "paperplane")
+                    }
+                }
+                .font(.pretendardMedium24)
                 .foregroundColor(.primary)
                 .frame(width: UIScreen.main.bounds.width * 0.7, alignment: .leading)
                 .padding(.bottom, 10)  // 글 내용과 아래 버튼 사이의 간격을 조정

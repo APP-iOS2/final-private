@@ -1,13 +1,13 @@
 //
-//  SearchUserCellView.swift
+//  SearchUserCellView2.swift
 //  Private
 //
-//  Created by 박범수 on 2023/09/22.
+//  Created by 박범수 on 10/12/23.
 //
 
 import SwiftUI
 
-struct SearchUserCellView: View {
+struct SearchUserCellView2: View {
     @EnvironmentObject private var followStore: FollowStore
     var user: User
     
@@ -32,13 +32,6 @@ struct SearchUserCellView: View {
 
             FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers, followCheck: $followStore.followCheck)
         }
-    }
-}
-
-struct SearchUserCellView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchUserCellView(user: User())
-            .environmentObject(FollowStore())
     }
 }
 

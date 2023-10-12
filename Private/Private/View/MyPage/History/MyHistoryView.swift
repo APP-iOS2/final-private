@@ -78,7 +78,7 @@ struct MyHistoryView: View {
             //.padding(.top,.screenHeight * 0.02)
             if (isFeed == true) {
                 ScrollView {
-                if userStore.user.myFeed.isEmpty {
+                    if userStore.myFeedList.isEmpty {
                     Text("게시물이 존재 하지 않습니다.")
                         .font(.pretendardBold24)
                         .padding(.top, .screenHeight * 0.2)
@@ -88,11 +88,13 @@ struct MyHistoryView: View {
                             alignment: .center,
                             spacing: 1
                         ) {
-                            ForEach(userStore.user.myFeed, id: \.self) { feed in
+                            ForEach(userStore.myFeedList, id: \.self) { feed in
                                 KFImage(URL(string:feed.images[0])) .placeholder {
                                     Image(systemName: "photo")
                                 }.resizable()
+                                    .aspectRatio(contentMode: .fill)
                                     .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
+                                    .clipShape(Rectangle())
                             }
                         }
                     }
