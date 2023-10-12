@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		06194EB72ACDC94A0017262D /* ExpandableText in Frameworks */ = {isa = PBXBuildFile; productRef = 06194EB62ACDC94A0017262D /* ExpandableText */; };
+		064974AC2AD52E8A00FFEEB2 /* ShopListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064974AB2AD52E8A00FFEEB2 /* ShopListView.swift */; };
+		064974B82AD67CC500FFEEB2 /* SwiftUIFlowLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 064974B72AD67CC500FFEEB2 /* SwiftUIFlowLayout */; };
 		06628C1F2ACF8FDE009373DD /* AppDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */; };
 		0679CAC22ABD876400F48BE4 /* ShopDetailMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */; };
 		0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */; };
@@ -167,6 +169,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		064974AB2AD52E8A00FFEEB2 /* ShopListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopListView.swift; sourceTree = "<group>"; };
 		065480ED2AC3CC9F009781B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDateFormatter.swift; sourceTree = "<group>"; };
 		0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailMenuView.swift; sourceTree = "<group>"; };
@@ -317,6 +320,7 @@
 				3CA303702AB8376700FEC7BD /* FirebaseDatabaseSwift in Frameworks */,
 				3CA3037A2AB8376700FEC7BD /* FirebaseFunctions in Frameworks */,
 				3CDE564C2AB89EF600594DF9 /* Kingfisher in Frameworks */,
+				064974B82AD67CC500FFEEB2 /* SwiftUIFlowLayout in Frameworks */,
 				3CA303902AB8376700FEC7BD /* FirebaseStorageCombine-Community in Frameworks */,
 				3CA3038A2AB8376700FEC7BD /* FirebaseRemoteConfig in Frameworks */,
 				3CA303662AB8376700FEC7BD /* FirebaseAppDistribution-Beta in Frameworks */,
@@ -512,6 +516,7 @@
 				069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */,
 				0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */,
 				0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */,
+				064974AB2AD52E8A00FFEEB2 /* ShopListView.swift */,
 			);
 			path = Reservation;
 			sourceTree = "<group>";
@@ -741,6 +746,7 @@
 				3C5789362AC2604600D8B7EA /* GoogleSignIn */,
 				3C5789382AC2604600D8B7EA /* GoogleSignInSwift */,
 				06194EB62ACDC94A0017262D /* ExpandableText */,
+				064974B72AD67CC500FFEEB2 /* SwiftUIFlowLayout */,
 				3C9747742AD4E201007AE3CB /* Alamofire */,
 			);
 			productName = Private;
@@ -824,6 +830,7 @@
 				3CDE564D2AB89F1D00594DF9 /* XCRemoteSwiftPackageReference "PopupView" */,
 				3C5789352AC2604600D8B7EA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				06194EB52ACDC94A0017262D /* XCRemoteSwiftPackageReference "ExpandableText" */,
+				064974B62AD67CC500FFEEB2 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */,
 				3C9747732AD4E201007AE3CB /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 3CF3D8C22AB82A97003689A6 /* Products */;
@@ -989,6 +996,7 @@
 				3CF3D8C72AB82A97003689A6 /* LaunchView.swift in Sources */,
 				3CCD2DFA2ABC3588005709F4 /* MyPageView.swift in Sources */,
 				0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */,
+				064974AC2AD52E8A00FFEEB2 /* ShopListView.swift in Sources */,
 				3CF3D8C52AB82A97003689A6 /* PrivateApp.swift in Sources */,
 				B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */,
 				3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */,
@@ -1426,6 +1434,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		064974B62AD67CC500FFEEB2 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/globulus/swiftui-flow-layout.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		3C5789352AC2604600D8B7EA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -1473,6 +1489,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 06194EB52ACDC94A0017262D /* XCRemoteSwiftPackageReference "ExpandableText" */;
 			productName = ExpandableText;
+		};
+		064974B72AD67CC500FFEEB2 /* SwiftUIFlowLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 064974B62AD67CC500FFEEB2 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */;
+			productName = SwiftUIFlowLayout;
 		};
 		3C5789362AC2604600D8B7EA /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;

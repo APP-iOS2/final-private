@@ -8,9 +8,6 @@
 import SwiftUI
 import Kingfisher
 
-// Todo: - UI 관련
-/// - Picker 지우고 라이브러리로 변경
-
 enum ShopDetailCategory: String, CaseIterable {
     case shopInfo = "가게 정보"
     case shopMenu = "메뉴"
