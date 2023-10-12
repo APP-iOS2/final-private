@@ -9,8 +9,8 @@ import SwiftUI
 
 struct SearchResultView: View {
     var searchTerm: String
-    
     @EnvironmentObject var searchStore: SearchStore
+    @EnvironmentObject private var followStore: FollowStore
     
     var body: some View {
         ScrollView {

@@ -9,10 +9,14 @@ import Foundation
 import Firebase
 
 final class FollowStore: ObservableObject {
+    @Published var followerList: [String] = []
+    @Published var followingList: [String] = []
+    
     @Published var followers = 0
     @Published var following = 0
     
     @Published var followCheck = false
+    
     
     
     static var db = Firestore.firestore()
@@ -32,7 +36,7 @@ final class FollowStore: ObservableObject {
     
     static func followingID(nickname: String) -> DocumentReference {
         
-        return UserCollection.document((Auth.auth().currentUser?.email)!).collection("following").document("FollowingList")
+        return UserCollection.document((Auth.auth().currentUser?.email)!).collection("following").document(nickname)
     }
     
     static func followersID(email: String, nickname: String) -> DocumentReference {
@@ -91,12 +95,14 @@ final class FollowStore: ObservableObject {
         
         FollowStore.followingID(nickname: userId).setData(["following": FieldValue.arrayUnion([userId])]) { (err) in
             if err == nil {
+                self.followingList.append(userId)
                 self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
             }
         }
         
         FollowStore.followersID(email: OtherEmail, nickname: myNickName).setData(["follower": FieldValue.arrayUnion([myNickName])]) { (err) in
             if err == nil {
+                self.followerList.append(myNickName)
                 self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
             }
         }
@@ -110,17 +116,53 @@ final class FollowStore: ObservableObject {
             FollowStore.followingID(nickname: userId).getDocument { (document, err) in
             if let doc = document, doc.exists {
                 doc.reference.delete()
-                self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
+                if let index = self.followingList.firstIndex(of: userId) {
+                                self.followingList.remove(at: index)
+                            }
+                            self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
             }
         }
         
-        FollowStore.followersID(email: userId, nickname: myNickName).getDocument { (document, err) in
+        FollowStore.followersID(email: userEmail, nickname: myNickName).getDocument { (document, err) in
             if let doc = document, doc.exists {
                 doc.reference.delete()
+                if let index = self.followerList.firstIndex(of: myNickName) {
+                    self.followerList.remove(at: index)
+                }
                 self.updateFollowCount(userId: userId, followingCount: followingCount, followersCount: followersCount)
             }
         }
     }
+    
+    
+//        func likeButtonTapped(user: User) {
+//            let isLiked = user.nickname.contains(where: { $0.id == user.id })
+//            if isLiked {
+//                guard let index = user.nickname.firstIndex(where: { $0.id == followerList.id }) else { return }
+//                user.nickname.remove(at: index)
+//            } else {
+//                user.nickname.append(followers)
+//            }
+//        }
+        
+        
+        func create<T: PrivateIdentifiable>(data: T) where T: Encodable {
+            let collectionRef: CollectionReference = FollowStore.db.collection("\(type(of: data))")
+            
+            DispatchQueue.global().async {
+                do {
+                    try collectionRef.document(data.id).setData(from: data) { error in
+                        guard error == nil else {
+                            print(error!)
+                            return
+                        }
+                    }
+                } catch {
+                    print(#function + ": fail to .setData(from:)")
+                }
+            }
+        }
+        
     
 //    func follows(userId: String) {
 //        updateFollowCount(userId: userId)

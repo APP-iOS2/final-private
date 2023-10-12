@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchUserCellView: View {
     @EnvironmentObject private var followStore: FollowStore
     var user: User
+//    @State private var followCheck = false
     
     var body: some View {
         HStack {
@@ -29,7 +30,7 @@ struct SearchUserCellView: View {
                 .fontWeight(.bold)
                 .foregroundColor(.white)
             Spacer()
-            
+
             FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers, followCheck: $followStore.followCheck)
                 .font(.pretendardBold18)
                 .frame(width: .screenWidth * 0.2, height: 12)
@@ -47,5 +48,4 @@ struct SearchUserCellView_Previews: PreviewProvider {
             .environmentObject(FollowStore())
     }
 }
-
 
