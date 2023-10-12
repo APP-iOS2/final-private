@@ -22,8 +22,10 @@ struct SearchView: View {
             VStack(spacing: 0) {
                 searchTextField
                 ScrollView(showsIndicators: false) {
+                    Divider()
                     RecentSearchListView(searchStore: searchStore, searchTerm: $searchTerm)
                     Spacer()
+                    Divider()
                     RecentUserListView(searchStore: searchStore, searchTerm: $searchTerm)
                 }
             }
@@ -70,6 +72,7 @@ struct SearchView: View {
                         .font(.title2)
                         .fontWeight(.bold)
                         .padding()
+                    
                     Divider().padding()
                 }
                     if !searchStore.recentSearchResult.isEmpty {
@@ -127,7 +130,7 @@ struct SearchView: View {
                 }
                 
                 if !searchStore.searchUserLists.isEmpty {
-                    ForEach(searchStore.searchUserLists.prefix(5), id: \.self) { user in
+                    ForEach(searchStore.searchUserLists, id: \.self) { user in
                         RecentUserRowView(searchStore: searchStore, user: user)
                     }
                 } else {

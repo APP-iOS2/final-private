@@ -162,14 +162,82 @@ final class FollowStore: ObservableObject {
                 }
             }
         }
-        
     
-//    func follows(userId: String) {
-//        updateFollowCount(userId: userId)
+//    func fetchUser(withUid uid: String, completion: @escaping (User?, Error?) -> Void) {
+//        FollowStore.UserCollection.document(uid).getDocument { documentSnapshot, error in
+//            guard let dictionary = documentSnapshot?.data(), error == nil else {
+//                completion(nil, error)
+//                return
+//            }
+//            let user = User(document: dictionary)
+//            completion(user, nil)
+//        }
 //    }
 //    
-//    func follwers(userId: String) {
-//        updateFollowCount(userId: userId)
+//    func fetchFollowers(uid: String, completion: @escaping ([User]) -> Void) {
+//        let dispatchGroup = DispatchGroup()
+//        var usersData: [User] = []
+//
+//        FollowStore.UserCollection.document(uid).getDocument { [weak self] documentSnapshot, error in
+//            guard let self = self else { return }
+//            guard let dictionary = documentSnapshot?.data(), error == nil else {
+//                completion([])
+//                return
+//            }
+//
+//            dictionary.forEach { (otherUid, _) in
+//                dispatchGroup.enter()
+//                self.fetchUser(withUid: otherUid) { user, error in
+//                    if let user = user {
+//                        usersData.append(user)
+//                    }
+//                    dispatchGroup.leave()
+//                }
+//            }
+//
+//            dispatchGroup.notify(queue: .main) {
+//                completion(usersData)
+//            }
+//        }
 //    }
+//
+//    func fetchFollowingUser(forUid uid: String, completion: @escaping ([User]) -> Void) {
+//        let dispatchGroup = DispatchGroup()
+//        var usersData: [User] = []
+//        
+//        fetchFollowingUid(forUser: uid) { [weak self] followingUid in
+//            guard let self = self else { return }
+//            
+//            followingUid.forEach { uid in
+//                dispatchGroup.enter()
+//                self.fetchUser(withUid: uid) { user, error in
+//                    if let user = user {
+//                        usersData.append(user)
+//                    }
+//                    dispatchGroup.leave()
+//                }
+//            }
+//            
+//            dispatchGroup.notify(queue: .main) {
+//                completion(usersData)
+//            }
+//        }
+//    }
+//        
+//        func fetchFollowingUid(forUser uid: String, completion: @escaping (_ followingUid: [String]) -> Void) {
+//            FollowStore.UserCollection.document(uid).getDocument { documentSnapshot, error in
+//                guard let dictionary = documentSnapshot?.data(), error == nil else {
+//                    completion([])
+//                    return
+//                }
+//                let data: [String] = dictionary.map { (uid, _) in
+//                    return uid
+//                }
+//                DispatchQueue.main.async {
+//                    completion(data)
+//                }
+//            }
+//        }
     
-}
+    
+} //
