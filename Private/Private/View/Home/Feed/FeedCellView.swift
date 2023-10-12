@@ -51,7 +51,8 @@ struct FeedCellView: View {
                            .clipped()
                            .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
                            .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
-                    }.tag(image)
+                           .tag(image)
+                    }
                 }
             }.tabViewStyle(PageTabViewStyle())
                 .frame(width: .screenWidth, height: .screenWidth)
