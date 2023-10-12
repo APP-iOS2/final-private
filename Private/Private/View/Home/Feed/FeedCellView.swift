@@ -34,10 +34,19 @@ struct FeedCellView: View {
                 Spacer()
             }
             .padding(.leading, 20)
-            Image("\(feed.images[0])")
-                .resizable()
-                .scaledToFit()
-                .frame(height: UIScreen.main.bounds.width) 
+            
+            AsyncImage(url: URL(string: "\(feed.images[0])")) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: UIScreen.main.bounds.width)
+            } placeholder: {
+                Image("userDefault")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: UIScreen.main.bounds.width)
+            }
+            
             HStack(alignment: .top) {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
