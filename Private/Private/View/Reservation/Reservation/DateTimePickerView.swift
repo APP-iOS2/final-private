@@ -53,20 +53,6 @@ struct DateTimePickerView: View {
                 }
             }
             
-            HStack {
-                Spacer()
-                Rectangle()
-                    .foregroundColor(Color("AccentColor"))
-                    .frame(width: 16, height: 16)
-                Text("선택")
-                    .padding(.trailing, 6)
-                Rectangle()
-                    .foregroundColor(Color.darkGrayColor)
-                    .frame(width: 16, height: 16)
-                Text("불가")
-            }
-            .tint(.primary)
-            
             Button {
                 showingTime.toggle()
             } label: {
@@ -83,6 +69,21 @@ struct DateTimePickerView: View {
             
             // 시간 선택 화면 표시 여부
             if showingTime {
+                HStack {
+                    Spacer()
+                    Rectangle()
+                        .foregroundColor(Color("AccentColor"))
+                        .frame(width: 16, height: 16)
+                    Text("선택")
+                        .padding(.trailing, 6)
+                    Rectangle()
+                        .foregroundColor(Color.darkGrayColor)
+                        .frame(width: 16, height: 16)
+                    Text("불가")
+                }
+                .tint(.primary)
+                .padding(.top, 12)
+                
                 VStack(alignment: .leading) {
                     Divider()
                         .opacity(0)

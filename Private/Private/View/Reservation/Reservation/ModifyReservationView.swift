@@ -49,9 +49,10 @@ struct ModifyReservationView: View {
                         Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                     }
                 }
-                .font(Font.pretendardMedium24)
+                .font(Font.pretendardMedium18)
                 .padding()
                 .background(Color("SubGrayColor"))
+                .cornerRadius(12)
                 .padding(.bottom)
                 
                 if showingDate {
@@ -63,7 +64,7 @@ struct ModifyReservationView: View {
                 }
                 
                 Text("인원")
-                    .font(Font.pretendardBold24)
+                    .font(Font.pretendardBold18)
                 
                 HStack {
                     Image(systemName: "person")
@@ -78,6 +79,7 @@ struct ModifyReservationView: View {
                 .font(Font.pretendardMedium18)
                 .padding()
                 .background(Color.subGrayColor)
+                .cornerRadius(12)
                 .padding(.bottom, 20)
                 
                 if showingNumbers {
@@ -97,12 +99,12 @@ struct ModifyReservationView: View {
                 
                 Text("요구사항")
                 RequirementTextEditor(requirementText: $requirementText)
+                    .padding(.bottom)
                 
                 ReservationButton(text: "예약 변경하기") {
                     isShowingAlert.toggle()
                 }
                 .tint(.primary)
-                .padding()
                 .alert("예약 변경", isPresented: $isShowingAlert) {
                     Button() {
                         print(#fileID, #function, #line, "- 예약 확정")
@@ -132,8 +134,6 @@ struct ModifyReservationView: View {
             if let requirement = temporaryReservation.requirement {
                 self.requirementText = requirement
             }
-            
-            dump(temporaryReservation)
         }
     }
 }
