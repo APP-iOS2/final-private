@@ -110,7 +110,7 @@ extension Shop {
         //self.id = UUID().uuidString
         self.name = "Unknown"
         self.category = .koreanFood
-        self.coord = NMGLatLng(lat: 0.0, lng: 0.0)
+        self.coord = CodableNMGLatLng(lat: 0.0, lng: 0.0)
         self.address = "Unknown Address"
         self.addressDetail = "Unknown Address Detail"
         self.shopTelNumber = "Unknown Number"
