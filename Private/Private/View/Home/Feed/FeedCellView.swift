@@ -29,7 +29,7 @@ struct FeedCellView: View {
                 VStack(alignment: .leading, spacing: 5) {
                     Text("\(feed.writerNickname)")
                     Text("\(feed.writerName)")
-                    Text("\(feed.createdAt)")
+                    Text("\(feed.createdDate)")
                 }
                 Spacer()
             }
