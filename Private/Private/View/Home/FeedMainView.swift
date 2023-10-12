@@ -13,8 +13,7 @@ struct FeedMainView: View {
     
     var body: some View {
         VStack {
-            Text("feedStore.feedList.count : \(feedStore.feedList.count)")
-            //Circle()
+  
             ScrollView {
                 ForEach(feedStore.feedList) { feed in
                     
