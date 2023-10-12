@@ -20,10 +20,6 @@ struct OtherPageView: View {
         NavigationStack {
             OtherInfoView(user: user)
                 .padding(.top,-15.0)
-            Divider()
-                .background(Color.primary)
-                .frame(width: .screenWidth*0.9)
-                .padding([.top,.bottom],15)
             HStack {
                 Spacer()
                 Button {
@@ -75,60 +71,18 @@ struct OtherPageView: View {
                 }
                 Spacer()
             }
-            switch viewNumber {
-            case 0:
-                OtherHistoryView(user: user)
-                    .gesture(
-                        DragGesture()
-                            .updating($swipeOffset) { value, state, _ in
-                                state = value.translation.width
-                            }
-                            .onEnded { value in
-                                if value.translation.width < -50 {
-                                    // 스와이프 제스처를 위로 움직였을 때 뷰 전환
-                                    viewNumber = 1
-                                }
-                            }
-                    )
-            case 1:
-                OtherSavedView(user: user)
-                    .padding(.top,37.2)
-                // MyHistorView 의 피드 지도 버튼 간격을 맞추기 위한 패딩
-                    .gesture(
-                        DragGesture()
-                            .updating($swipeOffset) { value, state, _ in
-                                state = value.translation.width
-                            }
-                            .onEnded { value in
-                                if value.translation.width < -50 {
-                                    // 스와이프 제스처를 위로 움직였을 때 뷰 전환
-                                    viewNumber = 2
-                                }
-                            }
-                            .onEnded { value in
-                                if value.translation.width > 50 {
-                                    // 스와이프 제스처를 위로 움직였을 때 뷰 전환
-                                    viewNumber = 0
-                                }
-                            }
-                    )
-            case 2:
-                OtherSavedView(user: user)
-                    .gesture(
-                        DragGesture()
-                            .updating($swipeOffset) { value, state, _ in
-                                state = value.translation.width
-                            }
-                            .onEnded { value in
-                                if value.translation.width > 50 {
-                                    // 스와이프 제스처를 위로 움직였을 때 뷰 전환
-                                    viewNumber = 1
-                                }
-                            }
-                    )
-            default:
-                OtherHistoryView(user: user)
+            .padding(.top, 37)
+            Divider()
+                .background(Color.primary)
+                .frame(width: .screenWidth*0.925)
+                .padding(.top, -8)
+            
+            TabView(selection: $viewNumber) {
+                OtherHistoryView(user: User()).tag(0)
+                OtherSavedView(user: User()).tag(1)
+                OtherSavedPlaceView(user: User()).tag(2)
             }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             Spacer()
         }
     }
