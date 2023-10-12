@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MySavedView: View {
     
@@ -16,7 +17,7 @@ struct MySavedView: View {
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
     var body: some View {
         ScrollView {
-            if userStore.user.savedFeed.isEmpty {
+            if userStore.mySavedFeedList.isEmpty {
                 Text("저장한 피드가 없습니다")
                     .font(.pretendardBold24)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
@@ -26,15 +27,13 @@ struct MySavedView: View {
                     alignment: .center,
                     spacing: 1
                 ) {
-                    ForEach(userStore.user.savedFeed, id: \.self) { feed in
-                        AsyncImage(url:URL(string:feed.images[0])) { image in
-                            image
-                                .resizable()
-                                .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
-                            
-                        } placeholder: {
+                    ForEach(userStore.mySavedFeedList, id: \.self) { feed in
+                        KFImage(URL(string:feed.images[0])) .placeholder {
                             Image(systemName: "photo")
-                        }
+                        }.resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
+                            .clipShape(Rectangle())
                     }
                 }
             }
