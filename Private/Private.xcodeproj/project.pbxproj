@@ -121,9 +121,8 @@
 		B591C7202ACC59E700602727 /* MyReservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B591C71F2ACC59E700602727 /* MyReservation.swift */; };
 		B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B591C7212ACC5C1B00602727 /* ReservationCardView.swift */; };
 		B59853642AC3BE4E00C45E76 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59853632AC3BE4E00C45E76 /* String+.swift */; };
-		D1811CCF2AD78029006D2ECF /* PrivateIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1811CCE2AD78029006D2ECF /* PrivateIdentifiable.swift */; };
-		D1811CD12AD7C56C006D2ECF /* SearchUserCellView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1811CD02AD7C56C006D2ECF /* SearchUserCellView2.swift */; };
 		B5BEAA232AC154430002CC2C /* ReservationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEAA222AC154430002CC2C /* ReservationDetailView.swift */; };
+		D1811CCF2AD78029006D2ECF /* PrivateIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1811CCE2AD78029006D2ECF /* PrivateIdentifiable.swift */; };
 		D18A01302ACE38C1009F07F8 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18A012F2ACE38C1009F07F8 /* Button.swift */; };
 		D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */; };
 		D1A6CA032ABD6B9A00AE59D0 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */; };
@@ -265,7 +264,6 @@
 		B5BEAA222AC154430002CC2C /* ReservationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationDetailView.swift; sourceTree = "<group>"; };
 		BD81231EFA3DC67095A11398 /* Pods-PrivateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrivateTests.release.xcconfig"; path = "Target Support Files/Pods-PrivateTests/Pods-PrivateTests.release.xcconfig"; sourceTree = "<group>"; };
 		D1811CCE2AD78029006D2ECF /* PrivateIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateIdentifiable.swift; sourceTree = "<group>"; };
-		D1811CD02AD7C56C006D2ECF /* SearchUserCellView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCellView2.swift; sourceTree = "<group>"; };
 		D18A012F2ACE38C1009F07F8 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStore.swift; sourceTree = "<group>"; };
 		D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
@@ -489,7 +487,6 @@
 				D1EC43992AC2D42F00B088EA /* SearchView.swift */,
 				D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */,
 				D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */,
-				D1811CD02AD7C56C006D2ECF /* SearchUserCellView2.swift */,
 				D1DC8D4F2ACEAE180087CBD7 /* OtherUserPage */,
 			);
 			path = Search;
@@ -997,7 +994,6 @@
 				0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */,
 				3CF3D8C52AB82A97003689A6 /* PrivateApp.swift in Sources */,
 				B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */,
-				D1811CD12AD7C56C006D2ECF /* SearchUserCellView2.swift in Sources */,
 				3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */,
 				E4778D832ACD33BE0099D924 /* MyFollowerFollowingView.swift in Sources */,
 				E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */,
