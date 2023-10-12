@@ -147,8 +147,6 @@ final class UserStore: ObservableObject {
         } catch {
             print("Error bookMark Feed: \(error)")
         }
-
     }
-
 }
 
