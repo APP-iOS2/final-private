@@ -25,10 +25,10 @@ struct ShopDetailView: View {
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     @State var isReservationPresented: Bool = false
     
-    @Binding var root: Bool
-    @Binding var selection: Int
+//    @Binding var root: Bool
+//    @Binding var selection: Int
     
-    let dummyShop = ShopStore.shop
+    let shop: Shop
     
     var body: some View {
         NavigationStack {
@@ -36,10 +36,10 @@ struct ShopDetailView: View {
                 //                LazyVStack(pinnedViews: .sectionHeaders) {
                 ZStack(alignment: .topLeading) {
                     Section {
-                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopDetailName: dummyShop.name, shopDetailCategoryName: dummyShop.category.categoryName, shopDetailAddress: dummyShop.address, shopDetailAddressDetail: dummyShop.addressDetail)
+                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopDetailName: shop.name, shopDetailCategoryName: shop.category.categoryName, shopDetailAddress: shop.address, shopDetailAddressDetail: shop.addressDetail)
                             .padding(.top, CGFloat.screenHeight * 0.2)
                     } header: {
-                        ShopDetailHeaderView(shopDetailImageURL: dummyShop.shopImageURL)
+                        ShopDetailHeaderView(shopDetailImageURL: shop.shopImageURL)
                     }
                 }
             }
@@ -51,7 +51,8 @@ struct ShopDetailView: View {
 
 struct ShopDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailView(root: .constant(true), selection: .constant(4))
+//        ShopDetailView(root: .constant(true), selection: .constant(4))
+        ShopDetailView(shop: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }
