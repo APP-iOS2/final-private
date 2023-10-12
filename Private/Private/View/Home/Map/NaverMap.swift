@@ -15,7 +15,11 @@ import FirebaseFirestoreSwift
 struct NaverMap: UIViewRepresentable {
     
     @EnvironmentObject var userDataStore: UserStore
+    @Binding var currentFeedId: String
+    @Binding var showMarkerDetailView: Bool
     
+    @ObservedObject var coordinator = Coordinator.shared // Create an instance of Coordinator
+
     func makeCoordinator() -> Coordinator {
         Coordinator.shared
     }
@@ -38,13 +42,18 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     
     var bookMarkedMarkers: [NMFMarker] = []
     var locationManager: CLLocationManager?
-    
-    @Published var currentShopId: String = "보리마루"
+    var previousMarker: NMFMarker?
+
+    @Published var currentFeedId: String = "보리마루"
     @Published var isBookMarkTapped: Bool = false
     @Published var showMarkerDetailView: Bool = false
+    @Published var markerTitle: String = ""
+    @Published var isEditing: Bool = false
     @Published var coord: NMGLatLng = NMGLatLng(lat: 36.444, lng: 127.332)
-    @Published var userLocation: (Double, Double) = (0.0, 0.0)
     
+    @Published var userLocation: (Double, Double) = (0.0, 0.0)
+    @Published var tappedLatLng: NMGLatLng?
+
     let constantCenter = NMGLatLng(lat: 37.572389, lng: 126.9769117)
     
     private override init() {
@@ -212,7 +221,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
                     
                     self.view.mapView.moveCamera(cameraUpdate)
                     self.showMarkerDetailView = true
-                    self.currentShopId = marker.captionText
+                    self.currentFeedId = marker.captionText
                     
                     print("showMarkerDetailView : \(self.showMarkerDetailView)")
                     //print(currentShopId)
@@ -236,7 +245,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
                     self.view.mapView.moveCamera(cameraUpdate)
                     
                     self.showMarkerDetailView = true
-                    self.currentShopId = marker.captionText
+                    self.currentFeedId = marker.captionText
                     print("showMarkerDetailView : \(self.showMarkerDetailView)")
                     //print(currentShopId)
                     
@@ -256,10 +265,40 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     }
     
     // MARK: - 지도 터치에 이용되는 Delegate
-    /// 지도 터치 시 MarkerDetailView 창 닫기
+    /// 지도에서 터치하면 그 위치에 마커 표시
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
-        print("Map Tapped")
-        showMarkerDetailView = false
+        let marker = NMFMarker()
+        marker.position = latlng
+        marker.iconImage = NMFOverlayImage(name: "placeholder")
+        marker.width = CGFloat(40)
+        marker.height = CGFloat(40)
+        
+        // mapView의 이미 선택된 마커 지우기
+        previousMarker?.mapView = nil
+        
+        // 새로운 마커 mapView에 추가
+        marker.mapView = mapView
+        
+        // 새로운 마커를 previousMarker 프로퍼티에 다시 저장
+        previousMarker = marker
+        
+        print("MapView 클릭")
+        print("위도: \(coord.lat), 경도: \(coord.lng)")
+        markerLongPress(mapView, didLongPressOverlay: NMFOverlay())
+        tappedLatLng = latlng
+        //        showMarkerDetailView = false
     }
+    //     func markerTitle(_ mapView: NMFMapView, didTap marker: NMFMarker) -> Bool {
+    //
+    //         let markerTitleView = MapMarkerDetailView(markerTitle: Binding<String>, isEditing: Binding<Bool>)
+    //         view.addSubview(markerTitleView)
+    //        return true
+    //    }
     
+    /// 지도에서 마커를 길게 터치하면 어떠한 행동을 함
+    func markerLongPress(_ mapView: NMFMapView, didLongPressOverlay overlay: NMFOverlay) {
+        if let marker = overlay as? NMFMarker {
+            print("길게 눌러 마커에 접근 (\(marker.position.lat), \(marker.position.lng))")
+        }
+    }
 }

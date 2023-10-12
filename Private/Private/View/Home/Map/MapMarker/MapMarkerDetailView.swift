@@ -8,13 +8,20 @@
 import SwiftUI
 
 struct MapMarkerDetailView: View {
+    
+    @Binding var markerTitle: String
+    @Binding var isEditing: Bool
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            TextField("장소를 입력하세요", text: $markerTitle)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
     }
 }
 
 struct MapMarkerDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        MapMarkerDetailView()
+        MapMarkerDetailView(markerTitle: .constant(""), isEditing: .constant(true))
     }
 }

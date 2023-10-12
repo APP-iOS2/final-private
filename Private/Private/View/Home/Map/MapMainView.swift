@@ -13,9 +13,11 @@ struct MapMainView: View {
     
     @StateObject var coordinator: Coordinator = Coordinator.shared
     
+
     var body: some View {
         VStack {
-            NaverMap()
+            Text("Print를 위해 잠시 넣어둠 Tapped LatLng: \(coordinator.tappedLatLng?.description ?? "N/A")")
+            NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView)
         }
         .onAppear {
             coordinator.checkIfLocationServicesIsEnabled()
@@ -27,6 +29,7 @@ struct MapMainView: View {
                 .presentationDetents([.height(400), .large])
         }
     }
+    
 }
 
 struct MapMainView_Previews: PreviewProvider {
