@@ -15,6 +15,8 @@ final class UserStore: ObservableObject {
     @Published var user: User = User()
     @Published var follower: [User] = []
     @Published var following: [User] = []
+    @Published var myFeedList: [MyFeed] = []
+    @Published var mySavedFeedList: [MyFeed] = []
     
     func createUser(user: User) {
         Firestore.firestore().collection("User")
@@ -68,6 +70,27 @@ final class UserStore: ObservableObject {
                 self.user = user
             }
         }
+        Firestore.firestore().collection("User").document(userEmail).collection("MyFeed").addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                print("Error fetching user: \(error.localizedDescription)")
+            }
+            self.myFeedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
+                let data = queryDocumentSnapshot.data()
+                return MyFeed(documentData: data)
+            } ?? []
+            self.myFeedList.sort{$0.createdAt < $1.createdAt}
+        }
+        Firestore.firestore().collection("User").document(userEmail).collection("SavedFeed").addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                print("Error fetching user: \(error.localizedDescription)")
+            }
+            self.mySavedFeedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
+                let data = queryDocumentSnapshot.data()
+                return MyFeed(documentData: data)
+            } ?? []
+            self.mySavedFeedList.sort{$0.createdAt < $1.createdAt}
+        }
+        
     }
 
     func deleteUser(userEmail: String) {
@@ -114,6 +137,16 @@ final class UserStore: ObservableObject {
 //        chattingRoom: [],
 //        myReservation: []
 //    )
-
+    func saveFeed(_ feed: MyFeed) {
+        do {
+            try
+            Firestore.firestore().collection("User").document(user.email).collection("SavedFeed")
+                .document(feed.id)
+                .setData(from:feed)
+            
+        } catch {
+            print("Error bookMark Feed: \(error)")
+        }
+    }
 }
 

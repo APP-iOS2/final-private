@@ -10,7 +10,7 @@ import NMapsMap
 
 struct FeedCellView: View {
     var feed: MyFeed
-    
+    @State private var currentPicture = 0
     var body: some View {
         VStack {
             HStack {
@@ -34,19 +34,24 @@ struct FeedCellView: View {
                 Spacer()
             }
             .padding(.leading, 20)
-            
-            AsyncImage(url: URL(string: "\(feed.images[0])")) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: UIScreen.main.bounds.width)
-            } placeholder: {
-                Image("userDefault")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width)
-            }
-            
+            TabView(selection: $currentPicture) {
+                ForEach(feed.images, id: \.self) { image in
+                    AsyncImage(url: URL(string: "\(image)")) { img in
+                        img
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: .screenWidth, height: .screenWidth)
+                        
+                    } placeholder: {
+                        Image("userDefault")
+                            .resizable()
+                        
+                            .frame(width: .screenWidth, height: .screenWidth)
+                            .aspectRatio(contentMode: .fill)
+                    }.tag(image)
+                }
+            }.tabViewStyle(PageTabViewStyle())
+                .frame(width: .screenWidth, height: .screenWidth)
             HStack(alignment: .top) {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
