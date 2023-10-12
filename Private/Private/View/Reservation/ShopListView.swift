@@ -14,7 +14,7 @@ let dummyCafes: [Shop] = [
     Shop(
     name: "카페맛집1",
     category: .cafe,
-    coord: NMGLatLng(lat: 36.444, lng: 127.332),
+    coord: CodableNMGLatLng(lat: 36.444, lng: 127.332),
     address: "서울 강남구 강남대로 96길 22 2층",
     addressDetail: "7번 출구 어딘가",
     shopTelNumber: "010-1234-5678",
@@ -52,7 +52,7 @@ let dummyCafes: [Shop] = [
     Shop(
     name: "카페맛집2",
     category: .cafe,
-    coord: NMGLatLng(lat: 36.444, lng: 127.332),
+    coord: CodableNMGLatLng(lat: 36.444, lng: 127.332),
     address: "서울 강남구 강남대로 96길 22 2층",
     addressDetail: "7번 출구 어딘가",
     shopTelNumber: "010-1234-5678",
@@ -90,7 +90,7 @@ let dummyCafes: [Shop] = [
     Shop(
     name: "카페맛집3",
     category: .cafe,
-    coord: NMGLatLng(lat: 36.444, lng: 127.332),
+    coord: CodableNMGLatLng(lat: 36.444, lng: 127.332),
     address: "서울 강남구 강남대로 96길 22 2층",
     addressDetail: "7번 출구 어딘가",
     shopTelNumber: "010-1234-5678",
@@ -223,7 +223,7 @@ struct ShopListCell: View {
                 }
             }
             .navigationDestination(isPresented: $isShowingDetailView) {
-                ShopDetailView(shop: shop)
+                ShopDetailView(shopData: shop)
             }
         }
     }
@@ -321,12 +321,5 @@ struct ShopListFilterSheetView: View {
                 }
             }
         }
-    }
-}
-
-struct ShopListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ShopListView(root: .constant(true), selection: .constant(4))
-            .environmentObject(ShopStore())
     }
 }
