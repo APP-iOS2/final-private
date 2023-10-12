@@ -5,8 +5,9 @@
 //  Created by yeon on 10/10/23.
 //
 
+//import SwiftUI
+//import NMapsMap
 import SwiftUI
-import NMapsMap
 
 struct FeedCellView: View {
     var feed: MyFeed
@@ -14,30 +15,47 @@ struct FeedCellView: View {
     var body: some View {
         VStack {
             HStack {
-//                AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
-//                    image
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 50)
-//                } placeholder: {
-//                    Image("userDefault")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 50)
-//                }
+                // 첫 번째 이미지만 표시
+                AsyncImage(url: URL(string: feed.images.first ?? "")) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 50)
+                } placeholder: {
+                    Image("userDefault")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 50)
+                }
                 
                 VStack(alignment: .leading, spacing: 5) {
                     Text("\(feed.writer)")
-                  
                     Text("\(feed.createdAt)")
                 }
                 Spacer()
             }
             .padding(.leading, 20)
-            Image("\(feed.images[0])")
-                .resizable()
-                .scaledToFit()
-                .frame(height: UIScreen.main.bounds.width) 
+            
+            // 모든 이미지를 세로로 나열
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 10) {
+                    ForEach(feed.images, id: \.self) { imageUrlString in
+                        AsyncImage(url: URL(string: imageUrlString)) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: UIScreen.main.bounds.width)
+                        } placeholder: {
+                            Image("userDefault")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: UIScreen.main.bounds.width)
+                        }
+                    }
+                }
+            }
+            
+            // 나머지 코드는 동일
             HStack(alignment: .top) {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
