@@ -10,6 +10,8 @@ import SwiftUI
 struct SettingView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var authStore: AuthStore
+    @State private var logoutAlert = false
+    @State private var deleteAuth = false
     
     var backButton : some View {
         Button {
@@ -49,7 +51,8 @@ struct SettingView: View {
                 Section (content: {
                     Button{
                         print("로그아웃")
-                        authStore.signOutGoogle()
+                        logoutAlert = true
+                        
                     } label: {
                         HStack {
                             Text("로그아웃")
@@ -58,9 +61,17 @@ struct SettingView: View {
                         }
                     }
                     .foregroundColor(.primary)
+                    .alert(isPresented: $logoutAlert) {
+                        Alert(
+                            title: Text("로그아웃"),
+                            message: Text("로그아웃하시겠습니까?"),
+                            primaryButton:.destructive(Text("로그아웃"), action: { authStore.signOutGoogle() }),
+                            secondaryButton: .cancel(Text("취소"))
+                        )
+                    }
                     
                     Button{
-                        print("계정삭제")
+                        deleteAuth = true
                     } label: {
                         HStack {
                             Text("계정삭제")
@@ -69,6 +80,14 @@ struct SettingView: View {
                         }
                     }
                     .foregroundColor(.red)
+                    .alert(isPresented: $deleteAuth) {
+                        Alert(
+                            title: Text("계정삭제"),
+                            message: Text("계정삭제 하시겠습니까?"),
+                            primaryButton:.destructive(Text("계정삭제"), action: { /*계정 삭제 함수 추가*/ }),
+                            secondaryButton: .cancel(Text("취소"))
+                        )
+                    }
                     
                 }, header: {
                     Text("계정관리")

@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct ShopwDetailInfoView: View {
+struct ShopDetailInfoView: View {
     
-    let dummyShop = ShopStore.shop
+    let shopData: Shop
     let sortedWeekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
     
     var body: some View {
@@ -30,7 +30,7 @@ struct ShopwDetailInfoView: View {
             }
             
             VStack(alignment: .leading, spacing: 2) {
-                Text(dummyShop.shopInfo)
+                Text(shopData.shopInfo)
                     .font(Font.pretendardRegular16)
             }
             .padding(10)
@@ -52,7 +52,7 @@ struct ShopwDetailInfoView: View {
                 Spacer()
                 
                 ZStack {
-                    Text("영업 전")
+                    Text("영업 전")  // 오픈 시간 전이면 영업 전, 마감 시간 이후 ~ 영업 종료
                         .font(Font.pretendardMedium18)
                         .padding(10)
                 }
@@ -62,13 +62,13 @@ struct ShopwDetailInfoView: View {
             
             VStack(alignment: .leading, spacing: 2) {
                 ForEach(sortedWeekdays, id: \.self) { day in
-                    if let hours = dummyShop.weeklyBusinessHours[day] {
+                    if let hours = shopData.weeklyBusinessHours[day] {
                         HStack(spacing: 0) {
                             Text("\(day)")
                             
                             Spacer()
                             
-                            if dummyShop.regularHoliday.contains(where: { holidayString in
+                            if shopData.regularHoliday.contains(where: { holidayString in
                                 return holidayString == day
                             }) {
                                 Text("정기 휴무")
@@ -85,9 +85,9 @@ struct ShopwDetailInfoView: View {
             VStack(spacing: 10) {
                 DisclosureGroup {
                     VStack(alignment: .leading, spacing: 2) {
-                        ForEach(dummyShop.temporaryHoliday, id: \.self) { day in
+                        ForEach(shopData.temporaryHoliday, id: \.self) { day in
                             HStack(spacing: 0) {
-                                Text(dateToFullString(date: day))
+                                Text(AppDateFormatter.shared.fullDateString(from: day))
                                     .font(Font.pretendardRegular16)
                                 
                                 Spacer()
@@ -105,13 +105,13 @@ struct ShopwDetailInfoView: View {
                 DisclosureGroup {
                     VStack(alignment: .leading, spacing: 2) {
                         ForEach(sortedWeekdays, id: \.self) { day in
-                            if let hours = dummyShop.breakTimeHours[day] {
+                            if let hours = shopData.breakTimeHours[day] {
                                 HStack(spacing: 0) {
                                     Text("\(day)")
                                     
                                     Spacer()
                                     
-                                    if dummyShop.regularHoliday.contains(where: { holidayString in
+                                    if shopData.regularHoliday.contains(where: { holidayString in
                                         return holidayString == day
                                     }) {
                                         Text("정기 휴무")
@@ -121,6 +121,9 @@ struct ShopwDetailInfoView: View {
                                 }
                                 .font(Font.pretendardRegular16)
                             }
+                        }
+                        if shopData.breakTimeHours.isEmpty {
+                            Text("브레이크 타임이 없습니다.")
                         }
                     }
                     .padding(10)
@@ -133,21 +136,11 @@ struct ShopwDetailInfoView: View {
             }
         }
     }
-    
-    func dateToFullString(date: Date) -> String {
-        let formatter = DateFormatter()
-//        formatter.locale = Locale(identifier: Locale.current.identifier)
-        formatter.locale = Locale(identifier: "ko_KR")
-//        formatter.timeZone = TimeZone(identifier: TimeZone.current.identifier)
-        formatter.timeZone = TimeZone(abbreviation: "KST")
-        formatter.dateStyle = .full
-        return formatter.string(from: date)
-    }
 }
 
 struct ShopDetailInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopwDetailInfoView()
+        ShopDetailInfoView(shopData: ShopStore.shop)
     }
 }
 

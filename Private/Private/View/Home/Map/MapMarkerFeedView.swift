@@ -16,7 +16,7 @@ struct MapMarkerFeedView: View {
     var body: some View {
         VStack {
             HStack {
-                AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
+                AsyncImage(url: URL(string: feed.writerProfileImage)) { image in
                     image
                         .resizable()
                         .scaledToFit()
@@ -29,8 +29,8 @@ struct MapMarkerFeedView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("\(feed.writer.name)")
-                    Text("\(feed.writer.nickname)")
+                    Text("\(feed.writerName)")
+                    Text("\(feed.writerNickname)")
                     Text("\(feed.createdAt)")
                 }
                 

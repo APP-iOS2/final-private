@@ -34,7 +34,7 @@ struct ChatRoomCellView: View {
 
 //struct ChatRoomCellView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        ChatRoomCellView(chatRoom: chatRoom)
+//        ChatRoomCellView(chatRoom: ChatRoom())
 //            .environmentObject(ChatRoomStore())
 //    }
 //}
