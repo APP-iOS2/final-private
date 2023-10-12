@@ -118,7 +118,7 @@ final class ShopStore: ObservableObject {
                 
             }
             print(#fileID, #function, #line, "- 샵 갯수: \(shopList.count)개")
-            dump(shopList[0])
+//            dump(shopList[0])
         } catch {
             print(error.localizedDescription)
         }
