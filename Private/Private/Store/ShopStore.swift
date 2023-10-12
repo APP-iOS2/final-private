@@ -62,9 +62,9 @@ final class ShopStore: ObservableObject {
     @MainActor
     func getAllShopData() async {
         do {
-            shopList.removeAll()
-            
             let documents = try await Firestore.firestore().collection("Shop").getDocuments()
+            var tempShopList: [Shop] = []
+
             for document in documents.documents {
                 let data = document.data()
                 
@@ -114,11 +114,9 @@ final class ShopStore: ObservableObject {
                 
                 let shopData: Shop = Shop(id: id, name: name, category: category, coord: coord, address: address, addressDetail: addressDetail, shopTelNumber: shopTelNumber, shopInfo: shopInfo, shopImageURL: shopImageURL, shopOwner: shopOwner, businessNumber: businessNumber, reservationItems: reservationItems, bookmarks: bookmarks, menu: menu, regularHoliday: regularHoliday, temporaryHoliday: temporaryHoliday, breakTimeHours: breakTimeHours, weeklyBusinessHours: weeklyBusinessHours)
                 
-                self.shopList.append(shopData)
-                
+                tempShopList.append(shopData)
             }
-            print(#fileID, #function, #line, "- 샵 갯수: \(shopList.count)개")
-            dump(shopList[0])
+            self.shopList = tempShopList
         } catch {
             print(error.localizedDescription)
         }
