@@ -158,7 +158,7 @@ struct SignUpView: View {
         }
     }
     func isValidNickname(_ nickName: String) -> Bool {
-        let nicknameExpression = "^[a-zA-Z0-9가-힣]+$"
+        let nicknameExpression = "^[a-zA-Z0-9]+$"
 
         let nickNamePredicate = NSPredicate(format:"SELF MATCHES %@", nicknameExpression)
         return nickNamePredicate.evaluate(with: nickName)
