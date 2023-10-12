@@ -35,6 +35,7 @@ struct PrivateApp: App {
                 .environmentObject(ChatRoomStore())
                 .environmentObject(reservationStore)
                 .environmentObject(shopStore)
+                .environmentObject(FollowStore())
                 .task {
                     await shopStore.getAllShopData()
                     print(#fileID, #function, #line, "- task 실행======== ")

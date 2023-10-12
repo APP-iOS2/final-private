@@ -151,7 +151,6 @@ struct SearchView: View {
                     OtherPageView(user: user)
                 } label: {
                     SearchUserCellView(user: user)
-                        .environmentObject(FollowStore())
                 }
                 Spacer()
                 Button {

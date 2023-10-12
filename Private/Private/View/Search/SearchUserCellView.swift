@@ -30,7 +30,7 @@ struct SearchUserCellView: View {
                 .foregroundColor(.white)
             Spacer()
 
-            FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers, followCheck: $followStore.followCheck)
+            FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers)
         }
     }
 }
