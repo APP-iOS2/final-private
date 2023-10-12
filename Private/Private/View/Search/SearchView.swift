@@ -140,12 +140,11 @@ struct SearchView: View {
     struct RecentUserRowView: View {
         @ObservedObject var searchStore: SearchStore
         let user: User
-        @State private var isNavigationActive = false
 
         var body: some View {
             HStack {
-                Button {
-                    isNavigationActive = true
+                NavigationLink {
+                    OtherPageView(user: user)
                 } label: {
                     SearchUserCellView(user: user)
                         .environmentObject(FollowStore())
@@ -158,10 +157,6 @@ struct SearchView: View {
                 }
             }
             .padding(.bottom, 8)
-            .background(
-//                NavigationLink("", destination: MyPageView(user: user), isActive: $isNavigationActive)
-                    .opacity(0)
-            )
         }
     }
 

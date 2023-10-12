@@ -37,6 +37,7 @@ struct SearchResultView: View {
     
     
     var searchUserResult: some View {
+        // 팔로잉 되어있는 사람 체크 함수 plus
         ForEach(searchStore.searchUserLists, id: \.self) { user in
             NavigationLink {
                 OtherPageView(user: user)
@@ -59,3 +60,5 @@ struct SearchResultView_Previews: PreviewProvider {
             .environmentObject(SearchStore())
     }
 }
+
+

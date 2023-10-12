@@ -20,16 +20,16 @@ struct MapReviewRowView: View {
                 VStack {
                     HStack {
                         VStack(alignment: .leading, spacing: 10) {
-                            Image(feed.writer.profileImageURL)
+                            Image(feed.writerProfileImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 50)
                                 .clipShape(Circle())
                         }
                         VStack {
-                            Text(feed.writer.nickname)
+                            Text(feed.writerNickname)
                                 .font(.pretendardSemiBold14)
-                            Text(feed.writer.name)
+                            Text(feed.writerName)
                                 .font(.pretendardSemiBold12)
                         }
                         Spacer()

@@ -9,16 +9,14 @@ import SwiftUI
 
 struct MapMarkerFeedView: View {
     
-//    let feed: Feed
-    let feed: MyFeed = MyFeed(writer: "boogios", images: ["userDefault"], contents: "아 맛있다", visitedShop: "광화문광장맛집", category: [])
+    let feed: Feed
     
     @State private var message: String = ""
     
     var body: some View {
         VStack {
             HStack {
-//                AsyncImage(url: URL(string: feed.writer.profileImageURL)) { image in
-                AsyncImage(url: URL(string: feed.writer)) { image in
+                AsyncImage(url: URL(string: feed.writerProfileImage)) { image in
                     image
                         .resizable()
                         .scaledToFit()
@@ -31,11 +29,8 @@ struct MapMarkerFeedView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
-//                    Text("\(feed.writer.name)")
-//                    Text("\(feed.writer.nickname)")
-//                    Text("\(feed.createdAt)")
-                    Text("\(feed.writer)")
-                    Text("\(feed.writer)")
+                    Text("\(feed.writerName)")
+                    Text("\(feed.writerNickname)")
                     Text("\(feed.createdAt)")
                 }
                 

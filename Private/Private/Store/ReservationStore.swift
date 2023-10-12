@@ -15,7 +15,6 @@ final class ReservationStore: ObservableObject {
     @Published var reservationList: [Reservation] = []
     
     private let db = Firestore.firestore()
-    
     static let user = Auth.auth().currentUser
     
     init() {
@@ -61,9 +60,6 @@ final class ReservationStore: ObservableObject {
     // MARK: - 예약 조회
     /// 서버에서 예약내역 가져오기
     func fetchReservation() {
-        // 아직 종료되지 않은 예약과 끝난 예약은 비교해야함 (isDone 같은 걸 사용하거나, 날짜를 비교하여 지난 날이면 자동 처리)
-        
-        // 이거는 나중에 싱글톤패턴으로 가져오면 편할 듯 (Feed에서 쓸 정보임)
         guard let user = Auth.auth().currentUser else {
             print("로그인 정보가 없습니다.")
             return
@@ -76,8 +72,7 @@ final class ReservationStore: ObservableObject {
         
         self.reservationList.removeAll()
         
-        // Field에 reservedUserId의 값이 현재 로그인한 유저의 email이면 전부 반환됨
-        let query = self.db.collection("Reservation").whereField("reservedUserId", isEqualTo: email)
+        let query = self.db.collection("User").document(email).collection("MyReservation")
         
         query.getDocuments { querySnapshop, error in
             if let error {
@@ -114,8 +109,6 @@ final class ReservationStore: ObservableObject {
     /// Firestore Database에 예약 등록
     /// - Parameter reservationData: 예약 데이터
     func addReservationToFirestore(reservationData: Reservation) {
-        let docRef = self.db.collection("Reservation").document(reservationData.id)
-        
         guard let user = Self.user else {
             print("로그인 정보가 없습니다.")
             return
@@ -125,6 +118,9 @@ final class ReservationStore: ObservableObject {
             print("로그인 한 유저의 email 정보가 없습니다.")
             return
         }
+        
+        let docRef = self.db.collection("Reservation").document(reservationData.id)
+        let userDocRef = self.db.collection("User").document(email).collection("MyReservation").document(reservationData.id)
         
         guard let dateTimestamp: Timestamp = dateTimeStringToTimeStamp(reservationDate: reservationData.date, reservationHour: reservationData.time) else {
             print("예약 등록 실패 - 날짜 변환 실패")
@@ -140,8 +136,17 @@ final class ReservationStore: ObservableObject {
             "requirement": reservationData.requirement ?? "요구사항 없음"  // 나중에 수정
         ]
         
-        // Firestore에 예약 정보 추가
+        // Firestore Reservation에 추가
         docRef.setData(reservationData) { error in
+            if let error = error {
+                print("Error adding reservation: \(error.localizedDescription)")
+            } else {
+                print("Reservation added to Firestore")
+            }
+        }
+        
+        // Firestore User의 서브 컬렉션에 추가
+        userDocRef.setData(reservationData) { error in
             if let error = error {
                 print("Error adding reservation: \(error.localizedDescription)")
             } else {
@@ -153,9 +158,14 @@ final class ReservationStore: ObservableObject {
     
     // MARK: - 예약 수정
     func updateReservation(reservation: Reservation) {
-        // 수정할 문서의 참조를 얻습니다.
-        let docRef = db.collection("Reservation").document(reservation.id)
+        guard let email = Self.user!.email  else {
+            print("로그인 한 유저의 email 정보가 없습니다.")
+            return
+        }
         
+        let docRef = db.collection("Reservation").document(reservation.id)
+        let userDocRef = self.db.collection("User").document(email).collection("MyReservation").document(reservation.id)
+
         guard let user = Self.user else {
             print("로그인 정보가 없습니다.")
             return
@@ -187,7 +197,15 @@ final class ReservationStore: ObservableObject {
                 print("문서 업데이트 오류: \(error.localizedDescription)")
             } else {
                 print("문서 업데이트 성공")
-                // 배열에 해당 내용 이거로 바꿔버려
+            }
+        }
+        
+        userDocRef.updateData(reservationData) { error in
+            if let error = error {
+                print("문서 업데이트 오류: \(error.localizedDescription)")
+            } else {
+                print("문서 업데이트 성공")
+                self.fetchReservation()
             }
         }
     }
@@ -195,8 +213,13 @@ final class ReservationStore: ObservableObject {
     
     // MARK: - 예약 취소
     func removeReservation(reservation: Reservation) {
-        // 삭제할 문서의 참조를 얻습니다.
+        guard let email = Self.user!.email  else {
+            print("로그인 한 유저의 email 정보가 없습니다.")
+            return
+        }
+        
         let docRef = db.collection("Reservation").document(reservation.id)
+        let userDocRef = self.db.collection("User").document(email).collection("MyReservation").document(reservation.id)
 
         // 문서 삭제
         docRef.delete { error in
@@ -204,10 +227,40 @@ final class ReservationStore: ObservableObject {
                 print("문서 삭제 오류: \(error.localizedDescription)")
             } else {
                 print("문서 삭제 성공")
-                // 배열에서도 삭제
-                
             }
         }
+        
+        userDocRef.delete { error in
+            if let error = error {
+                print("문서 삭제 오류: \(error.localizedDescription)")
+            } else {
+                print("문서 삭제 성공")
+            }
+        }
+        
+        fetchReservation()
+    }
+    
+    
+    
+    // MARK: - 예약 내역 삭제
+    func deleteMyReservation(reservation: Reservation) {
+        guard let email = Self.user!.email  else {
+            print("로그인 한 유저의 email 정보가 없습니다.")
+            return
+        }
+        
+        let userDocRef = self.db.collection("User").document(email).collection("MyReservation").document(reservation.id)
+        
+        userDocRef.delete { error in
+            if let error = error {
+                print("문서 삭제 오류: \(error.localizedDescription)")
+            } else {
+                print("문서 삭제 성공")
+            }
+        }
+        
+        fetchReservation()
     }
     
     
@@ -301,7 +354,9 @@ final class ReservationStore: ObservableObject {
     ///   - close: 마감시간
     ///   - date: 예약 날짜
     /// - Returns: 예약 가능 시간대
-    func getAvailableTimeSlots(open: Int, close: Int, date: Date) -> [Int] {  // 브레이크 타임 받아야 함
+    func getAvailableTimeSlots(open: Int, close: Int, date: Date) -> [Int] {  
+        // 브레이크 타임 적용 -> Shop 데이터 받아야 함
+        // 예약된 타임은 disable 시키기
         let reservationDate: Date = date
         let openTime: Int = open
         let closeTime: Int = close
@@ -331,6 +386,15 @@ final class ReservationStore: ObservableObject {
             return times
         }
         return [0]
+    }
+    
+    
+    // 예약 시간을 오전/오후 x시로 바꿔줌
+    func conversionReservedTime(time: Int) -> (String, Int) {
+        let when = time > 11 ? "오후" : "오전"
+        let hour = time > 12 ? time - 12 : time
+        
+        return (when, hour)
     }
     
 }

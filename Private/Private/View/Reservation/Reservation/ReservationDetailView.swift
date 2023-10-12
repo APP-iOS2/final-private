@@ -2,27 +2,26 @@
 //  ReservationConfirmView.swift
 //  Private
 //
-//  Created by 박성훈 on 10/10/23.
+//  Created by 박성훈 on 2023/09/25.
 //
 
 import SwiftUI
 
-import SwiftUI
-
-struct ReservationConfirmView: View {
-    enum Field: Hashable {
-        case requirement
-    }
-    
+struct ReservationDetailView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var userStore: UserStore
     
+    @State private var isShowingAlert: Bool = false
+    @State private var requirementText: String = ""  // TextField의 Text
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
     
-    let reservationData: Reservation  // 예약 데이터
-    let shopData: Shop  // 가게 데이터
+    @Binding var isShwoingConfirmView: Bool  // 해당 뷰를 내리기 위함
+    @Binding var isReservationPresented: Bool  // ReservationView를 내리기 위함
     
+    @Binding var reservationData: Reservation  // 예약 데이터
+    let shopData: Shop  // 가게 데이터
+
     var body: some View {
         VStack {
             ScrollView {
@@ -60,8 +59,9 @@ struct ReservationConfirmView: View {
                     
                     ReservationCardCell(title: "예약자", content: userStore.user.name)
                     ReservationCardCell(title: "이메일", content: userStore.user.email)
-                    ReservationCardCell(title: "요구사항", content: reservationData.requirement ?? "요구사항 없음")
                     
+                    Text("요구사항")
+                    RequirementTextEditor(requirementText: $requirementText)
                 }
                 .padding(.bottom)
                 
@@ -90,13 +90,39 @@ struct ReservationConfirmView: View {
                 self.reservedHour = reservationStore.conversionReservedTime(time: reservationData.time).1
             }
             
+            ReservationButton(text: "예약하기") {
+                isShowingAlert.toggle()
+            }
+            .tint(.primary)
+            .padding()
+            .alert("예약 확정", isPresented: $isShowingAlert) {
+                Button() {
+                    print(#fileID, #function, #line, "- 예약 확정")
+                    reservationData.requirement = requirementText
+                    reservationStore.addReservationToFirestore(reservationData: reservationData)
+                    isShwoingConfirmView.toggle()
+                    isReservationPresented.toggle()
+                } label: {
+                    Text("예약하기")
+                }
+                
+                Button(role: .cancel) {
+                    
+                } label: {
+                    Text("돌아가기")
+                }
+            }
         }
-        
+        .onTapGesture {
+            hideKeyboard()
+        }
     }
 }
 
-struct ReservationConfirmView_Previews: PreviewProvider {
+struct ReservationDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationConfirmView(reservationData: ReservationStore.tempReservation, shopData: ShopStore.shop)
+        ReservationDetailView(isShwoingConfirmView: .constant(true), isReservationPresented: .constant(true), reservationData: .constant(ReservationStore.tempReservation), shopData: ShopStore.shop)
+            .environmentObject(ReservationStore())
+            .environmentObject(UserStore())
     }
 }

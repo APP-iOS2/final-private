@@ -51,6 +51,7 @@ struct MyHistoryView: View {
                                     Button {
                                         isMap = false
                                         isFeed = true
+                                        isReservation = false
                                     } label: {
                                         Text("취소")
                                             .foregroundColor(.black)
@@ -74,6 +75,7 @@ struct MyHistoryView: View {
                 .foregroundColor(isReservation ? .primary : .primary.opacity(0.3))
                 Spacer()
             }
+            //.padding(.top,.screenHeight * 0.02)
             if (isFeed == true) {
                 ScrollView {
                 if userStore.user.myFeed.isEmpty {
@@ -103,10 +105,14 @@ struct MyHistoryView: View {
                             .font(.pretendardBold24)
                             .padding(.top, .screenHeight * 0.2)
                     } else {
-                        MyReservation( isShowingMyReservation: .constant(true))
+                        MyReservation(isShowingMyReservation: .constant(true))
                     }
                 }
+                .onAppear {
+                    reservationStore.fetchReservation()
+                }
             }
+            Spacer()
         }
     }
 }

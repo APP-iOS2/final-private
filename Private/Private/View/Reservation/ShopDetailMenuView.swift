@@ -13,20 +13,22 @@ struct ShopDetailMenuView: View {
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
     
-    let dummyShop = ShopStore.shop
+    let shopData: Shop
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             LazyVStack {
-                ForEach(dummyShop.menu, id: \.self) { menu in
+                ForEach(shopData.menu, id: \.self) { menu in
                     HStack(spacing: 10) {
-                        KFImage(URL(string: menu.imageUrl)!)
+//                        KFImage(URL(string: menu.imageUrl)!)  // 파베에 있는 Key 값을 잘못올림
+                        KFImage(getImageString(url: menu.imageUrl))
                             .placeholder {
                                 ProgressView()
                             }
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 120, height: 120)                         .cornerRadius(12)
+                            .frame(width: 120, height: 120)                         
+                            .cornerRadius(12)
                         
                         VStack(alignment: .leading, spacing: 0) {
                             Text("\(menu.name)")
@@ -43,11 +45,18 @@ struct ShopDetailMenuView: View {
             }
         }
     }
+    
+    func getImageString(url: String) -> URL {
+        guard let myUrl = URL(string: url) else {
+            return URL(string: "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_28dp.png")!
+        }
+        return myUrl
+    }
 }
 
 struct ShopDetailMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopDetailMenuView()
+        ShopDetailMenuView(shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }

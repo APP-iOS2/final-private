@@ -40,14 +40,11 @@ struct MyFollowerFollowingView: View {
                 Spacer()
             }
             .padding(.bottom, 10)
-            switch viewNumber {
-            case 0:
-                MyFollowerView()
-            case 1:
-                MyFollowingView()
-            default:
-                MyFollowerView()
+            TabView (selection: $viewNumber) {
+                MyFollowerView().tag(0)
+                MyFollowingView().tag(1)
             }
+            .tabViewStyle(PageTabViewStyle())
         }
         .navigationTitle("\(userStore.user.nickname)")
         .navigationBarTitleDisplayMode(.inline)

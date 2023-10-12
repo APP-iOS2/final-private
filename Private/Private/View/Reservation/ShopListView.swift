@@ -2,7 +2,7 @@
 //  ShopListView.swift
 //  Private
 //
-//  Created by H on 2023/10/10.
+//  Created by H on 2023/09/22.
 //
 
 import SwiftUI
@@ -136,6 +136,8 @@ struct ShopListView: View {
     @Environment(\.colorScheme) var colorScheme
     
     let dummyShops: [Shop] = Array(repeating: ShopStore.shop, count: 5) + dummyCafes
+
+    @EnvironmentObject var shopStore: ShopStore
     
     @Binding var root: Bool
     @Binding var selection: Int
@@ -295,22 +297,36 @@ struct ShopListFilterSheetView: View {
                     } label: {
                         Text("적용")
                     }
+//     var body: some View {
+//         List {
+//             ForEach(shopStore.shopList, id: \.self) { shopData in
+//                 NavigationLink {
+//                     ShopDetailView(shopData: shopData)
+//                 } label: {
+//                     HStack(alignment: .top){
+//                         KFImage(URL(string: shopData.shopImageURL)!)
+//                                         .onFailure({ error in
+//                                             print("Error : \(error)")
+//                                         })
+//                                         .resizable()
+//                                         .frame(width: 80, height: 80)
+//                                         .clipped()
+//                                         .padding(.trailing)
+                        
+//                         VStack(alignment: .leading) {
+//                             Text("\(shopData.category.categoryName)")
+//                             Text(shopData.name)
+//                         }
+//                     }
                 }
             }
         }
     }
 }
 
-struct TitleNavBarItem: View {
-    let title: String
-    
-    var body: some View {
-        VStack {
-            Text(title)
-                .foregroundColor(Color.gray)
-                .font(Font.pretendardMedium20)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.white)
+struct ShopListView_Previews: PreviewProvider {
+    static var previews: some View {
+        ShopListView(root: .constant(true), selection: .constant(4))
+            .environmentObject(ShopStore())
     }
 }

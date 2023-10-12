@@ -69,7 +69,7 @@ struct CatecoryView: View {
                     }
                 }
             }
-        }
+        } // VStack
     } // body
     func toggleCategorySelection(at index: Int) {
         selectedToggle[index].toggle()

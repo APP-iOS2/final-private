@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestore
 import FirebaseAuth
 import GoogleSignIn
 import Combine
@@ -123,4 +124,19 @@ class AuthStore: ObservableObject {
             print(error.localizedDescription)
         }
     }
+    func doubleCheckNickname(nickname: String) async -> Bool {
+        do {
+            let datas = try await Firestore.firestore().collection("User").document(nickname).getDocument()
+            if let data = datas.data(), !data.isEmpty {
+                return false
+            } else {
+                return true
+            }
+        }
+        catch {
+            debugPrint("getDocument 에러")
+            return false
+        }
+    }
+    
 }
