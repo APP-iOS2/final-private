@@ -105,8 +105,11 @@ struct MyHistoryView: View {
                             .font(.pretendardBold24)
                             .padding(.top, .screenHeight * 0.2)
                     } else {
-                        MyReservation( isShowingMyReservation: .constant(true))
+                        MyReservation(isShowingMyReservation: .constant(true))
                     }
+                }
+                .onAppear {
+                    reservationStore.fetchReservation()
                 }
             }
             Spacer()

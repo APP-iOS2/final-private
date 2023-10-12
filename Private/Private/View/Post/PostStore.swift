@@ -193,6 +193,7 @@ final class PostStore: ObservableObject {
 //        "일요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0)
 //    ]),
 //    category: [])
+
 //MARK: 킹피셔 보류
 //struct ImagePickerView: UIViewControllerRepresentable {
 //    @Binding var selectedImages: [String]?

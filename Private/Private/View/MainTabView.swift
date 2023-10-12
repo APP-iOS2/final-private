@@ -52,7 +52,6 @@ struct MainTabView: View {
     )}
     
     var nicknameIsEmpty: Bool {
-        print("닉네임: \(userStore.user.nickname)")
         return userStore.user.nickname.isEmpty
     }
     
@@ -72,7 +71,7 @@ struct MainTabView: View {
                     UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true)).tabItem {
                         Image(systemName: "plus")
                     }.tag(3)
-                    ShopDetailView(root: $rootSection4, selection: $selection).tabItem {
+                    ShopListView(root: $rootSection4, selection: $selection).tabItem {
                         Image(systemName: "calendar.badge.clock")
                     }.tag(4)
                     MyPageView(root: $rootSection5, selection: $selection).tabItem {

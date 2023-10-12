@@ -15,11 +15,10 @@ struct DateTimePickerView: View {
     @State private var amReservation: [Int] = []  // 오전 예약시간
     @State private var pmReservation: [Int] = []  // 오후 예약시간
     @State private var availableTimeSlots: [Int] = []
+    @State private var today = Calendar.current.startOfDay(for: Date())
 
     @Binding var temporaryReservation: Reservation
     @Binding var isSelectedTime: Bool  // 시간대가 설정 되었는지
-    
-    @State private var today = Calendar.current.startOfDay(for: Date())
     
     let colums = [GridItem(.adaptive(minimum: 80))] // 레이아웃 최소 사이즈
     
@@ -42,11 +41,13 @@ struct DateTimePickerView: View {
             
             // 날짜 선택 화면 표시 여부
             if showingDate {
-                DatePicker("Date", selection: $temporaryReservation.date, in: self.today...,
-                           displayedComponents: [.date])
+                DatePicker("Date", selection: $temporaryReservation.date, in: self.today..., displayedComponents: [.date])
                 .datePickerStyle(.graphical)
+                .tint(Color("AccentColor"))
                 .padding(.bottom)
                 .onChange(of: temporaryReservation.date) { newValue in
+                    self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: newValue)
+                    
                     separateReservationTime(timeSlots: availableTimeSlots)
                     print(temporaryReservation.date)
                 }

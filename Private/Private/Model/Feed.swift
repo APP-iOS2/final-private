@@ -27,7 +27,7 @@ struct Feed: Identifiable, Codable, Hashable {
     var mapy: String
 }
 
-enum Category: Int, CaseIterable, Hashable {
+enum Category: Int, CaseIterable, Hashable, Codable {
     case koreanFood
     case westernFood
     case japaneseFood
