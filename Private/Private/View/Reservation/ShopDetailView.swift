@@ -97,29 +97,44 @@ struct ShopDetailBodyView: View {
                             .font(Font.pretendardMedium18)
                     }
                     
-                    Section {
-                        if isExpanded {
-                            HStack(spacing: 5) {
-                                Text(shopData.addressDetail)
-                                    .font(Font.pretendardRegular14)
-                                
-                                Image(systemName: "doc.on.doc")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 15, height: 15)
-                            }
+                    HStack(alignment: .center, spacing: 5) {
+                        Text(shopData.address + " " + shopData.addressDetail)
+                            .font(Font.pretendardMedium16)
+                        
+                        Button {
+                            print("주소 복사")
+                        } label: {
+                            Image(systemName: "doc.on.doc")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 15, height: 15)
                         }
-                    } header: {
-                        HStack(spacing: 2) {
-                            Text(shopData.address)
-                                .font(Font.pretendardMedium18)
-                            
-                            Image(systemName: isExpanded ? "chevron.down": "chevron.right")
-                        }
-                        .onTapGesture {
-                            isExpanded.toggle()
-                        }
+                        
+                        Spacer()
                     }
+//                    Section {
+//                        if isExpanded {
+//                            HStack(spacing: 5) {
+//                                Text(shopData.addressDetail)
+//                                    .font(Font.pretendardRegular14)
+//
+//                                Image(systemName: "doc.on.doc")
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fit)
+//                                    .frame(width: 15, height: 15)
+//                            }
+//                        }
+//                    } header: {
+//                        HStack(spacing: 2) {
+//                            Text(shopData.address)
+//                                .font(Font.pretendardMedium18)
+//
+//                            Image(systemName: isExpanded ? "chevron.down": "chevron.right")
+//                        }
+//                        .onTapGesture {
+//                            isExpanded.toggle()
+//                        }
+//                    }
                     
                     Spacer()
                         .frame(height: 10)
@@ -148,7 +163,6 @@ struct ShopDetailBodyView: View {
             }
             .pickerStyle(.segmented)
             .padding(10)
-            .padding(.bottom, 5)
             
             ScrollView {
                 switch selectedShopDetailCategory {
@@ -182,19 +196,25 @@ struct ShopDetailFooterView: View {
     
     @Binding var isReservationPresented: Bool
     
+    @State var isBookmarked: Bool = false // 임시!
+    
     let shopData: Shop
     
     var body: some View {
         HStack(spacing: 10) {
             VStack(spacing: 2) {
-                Image(systemName: "bookmark")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 25)
-                    .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
+                Button {
+                    isBookmarked.toggle()
+                } label: {
+                    Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
+                }
                 
-                Text("\(999)+") // bookmarks count
-                    .font(Font.pretendardBold14)
+                Text("\(shopData.bookmarks.count)")
+                    .font(Font.pretendardSemiBold12)
             }
             
             Button {
@@ -203,11 +223,10 @@ struct ShopDetailFooterView: View {
                 Text("예약하기")
                     .frame(maxWidth: .infinity)
             }
-            .frame(height: CGFloat.screenHeight * 0.05)
+            .frame(height: CGFloat.screenHeight * 0.065)
             .frame(maxWidth: .infinity)
             .tint(.primary)
             .background(Color("AccentColor"))
-            .cornerRadius(12)
             .cornerRadius(12)
         }
         .padding(10)
