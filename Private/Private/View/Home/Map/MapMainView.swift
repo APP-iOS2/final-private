@@ -11,6 +11,7 @@ import NMapsMap
 
 struct MapMainView: View {
     
+    @StateObject private var locationSearchStore = LocationSearchStore.shared
     @StateObject var coordinator: Coordinator = Coordinator.shared
     
 
@@ -22,6 +23,9 @@ struct MapMainView: View {
         .onAppear {
             coordinator.checkIfLocationServicesIsEnabled()
             coordinator.makeMarkers()
+        }
+        .onChange(of: coordinator.tappedLatLng) { newValue in
+            locationSearchStore.reverseGeoCoding(lat: String(coordinator.tappedLatLng?.lat ?? 0), long: String(coordinator.tappedLatLng?.lng ?? 0))
         }
         
         .sheet(isPresented: $coordinator.showMarkerDetailView) {
