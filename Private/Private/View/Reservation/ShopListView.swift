@@ -75,7 +75,8 @@ struct ShopListView: View {
         }
         .padding(10)
         .sheet(isPresented: $isShowingSheet) {
-            ShopListFilterSheetView(selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingSheet: $isShowingSheet)
+//            ShopListFilterSheetView(selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingSheet: $isShowingSheet)
+            ShopListFilterSheetView(originalShopCategory: selectedShopCategory, originalShopListSortCriterion: selectedShopListSortCriterion, selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingSheet: $isShowingSheet)
         }
         .onAppear {
 //            currentLocation = convertLocationToAddress(location: CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng))
@@ -145,6 +146,9 @@ struct ShopListCell: View {
 
 struct ShopListFilterSheetView: View {
     
+    @State var originalShopCategory: Category
+    @State var originalShopListSortCriterion: ShopListSortCriterion
+    
     @Binding var selectedShopCategory: Category
     @Binding var selectedShopListSortCriterion: ShopListSortCriterion
     
@@ -200,6 +204,8 @@ struct ShopListFilterSheetView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button {
+                        selectedShopCategory = originalShopCategory
+                        selectedShopListSortCriterion = originalShopListSortCriterion
                         isShowingSheet.toggle()
                     } label: {
                         Text("취소")
