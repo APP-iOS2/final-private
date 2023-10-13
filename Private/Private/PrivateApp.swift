@@ -37,7 +37,6 @@ struct PrivateApp: App {
                 .environmentObject(shopStore)
                 .task {
                     await shopStore.getAllShopData()
-                    print(#fileID, #function, #line, "- task 실행======== ")
                 }
         }
     }
