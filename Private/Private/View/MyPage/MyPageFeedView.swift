@@ -40,41 +40,25 @@ struct MyPageFeedView: View {
                 
                 TabView(selection: $currentPicture) {
                     ForEach(feed.images, id: \.self) { image in
-                        if isEnlarge == false {
-                            KFImage(URL(string: image )) .placeholder {
-                                Image(systemName: "photo")
-                            }
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)  // 너비와 높이를 화면 너비의 90%로 설정
-                            .clipped()
-                            .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
-                            .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
-                            .tag(Int(feed.images.firstIndex(of: image) ?? 0))
-                            .onTapGesture {
-                                isEnlarge.toggle()
-                            }
-                        } else {
-                            KFImage(URL(string: image)) .placeholder {
-                                Image(systemName: "photo")
-                            }
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)  // 너비와 높이를 화면 너비의 90%로 설정
-                            .clipped()
-                            .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
-                            .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
-                            .tag(Int(feed.images.firstIndex(of: image) ?? 0))
-                            .onTapGesture {
-                                isEnlarge.toggle()
-                            }
+                        KFImage(URL(string: image )) .placeholder {
+                            Image(systemName: "photo")
+                        }
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)  // 너비와 높이를 화면 너비의 90%로 설정
+                        .clipped()
+                        .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
+                        .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
+                        .tag(Int(feed.images.firstIndex(of: image) ?? 0))
+                        .onTapGesture {
+                            isEnlarge.toggle()
                         }
                     }
                     //.tag()
                 }
                 .tabViewStyle(PageTabViewStyle())
             }
-            .padding(.top, 15)
+            .padding(.top, 8)
             .frame(width: .screenWidth, height: .screenWidth)
             
             HStack() {
