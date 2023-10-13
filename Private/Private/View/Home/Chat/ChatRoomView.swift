@@ -49,9 +49,9 @@ struct ChatRoomView: View {
                         .frame(width: 30)
                         .cornerRadius(50)
                     VStack(alignment: .leading) {
-                        Text("\(chatRoom.otherUser.name)")
+                        Text("\(chatRoom.otherUserName)")
                             .font(.pretendardSemiBold14)
-                        Text("\(chatRoom.otherUser.nickname)")
+                        Text("\(chatRoom.otherUserNickname)")
                             .font(.pretendardRegular12)
                     }
                     .padding(.leading, 5)

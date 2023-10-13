@@ -21,9 +21,9 @@ struct ChatRoomCellView: View {
                 .frame(width: 50)
                 .cornerRadius(50)
             VStack(alignment: .leading) {
-                Text("\(chatRoom.otherUser.name)")
+                Text("\(chatRoom.otherUserName)")
                     .font(.pretendardSemiBold16)
-                Text("\(chatRoom.otherUser.nickname)")
+                Text("\(chatRoom.otherUserNickname)")
                     .font(.pretendardRegular12)
             }
             .padding(.leading, 5)
