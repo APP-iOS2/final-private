@@ -11,7 +11,7 @@ import Kingfisher
 struct OtherInfoView: View {
     
     @EnvironmentObject private var followStore: FollowStore
-    
+    @EnvironmentObject private var userStore :UserStore
     @State var isModify: Bool = false
     
     let user:User
@@ -41,7 +41,7 @@ struct OtherInfoView: View {
             VStack {
                 HStack {
                     VStack {
-                        Text("\(user.myFeed.count)")
+                        Text("\(userStore.otherFeedList.count)")
                             .font(.pretendardBold18)
                             .padding(.bottom, 5.0)
                         Text("게시글")
@@ -87,6 +87,9 @@ struct OtherInfoView: View {
                         .foregroundColor(.black)
             }
             .padding(.top, 40.0)
+        }
+        .onAppear {
+            userStore.fetchotherUser(userEmail: user.email)
         }
     }
 }
