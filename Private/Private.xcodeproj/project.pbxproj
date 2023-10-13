@@ -116,6 +116,9 @@
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
 		B54C14BF2AD45CC300E45636 /* ModifyReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */; };
+		B54DFCE32AD7D643004A3CA2 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = B54DFCE22AD7D643004A3CA2 /* FSCalendar */; };
+		B54DFCE52AD7D7AC004A3CA2 /* FSCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFCE42AD7D7AC004A3CA2 /* FSCalendarView.swift */; };
+		B54DFCE72AD93389004A3CA2 /* CalendarData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFCE62AD93389004A3CA2 /* CalendarData.swift */; };
 		B5549FBB2AD50FBB00695A8F /* ReservationConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5549FBA2AD50FBB00695A8F /* ReservationConfirmView.swift */; };
 		B5549FBD2AD59E3000695A8F /* RequirementTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5549FBC2AD59E3000695A8F /* RequirementTextEditor.swift */; };
 		B5549FBF2AD5A26C00695A8F /* ReservationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5549FBE2AD5A26C00695A8F /* ReservationButton.swift */; };
@@ -255,6 +258,8 @@
 		B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
 		B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePickerView.swift; sourceTree = "<group>"; };
 		B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyReservationView.swift; sourceTree = "<group>"; };
+		B54DFCE42AD7D7AC004A3CA2 /* FSCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSCalendarView.swift; sourceTree = "<group>"; };
+		B54DFCE62AD93389004A3CA2 /* CalendarData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarData.swift; sourceTree = "<group>"; };
 		B5549FBA2AD50FBB00695A8F /* ReservationConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationConfirmView.swift; sourceTree = "<group>"; };
 		B5549FBC2AD59E3000695A8F /* RequirementTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequirementTextEditor.swift; sourceTree = "<group>"; };
 		B5549FBE2AD5A26C00695A8F /* ReservationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationButton.swift; sourceTree = "<group>"; };
@@ -311,6 +316,7 @@
 				3CA303642AB8376700FEC7BD /* FirebaseAppCheck in Frameworks */,
 				3CA303622AB8376700FEC7BD /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				3CA303682AB8376700FEC7BD /* FirebaseAuth in Frameworks */,
+				B54DFCE32AD7D643004A3CA2 /* FSCalendar in Frameworks */,
 				3CA3036C2AB8376700FEC7BD /* FirebaseCrashlytics in Frameworks */,
 				3CA3038C2AB8376700FEC7BD /* FirebaseRemoteConfigSwift in Frameworks */,
 				3CDE564F2AB89F1D00594DF9 /* PopupView in Frameworks */,
@@ -441,6 +447,7 @@
 				D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */,
 				D1EC43912AC16E2900B088EA /* FollowStore.swift */,
 				3C9747712AD4E1AE007AE3CB /* LocationSearchStore.swift */,
+				B54DFCE62AD93389004A3CA2 /* CalendarData.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -676,6 +683,7 @@
 				B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */,
 				B5549FBA2AD50FBB00695A8F /* ReservationConfirmView.swift */,
 				B5549FBE2AD5A26C00695A8F /* ReservationButton.swift */,
+				B54DFCE42AD7D7AC004A3CA2 /* FSCalendarView.swift */,
 			);
 			path = Reservation;
 			sourceTree = "<group>";
@@ -745,6 +753,7 @@
 				06194EB62ACDC94A0017262D /* ExpandableText */,
 				064974B72AD67CC500FFEEB2 /* SwiftUIFlowLayout */,
 				3C9747742AD4E201007AE3CB /* Alamofire */,
+				B54DFCE22AD7D643004A3CA2 /* FSCalendar */,
 			);
 			productName = Private;
 			productReference = 3CF3D8C12AB82A97003689A6 /* Private.app */;
@@ -829,6 +838,7 @@
 				06194EB52ACDC94A0017262D /* XCRemoteSwiftPackageReference "ExpandableText" */,
 				064974B62AD67CC500FFEEB2 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */,
 				3C9747732AD4E201007AE3CB /* XCRemoteSwiftPackageReference "Alamofire" */,
+				B54DFCE12AD7D643004A3CA2 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			productRefGroup = 3CF3D8C22AB82A97003689A6 /* Products */;
 			projectDirPath = "";
@@ -982,6 +992,8 @@
 				3C91AEA22AC40F6100E60D9B /* UserInfoModifyView.swift in Sources */,
 				3C93B5042AC12AE900788633 /* ChatRoomCellView.swift in Sources */,
 				3C2FC8F72ACE9B750034F561 /* MapMarkerDetailView.swift in Sources */,
+				B54DFCE72AD93389004A3CA2 /* CalendarData.swift in Sources */,
+				B5339A892AD68A2D006AAC36 /* ShopListView.swift in Sources */,
 				3C3716262ABD15CD004E8419 /* ShopStore.swift in Sources */,
 				D1DC8D512ACEAE2C0087CBD7 /* OtherPageView.swift in Sources */,
 				3CB734082ABD6EEF00D82503 /* MapMainView.swift in Sources */,
@@ -1004,6 +1016,7 @@
 				B54C14BF2AD45CC300E45636 /* ModifyReservationView.swift in Sources */,
 				3C2FC8F42ACE9B750034F561 /* MapReviewRowView.swift in Sources */,
 				D1EC43922AC16E2900B088EA /* FollowStore.swift in Sources */,
+				B54DFCE52AD7D7AC004A3CA2 /* FSCalendarView.swift in Sources */,
 				06628C1F2ACF8FDE009373DD /* AppDateFormatter.swift in Sources */,
 				3CA30E1F2AC3B686002B7A8B /* SignUpView.swift in Sources */,
 				3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */,
@@ -1478,6 +1491,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		B54DFCE12AD7D643004A3CA2 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1650,6 +1671,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3CDE564D2AB89F1D00594DF9 /* XCRemoteSwiftPackageReference "PopupView" */;
 			productName = PopupView;
+		};
+		B54DFCE22AD7D643004A3CA2 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54DFCE12AD7D643004A3CA2 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
