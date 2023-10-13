@@ -52,7 +52,6 @@ struct SearchResultView: View {
         searchStore.addRecentSearch(searchTerm)
     }
     
-    
 }
 
 struct SearchResultView_Previews: PreviewProvider {
