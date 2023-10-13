@@ -16,6 +16,7 @@ struct FeedCellView: View {
 
     var body: some View {
         VStack {
+            
             HStack {
                 KFImage(URL(string: feed.writerProfileImage))
                     .resizable()

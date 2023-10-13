@@ -16,11 +16,13 @@ struct FeedListView: View {
     var body: some View {
         NavigationView {
             List {
+                //Text("feedStore.feedList.count : \(feedStore.feedList.count)")
+                //Circle()
                 ForEach(feedStore.feedList) { feed in
                     FeedCellView(feed: feed)
                 }
             }
-            .navigationBarTitle("팔로워의 리뷰", displayMode: .inline)
+            //.navigationBarTitle("팔로워의 리뷰", displayMode: .inline)
         }
     }
 }
