@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import UniformTypeIdentifiers
 
 enum ShopDetailCategory: String, CaseIterable {
     case shopInfo = "가게 정보"
@@ -102,7 +103,7 @@ struct ShopDetailBodyView: View {
                             .font(Font.pretendardMedium16)
                         
                         Button {
-                            print("주소 복사")
+                            copyToClipboard(shopData.address + " " + shopData.addressDetail)
                         } label: {
                             Image(systemName: "doc.on.doc")
                                 .resizable()
@@ -187,6 +188,10 @@ struct ShopDetailBodyView: View {
             }
         })
         .cornerRadius(12)
+    }
+    
+    func copyToClipboard(_ text: String) {
+        UIPasteboard.general.string = text
     }
 }
 
