@@ -11,7 +11,8 @@ import Kingfisher
 struct MySavedView: View {
     
     @EnvironmentObject private var userStore: UserStore
-    
+    @State var isMyPageFeedSheet: Bool = false
+    @State var selctedFeed : MyFeed = MyFeed()
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
@@ -28,12 +29,21 @@ struct MySavedView: View {
                     spacing: 1
                 ) {
                     ForEach(userStore.mySavedFeedList, id: \.self) { feed in
-                        KFImage(URL(string:feed.images[0])) .placeholder {
-                            Image(systemName: "photo")
-                        }.resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
-                            .clipShape(Rectangle())
+                        Button {
+                            selctedFeed = feed
+                            isMyPageFeedSheet = true
+                        } label: {
+                            KFImage(URL(string:feed.images[0])) .placeholder {
+                                Image(systemName: "photo")
+                            }.resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
+                                .clipShape(Rectangle())
+                        }
+                        .sheet(isPresented: $isMyPageFeedSheet){
+                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed)
+                                .presentationDetents([.height(.screenHeight * 0.7)])
+                        }
                     }
                 }
             }
