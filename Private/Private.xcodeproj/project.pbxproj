@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		060C7C522AD7BFC700306B67 /* ShopListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060C7C512AD7BFC700306B67 /* ShopListView.swift */; };
 		06194EB72ACDC94A0017262D /* ExpandableText in Frameworks */ = {isa = PBXBuildFile; productRef = 06194EB62ACDC94A0017262D /* ExpandableText */; };
-		064974AC2AD52E8A00FFEEB2 /* ShopListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064974AB2AD52E8A00FFEEB2 /* ShopListView.swift */; };
 		064974B82AD67CC500FFEEB2 /* SwiftUIFlowLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 064974B72AD67CC500FFEEB2 /* SwiftUIFlowLayout */; };
 		06628C1F2ACF8FDE009373DD /* AppDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */; };
 		0679CAC22ABD876400F48BE4 /* ShopDetailMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */; };
@@ -115,7 +115,6 @@
 		63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB09992ABD87BD002CCE4E /* NaverMap.swift */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
-		B5339A892AD68A2D006AAC36 /* ShopListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5339A882AD68A2D006AAC36 /* ShopListView.swift */; };
 		B54C14BF2AD45CC300E45636 /* ModifyReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */; };
 		B54DFCE32AD7D643004A3CA2 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = B54DFCE22AD7D643004A3CA2 /* FSCalendar */; };
 		B54DFCE52AD7D7AC004A3CA2 /* FSCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFCE42AD7D7AC004A3CA2 /* FSCalendarView.swift */; };
@@ -172,7 +171,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		064974AB2AD52E8A00FFEEB2 /* ShopListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopListView.swift; sourceTree = "<group>"; };
+		060C7C512AD7BFC700306B67 /* ShopListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopListView.swift; sourceTree = "<group>"; };
 		065480ED2AC3CC9F009781B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDateFormatter.swift; sourceTree = "<group>"; };
 		0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopDetailMenuView.swift; sourceTree = "<group>"; };
@@ -258,7 +257,6 @@
 		87739F481181992B30A0E64A /* Pods_Private.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
 		B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePickerView.swift; sourceTree = "<group>"; };
-		B5339A882AD68A2D006AAC36 /* ShopListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopListView.swift; sourceTree = "<group>"; };
 		B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyReservationView.swift; sourceTree = "<group>"; };
 		B54DFCE42AD7D7AC004A3CA2 /* FSCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSCalendarView.swift; sourceTree = "<group>"; };
 		B54DFCE62AD93389004A3CA2 /* CalendarData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarData.swift; sourceTree = "<group>"; };
@@ -518,12 +516,11 @@
 			children = (
 				B591C7232ACC608B00602727 /* Reservation */,
 				B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */,
-				B5339A882AD68A2D006AAC36 /* ShopListView.swift */,
 				06C796CD2ABD5C5C0043C395 /* ShopDetailView.swift */,
 				069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */,
 				0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */,
 				0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */,
-				064974AB2AD52E8A00FFEEB2 /* ShopListView.swift */,
+				060C7C512AD7BFC700306B67 /* ShopListView.swift */,
 			);
 			path = Reservation;
 			sourceTree = "<group>";
@@ -1007,7 +1004,6 @@
 				3CF3D8C72AB82A97003689A6 /* LaunchView.swift in Sources */,
 				3CCD2DFA2ABC3588005709F4 /* MyPageView.swift in Sources */,
 				0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */,
-				064974AC2AD52E8A00FFEEB2 /* ShopListView.swift in Sources */,
 				3CF3D8C52AB82A97003689A6 /* PrivateApp.swift in Sources */,
 				B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */,
 				3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */,
@@ -1063,6 +1059,7 @@
 				E47B3F772AC14A3B002164A6 /* MySavedPlaceView.swift in Sources */,
 				3CCD2DE42ABC3185005709F4 /* Reservation.swift in Sources */,
 				26357CE82AD533010098C8F5 /* EmptyFeed.swift in Sources */,
+				060C7C522AD7BFC700306B67 /* ShopListView.swift in Sources */,
 				3C9747722AD4E1AE007AE3CB /* LocationSearchStore.swift in Sources */,
 				D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */,
 				3C37162A2ABD176E004E8419 /* ReservationStore.swift in Sources */,

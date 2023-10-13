@@ -10,121 +10,6 @@ import Kingfisher
 import SwiftUIFlowLayout
 import NMapsMap
 
-let dummyCafes: [Shop] = [
-    Shop(
-    name: "카페맛집1",
-    category: .cafe,
-    coord: CodableNMGLatLng(lat: 36.444, lng: 127.332),
-    address: "서울 강남구 강남대로 96길 22 2층",
-    addressDetail: "7번 출구 어딘가",
-    shopTelNumber: "010-1234-5678",
-    shopInfo: "미슐랭 맛집",
-    shopImageURL: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg",
-    shopOwner: "백종원",
-    businessNumber: "123-12-1234",
-    bookmarks: [],
-    menu: [
-        ShopItem(name: "돈코츠 라멘", price: 11000, imageUrl: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg"),
-        ShopItem(name: "마제소바", price: 10000, imageUrl: "https://www.kfoodtimes.com/news/photo/202105/16015_27303_5527.png"),
-        ShopItem(name: "차슈덮밥", price: 12000, imageUrl: "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/411/3435af5cc6041f247e89a65b1a1d73c5_res.jpeg")
-    ],
-    regularHoliday: ["월요일", "화요일", "수요일", "목요일"],
-    temporaryHoliday: [Date()],
-    breakTimeHours:  [
-        "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
-        "화요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
-        "수요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
-        "목요일": BusinessHours(startHour: 10, startMinute: 0, endHour: 18, endMinute: 0),
-        "금요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
-        "토요일": BusinessHours(startHour: 10, startMinute: 0, endHour: 15, endMinute: 0),
-        "일요일": BusinessHours(startHour: 12, startMinute: 0, endHour: 16, endMinute: 0)
-    ],
-    weeklyBusinessHours:  [
-        "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
-        "화요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "수요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "목요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "금요일": BusinessHours(startHour:15, startMinute: 0, endHour: 17, endMinute: 0),
-        "토요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "일요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0)
-    ]),
-    
-    Shop(
-    name: "카페맛집2",
-    category: .cafe,
-    coord: CodableNMGLatLng(lat: 36.444, lng: 127.332),
-    address: "서울 강남구 강남대로 96길 22 2층",
-    addressDetail: "7번 출구 어딘가",
-    shopTelNumber: "010-1234-5678",
-    shopInfo: "미슐랭 맛집",
-    shopImageURL: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg",
-    shopOwner: "백종원",
-    businessNumber: "123-12-1234",
-    bookmarks: [],
-    menu: [
-        ShopItem(name: "돈코츠 라멘", price: 11000, imageUrl: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg"),
-        ShopItem(name: "마제소바", price: 10000, imageUrl: "https://www.kfoodtimes.com/news/photo/202105/16015_27303_5527.png"),
-        ShopItem(name: "차슈덮밥", price: 12000, imageUrl: "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/411/3435af5cc6041f247e89a65b1a1d73c5_res.jpeg")
-    ],
-    regularHoliday: ["월요일", "화요일", "수요일", "목요일"],
-    temporaryHoliday: [Date()],
-    breakTimeHours:  [
-        "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
-        "화요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
-        "수요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
-        "목요일": BusinessHours(startHour: 10, startMinute: 0, endHour: 18, endMinute: 0),
-        "금요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
-        "토요일": BusinessHours(startHour: 10, startMinute: 0, endHour: 15, endMinute: 0),
-        "일요일": BusinessHours(startHour: 12, startMinute: 0, endHour: 16, endMinute: 0)
-    ],
-    weeklyBusinessHours:  [
-        "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
-        "화요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "수요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "목요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "금요일": BusinessHours(startHour:15, startMinute: 0, endHour: 17, endMinute: 0),
-        "토요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "일요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0)
-    ]),
-    
-    Shop(
-    name: "카페맛집3",
-    category: .cafe,
-    coord: CodableNMGLatLng(lat: 36.444, lng: 127.332),
-    address: "서울 강남구 강남대로 96길 22 2층",
-    addressDetail: "7번 출구 어딘가",
-    shopTelNumber: "010-1234-5678",
-    shopInfo: "미슐랭 맛집",
-    shopImageURL: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg",
-    shopOwner: "백종원",
-    businessNumber: "123-12-1234",
-    bookmarks: [],
-    menu: [
-        ShopItem(name: "돈코츠 라멘", price: 11000, imageUrl: "https://www.kkday.com/ko/blog/wp-content/uploads/japan_food_3.jpeg"),
-        ShopItem(name: "마제소바", price: 10000, imageUrl: "https://www.kfoodtimes.com/news/photo/202105/16015_27303_5527.png"),
-        ShopItem(name: "차슈덮밥", price: 12000, imageUrl: "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/411/3435af5cc6041f247e89a65b1a1d73c5_res.jpeg")
-    ],
-    regularHoliday: ["월요일", "화요일", "수요일", "목요일"],
-    temporaryHoliday: [Date()],
-    breakTimeHours:  [
-        "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
-        "화요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
-        "수요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
-        "목요일": BusinessHours(startHour: 10, startMinute: 0, endHour: 18, endMinute: 0),
-        "금요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
-        "토요일": BusinessHours(startHour: 10, startMinute: 0, endHour: 15, endMinute: 0),
-        "일요일": BusinessHours(startHour: 12, startMinute: 0, endHour: 16, endMinute: 0)
-    ],
-    weeklyBusinessHours:  [
-        "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
-        "화요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "수요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "목요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "금요일": BusinessHours(startHour:15, startMinute: 0, endHour: 17, endMinute: 0),
-        "토요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-        "일요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0)
-    ])]
-
 enum ShopListSortCriterion: String, CaseIterable {
     case basic = "기본순"
     case bookmark = "북마크순"
@@ -135,9 +20,8 @@ struct ShopListView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    let dummyShops: [Shop] = Array(repeating: ShopStore.shop, count: 5) + dummyCafes
-
     @EnvironmentObject var shopStore: ShopStore
+    @StateObject var coordinator: Coordinator = Coordinator.shared
     
     @Binding var root: Bool
     @Binding var selection: Int
@@ -147,8 +31,20 @@ struct ShopListView: View {
     
     @State var isShowingSheet: Bool = false
     
+    @State var currentLocation: String = ""
+    
+//    init(locationText: String) {
+//        _currentLocation = State(initialValue: coordinator.convertLocationToAddress())
+//    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .center, spacing: 0) {
+                Text("\(currentLocation)")
+                
+                Spacer()
+            }
+            
             HStack(alignment: .center, spacing: 0) {
                 Text("\(selectedShopCategory.categoryName), \(selectedShopListSortCriterion.rawValue)")
                     .font(Font.pretendardSemiBold16)
@@ -156,6 +52,7 @@ struct ShopListView: View {
                 Spacer()
                 
                 Button {
+//                    convertLocationToAddress(location: CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng))
                     isShowingSheet.toggle()
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease")
@@ -167,27 +64,55 @@ struct ShopListView: View {
             }
             
             ScrollView(.vertical) {
-                ForEach(dummyShops.filter({ shop in
+                ForEach(shopStore.shopList.filter({ shop in
                     return shop.category == selectedShopCategory
+                }).sorted(by: { shop1, shop2 in
+                    switch selectedShopListSortCriterion {
+                    case .basic:
+                        return shop1.name < shop2.name
+                    case .bookmark:
+                        return shop1.bookmarks.count > shop2.bookmarks.count
+                    case .distance:
+                        let coord1 = CLLocation(latitude: shop1.coord.lat, longitude: shop1.coord.lng)
+                        let coord2 = CLLocation(latitude: shop2.coord.lat, longitude: shop2.coord.lng)
+                        return CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord1) < CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord2)
+                    }
                 }), id: \.self) { shop in
-                    ShopListCell(shop: shop)
-                        .padding(.vertical, 5)
-                        .foregroundColor(colorScheme == ColorScheme.dark ? Color.white : Color.black)
+                        ShopListCell(shop: shop)
+                            .padding(.vertical, 5)
+                            .foregroundColor(colorScheme == ColorScheme.dark ? Color.white : Color.black)
                 }
             }
         }
         .padding(10)
         .sheet(isPresented: $isShowingSheet) {
-            ShopListFilterSheetView(selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingSheet: $isShowingSheet)
+            ShopListFilterSheetView(originalShopCategory: selectedShopCategory, originalShopListSortCriterion: selectedShopListSortCriterion, selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingSheet: $isShowingSheet)
         }
-        
+//        .onAppear {
+////            currentLocation = convertLocationToAddress(location: CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng))
+//            currentLocation = coordinator.convertLocationToAddress()
+//        }
     }
+    
+//    func convertLocationToAddress(location: CLLocation) -> String {
+//        var locationString: String = ""
+//        let geocoder = CLGeocoder()
+//
+//        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+//            if error == nil, let placemark = placemarks?.first {
+//                locationString = "\(placemark.country ?? "") \(placemark.locality ?? "") \(placemark.name ?? "")"
+//            }
+//        }
+//
+//        return locationString
+//    }
 }
 
 struct ShopListView_Previews: PreviewProvider {
     static var previews: some View {
         ShopListView(root: .constant(true), selection: .constant(4))
             .environmentObject(ShopStore())
+//        ShopListView(locationText: "")
     }
 }
 
@@ -233,6 +158,9 @@ struct ShopListCell: View {
 
 struct ShopListFilterSheetView: View {
     
+    @State var originalShopCategory: Category
+    @State var originalShopListSortCriterion: ShopListSortCriterion
+    
     @Binding var selectedShopCategory: Category
     @Binding var selectedShopListSortCriterion: ShopListSortCriterion
     
@@ -242,13 +170,13 @@ struct ShopListFilterSheetView: View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 10) {
                 Section {
-                    FlowLayout(mode: .scrollable, items: Category.allCases, itemSpacing: 10) { data in
+                    FlowLayout(mode: .scrollable, items: Category.allCases, itemSpacing: 5) { data in
                         Button {
                             selectedShopCategory = data
                             print(selectedShopCategory.categoryName)
                         } label: {
                             Text(data.categoryName)
-                                .font(Font.pretendardBold18)
+                                .font(Font.pretendardBold14)
                                 .foregroundColor(selectedShopCategory == data ? Color.black : Color.white)
                                 .padding(10)
                         }
@@ -264,12 +192,12 @@ struct ShopListFilterSheetView: View {
                 Divider()
                 
                 Section {
-                    FlowLayout(mode: .scrollable, items: ShopListSortCriterion.allCases, itemSpacing: 10) { data in
+                    FlowLayout(mode: .scrollable, items: ShopListSortCriterion.allCases, itemSpacing: 5) { data in
                         Button {
                             selectedShopListSortCriterion = data
                         } label: {
                             Text(data.rawValue)
-                                .font(Font.pretendardBold18)
+                                .font(Font.pretendardBold14)
                                 .foregroundColor(selectedShopListSortCriterion == data ? Color.black : Color.white)
                                 .padding(10)
                         }
@@ -288,6 +216,8 @@ struct ShopListFilterSheetView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button {
+                        selectedShopCategory = originalShopCategory
+                        selectedShopListSortCriterion = originalShopListSortCriterion
                         isShowingSheet.toggle()
                     } label: {
                         Text("취소")
@@ -299,27 +229,6 @@ struct ShopListFilterSheetView: View {
                     } label: {
                         Text("적용")
                     }
-//     var body: some View {
-//         List {
-//             ForEach(shopStore.shopList, id: \.self) { shopData in
-//                 NavigationLink {
-//                     ShopDetailView(shopData: shopData)
-//                 } label: {
-//                     HStack(alignment: .top){
-//                         KFImage(URL(string: shopData.shopImageURL)!)
-//                                         .onFailure({ error in
-//                                             print("Error : \(error)")
-//                                         })
-//                                         .resizable()
-//                                         .frame(width: 80, height: 80)
-//                                         .clipped()
-//                                         .padding(.trailing)
-                        
-//                         VStack(alignment: .leading) {
-//                             Text("\(shopData.category.categoryName)")
-//                             Text(shopData.name)
-//                         }
-//                     }
                 }
             }
         }
