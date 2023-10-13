@@ -66,22 +66,32 @@ struct ShopListView: View {
             ScrollView(.vertical) {
                 ForEach(shopStore.shopList.filter({ shop in
                     return shop.category == selectedShopCategory
+                }).sorted(by: { shop1, shop2 in
+                    switch selectedShopListSortCriterion {
+                    case .basic:
+                        return shop1.name < shop2.name
+                    case .bookmark:
+                        return shop1.bookmarks.count > shop2.bookmarks.count
+                    case .distance:
+                        let coord1 = CLLocation(latitude: shop1.coord.lat, longitude: shop1.coord.lng)
+                        let coord2 = CLLocation(latitude: shop2.coord.lat, longitude: shop2.coord.lng)
+                        return CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord1) < CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord2)
+                    }
                 }), id: \.self) { shop in
-                    ShopListCell(shop: shop)
-                        .padding(.vertical, 5)
-                        .foregroundColor(colorScheme == ColorScheme.dark ? Color.white : Color.black)
+                        ShopListCell(shop: shop)
+                            .padding(.vertical, 5)
+                            .foregroundColor(colorScheme == ColorScheme.dark ? Color.white : Color.black)
                 }
             }
         }
         .padding(10)
         .sheet(isPresented: $isShowingSheet) {
-//            ShopListFilterSheetView(selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingSheet: $isShowingSheet)
             ShopListFilterSheetView(originalShopCategory: selectedShopCategory, originalShopListSortCriterion: selectedShopListSortCriterion, selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingSheet: $isShowingSheet)
         }
-        .onAppear {
-//            currentLocation = convertLocationToAddress(location: CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng))
-            currentLocation = coordinator.convertLocationToAddress()
-        }
+//        .onAppear {
+////            currentLocation = convertLocationToAddress(location: CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng))
+//            currentLocation = coordinator.convertLocationToAddress()
+//        }
     }
     
 //    func convertLocationToAddress(location: CLLocation) -> String {
