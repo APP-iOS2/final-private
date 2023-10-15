@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MyPageView: View {
     @EnvironmentObject private var userStore: UserStore
-    @GestureState private var swipeOffset: CGFloat = 0.0
     @Binding var root: Bool
     @Binding var selection: Int
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값

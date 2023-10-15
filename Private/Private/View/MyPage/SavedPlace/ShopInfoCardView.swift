@@ -9,9 +9,9 @@ import SwiftUI
 import Kingfisher
 
 struct ShopInfoCardView: View {
-    @EnvironmentObject var userStore: UserStore
+    let mySavedPlaceList: [MyFeed]
     var body: some View {
-        ForEach(userStore.mySavedPlaceList, id:\.self) {place in
+        ForEach(mySavedPlaceList, id:\.self) {place in
             HStack {
                 KFImage(URL(string:place.images[0])) .placeholder {
                     Image(systemName: "photo")
@@ -77,6 +77,6 @@ struct ShopInfoCardView: View {
 
 struct ShopInfoCardView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopInfoCardView().environmentObject(UserStore())
+        ShopInfoCardView(mySavedPlaceList: [MyFeed()])
     }
 }

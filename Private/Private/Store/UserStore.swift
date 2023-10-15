@@ -18,6 +18,9 @@ final class UserStore: ObservableObject {
     @Published var myFeedList: [MyFeed] = []
     @Published var mySavedFeedList: [MyFeed] = []
     @Published var mySavedPlaceList: [MyFeed] = []
+    @Published var otherFeedList: [MyFeed] = []
+    @Published var otherSavedFeedList: [MyFeed] = []
+    @Published var otherSavedPlaceList: [MyFeed] = []
     
     func createUser(user: User) {
         Firestore.firestore().collection("User")
@@ -100,6 +103,39 @@ final class UserStore: ObservableObject {
                 return MyFeed(documentData: data)
             } ?? []
             self.mySavedPlaceList.sort{$0.createdAt < $1.createdAt}
+        }
+    }
+    
+    func fetchotherUser(userEmail:String) {
+        Firestore.firestore().collection("User").document(userEmail).collection("MyFeed").addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                print("Error fetching user: \(error.localizedDescription)")
+            }
+            self.otherFeedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
+                let data = queryDocumentSnapshot.data()
+                return MyFeed(documentData: data)
+            } ?? []
+            self.otherFeedList.sort{$0.createdAt < $1.createdAt}
+        }
+        Firestore.firestore().collection("User").document(userEmail).collection("SavedFeed").addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                print("Error fetching user: \(error.localizedDescription)")
+            }
+            self.otherSavedFeedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
+                let data = queryDocumentSnapshot.data()
+                return MyFeed(documentData: data)
+            } ?? []
+            self.otherSavedFeedList.sort{$0.createdAt < $1.createdAt}
+        }
+        Firestore.firestore().collection("User").document(userEmail).collection("SavedPlace").addSnapshotListener { querySnapshot, error in
+            if let error = error {
+                print("Error fetching user: \(error.localizedDescription)")
+            }
+            self.otherSavedPlaceList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
+                let data = queryDocumentSnapshot.data()
+                return MyFeed(documentData: data)
+            } ?? []
+            self.otherSavedPlaceList.sort{$0.createdAt < $1.createdAt}
         }
     }
     
