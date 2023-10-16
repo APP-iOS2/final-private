@@ -35,9 +35,6 @@ final class FeedStore: ObservableObject {
         }
     }
     
-    func isCurrentUserWriter(_ feed: MyFeed) -> Bool {
-        return userStore.currentUserIsWriter(for: feed)
-    }
 
     // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
