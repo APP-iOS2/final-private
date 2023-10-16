@@ -17,6 +17,7 @@ struct PrivateApp: App {
     @StateObject private var userStore = UserStore()
     @StateObject private var reservationStore = ReservationStore()
     @StateObject private var shopStore = ShopStore()
+    @StateObject  var followStore = FollowStore()
     
     init() {
         let providerFactory = AppCheckDebugProviderFactory()
@@ -35,7 +36,7 @@ struct PrivateApp: App {
                 .environmentObject(ChatRoomStore())
                 .environmentObject(reservationStore)
                 .environmentObject(shopStore)
-                .environmentObject(FollowStore())
+                .environmentObject(followStore)
                 .task {
                     await shopStore.getAllShopData()
                     print(#fileID, #function, #line, "- task 실행======== ")

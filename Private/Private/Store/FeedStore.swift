@@ -15,7 +15,7 @@ final class FeedStore: ObservableObject {
     @Published var feedList: [MyFeed] = []
     
     private let dbRef = Firestore.firestore().collection("Feed")
-    private var followStore = FollowStore()
+//    private var followStore = FollowStore()
     
     
     init() {

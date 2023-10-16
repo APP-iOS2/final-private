@@ -12,13 +12,14 @@ struct MainTabView: View {
     init() {
         UITabBar.appearance().backgroundColor = UIColor(Color.tabColor)
     }
-    
+    @EnvironmentObject var followStore: FollowStore
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
+    @EnvironmentObject var searchStore: SearchStore
   
     @StateObject private var feedStore: FeedStore = FeedStore()
-    @StateObject private var searchStore: SearchStore = SearchStore()
+//    @StateObject private var searchStore: SearchStore = SearchStore()
      
     @State var selection: Int = 1
     @State private var rootSection1: Bool = false
@@ -69,6 +70,7 @@ struct MainTabView: View {
                     }.tag(1)
                     SearchView(root: $rootSection2, selection: $selection).tabItem {
                         Image(systemName: "magnifyingglass")
+                            .environmentObject(followStore)
                     }.tag(2)
                     UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true), showLocation: $showLocation, searchResult: $searchResult).tabItem {
                         Image(systemName: "plus")
