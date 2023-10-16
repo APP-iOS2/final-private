@@ -24,6 +24,17 @@ final class UserStore: ObservableObject {
     @Published var otherSavedFeedList: [MyFeed] = []
     @Published var otherSavedPlaceList: [MyFeed] = []
     
+    func fetchMyInfo(userEmail: String, completion: @escaping (Bool) -> Void) {
+        Firestore.firestore().collection("User").document(userEmail).getDocument { snapshot, error in
+            if let error = error {
+                print("Error fetching user: \(error.localizedDescription)")
+            } else if let userData = snapshot?.data(), let user = User(document: userData) {
+                self.user = user
+                completion(true)
+            }
+        }
+    }
+    
     func createUser(user: User) {
         Firestore.firestore().collection("User")
             .document(user.email)

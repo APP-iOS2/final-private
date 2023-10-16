@@ -30,19 +30,19 @@ struct LaunchView: View {
                         .foregroundStyle(.foreground)
                 }
                 .onAppear {
+                    if let email = authStore.currentUser?.email {
+                        userStore.fetchMyInfo(userEmail: email, completion: { result in
+                            if result {
+                                self.isActive = true
+                            }
+                        })
+                        userStore.fetchCurrentUser(userEmail: email)
+                    }
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                         withAnimation {
-                            self.isActive = true
                             self.isloading.toggle()
                         }
-                    }
-                    if let email = authStore.currentUser?.email {
-                        userStore.fetchCurrentUser(userEmail: email)
-                    }
-                }
-                .onDisappear {
-                    if let email = authStore.currentUser?.email {
-                        userStore.fetchCurrentUser(userEmail: email)
                     }
                 }
             }
