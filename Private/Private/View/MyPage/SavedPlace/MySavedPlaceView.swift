@@ -11,15 +11,13 @@ struct MySavedPlaceView: View {
     @EnvironmentObject private var userStore: UserStore
     var body: some View {
         ScrollView {
-            if userStore.user.bookmark.isEmpty {
+            if userStore.mySavedPlaceList.isEmpty {
                 Text("저장한 북마크가 없습니다.")
                     .font(.pretendardBold24)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
-                ShopInfoCardView()
-                Divider()
-                    .background(Color.primary)
-                    .frame(width: .screenWidth * 0.9)
+                ShopInfoCardView(mySavedPlaceList: userStore.mySavedPlaceList)
+                
             }
         }
     }

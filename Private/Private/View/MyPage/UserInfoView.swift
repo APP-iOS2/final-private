@@ -38,7 +38,7 @@ struct UserInfoView: View {
             VStack {
                 HStack {
                     VStack {
-                        Text("\(userStore.user.myFeed.count)")
+                        Text("\(userStore.myFeedList.count)")
                             .font(.pretendardBold18)
                             .padding(.bottom, 5.0)
                         Text("게시글")

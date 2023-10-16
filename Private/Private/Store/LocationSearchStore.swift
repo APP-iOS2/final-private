@@ -49,4 +49,40 @@ class LocationSearchStore: ObservableObject {
             }
         }
     }
+    
+    func reverseGeoCoding(lat: String, long: String) {
+        let baseURL = "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc"
+        
+        let headers: HTTPHeaders = [
+            "X-NCP-APIGW-API-KEY-ID": naver_map_client_ID,
+            "X-NCP-APIGW-API-KEY": naver_map_client_Secret,
+        ]
+        
+        let parameters: Parameters = [
+            "coords": "\(long),\(lat)",
+            "output": "json"
+        ]
+        
+        AF.request(baseURL,
+                   method: .get,
+                   parameters: parameters,
+                   encoding: URLEncoding.default,
+                   headers: headers)
+        .validate(statusCode: 200...500)
+        .responseDecodable(of: ReverseGeoCodingResult.self) { response in
+            switch response.result {
+            case .success(let data):
+                guard let statusCode = response.response?.statusCode else { return }
+                if statusCode == 200 {
+                    DispatchQueue.main.async {
+                        print("success reverseGeoCoding")
+                        print(data)
+//                        self.searchResultList = data.items
+                    }
+                }
+            case .failure(let error):
+                print("fail reverseGeoCoding")
+            }
+        }
+    }
 }

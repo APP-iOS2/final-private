@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct OtherPageView: View {
-    @GestureState private var swipeOffset: CGFloat = 0.0
-    /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
+    @EnvironmentObject private var userStore: UserStore
     @State var isMyhistoryButton: Bool = true
     @State var isMySavedFeedButton: Bool = false
     @State var isMySavedPlaceButton: Bool = false
@@ -78,12 +77,15 @@ struct OtherPageView: View {
                 .padding(.top, -8)
             
             TabView(selection: $viewNumber) {
-                OtherHistoryView(user: User()).tag(0)
-                OtherSavedView(user: User()).tag(1)
-                OtherSavedPlaceView(user: User()).tag(2)
+                OtherHistoryView(user: User(), otherFeedList: userStore.otherFeedList).tag(0)
+                OtherSavedView(user: User(), otherSavedFeedList: userStore.otherSavedFeedList).tag(1)
+                OtherSavedPlaceView(user: User(), otherSavedPlaceList: userStore.otherSavedPlaceList).tag(2)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             Spacer()
+                .onAppear {
+                    userStore.fetchotherUser(userEmail: user.email)
+                }
         }
     }
 }

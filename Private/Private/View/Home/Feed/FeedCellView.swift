@@ -13,6 +13,7 @@ struct FeedCellView: View {
     var feed: MyFeed
   
     @State private var currentPicture = 0
+    @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
 
     var body: some View {
         VStack {
@@ -51,7 +52,7 @@ struct FeedCellView: View {
                            .clipped()
                            .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
                            .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
-                           .tag(image)
+                           .tag(Int(feed.images.firstIndex(of: image) ?? 0))
                     }
                 }
             }.tabViewStyle(PageTabViewStyle())
@@ -66,10 +67,12 @@ struct FeedCellView: View {
                 Group {
                     Button {
                         print("북마크, 피드 저장")
+                        //userStore.savePlace(feed) //장소 저장 로직(사용가능)
                     } label: {
                         Image(systemName: "bookmark")
                     }
                     Button {
+                        //userStore.saveFeed(feed) //피드 저장 로직 (사용가능)
                         print("DM 보내기")
                     } label: {
                         Image(systemName: "paperplane")
