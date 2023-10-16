@@ -13,11 +13,8 @@ final class ChatRoomStore: ObservableObject {
     @Published var messageList: [Message] = []
     
     let userCollection = Firestore.firestore().collection("User")
-    //    var ref = Database.database().reference()
     let docRef = Firestore.firestore().collection("User")
-    //    @EnvironmentObject var userStore: UserStore
     
-    //
     func subscribeToChatRoomChanges (user: User) {
         print("email")
         print(user.email)
@@ -31,7 +28,7 @@ final class ChatRoomStore: ObservableObject {
         let userCollection = Firestore.firestore().collection("ChatRoom")
         
         userCollection
-            .getDocuments { (querySnapshot, error) in
+            .addSnapshotListener { [weak self] (querySnapshot, error) in
                 if let error = error {
                     print("Error getting chat room documents: \(error)")
                     return
@@ -52,7 +49,6 @@ final class ChatRoomStore: ObservableObject {
                         if (nickname1 == user.nickname || nickname2 == user.nickname) {
                             let documentData = document.data()
                             if let chatRoomData = documentData as? [String: Any],
-                               //                       let messagesData = chatRoomData["messages"] as? [[String: Any]],
                                let firstUserNickname = chatRoomData["firstUserNickname"] as? String,
                                let firstUserProfileImage = chatRoomData["firstUserProfileImage"] as? String,
                                let secondUserNickname = chatRoomData["secondUserNickname"] as? String,
@@ -64,17 +60,13 @@ final class ChatRoomStore: ObservableObject {
                     }
                     
                     DispatchQueue.main.async {
-                        self.chatRoomList = chatRooms
-                        print("chatRooms.count::\(chatRooms.count)")
-                        print("chatRoomList.count")
-                        print(self.chatRoomList.count)
+                        self?.chatRoomList = chatRooms
                     }
                 }
             }
     }
     
     func addChatRoomToUser(user: User, chatRoom: ChatRoom) {
-        //채팅방 만들기
         let userCollection = Firestore.firestore().collection("ChatRoom")
         if (user.nickname == chatRoom.firstUserNickname) {
             let subCollection = userCollection.document("\(user.nickname),\(chatRoom.secondUserNickname)")
@@ -94,7 +86,6 @@ final class ChatRoomStore: ObservableObject {
                     print("Reservation added to Firestore")
                 }
             }
-            
         } else {
             let subCollection = userCollection.document("\(user.nickname),\(chatRoom.firstUserNickname)")
             
@@ -104,7 +95,6 @@ final class ChatRoomStore: ObservableObject {
             chatRoomData["firstUserProfileImage"] = chatRoom.firstUserProfileImage
             chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
             chatRoomData["secondUserProfileImage"] = chatRoom.secondUserProfileImage
-            
             
             subCollection.setData(chatRoomData) { error in
                 if let error = error {
@@ -143,7 +133,7 @@ final class ChatRoomStore: ObservableObject {
                     let documentID = document.documentID
                     if documentID == "\(myNickName),\(otherUserNickname)" {
                         print("documentID: \(myNickName),\(otherUserNickname)")
-                        messageCollection1.getDocuments { (querySnapshot, error) in
+                        messageCollection1.order(by: "timestamp", descending: false).getDocuments { (querySnapshot, error) in
                             if let error = error {
                                 print("Error getting chat room documents: \(error)")
                                 return
@@ -158,7 +148,6 @@ final class ChatRoomStore: ObservableObject {
                             for document in querySnapshot.documents {
                                 let documentData = document.data()
                                 print("documentData: \(documentData)")
-                                
                                 if let messageData = documentData as? [String: Any],
                                    let sender = messageData["sender"] as? String,
                                    let content = messageData["content"] as? String,
@@ -171,7 +160,7 @@ final class ChatRoomStore: ObservableObject {
                         }
                     } else if documentID == "\(otherUserNickname),\(myNickName)" {
                         print("documentID: \(otherUserNickname),\(myNickName)")
-                        messageCollection2.getDocuments { (querySnapshot, error) in
+                        messageCollection2.order(by: "timestamp", descending: false).getDocuments { (querySnapshot, error) in
                             if let error = error {
                                 print("Error getting chat room documents: \(error)")
                                 return
@@ -195,7 +184,6 @@ final class ChatRoomStore: ObservableObject {
                                 }
                                 
                             }
-                            
                         }
                     }
                 }
@@ -218,7 +206,6 @@ final class ChatRoomStore: ObservableObject {
             
             if let messageDict = messageToDictionary(message) {
                 print("messageDict:\(messageDict)")
-                //                messagesData.append(messageDict)
                 messagesData = messageDict
                 
             } else {
@@ -226,9 +213,6 @@ final class ChatRoomStore: ObservableObject {
                 return
             }
         }
-        
-        //        ?let use?rCollection = Firestore.firestore().collection("ChatRoom")
-        
         userCollection
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -262,62 +246,10 @@ final class ChatRoomStore: ObservableObject {
                     }
                 }
             }
-        
-        //        messageCollection.addDocument(data: messagesData) { error in
-        //            if let error = error {
-        //                print("Error adding chatRoom: \(error.localizedDescription)")
-        //            } else {
-        //                print("Reservation added to Firestore")
-        //            }
-        //        }
     }
-    
-    //MARK: - 미사용
-    
-    //    func addChatRoomToUser(user: User, chatRoom: ChatRoom) {
-    //        let userCollection = Firestore.firestore().collection("User")
-    //        let subCollection = userCollection.document(user.email).collection("chattingRoom")
-    //
-    //        // ChatRoom 데이터 생성
-    //        var chatRoomData: [String: Any] = [:]
-    //
-    ////        if let otherUserDict = userToDictionary(user: chatRoom.otherUser) {
-    ////            chatRoomData["otherUser"] = otherUserDict
-    ////        } else {
-    ////            print("Invalid other user data")
-    ////            return
-    ////        }
-    //
-    //        var messagesData: [[String: Any]] = []
-    //
-    //        for message in chatRoom.messages {
-    //            if let messageDict = messageToDictionary(message) {
-    //                print("messageDict:\(messageDict)")
-    //                messagesData.append(messageDict)
-    //            } else {
-    //                print("Invalid message data")
-    //                return
-    //            }
-    //        }
-    //
-    //        chatRoomData["messages"] = messagesData
-    //
-    //        subCollection.document(chatRoom.otherUserNickname).setData(chatRoomData)
-    //        // chattingRooms 컬렉션에 채팅방 데이터 추가
-    ////        subCollection.addDocument(data: ["chattingRoom": [chatRoomData]]) { error in
-    ////            if let error = error {
-    ////                print("Error adding chat room to user: \(error.localizedDescription)")
-    ////            } else {
-    ////                print("chatRoomData::\(chatRoomData)")
-    ////                print("Chat room added to user successfully")
-    ////            }
-    ////        }
-    //    }
-    
-    
+
     // Message 객체를 딕셔너리로 변환하는 함수
     func messageToDictionary(_ message: Message) -> [String: Any]? {
-        
         return [
             "sender": message.sender,
             "content": message.content,
