@@ -62,6 +62,9 @@ struct ChatRoomView: View {
         }
         .onAppear {
             chatRoomStore.fetchMessage(myNickName: userStore.user.nickname, otherUserNickname: chatRoom.otherUserNickname)
+            print("\(chatRoomStore.messageList)")
+            print("\(userStore.user)")
+            print("\(chatRoom)")
         }
         
         SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {

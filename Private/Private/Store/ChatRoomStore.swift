@@ -76,8 +76,6 @@ final class ChatRoomStore: ObservableObject {
         //채팅방 만들기
         let userCollection = Firestore.firestore().collection("ChatRoom")
         let subCollection = userCollection.document("\(user.nickname),\(chatRoom.otherUserNickname)")
-        let messageCollection = subCollection.collection("Message")
-        //        let messageSubCollection = subCollection.collection("Message").document()
         
         var chatRoomData: [String: Any] = [:]
         
@@ -93,33 +91,10 @@ final class ChatRoomStore: ObservableObject {
                 print("Reservation added to Firestore")
             }
         }
-        
-        //메세지 추가 함수 분리
-        var messagesData: [String: Any] = [:]
-        
-        for message in messageList {
-            
-            if let messageDict = messageToDictionary(message) {
-                print("messageDict:\(messageDict)")
-                //                messagesData.append(messageDict)
-                messagesData = messageDict
-                
-            } else {
-                print("Invalid message data")
-                return
-            }
-        }
-        
-        messageCollection.addDocument(data: messagesData) { error in
-            if let error = error {
-                print("Error adding chatRoom: \(error.localizedDescription)")
-            } else {
-                print("Reservation added to Firestore")
-            }
-        }
     }
     
     func fetchMessage(myNickName: String, otherUserNickname: String){
+        print("=======fetchMessage=========")
         let userCollection = Firestore.firestore().collection("ChatRoom")
         let subCollection1 = userCollection.document("\(myNickName),\(otherUserNickname)")
         let messageCollection1 = subCollection1.collection("Message")
@@ -140,10 +115,12 @@ final class ChatRoomStore: ObservableObject {
                     print("No chat room documents found for the given nickname")
                     return
                 }
+                print("=======for=========")
                 
                 for document in querySnapshot.documents {
                     let documentID = document.documentID
                     if documentID == "\(myNickName),\(otherUserNickname)" {
+                        print("documentID: \(myNickName),\(otherUserNickname)")
                         messageCollection1.getDocuments { (querySnapshot, error) in
                             if let error = error {
                                 print("Error getting chat room documents: \(error)")
@@ -157,21 +134,21 @@ final class ChatRoomStore: ObservableObject {
                             
                             
                             for document in querySnapshot.documents {
-                                //                                for message in messageList
                                 let documentData = document.data()
-                                if let messageData = documentData as? [String: Any],
-                                   let content = messageData["content"] as? String,
-                                   let sender = messageData["sender"] as? String,
-                                   let timestamp = messageData["timestamp"] as? Double
-                                {
-                                    let message = Message(sender: sender, content: content, timestamp: timestamp)
-                                    messages.append(message)
-                                }
+                                print("documentData: \(documentData)")
                                 
+                                if let messageData = documentData as? [String: Any],
+                                   let sender = messageData["sender"] as? String,
+                                   let content = messageData["content"] as? String,
+                                   let timestamp = messageData["timestamp"] as? Double {
+                                    let message = Message(sender: sender, content: content, timestamp: timestamp)
+                                    print("message: \(message)")
+                                    self.messageList.append(message)
+                                }
                             }
-                            
                         }
                     } else if documentID == "\(otherUserNickname),\(myNickName)" {
+                        print("documentID: \(otherUserNickname),\(myNickName)")
                         messageCollection2.getDocuments { (querySnapshot, error) in
                             if let error = error {
                                 print("Error getting chat room documents: \(error)")
@@ -187,25 +164,20 @@ final class ChatRoomStore: ObservableObject {
                                 //                                for message in messageList
                                 let documentData = document.data()
                                 if let messageData = documentData as? [String: Any],
-                                   let content = messageData["content"] as? String,
                                    let sender = messageData["sender"] as? String,
+                                   let content = messageData["content"] as? String,
                                    let timestamp = messageData["timestamp"] as? Double
                                 {
                                     let message = Message(sender: sender, content: content, timestamp: timestamp)
-                                    messages.append(message)
+                                    self.messageList.append(message)
                                 }
                                 
                             }
                             
                         }
                     }
-                    DispatchQueue.main.async {
-                        self.messageList = messages
-                    }
                 }
-                
             }
-        
     }
     
     func sendMessage(myNickName: String, otherUserNickname: String, message: Message) {
