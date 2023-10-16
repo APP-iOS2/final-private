@@ -70,9 +70,7 @@ struct FeedCellView: View {
           VStack {
               HStack{
                   Button {
-                      print("북마크, 피드 저장")
                       if(userStore.user.myFeed.contains(feed.images[0])) {
-                          print("삭제")
                           for userStoreImageId in userStore.user.myFeed {
                               for myFeed in userStore.mySavedFeedList {
                                   if userStoreImageId == myFeed.images[0] {
@@ -113,10 +111,24 @@ struct FeedCellView: View {
        
         HStack {
                 Button {
-                    print("핀, 장소 저장")
-                    userStore.savePlace(feed) //장소 저장 로직(사용가능)
+                    if (userStore.user.bookmark.contains("\(feed.images[0].suffix(32))")) {
+                        print("핀, 장소 저장")
+                        for placeId in userStore.user.bookmark {
+                            for userStorePlaceId in userStore.mySavedPlaceList {
+                                if placeId == userStorePlaceId.writerProfileImage {
+                                    userStore.deletePlace(userStorePlaceId)
+                                }
+                            }
+                        }
+                        userStore.user.bookmark.removeAll { $0 == "\(feed.images[0].suffix(32))" }
+                        userStore.updateUser(user: userStore.user)
+                    } else {
+                        userStore.savePlace(feed) //장소 저장 로직(사용가능)
+                        userStore.user.bookmark.append("\(feed.images[0].suffix(32))")
+                        userStore.updateUser(user: userStore.user)
+                    }
                 } label: {
-                    Image(systemName: "pin")
+                    Image(systemName: userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? "pin.fill": "pin")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 15)
