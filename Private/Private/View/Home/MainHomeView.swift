@@ -19,7 +19,8 @@ struct MainHomeView: View {
     
     @State var selectedNumber: Int = 0
     @State private var tapped: Bool = true
-    
+    @State private var isShowSearch: Bool = false
+
     
     var body: some View {
         NavigationStack {
@@ -48,7 +49,7 @@ struct MainHomeView: View {
                     Spacer()
                     
                     Button {
-                        selectedNumber = 2
+                        isShowSearch.toggle()
                         print("검색 버튼 클릭")
                     } label: {
                         Image(systemName: "magnifyingglass")
@@ -66,12 +67,13 @@ struct MainHomeView: View {
             .font(.pretendardMedium20)
             .foregroundColor(.primary)
             
+            .sheet(isPresented: $isShowSearch) {
+                MapSearchView(showLocation: $showLocation, searchResult: $searchResult, coord: $coordinator.coord, selection: $selection)
+            }
             if selectedNumber == 0 {
                 MapMainView()
             } else if selectedNumber == 1 {
                 FeedMainView()
-            } else if selectedNumber == 2 {
-                MapSearchView(showLocation: $showLocation, searchResult: $searchResult, coord: $coordinator.coord, selection: $selection)
             }
         }
     }

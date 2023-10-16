@@ -17,6 +17,8 @@ final class UserStore: ObservableObject {
     @Published var following: [User] = []
     @Published var myFeedList: [MyFeed] = []
     @Published var mySavedFeedList: [MyFeed] = []
+    @Published var mySavedPlace: [MyFeed] = []
+
     @Published var mySavedPlaceList: [MyFeed] = []
     @Published var otherFeedList: [MyFeed] = []
     @Published var otherSavedFeedList: [MyFeed] = []
@@ -194,12 +196,39 @@ final class UserStore: ObservableObject {
             print("Error bookMark Feed: \(error)")
         }
     }
+    
+    func createMarker() {
+        
+    }
+//    func createUser(user: User) {
+//        Firestore.firestore().collection("User")
+//            .document(user.email)
+////            .setData(user.toDictionary())
+//            .setData(["email" : user.email,
+//                      "name" : user.name,
+//                      "nickname" : user.nickname,
+//                      "phoneNumber" : user.phoneNumber,
+//                      "profileImageURL" : user.profileImageURL,
+//                      "follower" : user.follower,
+//                      "following" : user.following,
+//                      "myFeed" : user.myFeed,
+//                      "savedFeed" : user.savedFeed,
+//                      "bookmark" : user.bookmark,
+//                      "chattingRoom" : user.chattingRoom,
+//                      "myReservation" : user.myReservation
+//                     ]
+//            )
+//        
+//        fetchCurrentUser(userEmail: user.email)
+//    }
+  
     func deleteFeed(_ feed: MyFeed) {
         Firestore.firestore().collection("User").document(user.email)
             .collection("SavedFeed")
             .document("\(feed.images[0].suffix(32))")
             .delete()
     }
+
     func savePlace(_ feed: MyFeed) {
         Firestore.firestore().collection("User").document(user.email).collection("SavedPlace")
             .document(feed.id)

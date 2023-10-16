@@ -660,9 +660,9 @@
 				3CB734072ABD6EEF00D82503 /* MapMainView.swift */,
 				63BB09992ABD87BD002CCE4E /* NaverMap.swift */,
 				3C2FC8EF2ACE9B740034F561 /* MapFeedSheetView.swift */,
-				3C94275A2ACF9C1800EECCD8 /* MapMarkerFeedView.swift */,
 				3C2FC8ED2ACE9B740034F561 /* MapReviewRowView.swift */,
 				E3071A242AD9204D00090B62 /* MapSearchView.swift */,
+				3C94275A2ACF9C1800EECCD8 /* MapMarkerFeedView.swift */,
 				3C2FC8D52ACE9AFA0034F561 /* MapMarker */,
 			);
 			path = Map;

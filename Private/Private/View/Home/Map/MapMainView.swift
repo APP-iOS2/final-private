@@ -31,6 +31,9 @@ struct MapMainView: View {
             Coordinator.shared.feedStore.feedList = feedStore.feedList
             coordinator.makeMarkers()
         }
+//        .onChange(of: coord, perform: { _ in
+//                coordinator.fetchUserLocation()
+//        })
         .onChange(of: coord, perform: { _ in
                 coordinator.fetchUserLocation()
         })
