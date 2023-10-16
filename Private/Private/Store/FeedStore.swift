@@ -3,7 +3,6 @@
 //  Private
 //
 //  Created by 변상우 on 2023/09/22.
-//
 
 import Foundation
 import Firebase
@@ -11,40 +10,35 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 
-
-
 final class FeedStore: ObservableObject {
-    
-    // @Published 는 SwiftUI에서 ObservableObject의 프로퍼티가 변경될 때 View를 업데이트하도록 합니다.
     @Published var feedList: [MyFeed] = []
-    
-    // Firestore 데이터베이스의 "Feed" 컬렉션에 대한 참조를 생성합니다.
+
     private let dbRef = Firestore.firestore().collection("Feed")
-    
-    
-    
-    // 초기화 함수에서 피드를 가져옵니다.
+    // UserStore 인스턴스를 저장하기 위한 속성 추가
+    //private let userStore: UserStore
     init() {
         fetchFeeds()
     }
-    // 피드를 Firestore에서 가져오는 함수입니다.
     func fetchFeeds() {
-        // Firestore에서 실시간으로 데이터를 가져오기 위해 addSnapshotListener를 사용합니다.
         dbRef.addSnapshotListener { [weak self] (querySnapshot, error) in
-            // 에러가 있다면 콘솔에 출력하고 반환합니다.
             if let error = error {
                 print("Error fetching documents: \(error.localizedDescription)")
                 return
             }
-            // 문서 데이터를 Feed 타입으로 변환하고 feedList를 업데이트합니다.
             self?.feedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
                 let data = queryDocumentSnapshot.data()
-                return MyFeed(documentData: data)
-            } ?? []  // 문서가 없다면 빈 배열을 할당합니다.
+                var feed = MyFeed(documentData: data)
+                feed?.createdAt = data["createdAt"] as? Double ?? 0.0 // createdAt 값을 Double로 설정
+                return feed
+            }
+            .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
     }
     
-    
+    func isCurrentUserWriter(_ feed: MyFeed) -> Bool {
+        return userStore.currentUserIsWriter(for: feed)
+    }
+
     // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
         return [
@@ -60,11 +54,8 @@ final class FeedStore: ObservableObject {
             "roadAddress": feed.roadAddress,
             "mapx": feed.mapx,
             "mapy": feed.mapy,
-            
-            
         ]
     }
-    
     
 }
 
