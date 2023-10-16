@@ -15,9 +15,13 @@ struct EmptyFeed: View {
     var feedType: FeedType
     
     var body: some View {
-        VStack(spacing: 20) {
+//        VStack(spacing: 20) {
+        VStack {
+            Spacer()  // 상단 여백
             if feedType == .noFollowing {
+              
                 Text("팔로잉 목록이 없습니다.")
+                
                     .font(.title)
                     .foregroundColor(.gray)
                 
@@ -40,12 +44,18 @@ struct EmptyFeed: View {
                 Text("친구들의 피드를 확인하려면 팔로잉하세요!")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
+                NavigationLink(destination: SearchView(root: .constant(true), selection: .constant(0))) {
+                    Text("팔로잉하러 가기")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
             }
+            Spacer()  // 하단 여백
         }
-        .padding()
     }
 }
-
 struct EmptyFeed_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
