@@ -16,7 +16,7 @@ struct ChatRoomView: View {
     var chatRoom: ChatRoom
     
     var body: some View {
-        List(chatRoom.messages, id: \.self) { message in
+        List(chatRoomStore.messageList, id: \.self) { message in
             if (message.sender == "나") {
                 Text(message.content)
                     .padding(10)

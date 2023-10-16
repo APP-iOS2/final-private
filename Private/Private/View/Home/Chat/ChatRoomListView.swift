@@ -24,7 +24,7 @@ struct ChatRoomListView: View {
 
     let message1 = Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)
     let message2 = Message(sender:  "nickname2", content: "Hi!", timestamp: Date().timeIntervalSince1970 + 1)
-    var chatRoom = ChatRoom(otherUserName: "s", otherUserNickname: "boogie2", otherUserProfileImage: "", messages: [Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970),Message(sender:  "nickname2", content: "Hi!", timestamp: Date().timeIntervalSince1970 + 1)])
+    var chatRoom = ChatRoom(otherUserName: "ll", otherUserNickname: "boogie", otherUserProfileImage: "")
     // addChatRoomToUser 메서드 호출하여 채팅방 추가
 //    addChatRoomToUser(user: user, chatRoom: chatRoom)
     
@@ -55,7 +55,7 @@ struct ChatRoomListView: View {
         }
         .onAppear{
             chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
-            
+            chatRoomStore.messageList = [message1]
 //            chatRoom = ChatRoom(otherUserName: "s", otherUserNickname: "boogie", otherUserProfileImage: "", messages: [message1,message2])
         }
         .navigationTitle("채팅방")
