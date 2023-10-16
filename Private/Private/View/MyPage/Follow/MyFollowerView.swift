@@ -12,6 +12,7 @@ import Kingfisher
 
 struct MyFollowerView: View {
     @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var followStore: FollowStore
     @State private var followerUserList: [User] = []
     var body: some View {
         ScrollView {
