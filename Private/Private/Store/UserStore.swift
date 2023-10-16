@@ -64,7 +64,6 @@ final class UserStore: ObservableObject {
                          "myReservation" : user.myReservation
                         ]
             )
-        
         fetchCurrentUser(userEmail: user.email)
     }
     
@@ -230,11 +229,12 @@ final class UserStore: ObservableObject {
     }
 
     func savePlace(_ feed: MyFeed) {
-        Firestore.firestore().collection("User").document(user.email).collection("SavedPlace")
-            .document(feed.id)
+        Firestore.firestore().collection("User").document(user.email)
+            .collection("SavedPlace")
+            .document("\(feed.images[0].suffix(32))")
             .setData(["writerNickname": "",
                       "writerName": "",
-                      "writerProfileImage": "",
+                      "writerProfileImage": "\(feed.images[0].suffix(32))",
                       "images": feed.images,
                       "contents": "",
                       "title": feed.title,
@@ -244,6 +244,13 @@ final class UserStore: ObservableObject {
                       "mapx": feed.mapx,
                       "mapy": feed.mapy
                      ])
+    }
+    
+    func deletePlace(_ feed: MyFeed) {
+        Firestore.firestore().collection("User").document(user.email)
+            .collection("SavedPlace")
+            .document("\(feed.writerProfileImage)")
+            .delete()
     }
     
 }
