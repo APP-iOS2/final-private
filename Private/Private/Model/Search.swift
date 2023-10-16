@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NMapsMap
 
 struct SearchResultList: Codable {
     let total: Int

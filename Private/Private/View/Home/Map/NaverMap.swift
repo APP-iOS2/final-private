@@ -42,6 +42,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     
     var feedStore: FeedStore = FeedStore()
     var shopStore: ShopStore = ShopStore()
+    var userStore: UserStore = UserStore()
     var markers: [NMFMarker] = []
     var locationManager: CLLocationManager?
     var previousMarker: NMFMarker?
@@ -154,7 +155,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         
         var tempMarkers: [NMFMarker] = []
         
-        for shopMarker in feedStore.feedList {
+        for shopMarker in userStore.mySavedPlace {
             let marker = NMFMarker()
             
             marker.position = NMGLatLng(lat: Double(shopMarker.mapx) ?? 0.0, lng: Double(shopMarker.mapy) ?? 0.0)
@@ -190,6 +191,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
             marker.mapView = view.mapView
         }
         markerTapped()
+//        userStore.saveFeed(MyFeed())
     }
     
     //    func makeBookMarkedMarkers() {
@@ -265,7 +267,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         let cameraUpdate = NMFCameraUpdate(scrollTo: coord)
         cameraUpdate.animation = .fly
         cameraUpdate.animationDuration = 1
-        Coordinator.shared.view.mapView.moveCamera(cameraUpdate)
+        view.mapView.moveCamera(cameraUpdate)
     }
     
     // MARK: - 지도 터치에 이용되는 Delegate

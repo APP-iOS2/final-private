@@ -244,9 +244,9 @@ struct PostView: View {
                 } // leading VStack
                
             }
-            .sheet(isPresented: $ImageViewPresented) {
-                ImagePickerView(selectedImages: $selectedImage)
-            }
+//            .sheet(isPresented: $ImageViewPresented) {
+//                ImagePickerView(selectedImages: $selectedImage)
+//            }
             // toolbar 자리
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -267,7 +267,7 @@ struct PostView: View {
                     print("취소 버튼 클릭")
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
-                    fetch()
+                    creatFeed()
                     isPostViewPresented = false
                     selection = 1
                     print("완료 버튼 클릭")
@@ -292,7 +292,7 @@ struct PostView: View {
     } // body
     
     //MARK: 파베함수
-    func fetch() {
+    func creatFeed() {
         //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
         
         var feed = MyFeed(writerNickname: userStore.user.nickname,

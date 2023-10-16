@@ -17,7 +17,8 @@ final class UserStore: ObservableObject {
     @Published var following: [User] = []
     @Published var myFeedList: [MyFeed] = []
     @Published var mySavedFeedList: [MyFeed] = []
-    
+    @Published var mySavedPlace: [MyFeed] = []
+
     func createUser(user: User) {
         Firestore.firestore().collection("User")
             .document(user.email)
@@ -148,5 +149,30 @@ final class UserStore: ObservableObject {
             print("Error bookMark Feed: \(error)")
         }
     }
+    
+    func createMarker() {
+        
+    }
+//    func createUser(user: User) {
+//        Firestore.firestore().collection("User")
+//            .document(user.email)
+////            .setData(user.toDictionary())
+//            .setData(["email" : user.email,
+//                      "name" : user.name,
+//                      "nickname" : user.nickname,
+//                      "phoneNumber" : user.phoneNumber,
+//                      "profileImageURL" : user.profileImageURL,
+//                      "follower" : user.follower,
+//                      "following" : user.following,
+//                      "myFeed" : user.myFeed,
+//                      "savedFeed" : user.savedFeed,
+//                      "bookmark" : user.bookmark,
+//                      "chattingRoom" : user.chattingRoom,
+//                      "myReservation" : user.myReservation
+//                     ]
+//            )
+//        
+//        fetchCurrentUser(userEmail: user.email)
+//    }
 }
 
