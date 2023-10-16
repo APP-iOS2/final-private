@@ -1,20 +1,25 @@
 //
-//  LocationSearchView.swift
+//  MapSearchView.swift
 //  Private
 //
-//  Created by 변상우 on 10/10/23.
+//  Created by 최세근 on 10/13/23.
 //
 
 import SwiftUI
+import NMapsMap
 
-struct LocationSearchView: View {
+struct MapSearchView: View {
     
-    @StateObject private var locationSearchStore = LocationSearchStore.shared
-    
+    @ObservedObject private var locationSearchStore = LocationSearchStore.shared
+    @ObservedObject var coordinator: Coordinator = Coordinator.shared
+
     @Binding var showLocation: Bool
     @Binding var searchResult: SearchResult
-    
+    @Binding var coord: NMGLatLng
+    @Binding var selection: Int
+
     @State private var searchText: String = ""
+    
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -24,8 +29,12 @@ struct LocationSearchView: View {
                 VStack(alignment: .leading) {
                     ForEach(locationSearchStore.searchResultList, id: \.self) { location in
                         Button {
+                            guard let locationManager = coordinator.locationManager else { return }
                             showLocation = false
                             searchResult = location
+                            print(location.mapx)
+                            selection = 1
+                            coordinator.coord = NMGLatLng(lat: locationManager.location?.coordinate.latitude ?? 0.0, lng: locationManager.location?.coordinate.longitude ?? 0.0)
                         } label: {
                             VStack(alignment: .leading) {
                                 Text("\(location.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
@@ -45,10 +54,11 @@ struct LocationSearchView: View {
         }
         .padding()
     }
+
 }
 
-struct LocationSearchView_Previews: PreviewProvider {
+struct MapSearchView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationSearchView(showLocation: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
+        MapSearchView(showLocation: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), selection: .constant(1))
     }
 }
