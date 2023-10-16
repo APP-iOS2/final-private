@@ -16,11 +16,9 @@ final class SearchStore: ObservableObject {
     
     let userDefaults: UserDefaults = UserDefaults.standard
     
-    init() {
-        
-    }
     
     func searchUser(searchTerm: String) async {
+        self.searchUserLists = []
         let db = Firestore.firestore()
         
         let query = db.collection("User")

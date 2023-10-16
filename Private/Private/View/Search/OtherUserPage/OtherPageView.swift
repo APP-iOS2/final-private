@@ -14,6 +14,7 @@ struct OtherPageView: View {
     @State var isMySavedFeedButton: Bool = false
     @State var isMySavedPlaceButton: Bool = false
     @State var viewNumber: Int = 0
+    
     let user:User
     
     var body: some View {

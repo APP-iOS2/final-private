@@ -79,7 +79,7 @@ struct OtherInfoView: View {
                 }
                 .padding(.bottom, 10.0)
                 
-                FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers)
+                FollowButton(user: user)
                         .font(.pretendardRegular14)
                         .frame(width: .screenWidth*0.5, height: 32)
                         .background(followStore.followCheck ? Color("AccentColor") : Color.white)
