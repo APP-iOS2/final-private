@@ -43,25 +43,40 @@ struct ChatRoomView: View {
         
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                HStack {
-                    Image("userDefault")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30)
-                        .cornerRadius(50)
-                    VStack(alignment: .leading) {
-                        Text("\(chatRoom.otherUserName)")
-                            .font(.pretendardSemiBold14)
-                        Text("\(chatRoom.otherUserNickname)")
-                            .font(.pretendardRegular12)
+                if (userStore.user.nickname == chatRoom.firstUserNickname) {
+                    HStack {
+                        Image("userDefault")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30)
+                            .cornerRadius(50)
+                        VStack(alignment: .leading) {
+                            Text("\(chatRoom.secondUserNickname)")
+                                .font(.pretendardSemiBold14)
+                        }
+                        .padding(.leading, 5)
+                        Spacer()
                     }
-                    .padding(.leading, 5)
-                    Spacer()
+                } else {
+                    HStack {
+                        Image("userDefault")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30)
+                            .cornerRadius(50)
+                        VStack(alignment: .leading) {
+                            Text("\(chatRoom.firstUserNickname)")
+                                .font(.pretendardSemiBold14)
+                        }
+                        .padding(.leading, 5)
+                        Spacer()
+                    }
                 }
             }
         }
+        
         .onAppear {
-            chatRoomStore.fetchMessage(myNickName: userStore.user.nickname, otherUserNickname: chatRoom.otherUserNickname)
+            chatRoomStore.fetchMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname)
             print("\(chatRoomStore.messageList)")
             print("\(userStore.user)")
             print("\(chatRoom)")
@@ -70,7 +85,7 @@ struct ChatRoomView: View {
         SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
 //            sendMessage()
             print("chatRoom-sendMessage\(chatRoom)")
-            chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: chatRoom.otherUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: NSTimeIntervalSince1970))
+            chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: NSTimeIntervalSince1970))
         }
     }
     

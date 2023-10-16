@@ -53,10 +53,11 @@ final class ChatRoomStore: ObservableObject {
                             let documentData = document.data()
                             if let chatRoomData = documentData as? [String: Any],
                                //                       let messagesData = chatRoomData["messages"] as? [[String: Any]],
-                               let otherUserName = chatRoomData["otherUserName"] as? String,
-                               let otherUserNickname = chatRoomData["otherUserNickname"] as? String,
-                               let otherUserProfileImage = chatRoomData["otherUserProfileImage"] as? String {
-                                let chatRoom = ChatRoom(otherUserName: otherUserName, otherUserNickname: otherUserNickname, otherUserProfileImage: otherUserProfileImage)
+                               let firstUserNickname = chatRoomData["firstUserNickname"] as? String,
+                               let firstUserProfileImage = chatRoomData["firstUserProfileImage"] as? String,
+                               let secondUserNickname = chatRoomData["secondUserNickname"] as? String,
+                               let secondUserProfileImage = chatRoomData["secondUserProfileImage"] as? String {
+                                let chatRoom = ChatRoom(firstUserNickname: firstUserNickname, firstUserProfileImage: firstUserProfileImage, secondUserNickname: secondUserNickname, secondUserProfileImage: secondUserProfileImage)
                                 chatRooms.append(chatRoom)
                             }
                         }
@@ -75,25 +76,48 @@ final class ChatRoomStore: ObservableObject {
     func addChatRoomToUser(user: User, chatRoom: ChatRoom) {
         //채팅방 만들기
         let userCollection = Firestore.firestore().collection("ChatRoom")
-        let subCollection = userCollection.document("\(user.nickname),\(chatRoom.otherUserNickname)")
-        
-        var chatRoomData: [String: Any] = [:]
-        
-        chatRoomData["otherUserName"] = chatRoom.otherUserName
-        chatRoomData["otherUserNickname"] = chatRoom.otherUserNickname
-        chatRoomData["otherUserProfileImage"] = chatRoom.otherUserProfileImage
-        
-        
-        subCollection.setData(chatRoomData) { error in
-            if let error = error {
-                print("Error adding chatRoom: \(error.localizedDescription)")
-            } else {
-                print("Reservation added to Firestore")
+        if (user.nickname == chatRoom.firstUserNickname) {
+            let subCollection = userCollection.document("\(user.nickname),\(chatRoom.secondUserNickname)")
+            
+            var chatRoomData: [String: Any] = [:]
+            
+            chatRoomData["firstUserNickname"] = chatRoom.firstUserNickname
+            chatRoomData["firstUserProfileImage"] = chatRoom.firstUserProfileImage
+            chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
+            chatRoomData["secondUserProfileImage"] = chatRoom.secondUserProfileImage
+            
+            
+            subCollection.setData(chatRoomData) { error in
+                if let error = error {
+                    print("Error adding chatRoom: \(error.localizedDescription)")
+                } else {
+                    print("Reservation added to Firestore")
+                }
+            }
+            
+        } else {
+            let subCollection = userCollection.document("\(user.nickname),\(chatRoom.firstUserNickname)")
+            
+            var chatRoomData: [String: Any] = [:]
+            
+            chatRoomData["firstUserNickname"] = chatRoom.firstUserNickname
+            chatRoomData["firstUserProfileImage"] = chatRoom.firstUserProfileImage
+            chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
+            chatRoomData["secondUserProfileImage"] = chatRoom.secondUserProfileImage
+            
+            
+            subCollection.setData(chatRoomData) { error in
+                if let error = error {
+                    print("Error adding chatRoom: \(error.localizedDescription)")
+                } else {
+                    print("Reservation added to Firestore")
+                }
             }
         }
     }
     
     func fetchMessage(myNickName: String, otherUserNickname: String){
+        self.messageList = []
         print("=======fetchMessage=========")
         let userCollection = Firestore.firestore().collection("ChatRoom")
         let subCollection1 = userCollection.document("\(myNickName),\(otherUserNickname)")
@@ -101,8 +125,6 @@ final class ChatRoomStore: ObservableObject {
         
         let subCollection2 = userCollection.document("\(otherUserNickname),\(myNickName)")
         let messageCollection2 = subCollection2.collection("Message")
-        
-        var messages: [Message] = []
         
         userCollection
             .getDocuments { (querySnapshot, error) in

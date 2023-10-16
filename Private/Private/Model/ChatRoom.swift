@@ -8,30 +8,32 @@
 import Foundation
 
 struct ChatRoom: Hashable {
-    var otherUserName: String
-    var otherUserNickname: String
-    var otherUserProfileImage: String
-//    var messages: [Message]
+    var firstUserNickname: String
+    var firstUserProfileImage: String
+    var secondUserNickname: String
+    var secondUserProfileImage: String
     
-    init(otherUserName: String,otherUserNickname: String,otherUserProfileImage: String) {
-        self.otherUserName = otherUserName
-        self.otherUserNickname = otherUserNickname
-        self.otherUserProfileImage = otherUserProfileImage
-//        self.messages = messages
+    
+    init(firstUserNickname: String, firstUserProfileImage: String, secondUserNickname: String, secondUserProfileImage: String) {
+        self.firstUserNickname = firstUserNickname
+        self.firstUserProfileImage = firstUserProfileImage
+        self.secondUserNickname = secondUserNickname
+        self.secondUserProfileImage = secondUserProfileImage
     }
+    
     
     init?(document: [String: Any]) {
            guard
-               let otherUserName = document["otherUserName"] as? String,
-               let otherUserNickname = document["otherUserNickname"] as? String,
-               let otherUserProfileImage = document["otherUserProfileImage"] as? String
-//               let messages = document["messages"] as? [Message]
+               let firstUserNickname = document["firstUserNickname"] as? String,
+               let firstUserProfileImage = document["firstUserProfileImage"] as? String,
+               let secondUserNickname = document["secondUserNickname"] as? String,
+               let secondUserProfileImage = document["secondUserProfileImage"] as? String
            else {
                return nil // 필수 필드가 없을 경우 초기화를 실패시킵니다.
            }
-        self.otherUserName = otherUserName
-        self.otherUserNickname = otherUserNickname
-        self.otherUserProfileImage = otherUserProfileImage
-//        self.messages = messages
+        self.firstUserNickname = firstUserNickname
+        self.firstUserProfileImage = firstUserProfileImage
+        self.secondUserNickname = secondUserNickname
+        self.secondUserProfileImage = secondUserProfileImage
        }
 }

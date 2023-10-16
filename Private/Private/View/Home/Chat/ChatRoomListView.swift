@@ -20,11 +20,11 @@ struct ChatRoomListView: View {
 
     // 채팅방 정보 생성
 //    let otherUser = User(email: "other@example.com", name: "Jane Smith")
-    let otherUser = User()
-
-    let message1 = Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)
-    let message2 = Message(sender:  "nickname2", content: "Hi!", timestamp: Date().timeIntervalSince1970 + 1)
-    var chatRoom = ChatRoom(otherUserName: "이수민", otherUserNickname: "ii", otherUserProfileImage: "")
+//    let otherUser = User()
+//
+//    let message1 = Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)
+//    let message2 = Message(sender:  "nickname2", content: "Hi!", timestamp: Date().timeIntervalSince1970 + 1)
+    var chatRoom = ChatRoom(firstUserNickname: "boogie", firstUserProfileImage: "", secondUserNickname: "ii", secondUserProfileImage: "")
     // addChatRoomToUser 메서드 호출하여 채팅방 추가
 //    addChatRoomToUser(user: user, chatRoom: chatRoom)
     
