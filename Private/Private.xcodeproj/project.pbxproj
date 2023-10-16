@@ -40,6 +40,12 @@
 		3C5789372AC2604600D8B7EA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3C5789362AC2604600D8B7EA /* GoogleSignIn */; };
 		3C5789392AC2604600D8B7EA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3C5789382AC2604600D8B7EA /* GoogleSignInSwift */; };
 		3C57893B2AC27BAF00D8B7EA /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C57893A2AC27BAF00D8B7EA /* AuthStore.swift */; };
+		3C69C8B82ADD6797004476D1 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427552ACF965B00EECCD8 /* Pretendard-Bold.otf */; };
+		3C69C8B92ADD679B004476D1 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427562ACF965B00EECCD8 /* Pretendard-Light.otf */; };
+		3C69C8BA2ADD679E004476D1 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427572ACF965B00EECCD8 /* Pretendard-Medium.otf */; };
+		3C69C8BB2ADD67A1004476D1 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427542ACF965B00EECCD8 /* Pretendard-Regular.otf */; };
+		3C69C8BC2ADD67A4004476D1 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427582ACF965B00EECCD8 /* Pretendard-SemiBold.otf */; };
+		3C69C8BD2ADD67A6004476D1 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427592ACF965B00EECCD8 /* Pretendard-Thin.otf */; };
 		3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */; };
 		3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */; };
 		3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */; };
@@ -892,8 +898,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CF3D8CC2AB82A99003689A6 /* Preview Assets.xcassets in Resources */,
+				3C69C8B82ADD6797004476D1 /* Pretendard-Bold.otf in Resources */,
 				3CF3D8C92AB82A99003689A6 /* Assets.xcassets in Resources */,
+				3C69C8BD2ADD67A6004476D1 /* Pretendard-Thin.otf in Resources */,
+				3C69C8BC2ADD67A4004476D1 /* Pretendard-SemiBold.otf in Resources */,
+				3C69C8B92ADD679B004476D1 /* Pretendard-Light.otf in Resources */,
+				3C69C8BB2ADD67A1004476D1 /* Pretendard-Regular.otf in Resources */,
 				26357CEE2AD54B8B0098C8F5 /* GoogleService-Info.plist in Resources */,
+				3C69C8BA2ADD679E004476D1 /* Pretendard-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
