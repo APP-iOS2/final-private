@@ -30,8 +30,7 @@ final class ChatRoomStore: ObservableObject {
         
         let userCollection = Firestore.firestore().collection("ChatRoom")
         
-        userCollection.whereField(FieldPath.documentID(), isGreaterThanOrEqualTo: user.nickname)
-            .whereField(FieldPath.documentID(), isLessThan: user.nickname + "z")
+        userCollection
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
                     print("Error getting chat room documents: \(error)")
@@ -44,46 +43,24 @@ final class ChatRoomStore: ObservableObject {
                 }
                 
                 for document in querySnapshot.documents {
-                    if let chatRoomData = document.data() as? [String: Any],
-                       //                       let messagesData = chatRoomData["messages"] as? [[String: Any]],
-                       let otherUserName = chatRoomData["otherUserName"] as? String,
-                       let otherUserNickname = chatRoomData["otherUserNickname"] as? String,
-                       let otherUserProfileImage = chatRoomData["otherUserProfileImage"] as? String {
-                        let chatRoom = ChatRoom(otherUserName: otherUserName, otherUserNickname: otherUserNickname, otherUserProfileImage: otherUserProfileImage)
-                        chatRooms.append(chatRoom)
+                    
+                    let documentID = document.documentID
+                    
+                    let nicknames = documentID.split(separator: ",")
+                    
+                    if let nickname1 = nicknames.first, let nickname2 = nicknames.last {
+                        if (nickname1 == user.nickname || nickname2 == user.nickname) {
+                            let documentData = document.data()
+                            if let chatRoomData = documentData as? [String: Any],
+                               //                       let messagesData = chatRoomData["messages"] as? [[String: Any]],
+                               let otherUserName = chatRoomData["otherUserName"] as? String,
+                               let otherUserNickname = chatRoomData["otherUserNickname"] as? String,
+                               let otherUserProfileImage = chatRoomData["otherUserProfileImage"] as? String {
+                                let chatRoom = ChatRoom(otherUserName: otherUserName, otherUserNickname: otherUserNickname, otherUserProfileImage: otherUserProfileImage)
+                                chatRooms.append(chatRoom)
+                            }
+                        }
                     }
-                    
-                    //                        var messages: [Message] = []
-                    //
-                    //                        for messageItem in messagesData {
-                    //                            guard let content = messageItem["content"] as? String,
-                    //                                  let sender = messageItem["sender"] as? String,
-                    //                                  let timestamp = messageItem["timestamp"] as? Double else {
-                    //                                print("Invalid data for Message")
-                    //                                continue
-                    //                            }
-                    //
-                    //                            let message = Message(sender: sender, content: content, timestamp: timestamp)
-                    //                            messages.append(message)
-                    //                        }
-                    
-                    // Create ChatRoom object and perform further logic
-                    // Create ChatRoom object
-                    
-                    
-                    // Add the created ChatRoom to the chat room list
-                    //                        chatRooms.append(chat)
-                    //                        self.chatRoomList.append(chatRoom)
-                    //                        chatRooms.append(chatRoom)
-                    //                        self.chatRoomList.append(chatRoom)
-                    //                        chatRooms.append(chatRoom)
-                    //                        print("chatRoom added.")
-                    //                        print(chatRoom)
-                    //                        print("chatRooms.count")
-                    //                        print(chatRooms.count)
-                    //                    } else {
-                    //                        print("Invalid data for Chat Room")
-                    //                    }
                     
                     DispatchQueue.main.async {
                         self.chatRoomList = chatRooms
@@ -142,27 +119,163 @@ final class ChatRoomStore: ObservableObject {
         }
     }
     
-    func sendMessage(myNickName: String, otherUserNickname: String, message: Message) {
+    func fetchMessage(myNickName: String, otherUserNickname: String){
+        let userCollection = Firestore.firestore().collection("ChatRoom")
+        let subCollection1 = userCollection.document("\(myNickName),\(otherUserNickname)")
+        let messageCollection1 = subCollection1.collection("Message")
+        
+        let subCollection2 = userCollection.document("\(otherUserNickname),\(myNickName)")
+        let messageCollection2 = subCollection2.collection("Message")
         
         var messages: [Message] = []
-//        
-//        for messageItem in messagesData {
-//            guard let content = messageItem["content"] as? String,
-//                  let sender = messageItem["sender"] as? String,
-//                  let timestamp = messageItem["timestamp"] as? Double else {
-//                print("Invalid data for Message")
-//                continue
-//            }
-//            
-//            let message = Message(sender: sender, content: content, timestamp: timestamp)
-//            messages.append(message)
-//        }
-//        
-//      
-//    } else {
-//        print("Invalid data for Chat Room")
-//    }
         
+        userCollection
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error getting chat room documents: \(error)")
+                    return
+                }
+                
+                guard let querySnapshot = querySnapshot else {
+                    print("No chat room documents found for the given nickname")
+                    return
+                }
+                
+                for document in querySnapshot.documents {
+                    let documentID = document.documentID
+                    if documentID == "\(myNickName),\(otherUserNickname)" {
+                        messageCollection1.getDocuments { (querySnapshot, error) in
+                            if let error = error {
+                                print("Error getting chat room documents: \(error)")
+                                return
+                            }
+                            
+                            guard let querySnapshot = querySnapshot else {
+                                print("No chat room documents found for the given nickname")
+                                return
+                            }
+                            
+                            
+                            for document in querySnapshot.documents {
+                                //                                for message in messageList
+                                let documentData = document.data()
+                                if let messageData = documentData as? [String: Any],
+                                   let content = messageData["content"] as? String,
+                                   let sender = messageData["sender"] as? String,
+                                   let timestamp = messageData["timestamp"] as? Double
+                                {
+                                    let message = Message(sender: sender, content: content, timestamp: timestamp)
+                                    messages.append(message)
+                                }
+                                
+                            }
+                            
+                        }
+                    } else if documentID == "\(otherUserNickname),\(myNickName)" {
+                        messageCollection2.getDocuments { (querySnapshot, error) in
+                            if let error = error {
+                                print("Error getting chat room documents: \(error)")
+                                return
+                            }
+                            
+                            guard let querySnapshot = querySnapshot else {
+                                print("No chat room documents found for the given nickname")
+                                return
+                            }
+                            
+                            for document in querySnapshot.documents {
+                                //                                for message in messageList
+                                let documentData = document.data()
+                                if let messageData = documentData as? [String: Any],
+                                   let content = messageData["content"] as? String,
+                                   let sender = messageData["sender"] as? String,
+                                   let timestamp = messageData["timestamp"] as? Double
+                                {
+                                    let message = Message(sender: sender, content: content, timestamp: timestamp)
+                                    messages.append(message)
+                                }
+                                
+                            }
+                            
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        self.messageList = messages
+                    }
+                }
+                
+            }
+        
+    }
+    
+    func sendMessage(myNickName: String, otherUserNickname: String, message: Message) {
+        let userCollection = Firestore.firestore().collection("ChatRoom")
+        let subCollection1 = userCollection.document("\(myNickName),\(otherUserNickname)")
+        let messageCollection1 = subCollection1.collection("Message")
+        
+        let subCollection2 = userCollection.document("\(otherUserNickname),\(myNickName)")
+        let messageCollection2 = subCollection2.collection("Message")
+        
+        messageList.append(message)
+        
+        var messagesData: [String: Any] = [:]
+        
+        for message in messageList {
+            
+            if let messageDict = messageToDictionary(message) {
+                print("messageDict:\(messageDict)")
+                //                messagesData.append(messageDict)
+                messagesData = messageDict
+                
+            } else {
+                print("Invalid message data")
+                return
+            }
+        }
+        
+        //        ?let use?rCollection = Firestore.firestore().collection("ChatRoom")
+        
+        userCollection
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error getting chat room documents: \(error)")
+                    return
+                }
+                
+                guard let querySnapshot = querySnapshot else {
+                    print("No chat room documents found for the given nickname")
+                    return
+                }
+                
+                for document in querySnapshot.documents {
+                    let documentID = document.documentID
+                    if documentID == "\(myNickName),\(otherUserNickname)" {
+                        messageCollection1.addDocument(data: messagesData) { error in
+                            if let error = error {
+                                print("Error adding chatRoom: \(error.localizedDescription)")
+                            } else {
+                                print("Reservation added to Firestore")
+                            }
+                        }
+                    } else if documentID == "\(otherUserNickname),\(myNickName)" {
+                        messageCollection2.addDocument(data: messagesData) { error in
+                            if let error = error {
+                                print("Error adding chatRoom: \(error.localizedDescription)")
+                            } else {
+                                print("Reservation added to Firestore")
+                            }
+                        }
+                    }
+                }
+            }
+        
+        //        messageCollection.addDocument(data: messagesData) { error in
+        //            if let error = error {
+        //                print("Error adding chatRoom: \(error.localizedDescription)")
+        //            } else {
+        //                print("Reservation added to Firestore")
+        //            }
+        //        }
     }
     
     //MARK: - 미사용

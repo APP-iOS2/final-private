@@ -10,14 +10,15 @@ import SwiftUI
 struct ChatRoomView: View {
     
     @EnvironmentObject var chatRoomStore: ChatRoomStore
-    
+    @EnvironmentObject var userStore: UserStore
+
     @State private var message: String = ""
     
     var chatRoom: ChatRoom
     
     var body: some View {
         List(chatRoomStore.messageList, id: \.self) { message in
-            if (message.sender == "나") {
+            if (message.sender == userStore.user.nickname) {
                 Text(message.content)
                     .padding(10)
                     .padding(.horizontal, 5)
@@ -59,15 +60,20 @@ struct ChatRoomView: View {
                 }
             }
         }
+        .onAppear {
+            chatRoomStore.fetchMessage(myNickName: userStore.user.nickname, otherUserNickname: chatRoom.otherUserNickname)
+        }
         
         SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
-            sendMessage()
+//            sendMessage()
+            print("chatRoom-sendMessage\(chatRoom)")
+            chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: chatRoom.otherUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: NSTimeIntervalSince1970))
         }
     }
     
-    func sendMessage() {
-        chatRoomStore.messageList.append(Message(sender: "나", content: message, timestamp: Date().timeIntervalSince1970))
-    }
+//    func sendMessage() {
+//        chatRoomStore.messageList.append(Message(sender: "나", content: message, timestamp: Date().timeIntervalSince1970))
+//    }
 }
 
 //struct ChatRoomView_Previews: PreviewProvider {
