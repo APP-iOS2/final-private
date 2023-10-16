@@ -42,6 +42,26 @@ final class FeedStore: ObservableObject {
         }
     }
     
+    func addFeed(_ feed: MyFeed) {
+        dbRef.document(feed.id).collection("Feed")
+            .document(feed.id)
+            .setData(["writerNickname": feed.writerNickname,
+                      "writerName": feed.writerName,
+                      "writerProfileImage": feed.writerProfileImage,
+                      "images": feed.images,
+                      "contents": feed.contents,
+                      "createdAt": feed.createdAt,
+                      "title": feed.title,
+                      "category": feed.category,
+                      "address": feed.address,
+                      "roadAddress": feed.roadAddress,
+                      "mapx": feed.mapx,
+                      "mapy": feed.mapy,
+                     ])
+        
+        
+//        fetchFeed()
+    }
     
     // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {

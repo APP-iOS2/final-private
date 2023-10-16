@@ -37,9 +37,7 @@ struct MapMainView: View {
         .onChange(of: coord, perform: { _ in
                 coordinator.fetchUserLocation()
         })
-        // .onChange(of: coordinator.tappedLatLng) { newValue in
-        //     locationSearchStore.reverseGeoCoding(lat: String(coordinator.tappedLatLng?.lat ?? 0), long: String(coordinator.tappedLatLng?.lng ?? 0))
-        // }
+ 
         .sheet(isPresented: $coordinator.showMarkerDetailView) {
             MapFeedSheetView()
                 .presentationDetents([.height(400), .large])

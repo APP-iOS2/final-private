@@ -313,5 +313,15 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
             print("길게 눌러 마커에 접근 (\(marker.position.lat), \(marker.position.lng))")
         }
     }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            let lat = location.coordinate.latitude
+            let lng = location.coordinate.longitude
+            coord = NMGLatLng(lat: lat, lng: lng)
+            userLocation = (lat, lng)
+            fetchUserLocation()
+            moveCameraPosition()
+        }
+    }
 
 }

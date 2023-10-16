@@ -15,22 +15,28 @@ import Combine
 import Kingfisher
 
 struct PostView: View {
-    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.presentationMode) var presentationMode
-
-    @StateObject private var locationSearchStore = LocationSearchStore.shared
     
+    @EnvironmentObject var feedStore: FeedStore
+    @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var userDataStore: UserStore
+    
+    @StateObject private var locationSearchStore = LocationSearchStore.shared
+    @StateObject private var postStore: PostStore = PostStore()
+    @ObservedObject var coordinator: Coordinator = Coordinator.shared
+
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var isPostViewPresented: Bool /// PostView
+    @Binding var coord: NMGLatLng
 
-    @EnvironmentObject private var feedStore: FeedStore
-    @EnvironmentObject private var userStore: UserStore
-    @StateObject private var postStore: PostStore = PostStore()
-    
     @State private var selectedWriter: String = "김아무개"
-    @State private var text: String = ""
+    @State private var text: String = "" /// 텍스트마스터 내용
+    @State private var textPlaceHolder: String = "당신의 경험을 적어주세요!" /// 텍스트마스터 placeholder
+    @State private var lat: String = ""
+    @State private var lng: String = ""
+    
     @State private var writer: String = ""
     @State private var images: [String] = []
     @State private var createdAt: Double = Date().timeIntervalSince1970
@@ -49,13 +55,12 @@ struct PostView: View {
     @FocusState private var isTextMasterFocused: Bool
     
     @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
-    
-    private let minLine: Int = 7
-    private let maxLine: Int = 8
-    private let fontSize: Double = 24
-    
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
+    
+    private let minLine: Int = 10
+    private let maxLine: Int = 12
+    private let fontSize: Double = 24
     private let maxSelectedCategories = 3
     
     var db = Firestore.firestore()
@@ -69,17 +74,17 @@ struct PostView: View {
                         ZStack {
                             if userStore.user.profileImageURL.isEmpty {
                                 Circle()
-                                    .frame(width: .screenWidth*0.23)
+                                    .frame(width: .screenWidth*0.15)
                                 Image(systemName: "person")
                                     .resizable()
-                                    .frame(width: .screenWidth*0.23, height: .screenWidth*0.23)
+                                    .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
                                     .foregroundColor(Color.darkGraySubColor)
                                     .clipShape(Circle())
                             } else {
                                 KFImage(URL(string: userStore.user.profileImageURL))
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: .screenWidth*0.23, height: .screenWidth*0.23)
+                                    .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
                                     .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                             }
                         }
@@ -92,10 +97,8 @@ struct PostView: View {
                     .padding(.vertical, 10)
 
                     //MARK: 내용
-                    TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize)
-//                        .onTapGesture {
-//                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-//                        }
+                    TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize, placeholder: textPlaceHolder)
+
                         .padding(.trailing, 10)
                     
                     //MARK: 장소
@@ -111,22 +114,50 @@ struct PostView: View {
                         }
                     }
                     .padding(.vertical, 10)
-                
+                    
                     if searchResult.title.isEmpty {
                         Text("장소를 선택해주세요")
                             .font(.body)
                             .foregroundColor(.secondary)
                     } else {
-                        Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                            .font(.body)
+//                        Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+//                            .font(.body)
+//                            .onTapGesture {
+//                                clickLocation = true
+//                                
+//                                lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
+//                                lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
+//                                
+//                                coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+//                                print("위도값: \(lat), 경도값: \(lng)")
+//                                print("지정장소 클릭")
+//                                coordinator.moveCameraPosition()
+//                            }
+                        Button{
+                            lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
+                            lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
+                            
+                            coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                            print("위도값: \(lat), 경도값: \(lng)")
+                            print("지정장소 클릭")
+                            coordinator.moveCameraPosition()
+                            clickLocation = true 
+
+                        } label: {
+                            Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                                .font(.body)
+                        }
+                        .sheet(isPresented: $clickLocation) {
+                            LocationView(coord: $coord, searchResult: $searchResult)
+                        }
                         Text(searchResult.address)
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                            
+                        
                     }
                     Divider()
                         .padding(.vertical, 10)
-
+                    
                     //MARK: 사진
                     HStack {
                         Label("사진", systemImage: "camera")
@@ -364,11 +395,12 @@ struct PostView: View {
         let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
         return columns
     }
+    
 }
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true))
+        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
     }

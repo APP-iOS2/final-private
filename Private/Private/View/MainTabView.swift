@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NMapsMap
 
 struct MainTabView: View {
     
@@ -20,7 +21,8 @@ struct MainTabView: View {
   
     @StateObject private var feedStore: FeedStore = FeedStore()
 //    @StateObject private var searchStore: SearchStore = SearchStore()
-     
+    @State private var coord: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
+
     @State var selection: Int = 1
     @State private var rootSection1: Bool = false
     @State private var rootSection2: Bool = false
@@ -72,7 +74,7 @@ struct MainTabView: View {
                         Image(systemName: "magnifyingglass")
                             .environmentObject(followStore)
                     }.tag(2)
-                    UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true), showLocation: $showLocation, searchResult: $searchResult).tabItem {
+                    UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true), showLocation: $showLocation, searchResult: $searchResult, coord: $coord).tabItem {
                         Image(systemName: "plus")
                     }.tag(3)
                     ShopListView(root: $rootSection4, selection: $selection).tabItem {
