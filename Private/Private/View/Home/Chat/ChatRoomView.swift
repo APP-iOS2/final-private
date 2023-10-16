@@ -10,14 +10,15 @@ import SwiftUI
 struct ChatRoomView: View {
     
     @EnvironmentObject var chatRoomStore: ChatRoomStore
-    
+    @EnvironmentObject var userStore: UserStore
+
     @State private var message: String = ""
     
     var chatRoom: ChatRoom
     
     var body: some View {
-        List(chatRoom.messages, id: \.self) { message in
-            if (message.sender == "나") {
+        List(chatRoomStore.messageList, id: \.self) { message in
+            if (message.sender == userStore.user.nickname) {
                 Text(message.content)
                     .padding(10)
                     .padding(.horizontal, 5)
@@ -42,32 +43,55 @@ struct ChatRoomView: View {
         
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                HStack {
-                    Image("userDefault")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30)
-                        .cornerRadius(50)
-                    VStack(alignment: .leading) {
-                        Text("\(chatRoom.otherUser.name)")
-                            .font(.pretendardSemiBold14)
-                        Text("\(chatRoom.otherUser.nickname)")
-                            .font(.pretendardRegular12)
+                if (userStore.user.nickname == chatRoom.firstUserNickname) {
+                    HStack {
+                        Image("userDefault")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30)
+                            .cornerRadius(50)
+                        VStack(alignment: .leading) {
+                            Text("\(chatRoom.secondUserNickname)")
+                                .font(.pretendardSemiBold14)
+                        }
+                        .padding(.leading, 5)
+                        Spacer()
                     }
-                    .padding(.leading, 5)
-                    Spacer()
+                } else {
+                    HStack {
+                        Image("userDefault")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30)
+                            .cornerRadius(50)
+                        VStack(alignment: .leading) {
+                            Text("\(chatRoom.firstUserNickname)")
+                                .font(.pretendardSemiBold14)
+                        }
+                        .padding(.leading, 5)
+                        Spacer()
+                    }
                 }
             }
         }
         
+        .onAppear {
+            chatRoomStore.fetchMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname)
+            print("\(chatRoomStore.messageList)")
+            print("\(userStore.user)")
+            print("\(chatRoom)")
+        }
+        
         SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
-            sendMessage()
+            print("chatRoom-sendMessage\(chatRoom)")
+            chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: NSTimeIntervalSince1970))
+            message = ""
         }
     }
     
-    func sendMessage() {
-        chatRoomStore.messageList.append(Message(sender: "나", content: message, timestamp: Date().timeIntervalSince1970))
-    }
+//    func sendMessage() {
+//        chatRoomStore.messageList.append(Message(sender: "나", content: message, timestamp: Date().timeIntervalSince1970))
+//    }
 }
 
 //struct ChatRoomView_Previews: PreviewProvider {

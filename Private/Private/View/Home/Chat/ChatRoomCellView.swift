@@ -9,25 +9,40 @@ import SwiftUI
 
 struct ChatRoomCellView: View {
     
+    @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var chatRoomStore: ChatRoomStore
     
     var chatRoom: ChatRoom
     
     var body: some View {
-        HStack {
-            Image("userDefault")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 50)
-                .cornerRadius(50)
-            VStack(alignment: .leading) {
-                Text("\(chatRoom.otherUser.name)")
-                    .font(.pretendardSemiBold16)
-                Text("\(chatRoom.otherUser.nickname)")
-                    .font(.pretendardRegular12)
+        if (userStore.user.nickname == chatRoom.firstUserNickname) {
+            HStack {
+                Image("userDefault")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50)
+                    .cornerRadius(50)
+                VStack(alignment: .leading) {
+                    Text("\(chatRoom.secondUserNickname)")
+                        .font(.pretendardSemiBold16)
+                }
+                .padding(.leading, 5)
+                Spacer()
             }
-            .padding(.leading, 5)
-            Spacer()
+        } else {
+            HStack {
+                Image("userDefault")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50)
+                    .cornerRadius(50)
+                VStack(alignment: .leading) {
+                    Text("\(chatRoom.firstUserNickname)")
+                        .font(.pretendardSemiBold16)
+                }
+                .padding(.leading, 5)
+                Spacer()
+            }
         }
     }
 }

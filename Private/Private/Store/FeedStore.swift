@@ -21,8 +21,6 @@ final class FeedStore: ObservableObject {
     // Firestore 데이터베이스의 "Feed" 컬렉션에 대한 참조를 생성합니다.
     private let dbRef = Firestore.firestore().collection("Feed")
     
-    
-    
     // 초기화 함수에서 피드를 가져옵니다.
     init() {
         fetchFeeds()

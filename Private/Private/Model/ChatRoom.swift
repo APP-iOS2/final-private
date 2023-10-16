@@ -8,25 +8,32 @@
 import Foundation
 
 struct ChatRoom: Hashable {
-    // var id: String  //삭제
-    var otherUser: User
-    var messages: [Message]
+    var firstUserNickname: String
+    var firstUserProfileImage: String
+    var secondUserNickname: String
+    var secondUserProfileImage: String
     
-    init(otherUser: User, messages: [Message]) {
-           self.otherUser = otherUser
-           self.messages = messages
-       }
+    
+    init(firstUserNickname: String, firstUserProfileImage: String, secondUserNickname: String, secondUserProfileImage: String) {
+        self.firstUserNickname = firstUserNickname
+        self.firstUserProfileImage = firstUserProfileImage
+        self.secondUserNickname = secondUserNickname
+        self.secondUserProfileImage = secondUserProfileImage
+    }
+    
     
     init?(document: [String: Any]) {
            guard
-               let otherUserDict = document["otherUser"] as? [String: Any],
-               let otherUser = User(document: otherUserDict),
-               let messages = document["messages"] as? [Message]
+               let firstUserNickname = document["firstUserNickname"] as? String,
+               let firstUserProfileImage = document["firstUserProfileImage"] as? String,
+               let secondUserNickname = document["secondUserNickname"] as? String,
+               let secondUserProfileImage = document["secondUserProfileImage"] as? String
            else {
                return nil // 필수 필드가 없을 경우 초기화를 실패시킵니다.
            }
-           
-           self.otherUser = otherUser
-           self.messages = messages
+        self.firstUserNickname = firstUserNickname
+        self.firstUserProfileImage = firstUserProfileImage
+        self.secondUserNickname = secondUserNickname
+        self.secondUserProfileImage = secondUserProfileImage
        }
 }

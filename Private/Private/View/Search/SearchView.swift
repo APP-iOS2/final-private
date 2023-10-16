@@ -23,16 +23,21 @@ struct SearchView: View {
                 searchTextField
                 ScrollView(showsIndicators: false) {
                     Divider()
-                    RecentSearchListView(searchStore: searchStore, searchTerm: $searchTerm)
+                    RecentSearchListView(searchTerm: $searchTerm)
                     Spacer()
                     Divider()
-                    RecentUserListView(searchStore: searchStore, searchTerm: $searchTerm)
+                    RecentUserListView(searchTerm: $searchTerm)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .padding(.horizontal)
             .onAppear {
+                print(" 팔로값 1: \(followStore.followCheck)")
+                print(" 팔로값 2: \(followStore.followers)")
+                print(" 팔로값 3: \(followStore.following)")
+                print(" 팔로값 4: \(followStore.followerList)")
+                print(" 팔로값 5: \(followStore.followingList)")
                 searchStore.fetchrecentSearchResult()
                 searchTerm = ""
             }
@@ -62,7 +67,7 @@ struct SearchView: View {
     
     
     struct RecentSearchListView: View {
-        @ObservedObject var searchStore: SearchStore
+        @EnvironmentObject var searchStore: SearchStore
         @Binding var searchTerm: String
         
         var body: some View {
@@ -77,7 +82,7 @@ struct SearchView: View {
                 }
                     if !searchStore.recentSearchResult.isEmpty {
                         ForEach(searchStore.recentSearchResult.prefix(5), id: \.self) { resultText in
-                            RecentSearchRowView(searchStore: searchStore, searchTerm: $searchTerm, resultText: resultText)
+                            RecentSearchRowView(searchTerm: $searchTerm, resultText: resultText)
                         }
                 } else {
                     Text("최근 검색 기록이 없습니다")
@@ -90,7 +95,7 @@ struct SearchView: View {
     }
     
     struct RecentSearchRowView: View {
-        @ObservedObject var searchStore: SearchStore
+        @EnvironmentObject var searchStore: SearchStore
         @Binding var searchTerm: String
         let resultText: String
         
@@ -115,7 +120,7 @@ struct SearchView: View {
     }
     
     struct RecentUserListView: View {
-        @ObservedObject var searchStore: SearchStore
+        @EnvironmentObject var searchStore: SearchStore
         @Binding var searchTerm: String
 
         var body: some View {
@@ -131,7 +136,7 @@ struct SearchView: View {
                 
                 if !searchStore.searchUserLists.isEmpty {
                     ForEach(searchStore.searchUserLists, id: \.self) { user in
-                        RecentUserRowView(searchStore: searchStore, user: user)
+                        RecentUserRowView(user: user)
                     }
                 } else {
                     Text("최근 검색 기록이 없습니다")
@@ -142,7 +147,8 @@ struct SearchView: View {
     }
 
     struct RecentUserRowView: View {
-        @ObservedObject var searchStore: SearchStore
+        @EnvironmentObject var searchStore: SearchStore
+        @EnvironmentObject var followStore: FollowStore
         let user: User
 
         var body: some View {
@@ -157,6 +163,7 @@ struct SearchView: View {
                     searchStore.removeRecentSearchResult(user.nickname)
                 } label: {
                     Image(systemName: "xmark.fill")
+                        .foregroundColor(.gray)
                 }
             }
             .padding(.bottom, 8)

@@ -12,6 +12,8 @@ struct UploadView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var isImagePickerPresented: Bool
+    @Binding var showLocation: Bool
+    @Binding var searchResult: SearchResult
     
     @Environment(\.dismiss) private var dismiss
     
@@ -40,7 +42,7 @@ struct UploadView: View {
 }
 struct UploadView_Previews: PreviewProvider {
     static var previews: some View {
-        UploadView(root: .constant(true), selection: .constant(3), isImagePickerPresented: .constant(true))
+        UploadView(root: .constant(true), selection: .constant(3), isImagePickerPresented: .constant(true), showLocation: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
 

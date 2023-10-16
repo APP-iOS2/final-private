@@ -20,11 +20,11 @@ struct ChatRoomListView: View {
 
     // 채팅방 정보 생성
 //    let otherUser = User(email: "other@example.com", name: "Jane Smith")
-    let otherUser = User()
-
-    let message1 = Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)
-    let message2 = Message(sender:  "nickname2", content: "Hi!", timestamp: Date().timeIntervalSince1970 + 1)
-    let chatRoom = ChatRoom(otherUser: User(), messages: [])
+//    let otherUser = User()
+//
+//    let message1 = Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)
+//    let message2 = Message(sender:  "nickname2", content: "Hi!", timestamp: Date().timeIntervalSince1970 + 1)
+    var chatRoom = ChatRoom(firstUserNickname: "boogie", firstUserProfileImage: "", secondUserNickname: "ii", secondUserProfileImage: "")
     // addChatRoomToUser 메서드 호출하여 채팅방 추가
 //    addChatRoomToUser(user: user, chatRoom: chatRoom)
     
@@ -54,19 +54,21 @@ struct ChatRoomListView: View {
             
         }
         .onAppear{
-            // authStore.userStore.user -> userStore.user
             chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
-
+//            chatRoomStore.messageList = [message1]
+//            chatRoom = ChatRoom(otherUserName: "s", otherUserNickname: "boogie", otherUserProfileImage: "", messages: [message1,message2])
         }
         .navigationTitle("채팅방")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarItems(trailing: EditButton().foregroundColor(.accentColor))
         .navigationBarItems(trailing:
                                 Button{print(":::chatRoom")
-                                print("\(chatRoom)")
+//                                print("\(chatRoom)")
                                 // 테스트를 위한 더미데이터
-                                let chatRoom = ChatRoom(otherUser: otherUser, messages: [Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)])
-                                chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)} label: {
+//                                let chatRoom = ChatRoom(otherUser: otherUser, messages: [Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)])
+                                chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)
+            chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
+        } label: {
                                 Image(systemName: "plus.bubble")
         }
                             )
