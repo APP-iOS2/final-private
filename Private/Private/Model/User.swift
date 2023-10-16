@@ -17,7 +17,7 @@ struct User: Hashable {
     var profileImageURL: String
     var follower: [String]
     var following: [String]
-    var myFeed: [MyFeed]
+    var myFeed: [String]
     var savedFeed: [Feed]
     var bookmark: [Shop]
     var chattingRoom: [ChatRoom]
@@ -32,7 +32,7 @@ struct User: Hashable {
                let profileImageURL = document["profileImageURL"] as? String,
                let follower = document["follower"] as? [String],
                let following = document["following"] as? [String],
-               let myFeed = document["myFeed"] as? [MyFeed],
+               let myFeed = document["myFeed"] as? [String],
                let savedFeed = document["savedFeed"] as? [Feed],
                let bookmark = document["bookmark"] as? [Shop],
                let chattingRoom = document["chattingRoom"] as? [ChatRoom],
