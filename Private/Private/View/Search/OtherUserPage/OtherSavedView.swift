@@ -6,17 +6,20 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct OtherSavedView: View {
-    
+    @State var isMyPageFeedSheet: Bool = false
+    @State var selctedFeed : MyFeed = MyFeed()
+    let user: User
+    let otherSavedFeedList: [MyFeed]
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
-    let user: User
     
     var body: some View {
         ScrollView {
-            if user.savedFeed.isEmpty {
+            if otherSavedFeedList.isEmpty {
                 Text("저장한 피드가 없습니다")
                     .font(.pretendardBold24)
                     .padding(.top, .screenHeight * 0.2)
@@ -26,14 +29,23 @@ struct OtherSavedView: View {
                     alignment: .center,
                     spacing: 1
                 ) {
-                    ForEach(user.savedFeed, id: \.self) { feed in
+                    ForEach(otherSavedFeedList, id: \.self) { feed in
                         AsyncImage(url:URL(string:feed.images[0])) { image in
-                            image
-                                .resizable()
-                                .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
-                            
-                        } placeholder: {
-                            Image(systemName: "photo")
+                            Button {
+                                selctedFeed = feed
+                                isMyPageFeedSheet = true
+                            } label: {
+                                KFImage(URL(string:feed.images[0])) .placeholder {
+                                    Image(systemName: "photo")
+                                }.resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
+                                    .clipShape(Rectangle())
+                            }
+                            .sheet(isPresented: $isMyPageFeedSheet){
+                                MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed)
+                                    .presentationDetents([.height(.screenHeight * 0.7)])
+                            }
                         }
                     }
                 }
@@ -44,7 +56,7 @@ struct OtherSavedView: View {
 
 struct OtherSavedView_Previews: PreviewProvider {
     static var previews: some View {
-        OtherSavedView(user: User())
+        OtherSavedView(user: User(), otherSavedFeedList: [MyFeed()])
     }
 }
 
