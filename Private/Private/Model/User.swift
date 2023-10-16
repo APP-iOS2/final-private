@@ -19,7 +19,7 @@ struct User: Hashable {
     var following: [String]
     var myFeed: [String]
     var savedFeed: [Feed]
-    var bookmark: [Shop]
+    var bookmark: [String]
     var chattingRoom: [ChatRoom]
     var myReservation: [Reservation]
     
@@ -34,7 +34,7 @@ struct User: Hashable {
                let following = document["following"] as? [String],
                let myFeed = document["myFeed"] as? [String],
                let savedFeed = document["savedFeed"] as? [Feed],
-               let bookmark = document["bookmark"] as? [Shop],
+               let bookmark = document["bookmark"] as? [String],
                let chattingRoom = document["chattingRoom"] as? [ChatRoom],
                let myReservation = document["myReservation"] as? [Reservation]
                // 다른 필드들에 대한 추출 작업을 추가합니다.
