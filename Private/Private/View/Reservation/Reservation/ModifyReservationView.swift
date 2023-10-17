@@ -56,7 +56,7 @@ struct ModifyReservationView: View {
                 .padding(.bottom)
                 
                 if showingDate {
-                    DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: .constant(true))
+                    DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: .constant(true), shopData: shopData)
                         .onChange(of: temporaryReservation.time) { newValue in
                             self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
                             self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1

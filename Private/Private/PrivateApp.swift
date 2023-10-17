@@ -17,6 +17,7 @@ struct PrivateApp: App {
     @StateObject private var userStore = UserStore()
     @StateObject private var reservationStore = ReservationStore()
     @StateObject private var shopStore = ShopStore()
+    @StateObject private var holidayManager = HolidayManager()
     
     init() {
         let providerFactory = AppCheckDebugProviderFactory()
@@ -35,8 +36,25 @@ struct PrivateApp: App {
                 .environmentObject(ChatRoomStore())
                 .environmentObject(reservationStore)
                 .environmentObject(shopStore)
+                .environmentObject(holidayManager)
                 .task {
                     await shopStore.getAllShopData()
+//                    await NetworkManager.shared.fetchHoliday { result in
+//                        print(#fileID, #function, #line, "- 휴일 받아오기")
+//                        switch result {
+//                        case .success(let holidayDatas):
+//                            // 데이터(배열)을 받아오고 난 후
+//                            self.holidayArrays = holidayDatas
+//    //                        print("Holiday Date: \(holidayArrays[0].getDate()) ===")
+//                            DispatchQueue.main.async {
+//                                publicHolidays = holidayArrays.map { $0.toDictionary() }
+//                                print("publicHolidays: \(publicHolidays) !!!!")
+//                            }
+//                            
+//                        case .failure(let error):
+//                            print(error.localizedDescription)
+//                        }
+//                    }
                 }
         }
     }
