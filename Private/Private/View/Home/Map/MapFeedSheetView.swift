@@ -8,14 +8,18 @@ import SwiftUI
 
 struct MapFeedSheetView: View {
     
-    @EnvironmentObject var feedStore: FeedStore
+    @EnvironmentObject private var feedStore: FeedStore
     
     var body: some View {
-        List(feedStore.feedList) { feed in
-//            MapMarkerFeedView(feed: feed)
+        ScrollView {
+            let filteredFeedList = feedStore.feedList.filter { feed in
+                return true
+            }
+            
+            ForEach(filteredFeedList, id: \.id) { feed in
+                FeedCellView(feed: feed, filteredFeedList: filteredFeedList)
+            }
         }
-        .listStyle(.plain)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
 

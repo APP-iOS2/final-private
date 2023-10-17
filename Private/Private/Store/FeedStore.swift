@@ -79,5 +79,6 @@ final class FeedStore: ObservableObject {
             "mapy": feed.mapy,
         ]
     }
+    
 }
 

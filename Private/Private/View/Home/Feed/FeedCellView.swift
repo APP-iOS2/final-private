@@ -11,7 +11,8 @@ import Kingfisher
 
 struct FeedCellView: View {
     var feed: MyFeed
-  
+    var filteredFeedList: [MyFeed]
+
     @State private var currentPicture = 0
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
 
