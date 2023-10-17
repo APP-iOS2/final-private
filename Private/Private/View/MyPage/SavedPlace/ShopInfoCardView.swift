@@ -9,6 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct ShopInfoCardView: View {
+    @EnvironmentObject var userStore: UserStore
     let mySavedPlaceList: [MyFeed]
     var body: some View {
         ForEach(mySavedPlaceList, id:\.self) {place in
@@ -62,11 +63,17 @@ struct ShopInfoCardView: View {
                 }
                 .padding(.leading,5)
                 Spacer()
-                Image(systemName: "pin.circle.fill")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(.accentColor)
-                    .padding(.trailing,20)
+                Button {
+                    userStore.deletePlace(place)
+                    userStore.user.bookmark.removeAll { $0 == "\(place.images[0].suffix(32))" }
+                    userStore.updateUser(user: userStore.user)
+                } label: {
+                    Image(systemName: "pin.circle.fill")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .foregroundColor(Color("AccentColor"))
+                                        .padding(.trailing,20)
+                }
             }
             Divider()
                 .background(Color.primary)
@@ -77,6 +84,6 @@ struct ShopInfoCardView: View {
 
 struct ShopInfoCardView_Previews: PreviewProvider {
     static var previews: some View {
-        ShopInfoCardView(mySavedPlaceList: [MyFeed()])
+        ShopInfoCardView(mySavedPlaceList: [MyFeed()]).environmentObject(UserStore())
     }
 }

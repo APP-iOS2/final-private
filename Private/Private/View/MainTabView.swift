@@ -84,6 +84,7 @@ struct MainTabView: View {
                         Image(systemName: "person.fill")
                     }.tag(5)
                 }
+                .tint(.privateColor)
             }
         }
     }

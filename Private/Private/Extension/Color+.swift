@@ -8,6 +8,7 @@
 import SwiftUI
 
 extension Color {
+    static let privateColor = Color("PrivateColor")
     static let darkGrayColor = Color("DarkGrayColor")
     static let darkGraySubColor = Color("DarkGraySubColor")
     static let subGrayColor = Color("SubGrayColor")
