@@ -10,13 +10,9 @@ import UIKit
 import FSCalendar
 
 struct FSCalendarView: UIViewRepresentable {
-    @Binding var currentPage: Date
-    @Binding var selectedDate: Date
-    @Binding var calendarTitle: Date
-    
+    @EnvironmentObject var calendarData: CalendarData
+
     let calendar = FSCalendar()
-    // 가져와야 할 데이터 - 정기 휴무일
-    // 임시 휴무일
     let regularHoliday: [Int]
     let temporaryHoliday: [Date]
     var publicHolidays: [[String:Any]]
@@ -43,6 +39,7 @@ struct FSCalendarView: UIViewRepresentable {
         calendar.appearance.selectionColor = UIColor(named: "AccentColor") //선택 된 날의 동그라미 색
         calendar.appearance.titleDefaultColor = UIColor.label  //기본 날짜 색
         calendar.placeholderType = .none  // 해당 달의 날만 보여줌
+        calendar.select(calendarData.selectedDate)  // 선택한 날짜
         //        calendar.appearance.titleSelectionColor = UIColor(named: "AccentColor") // 선택된 날의 컬러 설정
         
         //MARK: -오늘 날짜(Today) 관련
@@ -55,7 +52,8 @@ struct FSCalendarView: UIViewRepresentable {
     
     func updateUIView(_ uiView: FSCalendar, context: Context) {
         // 선택한 날짜를 업데이트
-        uiView.setCurrentPage(currentPage, animated: true)  // 버튼 눌렀을 때
+//        uiView.select(calendarData.selectedDate)  // 선택된 날짜 설정
+        uiView.setCurrentPage(calendarData.currentPage, animated: true)  // 페이지 넘기는 버튼 눌렀을 때
     }
     
     func makeCoordinator() -> Coordinator {
@@ -176,12 +174,12 @@ struct FSCalendarView: UIViewRepresentable {
         }
         
         func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-            parent.selectedDate = date
+            parent.calendarData.selectedDate = date
         }
         
         func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-            parent.currentPage = calendar.currentPage
-            parent.calendarTitle = calendar.currentPage
+            parent.calendarData.currentPage = calendar.currentPage
+            parent.calendarData.titleOfMonth = calendar.currentPage
         }
         
         // 선택 가능한 최대 날짜 - 1년 후까지

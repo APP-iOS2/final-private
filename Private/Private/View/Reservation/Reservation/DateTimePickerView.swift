@@ -27,6 +27,7 @@ struct DateTimePickerView: View {
     let shopData: Shop
     let colums = [GridItem(.adaptive(minimum: 80))] // 레이아웃 최소 사이즈
     
+    // 얘는 어따 옮기지
     var regualrHoloday: [Int] {
         var regularHoliday: [Int] = []
         
@@ -96,7 +97,7 @@ struct DateTimePickerView: View {
                 .padding(.horizontal)
                 
                 // 여기 바꿈 selectedDate
-                FSCalendarView(currentPage: $calendarData.currentPage, selectedDate: $calendarData.selectedDate, calendarTitle: $calendarData.titleOfMonth, regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
+                FSCalendarView(regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
                     .frame(height: 300)
                 .padding(.bottom)
                 .onChange(of: calendarData.selectedDate) { newValue in
