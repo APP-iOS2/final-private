@@ -19,7 +19,10 @@ struct FSCalendarView: UIViewRepresentable {
     // 임시 휴무일
     let regularHoliday: [Int]
     let temporaryHoliday: [Date]
+    var publicHolidays: [[String:Any]]
     
+    
+    // MARK: - 메소드
     func makeUIView(context: Context) -> FSCalendar {
         calendar.delegate = context.coordinator
         calendar.dataSource = context.coordinator
@@ -65,12 +68,13 @@ struct FSCalendarView: UIViewRepresentable {
     class Coordinator: NSObject, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
         var parent: FSCalendarView
         
-        init(_ parent: FSCalendarView) {  // 초기화 방법
+        init(_ parent: FSCalendarView) {
             self.parent = parent
         }
         
         
         // MARK: - FSCalendarDelegateAppearance 메소드
+        // 타이틀 컬러 변경 메소드
         func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
             let day = Calendar.current.component(.weekday, from: date) - 1
             
@@ -87,32 +91,71 @@ struct FSCalendarView: UIViewRepresentable {
             let today = calendar.date(from: dateComponents) ?? Date()
             let nextYear = Date().addingTimeInterval((60 * 60 * 24) * 365)
             let temporaryHoliday: [Date] = parent.temporaryHoliday
-
+            let publicHolidays = parent.publicHolidays
+            
+            
+            for holiday in publicHolidays {
+                if let holidayDate = holiday["date"] as? Date {
+                    if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }) {
+                        return UIColor.secondaryLabel
+                    } else if calendar.isDate(date, inSameDayAs: holidayDate) {
+                        return .systemRed
+                    }
+                }
+            }
+            
             if date < today || date > nextYear {
                 return UIColor.secondaryLabel
-            } else if regularHolidays.contains(weekday) || temporaryHoliday.contains(date) {
+            } else if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }) {
                 return UIColor.secondaryLabel
-            } else if Calendar.current.shortWeekdaySymbols[day] == "Sun" || Calendar.current.shortWeekdaySymbols[day] == "일" {
+            } else if calendar.shortWeekdaySymbols[day] == "Sun" { // 국경일에도 포함되도록
+                // || publicHolidays.contains(where: { calendar.isDate(date, inSameDayAs: $0) })
                 return .systemRed
             } else  {
                 return .label
             }
-            
         }
         
         //날짜 밑에 문자열을 표시
+        // 서브타이틀 색의 기본값을 적용 안해주면 다 음영처리 되어서 나옴,
+        // 서브타이틀의 기본값을 적용하면, 다른 색들의 색을 변경하려고 해도 기본값으로 나옴 ...
         func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
+            calendar.appearance.subtitleDefaultColor = UIColor.label
+            
             let temporaryHoliday: [Date] = parent.temporaryHoliday
-
-            if temporaryHoliday.contains(date) {
-                return "임시휴무"
-            } 
-            else if Calendar.current.isDateInToday(date) {
+            
+            // 공휴일 색상은 빨간색으로 만듦
+            for holiday in parent.publicHolidays {
+                if let holidayDate = holiday["date"] as? Date {
+                    if Calendar.current.isDate(date, inSameDayAs: holidayDate) {
+                        //                        return holiday["title"] as? String
+                        let subtitleText = holiday["title"] as? String
+                        let attributes: [NSAttributedString.Key : Any] = [
+                            .foregroundColor: UIColor.systemRed, // 빨간색으로 변경
+                            .font: UIFont.systemFont(ofSize: 12)
+                        ]
+                        let attributedSubtitle = NSAttributedString(string: subtitleText ?? "", attributes: attributes)
+                        return attributedSubtitle.string
+                    }
+                }
+            }
+            
+            if temporaryHoliday.contains(where: { Calendar.current.isDate(date, inSameDayAs: $0) }) {
+//                return "임시휴무"
+                let subtitleText = "임시휴무"
+                let attributes: [NSAttributedString.Key : Any] = [
+                    .foregroundColor: UIColor.secondaryLabel,
+                    .font: UIFont.systemFont(ofSize: 12)
+                ]
+                let attributedSubtitle = NSAttributedString(string: subtitleText, attributes: attributes)
+                return attributedSubtitle.string
+            }
+            
+            if Calendar.current.isDateInToday(date) {
                 return "오늘"
             }
             return nil
         }
-        
         
         // MARK: - Delegate
         func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
@@ -120,20 +163,22 @@ struct FSCalendarView: UIViewRepresentable {
             let weekday = calendar.component(.weekday, from: date) // 해당 날짜의 요일을 가져옴 (1: 일요일, 2: 월요일, ...)
             let regularHolidays: [Int] = parent.regularHoliday
             let temporaryHoliday: [Date] = parent.temporaryHoliday
-
-            print("temporaryHoliday: \(parent.temporaryHoliday) ==========")
-            print("regularHolidays: \(parent.regularHoliday) ==========")
-            // 요일이 휴일로 설정된 요일 중 하나인 경우 선택 불가능하도록 만듦
-            if regularHolidays.contains(weekday) || temporaryHoliday.contains(date) {
-                return false
-            }
             
-            return true
-
+            print("캘린더 데이트 - \(date)")
+            
+            if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }){
+                print("temporaryHoliday: \(temporaryHoliday)")
+                return false
+            } else {
+                return true
+            }
         }
         
         func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
             parent.selectedDate = date
+//            parent.currentPage = calendar.currentPage
+//            parent.calendarTitle = calendar.currentPage
+
         }
         
         func calendarCurrentPageDidChange(_ calendar: FSCalendar) {

@@ -10,8 +10,10 @@ import SwiftUI
 struct ReservationView: View {
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
+    @EnvironmentObject var holidayManager: HolidayManager
+    
     @ObservedObject private var calendarData = CalendarData()
-
+    
     @State private var showingDate: Bool = false    // 예약 일시 선택
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var isSelectedTime: Bool = false
@@ -27,117 +29,6 @@ struct ReservationView: View {
     
     let shopData: Shop
     let sortedWeekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
-
-    @State private var disabledPreviousButton: Bool = false
-    @State private var disabledNextButton: Bool = false
-    
-    var strMonthTitle: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy년 MM월"
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        return dateFormatter.string(from: calendarData.titleOfMonth)
-    }
-    
-    var disablePrevButton: Bool {
-        let currentDate = Date()
-        let calendar = Calendar.current  // 캘린더 인스턴스 생성
-        
-        // 현재 날짜에서 연도/월 추출
-        let currentYear = calendar.component(.year, from: currentDate)
-        let currentMonth = calendar.component(.month, from: currentDate)
-        
-        // 현재 페이지에서 연도/월 추출
-        let pageYear = calendar.component(.year, from: calendarData.currentPage)
-        let pageMonth = calendar.component(.month, from: calendarData.currentPage)
-        
-        if currentYear == pageYear && currentMonth == pageMonth {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    var disableNextButton: Bool {
-        let oneYearLater = Date().addingTimeInterval((60 * 60 * 24) * 365)  // 1년 후
-        let calendar = Calendar.current  // 캘린더 인스턴스 생성
-        
-        // 현재 날짜에서 연도/월 추출
-        let year = calendar.component(.year, from: oneYearLater)
-        let month = calendar.component(.month, from: oneYearLater)
-        
-        // 현재 페이지에서 연도/월 추출
-        let pageYear = calendar.component(.year, from: calendarData.currentPage)
-        let pageMonth = calendar.component(.month, from: calendarData.currentPage)
-        
-        if year == pageYear && month == pageMonth {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    var regualrHoloday: [Int] {
-        var regularHoliday: [Int] = []
-        
-        for holiday in shopData.regularHoliday {
-            switch holiday {
-            case "일요일":
-                regularHoliday.append(1)
-            case "월요일":
-                regularHoliday.append(2)
-            case "화요일":
-                regularHoliday.append(3)
-            case "수요일":
-                regularHoliday.append(4)
-            case "목요일":
-                regularHoliday.append(5)
-            case "금요일":
-                regularHoliday.append(6)
-            case "토요일":
-                regularHoliday.append(7)
-            default:
-                break
-            }
-        }
-        return regularHoliday
-    }
-
-    func getDisabled() -> (Bool, Bool) {
-        let calendar = Calendar.current
-        var thisMonthComponents = calendar.dateComponents([.year, .month], from: Date())
-        thisMonthComponents.hour = 0
-        thisMonthComponents.minute = 0
-        thisMonthComponents.second = 0
-        
-        var currentPageComponents = calendar.dateComponents([.year, .month], from: calendarData.currentPage)
-        currentPageComponents.hour = 0
-        currentPageComponents.minute = 0
-        currentPageComponents.second = 0
-        
-        let today = calendar.date(from: thisMonthComponents) ?? Date()
-        let oneYearFromNow = Calendar.current.date(byAdding: .year, value: 1, to: today) ?? today
-        let currentPageDay = calendar.date(from: currentPageComponents) ?? Date()
-        
-        var previosButton: Bool
-        var nextButton: Bool
-        
-        if currentPageDay == today {
-            previosButton = true
-        } else { previosButton = false }
-        
-        if currentPageDay == oneYearFromNow {
-            nextButton = true
-        } else {
-            nextButton = false
-        }
-        
-        return (previosButton, nextButton)
-    }  // 코드 수정 필요 - 기능은 잘 됨 ->
-    // 스왑할 때는 안됨 -> 해당 값이 바뀔 때마다 호출해주면 될 듯
-    
-    // 문제 스왑하고 버튼으로 하면 11월로 넘어감 -> 스왑했을 때
-    // updateUIView로 인해 UIView가 바뀔 때는 didChange가 동작하지만, didChange로 동작할 때는 updateUIView가 동작하지않음
-    // 둘을 이어줘야 함
     
     var body: some View {
         NavigationStack {
@@ -145,37 +36,6 @@ struct ReservationView: View {
                 Text(shopData.name)
                     .font(.pretendardBold24)
                     .padding(.bottom)
-                
-                // FSCalendarView 넣기
-                HStack {
-                    // previousButton
-                    
-                    Text(strMonthTitle)
-                    Spacer()
-                    Button {
-                        self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: -1, to: self.calendarData.currentPage)!
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .frame(width: 35, height: 35, alignment: .leading)
-                    }
-                    .disabled(disablePrevButton)
-                    
-                    // nextButton
-                    Button {
-                        self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: 1, to: self.calendarData.currentPage)!
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .frame(width: 35, height: 35, alignment: .trailing)
-                    }
-                    .disabled(disableNextButton)
-                    
-                }
-                .padding(.horizontal)
-                
-                FSCalendarView(currentPage: $calendarData.currentPage, selectedDate: $temporaryReservation.date, calendarTitle: $calendarData.titleOfMonth, regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday)
-                    .frame(height: 300)
-                
-                
                 
                 VStack(alignment: .leading) {
                     Divider()
@@ -206,7 +66,7 @@ struct ReservationView: View {
                     .padding(.bottom)
                     
                     if showingDate {
-                        DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: $isSelectedTime)
+                        DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: $isSelectedTime, shopData: shopData)
                             .onChange(of: temporaryReservation.time) { newValue in
                                 self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
                                 self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1
@@ -313,7 +173,6 @@ struct ReservationView: View {
             .padding()
             .onAppear {
                 self.temporaryReservation.shopId = self.shopData.id
-                print("tempHoliday = \(shopData.temporaryHoliday) ~~~~~~")
             }
         }
     }
@@ -324,5 +183,6 @@ struct ReservationView_Previews: PreviewProvider {
         ReservationView(isReservationPresented: .constant(true), shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
+            .environmentObject(HolidayManager())
     }
 }
