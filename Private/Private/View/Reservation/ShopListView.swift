@@ -28,7 +28,7 @@ struct ShopListView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     
-    @State var selectedShopCategory: Category = .koreanFood
+    @State var selectedShopCategory: Category = .general
     @State var selectedShopListSortCriterion: ShopListSortCriterion = .basic
     
     @State var isShowingFilteringView: Bool = false
@@ -54,7 +54,11 @@ struct ShopListView: View {
             
             ScrollView(.vertical) {
                 ForEach(shopStore.shopList.filter({ shop in
-                    return shop.category == selectedShopCategory
+                    if selectedShopCategory == Category.general {
+                        return true
+                    } else {
+                        return shop.category == selectedShopCategory
+                    }
                 }).sorted(by: { shop1, shop2 in
                     switch selectedShopListSortCriterion {
                     case .basic:
