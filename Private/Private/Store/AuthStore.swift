@@ -13,6 +13,7 @@ import GoogleSignIn
 import Combine
 import AuthenticationServices
 import CryptoKit
+import FirebaseCore
 
 class AuthStore: ObservableObject {
     
@@ -66,7 +67,7 @@ class AuthStore: ObservableObject {
                                            "bookmark" : [],
                                            "chattingRoom" : [],
                                            "myReservation" : []
-                                          ]
+            ]
             
             if let error = error {
                 print(error.localizedDescription)
@@ -99,7 +100,7 @@ class AuthStore: ObservableObject {
                 } else {
                     Firestore.firestore().collection("User").document((user?.profile?.email)!).getDocument { snapshot, error in
                         _ = snapshot!.data()
-
+                        
                         Auth.auth().signIn(with: credential) { result, error in
                             if let error = error {
                                 print(error.localizedDescription)
@@ -139,4 +140,24 @@ class AuthStore: ObservableObject {
         }
     }
     
+//    func getCurrentUserNickname(completion: @escaping (String?) -> Void) {
+//        // Firebase 인증 시스템을 통해 사용자 정보에서 닉네임을 가져온 후 completion으로 반환
+//        if let currentUser = currentUser {
+//            let userRef = Firestore.firestore().collection("User").document(currentUser.uid)
+//            
+//            userRef.getDocument { (document, error) in
+//                if let document = document, document.exists {
+//                    let data = document.data()
+//                    let nickname = data?["nickname"] as? String
+//                    completion(nickname)
+//                } else {
+//                    completion(nil)
+//                }
+//            }
+//        } else {
+//            completion(nil) // 사용자가 로그인되어 있지 않은 경우
+//        }
+//    }
+    
+
 }
