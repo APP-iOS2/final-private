@@ -67,7 +67,7 @@ struct ShopListView: View {
                         return CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord1) < CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord2)
                     }
                 }), id: \.self) { shop in
-                    ShopListCell(shopViewModel: ShopViewModel(shop: shop, userID: userStore.user.id), shop: shop)
+                    ShopListCell(shop: shop)
                             .padding(.vertical, 5)
                             .foregroundColor(colorScheme == ColorScheme.dark ? Color.white : Color.black)
                 }
@@ -90,12 +90,10 @@ struct ShopListView_Previews: PreviewProvider {
 struct ShopListCell: View {
     
     @EnvironmentObject var userStore: UserStore
-    @ObservedObject var shopViewModel: ShopViewModel
     
     @State var isShowingDetailView: Bool = false
     
-    // Todo: - 여기가 문젠가,,
-    let shop: Shop
+    @State var shop: Shop
     
     var body: some View {
         NavigationStack {
@@ -124,7 +122,7 @@ struct ShopListCell: View {
                 }
             }
             .navigationDestination(isPresented: $isShowingDetailView) {
-                ShopDetailView(shopViewModel: ShopViewModel(shop: shop, userID: userStore.user.email))
+                ShopDetailView(shop: shop)
             }
         }
     }
