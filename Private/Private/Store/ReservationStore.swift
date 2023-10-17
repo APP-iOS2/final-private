@@ -369,8 +369,8 @@ final class ReservationStore: ObservableObject {
             let nowInt = Int("HH".stringFromDate())
             
             if let nowInt {
-                // 현재 시간이 마감시간보다 같거나 늦으면 빈 배열 반환
-                guard nowInt < closeTime else {
+                // 현재 시간이 마감시간 1시간 전보다 같거나 늦으면 빈 배열 반환
+                guard nowInt < closeTime - 1 else {
                     return []
                 }
                 
@@ -380,7 +380,8 @@ final class ReservationStore: ObservableObject {
                     return times
                 }
                 
-                // 오픈시간 ~ 마감시간 전일 때
+                // 오픈시간 ~ 마감시간 1시간 전일 때
+                // 8시에 에러 남
                 let times = Array(nowInt + 1...closeTime - 1)
                 return times
             }

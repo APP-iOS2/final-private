@@ -109,7 +109,6 @@ struct FSCalendarView: UIViewRepresentable {
             } else if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }) {
                 return UIColor.secondaryLabel
             } else if calendar.shortWeekdaySymbols[day] == "Sun" { // 국경일에도 포함되도록
-                // || publicHolidays.contains(where: { calendar.isDate(date, inSameDayAs: $0) })
                 return .systemRed
             } else  {
                 return .label
@@ -176,9 +175,6 @@ struct FSCalendarView: UIViewRepresentable {
         
         func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
             parent.selectedDate = date
-//            parent.currentPage = calendar.currentPage
-//            parent.calendarTitle = calendar.currentPage
-
         }
         
         func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
