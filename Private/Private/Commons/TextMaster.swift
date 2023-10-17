@@ -8,50 +8,65 @@
 import SwiftUI
 
 struct TextMaster: View {
-
-  @Binding var text: String
-  @State private var dynamicHeight: CGFloat
-
-  let isFocused: FocusState<Bool>.Binding
-  let minLine: Int
-  let maxLine: Int
-  let font: UIFont
-  let becomeFirstResponder: Bool
-
-  init(
-    text: Binding<String>,
-    isFocused: FocusState<Bool>.Binding,
-    minLine: Int = 1,
-    maxLine: Int,
-    fontSize: CGFloat,
-    becomeFirstResponder: Bool = false)
-  {
-    _text = text
-    self.isFocused = isFocused
-    self.minLine = minLine
-    self.maxLine = maxLine
-    self.becomeFirstResponder = becomeFirstResponder
-
-    let font = UIFont.systemFont(ofSize: fontSize)
-    self.font = font
-    _dynamicHeight = State(initialValue: font.lineHeight * CGFloat(minLine) + 16) // textContainerInset 디폴트 값은 top, bottom 으로 각각 패딩 8 씩 들어감
-  }
-
-  var body: some View {
-    UITextViewRepresentable(
-      text: $text,
-      dynamicHeight: $dynamicHeight,
-      isFocused: isFocused,
-      minLine: minLine,
-      maxLine: maxLine,
-      font: font,
-      becomeFirstResponder: becomeFirstResponder)
-    .frame(height: dynamicHeight)
-    .focused(isFocused)
-    .border(isFocused.wrappedValue ? Color.blue : Color.gray, width: 1)
-  }
+    
+    @Binding var text: String
+    @State private var dynamicHeight: CGFloat
+    
+    let isFocused: FocusState<Bool>.Binding
+    let minLine: Int
+    let maxLine: Int
+    let font: UIFont
+    let becomeFirstResponder: Bool
+    let placeholder: String
+    
+    init(
+        text: Binding<String>,
+        isFocused: FocusState<Bool>.Binding,
+        minLine: Int = 1,
+        maxLine: Int,
+        fontSize: CGFloat,
+        becomeFirstResponder: Bool = false,
+        placeholder: String
+        
+    )
+    {
+        _text = text
+        self.isFocused = isFocused
+        self.minLine = minLine
+        self.maxLine = maxLine
+        self.becomeFirstResponder = becomeFirstResponder
+        self.placeholder = placeholder
+        
+        let font = UIFont.systemFont(ofSize: fontSize)
+        self.font = font
+        _dynamicHeight = State(initialValue: font.lineHeight * CGFloat(minLine) + 16) // textContainerInset 디폴트 값은 top, bottom 으로 각각 패딩 8 씩 들어감
+    }
+    
+    var body: some View {
+        
+        ZStack(alignment: .topLeading) {
+            if text.isEmpty {
+                Text(placeholder)
+                    .font(.custom(font.familyName, size: font.pointSize))
+                    .foregroundColor(Color(UIColor.placeholderText))
+                    .padding(EdgeInsets(top: 7, leading: 5, bottom: 0, trailing: 0))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .opacity(isFocused.wrappedValue ? 0 : 1)
+            }
+            UITextViewRepresentable(
+                text: $text,
+                dynamicHeight: $dynamicHeight,
+                isFocused: isFocused,
+                minLine: minLine,
+                maxLine: maxLine,
+                font: font,
+                becomeFirstResponder: becomeFirstResponder)
+            .frame(height: dynamicHeight)
+            .focused(isFocused)
+            .border(isFocused.wrappedValue ? Color.blue : Color.gray, width: 1)
+        }
+    }
 }
-
 fileprivate struct UITextViewRepresentable: UIViewRepresentable {
 
   @Binding var text: String

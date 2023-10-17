@@ -103,38 +103,7 @@ final class PostStore: ObservableObject {
 //            }
 //        }
 //    }
-    
-    func addFeed(_ feed: MyFeed) {
-        dbRef.document(feed.id).collection("myFeed")
-            .document(feed.id)
-            .setData(["writerNickname": feed.writerNickname,
-                      "writerName": feed.writerName,
-                      "writerProfileImage": feed.writerProfileImage,
-                      "images": feed.images,
-                      "contents": feed.contents,
-                      "createdAt": feed.createdAt,
-                      "title": feed.title,
-                      "category": feed.category,
-                      "address": feed.address,
-                      "roadAddress": feed.roadAddress,
-                      "mapx": feed.mapx,
-                      "mapy": feed.mapy,
-                     ])
-        
-        
-//        fetchFeed()
-    }
-//    var feed = MyFeed(writer: userStore.user.name,
-//                      images: images,
-//                      contents: text,
-//                      createdAt: createdAt,
-//                      title: searchResult.title,
-//                      category: myselectedCategory,
-//                      address: searchResult.address,
-//                      roadAddress: searchResult.roadAddress,
-//                      mapx: searchResult.mapx,
-//                      mapy: searchResult.mapy
-//    )
+
     func uploadImageToFirebase (image: UIImage) async -> String? {
 
         guard let imageData = image.jpegData(compressionQuality: 0.4) else { return nil }
@@ -244,21 +213,3 @@ final class PostStore: ObservableObject {
 //        }
 //    }
 //}
-
-// 킹피셔 예제코드
-//if let imageURL = URL(string: "\(shopData.picture)") {
-//                    KFImage(imageURL)
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(width: 130, height: 130)
-//                        .cornerRadius(7)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 7)
-//                                .foregroundColor(Color.black.opacity(0.7))
-//                                .overlay(
-//                                    Text("이용 가능한\n요일이 아닙니다")
-//                                        .font(.pretendardSemiBold14)
-//                                        .foregroundColor(.white)
-//                                )
-//                        )
-//                }
