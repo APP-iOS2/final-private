@@ -14,6 +14,7 @@ struct FeedCellView: View {
   
     @State private var currentPicture = 0
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
+    @EnvironmentObject var chatRoomStore: ChatRoomStore
 
     var body: some View {
         VStack {
@@ -91,14 +92,14 @@ struct FeedCellView: View {
                           .aspectRatio(contentMode: .fit)
                           .frame(width: .screenWidth*0.035)
                   }
-                  Button {
-                      print("DM 보내기")
-                  } label: {
-                      Image(systemName: "paperplane")
-                          .resizable()
-                          .aspectRatio(contentMode: .fit)
-                          .frame(width: .screenWidth*0.05)
-                  }
+                  NavigationLink {
+                      ChatRoomView(chatRoom: chatRoomStore.findChatRoom(firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: ""))
+                                     } label: {
+                                         Image(systemName: "paperplane")
+                                             .resizable()
+                                             .aspectRatio(contentMode: .fit)
+                                             .frame(width: .screenWidth*0.05)
+                                     }
               }
             }
             .font(.pretendardMedium24)

@@ -274,6 +274,16 @@ final class ChatRoomStore: ObservableObject {
         print("\(chatRoomList)")
     }
     
+    func findChatRoom(firstNickname: String, secondNickname: String) -> ChatRoom? {
+        for chatRoom in self.chatRoomList {
+               if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
+                  (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
+                   return chatRoom
+               }
+           }
+           return nil
+    }
+    
     init() {
         //        chatRoomList.append(ChatRoomStore.chatRoom)
         //        messageList = ChatRoomStore.chatRoom.messages
