@@ -93,7 +93,11 @@ struct FSCalendarView: UIViewRepresentable {
             let temporaryHoliday: [Date] = parent.temporaryHoliday
             let publicHolidays = parent.publicHolidays
             
+            if date < today || date > nextYear {  // 달력에 있는 날들이 과거이거나 1년 후보다 미래일 때
+                return UIColor.secondaryLabel
+            }
             
+            // 휴일 - 기본 빨간색 / 과거 or 휴무일 - secondaryLabel
             for holiday in publicHolidays {
                 if let holidayDate = holiday["date"] as? Date {
                     if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }) {
@@ -103,10 +107,8 @@ struct FSCalendarView: UIViewRepresentable {
                     }
                 }
             }
-            
-            if date < today || date > nextYear {
-                return UIColor.secondaryLabel
-            } else if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }) {
+
+            if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }) {
                 return UIColor.secondaryLabel
             } else if calendar.shortWeekdaySymbols[day] == "Sun" { // 국경일에도 포함되도록
                 return .systemRed
@@ -140,7 +142,7 @@ struct FSCalendarView: UIViewRepresentable {
             }
             
             if temporaryHoliday.contains(where: { Calendar.current.isDate(date, inSameDayAs: $0) }) {
-//                return "임시휴무"
+                //                return "임시휴무"
                 let subtitleText = "임시휴무"
                 let attributes: [NSAttributedString.Key : Any] = [
                     .foregroundColor: UIColor.secondaryLabel,
