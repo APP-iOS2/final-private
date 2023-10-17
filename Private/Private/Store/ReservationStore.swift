@@ -31,10 +31,10 @@ final class ReservationStore: ObservableObject {
         let currentYear = Calendar.current.component(.year, from: Date())
         let reservationYear = Calendar.current.component(.year, from: reservationDate)
         
-        if Calendar.current.isDateInToday(reservationDate) {
+        if Calendar.current.isDateInToday(reservationDate) {  // 예약 날짜가 오늘일 때
             // 예약 날짜가 오늘일 경우
             dateFormatter.dateFormat = "오늘(E)"
-        } else if currentYear == reservationYear {
+        } else if currentYear == reservationYear {  // 올 해일 때
             dateFormatter.dateFormat = "MM월 dd일(E)"
         } else {
             dateFormatter.dateFormat = "yy년 MM월 dd일(E)"

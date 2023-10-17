@@ -12,7 +12,7 @@ import Foundation
 public enum HolidayApi {
     static let requestUrl = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?"
     static let mediaParam = "pageNo=1&numOfRows=100&solYear=2024&_type=json"
-    static let key = "jaTdq9eVyKezV%2B%2BaZuE2nDjgJgiYb%2Fb%2FSjyXZ2825Xh7who79eca6cQ9YFzjATUfhpSp%2FIJPhlq9mIys0DV99A%3D%3D"
+    static let key = Bundle.main.publicHoliday_API_KEY
 }
 
 // 2022 / 2023 / 2024만 모아서 딕셔너리를 합침

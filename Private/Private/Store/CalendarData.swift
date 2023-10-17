@@ -10,4 +10,5 @@ import Foundation
 class CalendarData: ObservableObject {
     @Published var titleOfMonth: Date = Date()
     @Published var currentPage: Date = Date()
+    @Published var selectedDate: Date = Date()
 }

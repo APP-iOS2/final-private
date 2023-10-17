@@ -12,12 +12,13 @@ struct ReservationView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var holidayManager: HolidayManager
     
-    @ObservedObject private var calendarData = CalendarData()
+    @ObservedObject var calendarData = CalendarData()
     
     @State private var showingDate: Bool = false    // 예약 일시 선택
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var isSelectedTime: Bool = false
     @State private var isShwoingConfirmView: Bool = false
+    
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
@@ -47,6 +48,7 @@ struct ReservationView: View {
                     HStack {
                         Image(systemName: "calendar")
                         HStack {
+                            // 이 때 호출하면 언제 메소드는 언제 호출되는거야?
                             Text(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))
                             Text(" / ")
                             Text(isSelectedTime ? self.reservedTime + " \(self.reservedHour)시" : "시간")
@@ -67,6 +69,11 @@ struct ReservationView: View {
                     
                     if showingDate {
                         DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: $isSelectedTime, shopData: shopData)
+                            .onChange(of: calendarData.selectedDate) { newValue in
+                                temporaryReservation.date = newValue
+                                print("클래스에 있는 데이트: \(calendarData.selectedDate)")
+                                print("임시 예약 일: \(temporaryReservation.date)")
+                            }
                             .onChange(of: temporaryReservation.time) { newValue in
                                 self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
                                 self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1

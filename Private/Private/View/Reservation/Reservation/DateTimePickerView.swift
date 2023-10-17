@@ -10,7 +10,7 @@ import SwiftUI
 struct DateTimePickerView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var holidayManager: HolidayManager
-    @ObservedObject private var calendarData = CalendarData()
+    @ObservedObject private var calendarData = CalendarData()  // 이렇게 받으면 공유가 안됨
 
     @State private var showingDate: Bool = true
     @State private var showingTime: Bool = false
@@ -141,14 +141,15 @@ struct DateTimePickerView: View {
                 }
                 .padding(.horizontal)
                 
-                FSCalendarView(currentPage: $calendarData.currentPage, selectedDate: $temporaryReservation.date, calendarTitle: $calendarData.titleOfMonth, regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
+                // 여기 바꿈 selectedDate
+                FSCalendarView(currentPage: $calendarData.currentPage, selectedDate: $calendarData.selectedDate, calendarTitle: $calendarData.titleOfMonth, regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
                     .frame(height: 300)
                 .padding(.bottom)
-                .onChange(of: temporaryReservation.date) { newValue in
+                .onChange(of: calendarData.selectedDate) { newValue in
                     self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: newValue)
                     
                     separateReservationTime(timeSlots: availableTimeSlots)
-                    print(temporaryReservation.date)
+//                    print(temporaryReservation.date)
                 }
             }
             
