@@ -37,7 +37,16 @@ final class ShopStore: ObservableObject {
         ],
         regularHoliday: ["월요일", "화요일", "수요일", "목요일"],
         temporaryHoliday: [Date()],
-        breakTimeHours:  [
+        breakTimeHours: [
+            "월요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+            "화요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+            "수요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+            "목요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+            "금요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+            "토요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
+            "일요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0)
+        ],
+        weeklyBusinessHours: [
             "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
             "화요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
             "수요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
@@ -45,15 +54,6 @@ final class ShopStore: ObservableObject {
             "금요일": BusinessHours(startHour: 9, startMinute: 0, endHour: 17, endMinute: 30),
             "토요일": BusinessHours(startHour: 10, startMinute: 0, endHour: 15, endMinute: 0),
             "일요일": BusinessHours(startHour: 12, startMinute: 0, endHour: 16, endMinute: 0)
-        ],
-        weeklyBusinessHours:  [
-            "월요일": BusinessHours(startHour: 0, startMinute: 0, endHour: 0, endMinute: 0),
-            "화요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-            "수요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-            "목요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-            "금요일": BusinessHours(startHour:15, startMinute: 0, endHour: 17, endMinute: 0),
-            "토요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0),
-            "일요일": BusinessHours(startHour: 15, startMinute: 0, endHour: 17, endMinute: 0)
         ])
     
     

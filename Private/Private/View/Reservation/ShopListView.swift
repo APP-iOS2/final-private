@@ -114,8 +114,11 @@ struct ShopListView: View {
 struct ShopListView_Previews: PreviewProvider {
     static var previews: some View {
         ShopListView(root: .constant(true), selection: .constant(4))
+            .environmentObject(ShopStore())
+//        ShopListView(locationText: "")
     }
 }
+
 
 struct ShopListCell: View {
     
