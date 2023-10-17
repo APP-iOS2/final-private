@@ -17,10 +17,23 @@ final class UserStore: ObservableObject {
     @Published var following: [User] = []
     @Published var myFeedList: [MyFeed] = []
     @Published var mySavedFeedList: [MyFeed] = []
+    @Published var mySavedPlace: [MyFeed] = []
+
     @Published var mySavedPlaceList: [MyFeed] = []
     @Published var otherFeedList: [MyFeed] = []
     @Published var otherSavedFeedList: [MyFeed] = []
     @Published var otherSavedPlaceList: [MyFeed] = []
+    
+    func fetchMyInfo(userEmail: String, completion: @escaping (Bool) -> Void) {
+        Firestore.firestore().collection("User").document(userEmail).getDocument { snapshot, error in
+            if let error = error {
+                print("Error fetching user: \(error.localizedDescription)")
+            } else if let userData = snapshot?.data(), let user = User(document: userData) {
+                self.user = user
+                completion(true)
+            }
+        }
+    }
     
     func createUser(user: User) {
         Firestore.firestore().collection("User")
@@ -187,13 +200,46 @@ final class UserStore: ObservableObject {
         do {
             try
             Firestore.firestore().collection("User").document(user.email).collection("SavedFeed")
-                .document(feed.id)
+                .document("\(feed.images[0].suffix(32))")
                 .setData(from:feed)
             
         } catch {
             print("Error bookMark Feed: \(error)")
         }
     }
+    
+    func createMarker() {
+        
+    }
+//    func createUser(user: User) {
+//        Firestore.firestore().collection("User")
+//            .document(user.email)
+////            .setData(user.toDictionary())
+//            .setData(["email" : user.email,
+//                      "name" : user.name,
+//                      "nickname" : user.nickname,
+//                      "phoneNumber" : user.phoneNumber,
+//                      "profileImageURL" : user.profileImageURL,
+//                      "follower" : user.follower,
+//                      "following" : user.following,
+//                      "myFeed" : user.myFeed,
+//                      "savedFeed" : user.savedFeed,
+//                      "bookmark" : user.bookmark,
+//                      "chattingRoom" : user.chattingRoom,
+//                      "myReservation" : user.myReservation
+//                     ]
+//            )
+//        
+//        fetchCurrentUser(userEmail: user.email)
+//    }
+  
+    func deleteFeed(_ feed: MyFeed) {
+        Firestore.firestore().collection("User").document(user.email)
+            .collection("SavedFeed")
+            .document("\(feed.images[0].suffix(32))")
+            .delete()
+    }
+
     func savePlace(_ feed: MyFeed) {
         Firestore.firestore().collection("User").document(user.email).collection("SavedPlace")
             .document(feed.id)

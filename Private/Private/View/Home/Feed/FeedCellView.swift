@@ -28,14 +28,12 @@ struct FeedCellView: View {
                     }
                     .clipShape(Circle())
                     .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
-                
-                
                 VStack(alignment: .leading, spacing: 2) {
                     Text("\(feed.writerNickname)")
                         .font(.headline)
-                    //Text("\(feed.writerName)")
                     Text("\(feed.createdDate)")
-                    
+                        .font(.pretendardRegular12)
+                        .foregroundColor(.primary.opacity(0.8))
                 }
                 Spacer()
             }
@@ -67,38 +65,58 @@ struct FeedCellView: View {
                     .foregroundColor(.primary)
                
             }
-           
-            .padding(.leading, 30)
+            .padding(.leading, .screenWidth/2 - .screenWidth*0.45 )
             Spacer()
           VStack {
-              
               HStack{
                   Button {
                       print("북마크, 피드 저장")
-                      userStore.savePlace(feed) //장소 저장 로직(사용가능)
+                      if(userStore.user.myFeed.contains(feed.images[0])) {
+                          print("삭제")
+                          for userStoreImageId in userStore.user.myFeed {
+                              for myFeed in userStore.mySavedFeedList {
+                                  if userStoreImageId == myFeed.images[0] {
+                                      userStore.deleteFeed(myFeed)
+                                  }
+                              }
+                          }
+                          userStore.user.myFeed.removeAll { $0 == feed.images[0] }
+                          userStore.updateUser(user: userStore.user)
+                      } else {
+                          userStore.saveFeed(feed) //장소 저장 로직(사용가능)
+                          userStore.user.myFeed.append(feed.images[0])
+                          userStore.updateUser(user: userStore.user)
+                      }
                   } label: {
-                      Image(systemName: "bookmark")
+                      Image( systemName: userStore.user.myFeed.contains( feed.images[0]) ? "bookmark.fill" : "bookmark")
+                          .resizable()
+                          .aspectRatio(contentMode: .fit)
+                          .frame(width: .screenWidth*0.035)
                   }
                   Button {
-                      userStore.saveFeed(feed) //피드 저장 로직 (사용가능)
                       print("DM 보내기")
                   } label: {
                       Image(systemName: "paperplane")
+                          .resizable()
+                          .aspectRatio(contentMode: .fit)
+                          .frame(width: .screenWidth*0.05)
                   }
               }
             }
             .font(.pretendardMedium24)
             .foregroundColor(.primary)
-            .padding(.trailing,15)
+            .padding(.trailing,.screenWidth/2 - .screenWidth*0.45)
+            //.disabled(true)
         }
-        .padding(.top, 10)
+        .padding(.top, -25)
+        .padding(.bottom, 0)
        
         HStack {
                 Button {
                     print("핀, 장소 저장")
                     userStore.savePlace(feed) //장소 저장 로직(사용가능)
                 } label: {
-                    Image(systemName: "pin.fill")
+                    Image(systemName: "pin")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 15)
@@ -127,3 +145,5 @@ struct FeedCellView: View {
     //.padding(.top, 20)
 }
 
+//https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/81789D33-A401-4701-AB9F-ABBBE6DEC156?alt=media&token=a9b1fcdc-c1f9-48ec-87af-d7b617376365
+// https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/39968E65-7EB6-4D5D-AC00-8C8578AABFFF?alt=media&token=149585b7-ad7a-445a-a770-2e13af631ba0

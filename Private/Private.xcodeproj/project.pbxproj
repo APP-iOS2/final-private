@@ -40,6 +40,12 @@
 		3C5789372AC2604600D8B7EA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3C5789362AC2604600D8B7EA /* GoogleSignIn */; };
 		3C5789392AC2604600D8B7EA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3C5789382AC2604600D8B7EA /* GoogleSignInSwift */; };
 		3C57893B2AC27BAF00D8B7EA /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C57893A2AC27BAF00D8B7EA /* AuthStore.swift */; };
+		3C69C8B82ADD6797004476D1 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427552ACF965B00EECCD8 /* Pretendard-Bold.otf */; };
+		3C69C8B92ADD679B004476D1 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427562ACF965B00EECCD8 /* Pretendard-Light.otf */; };
+		3C69C8BA2ADD679E004476D1 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427572ACF965B00EECCD8 /* Pretendard-Medium.otf */; };
+		3C69C8BB2ADD67A1004476D1 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427542ACF965B00EECCD8 /* Pretendard-Regular.otf */; };
+		3C69C8BC2ADD67A4004476D1 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427582ACF965B00EECCD8 /* Pretendard-SemiBold.otf */; };
+		3C69C8BD2ADD67A6004476D1 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427592ACF965B00EECCD8 /* Pretendard-Thin.otf */; };
 		3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */; };
 		3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */; };
 		3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */; };
@@ -135,6 +141,7 @@
 		D1DC8D5B2ACFC67E0087CBD7 /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */; };
 		D1EC43922AC16E2900B088EA /* FollowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43912AC16E2900B088EA /* FollowStore.swift */; };
 		D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43992AC2D42F00B088EA /* SearchView.swift */; };
+		E3071A252AD9204D00090B62 /* MapSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3071A242AD9204D00090B62 /* MapSearchView.swift */; };
 		E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E385FAB42AC161EE00AC7255 /* PostStore.swift */; };
 		E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3876FC22AC294E200CFE728 /* PictureView.swift */; };
 		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
@@ -279,6 +286,7 @@
 		D1EC43992AC2D42F00B088EA /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		DCBBE0A1367066F0B655E6C5 /* Pods-Private-PrivateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.release.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E121B3F00B9AC989B133EC53 /* Pods-Private-PrivateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.debug.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		E3071A242AD9204D00090B62 /* MapSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchView.swift; sourceTree = "<group>"; };
 		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
 		E3876FC22AC294E200CFE728 /* PictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
@@ -658,8 +666,9 @@
 				3CB734072ABD6EEF00D82503 /* MapMainView.swift */,
 				63BB09992ABD87BD002CCE4E /* NaverMap.swift */,
 				3C2FC8EF2ACE9B740034F561 /* MapFeedSheetView.swift */,
-				3C94275A2ACF9C1800EECCD8 /* MapMarkerFeedView.swift */,
 				3C2FC8ED2ACE9B740034F561 /* MapReviewRowView.swift */,
+				E3071A242AD9204D00090B62 /* MapSearchView.swift */,
+				3C94275A2ACF9C1800EECCD8 /* MapMarkerFeedView.swift */,
 				3C2FC8D52ACE9AFA0034F561 /* MapMarker */,
 			);
 			path = Map;
@@ -890,7 +899,14 @@
 			files = (
 				261DC71C2ADD40FB00EF6378 /* GoogleService-Info.plist in Resources */,
 				3CF3D8CC2AB82A99003689A6 /* Preview Assets.xcassets in Resources */,
+				3C69C8B82ADD6797004476D1 /* Pretendard-Bold.otf in Resources */,
 				3CF3D8C92AB82A99003689A6 /* Assets.xcassets in Resources */,
+				3C69C8BD2ADD67A6004476D1 /* Pretendard-Thin.otf in Resources */,
+				3C69C8BC2ADD67A4004476D1 /* Pretendard-SemiBold.otf in Resources */,
+				3C69C8B92ADD679B004476D1 /* Pretendard-Light.otf in Resources */,
+				3C69C8BB2ADD67A1004476D1 /* Pretendard-Regular.otf in Resources */,
+				26357CEE2AD54B8B0098C8F5 /* GoogleService-Info.plist in Resources */,
+				3C69C8BA2ADD679E004476D1 /* Pretendard-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1027,6 +1043,7 @@
 				B5339A892AD68A2D006AAC36 /* ShopListView.swift in Sources */,
 				3C3716262ABD15CD004E8419 /* ShopStore.swift in Sources */,
 				D1DC8D512ACEAE2C0087CBD7 /* OtherPageView.swift in Sources */,
+				E3071A252AD9204D00090B62 /* MapSearchView.swift in Sources */,
 				3CB734082ABD6EEF00D82503 /* MapMainView.swift in Sources */,
 				3C37162C2ABD1789004E8419 /* ChatRoomStore.swift in Sources */,
 				D1DC8D5B2ACFC67E0087CBD7 /* FollowButton.swift in Sources */,
