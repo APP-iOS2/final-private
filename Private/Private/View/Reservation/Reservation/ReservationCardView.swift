@@ -9,6 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct ReservationCardView: View {
+    @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var shopStore: ShopStore
     
@@ -34,7 +35,7 @@ struct ReservationCardView: View {
                 Spacer()
                 Menu {
                     NavigationLink {
-                        ShopDetailView(shopData: shopData)
+                        ShopDetailView(shopViewModel: ShopViewModel(shop: shopData, userID: userStore.user.id))
                     } label: {
                         Text("가게보기")
                     }
