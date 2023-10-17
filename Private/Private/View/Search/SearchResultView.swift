@@ -9,11 +9,10 @@ import SwiftUI
 
 struct SearchResultView: View {
     var searchTerm: String
-    
     @EnvironmentObject var searchStore: SearchStore
+    @EnvironmentObject var followStore: FollowStore
     
     var body: some View {
-        ScrollView {
             VStack {
                 if searchStore.searchUserLists.isEmpty {
                     Text("해당 사용자가 없습니다.")
@@ -24,26 +23,33 @@ struct SearchResultView: View {
                 }
                 
                 Spacer()
+                
+                
+                
+
             }
-        }
         .frame(maxWidth: .infinity)
         .padding(.horizontal)
+        // 버튼 눌러도 다시 실행이 안됨 -> follow버튼 눌렀을때  await fetchSearchResults() 다시 실행되게 하기 !!!!! refreshable? -> 해도 수동으로 업데이트 코드 추가! +) !로 인해 실행 안되는 문제도 보기
         .onAppear {
+                Task {
+                    await fetchSearchResults()
+                }
+        }
+        .onChange(of: followStore.followCheck) { _ in
             Task {
                 await fetchSearchResults()
             }
         }
     }
     
-    
+    //searchUserLists에 영향? 주는 코드
     var searchUserResult: some View {
-        // 팔로잉 되어있는 사람 체크 함수 plus
         ForEach(searchStore.searchUserLists, id: \.self) { user in
             NavigationLink {
                 OtherPageView(user: user)
             } label: {
                 SearchUserCellView(user: user)
-                    .environmentObject(FollowStore())
             }
         }
     }
@@ -52,6 +58,7 @@ struct SearchResultView: View {
         await searchStore.searchUser(searchTerm: searchTerm)
         searchStore.addRecentSearch(searchTerm)
     }
+    
 }
 
 struct SearchResultView_Previews: PreviewProvider {

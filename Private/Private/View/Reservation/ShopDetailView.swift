@@ -101,18 +101,18 @@ struct ShopDetailBodyView: View {
                     HStack(spacing: 10) {
                         Text(shopData.name)
                             .foregroundColor(.chatTextColor)
-                            .font(Font.pretendardBold28)
+                            .font(.pretendardBold28)
                         
                         Divider()
                             .frame(height: 25)
                         
                         Text(shopData.category.categoryName)
-                            .font(Font.pretendardMedium18)
+                            .font(.pretendardMedium18)
                     }
                     
                     HStack(alignment: .center, spacing: 5) {
                         Text(shopData.address + " " + shopData.addressDetail)
-                            .font(Font.pretendardMedium16)
+                            .font(.pretendardMedium16)
                         
                         Button {
                             copyToClipboard(shopData.address + " " + shopData.addressDetail)
@@ -121,6 +121,7 @@ struct ShopDetailBodyView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 15, height: 15)
+
                         }
                         
                         Spacer()
@@ -144,10 +145,10 @@ struct ShopDetailBodyView: View {
             }
             .padding(.horizontal, 10)
             
-            Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(Font.pretendardRegular16)) {
+            Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(.pretendardRegular16)) {
                 ForEach(ShopDetailCategory.allCases, id: \.self) { category in
                     Text(category.rawValue)
-                        .font(Font.pretendardRegular16)
+                        .font(.pretendardRegular16)
                         .foregroundColor(.chatTextColor)
                 }
             }
@@ -259,11 +260,7 @@ struct ShopDetailFooterView: View {
                 }
                 
                 Text("\(bookmarkCounts)")
-//                Text("\(viewModel.bookmarkCounts)")
-//                Text("\(shopData.bookmarks.count)")
-//                Text("\(viewModel.shop.bookmarks.count)")
-//                Text("\(viewModel.checkBookmarkCount())")
-                    .font(Font.pretendardSemiBold12)
+                    .font(.pretendardSemiBold12)
             }
             
             Button {

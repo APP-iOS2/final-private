@@ -10,18 +10,17 @@ import SwiftUI
 struct FeedMainView: View {
     
     @EnvironmentObject var feedStore: FeedStore
-    
+    @EnvironmentObject var userStore: UserStore
     var body: some View {
-        VStack {
-            Text("feedStore.feedList.count : \(feedStore.feedList.count)")
-            //Circle()
+      
             ScrollView {
                 ForEach(feedStore.feedList) { feed in
                     
                     FeedCellView(feed: feed)
+                        .padding(.bottom,15)
                 }
             }
-        }
+        
     }
 }
 
@@ -29,5 +28,6 @@ struct FeedMainView_Previews: PreviewProvider {
     static var previews: some View {
         FeedMainView()
             .environmentObject(FeedStore())
+            .environmentObject(UserStore())
     }
 }

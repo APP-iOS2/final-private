@@ -15,8 +15,6 @@ struct SearchView: View {
     
     @State private var searchTerm: String = ""
     @State private var isSearchTextEmpty: Bool = true
-    
-    // 추가된 프로퍼티
     @State private var isNavigationActive: Bool = false
     
     var body: some View {
@@ -24,15 +22,22 @@ struct SearchView: View {
             VStack(spacing: 0) {
                 searchTextField
                 ScrollView(showsIndicators: false) {
-                    RecentSearchListView(searchStore: searchStore, searchTerm: $searchTerm)
+                    Divider()
+                    RecentSearchListView(searchTerm: $searchTerm)
                     Spacer()
-                    RecentUserListView(searchStore: searchStore, searchTerm: $searchTerm)
+                    Divider()
+                    RecentUserListView(searchTerm: $searchTerm)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .padding(.horizontal)
             .onAppear {
+                print(" 팔로값 1: \(followStore.followCheck)")
+                print(" 팔로값 2: \(followStore.followers)")
+                print(" 팔로값 3: \(followStore.following)")
+                print(" 팔로값 4: \(followStore.followerList)")
+                print(" 팔로값 5: \(followStore.followingList)")
                 searchStore.fetchrecentSearchResult()
                 searchTerm = ""
             }
@@ -57,39 +62,40 @@ struct SearchView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 12)
-            .padding(.bottom, 70)
         }
     }
     
     
     struct RecentSearchListView: View {
-        @ObservedObject var searchStore: SearchStore
+        @EnvironmentObject var searchStore: SearchStore
         @Binding var searchTerm: String
         
         var body: some View {
-            VStack(spacing: 0) {
-                Text("최근 검색어")
-                    .fontWeight(.bold)
-                    .padding()
-                
-                Divider().padding()
-                
-                if !searchStore.recentSearchResult.isEmpty {
-                    ForEach(searchStore.recentSearchResult, id: \.self) { resultText in
-                        RecentSearchRowView(searchStore: searchStore, searchTerm: $searchTerm, resultText: resultText)
-                    }
+            VStack(spacing: 10) {
+                VStack(alignment: .leading) {
+                    Text("최근 검색어")
+                        .font(.pretendardMedium18)
+                        .padding()
+                    
+                    Divider().padding()
+                }
+                    if !searchStore.recentSearchResult.isEmpty {
+                        ForEach(searchStore.recentSearchResult.prefix(5), id: \.self) { resultText in
+                            RecentSearchRowView(searchTerm: $searchTerm, resultText: resultText)
+                        }
                 } else {
                     Text("최근 검색 기록이 없습니다")
+                        .font(.pretendardRegular12)
                         .foregroundColor(.secondary)
                 }
                 
-                Spacer().padding(.bottom, 220)
+                Spacer().padding(.bottom, 10)
             }
         }
     }
     
     struct RecentSearchRowView: View {
-        @ObservedObject var searchStore: SearchStore
+        @EnvironmentObject var searchStore: SearchStore
         @Binding var searchTerm: String
         let resultText: String
         
@@ -114,23 +120,26 @@ struct SearchView: View {
     }
     
     struct RecentUserListView: View {
-        @ObservedObject var searchStore: SearchStore
+        @EnvironmentObject var searchStore: SearchStore
         @Binding var searchTerm: String
 
         var body: some View {
-            VStack(spacing: 0) {
-                Text("최근 찾은 사용자")
-                    .fontWeight(.bold)
-                    .padding()
-                
-                Divider().padding()
+            VStack(spacing: 10) {
+                VStack(alignment: .leading) {
+                    Text("최근 찾은 사용자")
+                        .font(.pretendardMedium18)
+                        .padding()
+                    
+                    Divider().padding()
+                }
                 
                 if !searchStore.searchUserLists.isEmpty {
                     ForEach(searchStore.searchUserLists, id: \.self) { user in
-                        RecentUserRowView(searchStore: searchStore, user: user)
+                        RecentUserRowView(user: user)
                     }
                 } else {
                     Text("최근 검색 기록이 없습니다")
+                        .font(.pretendardRegular12)
                         .foregroundColor(.secondary)
                 }
             }
@@ -138,7 +147,8 @@ struct SearchView: View {
     }
 
     struct RecentUserRowView: View {
-        @ObservedObject var searchStore: SearchStore
+        @EnvironmentObject var searchStore: SearchStore
+        @EnvironmentObject var followStore: FollowStore
         let user: User
 
         var body: some View {
@@ -147,13 +157,13 @@ struct SearchView: View {
                     OtherPageView(user: user)
                 } label: {
                     SearchUserCellView(user: user)
-                        .environmentObject(FollowStore())
                 }
                 Spacer()
                 Button {
                     searchStore.removeRecentSearchResult(user.nickname)
                 } label: {
                     Image(systemName: "xmark.fill")
+                        .foregroundColor(.gray)
                 }
             }
             .padding(.bottom, 8)

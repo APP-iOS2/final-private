@@ -1,5 +1,5 @@
 //
-//  MyFollowingView.swift
+//  MyFollowerView.swift
 //  Private
 //
 //  Created by 주진형 on 2023/10/04.
@@ -10,17 +10,18 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Kingfisher
 
-struct MyFollowingView: View {
+struct MyFollowerView: View {
     @EnvironmentObject var userStore: UserStore
-    @State private var followingUserList: [User] = []
+    @EnvironmentObject var followStore: FollowStore
+    @State private var followerUserList: [User] = []
     var body: some View {
         ScrollView {
-            ForEach(followingUserList, id:\.self) { following in
+            ForEach(followerUserList, id: \.self) { follower in
                 HStack {
                     NavigationLink() {
-                        OtherPageView(user:following)
+                        OtherPageView(user:follower)
                     } label: {
-                        if following.profileImageURL.isEmpty {
+                        if follower.profileImageURL.isEmpty {
                             ZStack {
                                 Circle()
                                     .frame(width: .screenWidth*0.13)
@@ -32,12 +33,12 @@ struct MyFollowingView: View {
                                     .clipShape(Circle())
                             }
                         } else {
-                            KFImage(URL(string: following.profileImageURL))
+                            KFImage(URL(string: follower.profileImageURL))
                                 .resizable()
                                 .clipShape(Circle())
                                 .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
                         }
-                        Text("\(following.nickname)")
+                        Text("\(follower.nickname)")
                             .font(.pretendardMedium18)
                             .foregroundColor(.primary)
                             .padding(.leading, 15)
@@ -46,7 +47,7 @@ struct MyFollowingView: View {
                     Button {
                         
                     } label: {
-                        Text("언팔로우")
+                        Text("팔로잉")
                             .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
                             .font(.pretendardBold14)
                             .foregroundColor(.black)
@@ -62,16 +63,17 @@ struct MyFollowingView: View {
             }
         }
         .onAppear {
-            if followingUserList.count != userStore.user.following.count {
-                searchFollowingUser(searchNickname: userStore.user.following)
+            if followerUserList.count != userStore.user.follower.count {
+                searchFollowerUser(searchNickname: userStore.user.follower)
             }
         }
         .refreshable {
-            followingUserList = []
-            searchFollowingUser(searchNickname: userStore.user.following)
+            followerUserList = []
+            searchFollowerUser(searchNickname: userStore.user.follower)
         }
     }
-    func searchFollowingUser(searchNickname: [String]) {
+    
+    func searchFollowerUser(searchNickname: [String]) {
         let db = Firestore.firestore()
         
         for index in searchNickname {
@@ -87,15 +89,14 @@ struct MyFollowingView: View {
                 for document in querySnapshot!.documents {
                     let data = document.data()
                     let user = User(document: data)
-                    followingUserList.append(user ?? User())
+                    followerUserList.append(user ?? User())
                 }
             }
         }
     }
 }
-
-struct MyFollowingView_Previews: PreviewProvider {
+struct MyFollowerView_Previews: PreviewProvider {
     static var previews: some View {
-        MyFollowingView().environmentObject(UserStore())
+        MyFollowerView().environmentObject(UserStore())
     }
 }

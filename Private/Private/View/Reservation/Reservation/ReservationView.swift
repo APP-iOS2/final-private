@@ -43,7 +43,7 @@ struct ReservationView: View {
                         .opacity(0)
                     
                     Text("예약 일시")
-                        .font(Font.pretendardBold18)
+                        .font(.pretendardBold18)
                     
                     HStack {
                         Image(systemName: "calendar")
@@ -61,7 +61,7 @@ struct ReservationView: View {
                             Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                         }
                     }
-                    .font(Font.pretendardMedium18)
+                    .font(.pretendardMedium18)
                     .padding()
                     .background(Color("SubGrayColor"))
                     .cornerRadius(12)
@@ -81,7 +81,7 @@ struct ReservationView: View {
                     }
                     
                     Text("인원")
-                        .font(Font.pretendardBold18)
+                        .font(.pretendardBold18)
                     
                     HStack {
                         Image(systemName: "person")
@@ -94,7 +94,7 @@ struct ReservationView: View {
                         }
                         .disabled(!isSelectedTime)
                     }
-                    .font(Font.pretendardMedium18)
+                    .font(.pretendardMedium18)
                     .padding()
                     .background(Color.subGrayColor)
                     .cornerRadius(12)
@@ -105,7 +105,7 @@ struct ReservationView: View {
                         HStack {
                             Image(systemName: "info.circle")
                             Text("1~6명 까지 선택 가능합니다.")
-                                .font(Font.pretendardRegular16)
+                                .font(.pretendardRegular16)
                         }
                         
                         Divider()
@@ -123,7 +123,7 @@ struct ReservationView: View {
                             Image(systemName: "info.circle")
                             Text("알립니다")
                         }
-                        .font(Font.pretendardBold18)
+                        .font(.pretendardBold18)
                         .foregroundColor(Color("AccentColor"))
                         .padding(.bottom, 6)
                         

@@ -9,8 +9,10 @@ import SwiftUI
 import Kingfisher
 
 struct OtherInfoView: View {
+    
+    @EnvironmentObject private var followStore: FollowStore
+    @EnvironmentObject private var userStore :UserStore
     @State var isModify: Bool = false
-    @StateObject var followStore = FollowStore()
     
     let user:User
     var body: some View {
@@ -39,7 +41,7 @@ struct OtherInfoView: View {
             VStack {
                 HStack {
                     VStack {
-                        Text("\(user.myFeed.count)")
+                        Text("\(userStore.otherFeedList.count)")
                             .font(.pretendardBold18)
                             .padding(.bottom, 5.0)
                         Text("게시글")
@@ -77,7 +79,7 @@ struct OtherInfoView: View {
                 }
                 .padding(.bottom, 10.0)
                 
-                FollowButton(user: user, followingCount: $followStore.following, followersCount: $followStore.followers, followCheck: $followStore.followCheck)
+                FollowButton(user: user)
                         .font(.pretendardRegular14)
                         .frame(width: .screenWidth*0.5, height: 32)
                         .background(followStore.followCheck ? Color("AccentColor") : Color.white)
@@ -85,6 +87,9 @@ struct OtherInfoView: View {
                         .foregroundColor(.black)
             }
             .padding(.top, 40.0)
+        }
+        .onAppear {
+            userStore.fetchotherUser(userEmail: user.email)
         }
     }
 }

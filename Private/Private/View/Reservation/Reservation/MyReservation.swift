@@ -29,7 +29,7 @@ struct MyReservation: View {
                             isShowingMyReservation.toggle()
                         } label: {
                             Text("확인")
-                                .font(Font.pretendardMedium20)
+                                .font(.pretendardMedium20)
                         }
                     }
                 }

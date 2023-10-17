@@ -15,6 +15,8 @@ struct MyHistoryView: View {
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
     @State var isReservation: Bool = false
+    @State var isMyPageFeedSheet: Bool = false 
+    @State var selctedFeed : MyFeed = MyFeed()
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
@@ -78,21 +80,32 @@ struct MyHistoryView: View {
             //.padding(.top,.screenHeight * 0.02)
             if (isFeed == true) {
                 ScrollView {
-                if userStore.user.myFeed.isEmpty {
-                    Text("게시물이 존재 하지 않습니다.")
-                        .font(.pretendardBold24)
-                        .padding(.top, .screenHeight * 0.2)
-                } else {
+                    if userStore.myFeedList.isEmpty {
+                        Text("게시물이 존재 하지 않습니다.")
+                            .font(.pretendardBold24)
+                            .padding(.top, .screenHeight * 0.2)
+                    } else {
                         LazyVGrid(
                             columns: columns,
                             alignment: .center,
                             spacing: 1
                         ) {
-                            ForEach(userStore.user.myFeed, id: \.self) { feed in
-                                KFImage(URL(string:feed.images[0])) .placeholder {
-                                    Image(systemName: "photo")
-                                }.resizable()
-                                    .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
+                            ForEach(userStore.myFeedList, id: \.self) { feed in
+                                Button {
+                                    selctedFeed = feed
+                                    isMyPageFeedSheet = true
+                                } label: {
+                                    KFImage(URL(string:feed.images[0])) .placeholder {
+                                        Image(systemName: "photo")
+                                    }.resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
+                                        .clipShape(Rectangle())
+                                }
+                                .sheet(isPresented: $isMyPageFeedSheet){
+                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed, feedList: userStore.myFeedList)
+                                        .presentationDetents([.height(.screenHeight)])
+                                }
                             }
                         }
                     }

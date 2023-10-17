@@ -178,12 +178,12 @@ struct ReservationCardCell: View {
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             Text("\(title)")
-                .font(Font.pretendardMedium18)
+                .font(.pretendardMedium18)
             
             Spacer()
             
             Text("\(content)")
-                .font(Font.pretendardMedium16)
+                .font(.pretendardMedium16)
         }
         .padding(.bottom, 1)
     }

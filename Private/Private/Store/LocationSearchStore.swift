@@ -49,4 +49,55 @@ class LocationSearchStore: ObservableObject {
             }
         }
     }
+    
+    func reverseGeoCoding(lat: String, long: String) {
+        let baseURL = "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc"
+        
+        let headers: HTTPHeaders = [
+            "X-NCP-APIGW-API-KEY-ID": naver_map_client_ID,
+            "X-NCP-APIGW-API-KEY": naver_map_client_Secret,
+        ]
+        
+        let parameters: Parameters = [
+            "coords": "\(long),\(lat)",
+            "output": "json"
+        ]
+        
+        AF.request(baseURL,
+                   method: .get,
+                   parameters: parameters,
+                   encoding: URLEncoding.default,
+                   headers: headers)
+        .validate(statusCode: 200...500)
+        .responseDecodable(of: ReverseGeoCodingResult.self) { response in
+            switch response.result {
+            case .success(let data):
+                guard let statusCode = response.response?.statusCode else { return }
+                if statusCode == 200 {
+                    DispatchQueue.main.async {
+                        print("success reverseGeoCoding")
+                        print(data)
+//                        self.searchResultList = data.items
+                    }
+                }
+            case .failure(let error):
+                print("fail reverseGeoCoding")
+            }
+        }
+    }
+    
+    func formatCoordinates(_ input: String, _ index: Int) -> String? {
+        if input.count < 7 {
+            return nil // 최소 7자리 이상의 문자열이어야 합니다.
+        }
+        
+        // 문자열을 index를 사용하여 처리합니다.
+        let index = input.index(input.startIndex, offsetBy: index)
+        
+        // Substring을 사용하여 3번째와 4번째 문자 앞에 점을 추가합니다.
+        var output = input
+        output.insert(".", at: index)
+        
+        return output
+    }
 }

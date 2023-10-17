@@ -68,10 +68,10 @@ struct ShopDetailCurrentReviewCell: View {
                 
                 VStack(alignment: .leading, spacing: 5) {
                     Text("\(dummyFeed.writerNickname)")
-                        .font(Font.pretendardBold18)
+                        .font(.pretendardBold18)
 
                     Text("@\(dummyFeed.writerName)")
-                        .font(Font.pretendardRegular16)
+                        .font(.pretendardRegular16)
                 }
                 
                 Spacer()
@@ -106,11 +106,11 @@ struct ShopDetailCurrentReviewCell: View {
                 .frame(width: 150, height: 150)
                 
                 ExpandableText(text: dummyFeed.contents)
-                    .font(Font.pretendardRegular14)
+                    .font(.pretendardRegular14)
                     .lineLimit(9)
                     .expandAnimation(.easeOut)
-                    .expandButton(TextSet(text: "더보기", font: Font.pretendardRegular16, color: .blue))
-                    .collapseButton(TextSet(text: "접기", font: Font.pretendardRegular16, color: .blue))
+                    .expandButton(TextSet(text: "더보기", font: .pretendardRegular16, color: .blue))
+                    .collapseButton(TextSet(text: "접기", font: .pretendardRegular16, color: .blue))
             }
         }
     }
