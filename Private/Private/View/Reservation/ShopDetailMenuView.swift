@@ -32,7 +32,7 @@ struct ShopDetailMenuView: View {
                         
                         VStack(alignment: .leading, spacing: 0) {
                             Text("\(menu.name)")
-                                .font(.pretendardMedium24)
+                                .font(.pretendardMedium20)
                             
                             Text("\(menu.price)")
                                 .font(.pretendardRegular16)

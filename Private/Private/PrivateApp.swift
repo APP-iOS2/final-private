@@ -17,6 +17,7 @@ struct PrivateApp: App {
     @StateObject private var userStore = UserStore()
     @StateObject private var reservationStore = ReservationStore()
     @StateObject private var shopStore = ShopStore()
+    @StateObject private var holidayManager = HolidayManager()
     @StateObject private var followStore = FollowStore()
     
     init() {
@@ -36,6 +37,7 @@ struct PrivateApp: App {
                 .environmentObject(ChatRoomStore())
                 .environmentObject(reservationStore)
                 .environmentObject(shopStore)
+                .environmentObject(holidayManager)
                 .environmentObject(followStore)
                 .task {
                     await shopStore.getAllShopData()

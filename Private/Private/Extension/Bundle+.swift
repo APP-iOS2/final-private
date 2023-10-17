@@ -26,6 +26,14 @@ extension Bundle {
         return key
     }
     
+    var publicHoliday_API_KEY: String {
+        guard let file = self.path(forResource: "Info", ofType: "plist") else { return "" }
+        
+        guard let resource = NSDictionary(contentsOfFile: file) else { return "" }
+        guard let key = resource["publicHoliday_API_KEY"] as? String else {
+            fatalError("publicHoliday_API_KEY error")
+        }
+
     var naverMap_client_ID: String {
         guard let file = self.path(forResource: "Info", ofType: "plist") else { return "" }
         

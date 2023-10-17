@@ -49,13 +49,14 @@ struct ModifyReservationView: View {
                         Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                     }
                 }
-                .font(.pretendardMedium24)
+                .font(.pretendardMedium18)
                 .padding()
                 .background(Color("SubGrayColor"))
+                .cornerRadius(12)
                 .padding(.bottom)
                 
                 if showingDate {
-                    DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: .constant(true))
+                    DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: .constant(true), shopData: shopData)
                         .onChange(of: temporaryReservation.time) { newValue in
                             self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
                             self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1
@@ -63,7 +64,7 @@ struct ModifyReservationView: View {
                 }
                 
                 Text("인원")
-                    .font(.pretendardBold24)
+                    .font(.pretendardBold18)
                 
                 HStack {
                     Image(systemName: "person")
@@ -78,6 +79,7 @@ struct ModifyReservationView: View {
                 .font(.pretendardMedium18)
                 .padding()
                 .background(Color.subGrayColor)
+                .cornerRadius(12)
                 .padding(.bottom, 20)
                 
                 if showingNumbers {
@@ -97,12 +99,12 @@ struct ModifyReservationView: View {
                 
                 Text("요구사항")
                 RequirementTextEditor(requirementText: $requirementText)
+                    .padding(.bottom)
                 
                 ReservationButton(text: "예약 변경하기") {
                     isShowingAlert.toggle()
                 }
                 .tint(.primary)
-                .padding()
                 .alert("예약 변경", isPresented: $isShowingAlert) {
                     Button() {
                         print(#fileID, #function, #line, "- 예약 확정")
@@ -132,8 +134,6 @@ struct ModifyReservationView: View {
             if let requirement = temporaryReservation.requirement {
                 self.requirementText = requirement
             }
-            
-            dump(temporaryReservation)
         }
     }
 }
