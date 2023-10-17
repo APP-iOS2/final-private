@@ -137,6 +137,7 @@ struct FeedCellView: View {
             .padding(.leading, 15)
             Spacer()
         }
+        .padding(.top, 5)
         .padding(.horizontal, 10)
         .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
         .background(Color.darkGraySubColor)

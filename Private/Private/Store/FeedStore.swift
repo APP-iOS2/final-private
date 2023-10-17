@@ -3,7 +3,6 @@
 //  Private
 //
 //  Created by 변상우 on 2023/09/22.
-//
 
 import Foundation
 import Firebase
@@ -34,15 +33,17 @@ final class FeedStore: ObservableObject {
                 print("Error fetching documents: \(error.localizedDescription)")
                 return
             }
-            // 문서 데이터를 Feed 타입으로 변환하고 feedList를 업데이트합니다.
+                                   
             self?.feedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
                 let data = queryDocumentSnapshot.data()
-                return MyFeed(documentData: data)
-            } ?? []  // 문서가 없다면 빈 배열을 할당합니다.
+                var feed = MyFeed(documentData: data)
+                feed?.createdAt = data["createdAt"] as? Double ?? 0.0 // createdAt 값을 Double로 설정
+                return feed
+            }
+            .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
     }
-    
-    
+  
     // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
         return [
