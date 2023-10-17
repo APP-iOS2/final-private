@@ -24,14 +24,14 @@ struct ShopDetailInfoView: View {
                 .frame(width: 25, height: 25)
                 
                 Text("소개")
-                    .font(Font.pretendardMedium18)
+                    .font(.pretendardMedium18)
                 
                 Spacer()
             }
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(shopData.shopInfo)
-                    .font(Font.pretendardRegular16)
+                    .font(.pretendardRegular16)
             }
             .padding(10)
             
@@ -47,13 +47,13 @@ struct ShopDetailInfoView: View {
                 .frame(width: 25, height: 25)
                 
                 Text("영업 시간")
-                    .font(Font.pretendardMedium18)
+                    .font(.pretendardMedium18)
                 
                 Spacer()
                 
                 ZStack {
                     Text("영업 전")  // 오픈 시간 전이면 영업 전, 마감 시간 이후 ~ 영업 종료
-                        .font(Font.pretendardMedium18)
+                        .font(.pretendardMedium18)
                         .padding(10)
                 }
                 .background(Color("SubGrayColor"))
@@ -76,7 +76,7 @@ struct ShopDetailInfoView: View {
                                 ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
                             }
                         }
-                        .font(Font.pretendardRegular16)
+                        .font(.pretendardRegular16)
                     }
                 }
             }
@@ -88,7 +88,7 @@ struct ShopDetailInfoView: View {
                         ForEach(shopData.temporaryHoliday, id: \.self) { day in
                             HStack(spacing: 0) {
                                 Text(AppDateFormatter.shared.fullDateString(from: day))
-                                    .font(Font.pretendardRegular16)
+                                    .font(.pretendardRegular16)
                                 
                                 Spacer()
                             }
@@ -97,7 +97,7 @@ struct ShopDetailInfoView: View {
                     .padding(10)
                 } label: {
                     Text("휴무일")
-                        .font(Font.pretendardMedium18)
+                        .font(.pretendardMedium18)
                         .lineSpacing(5)
                         .frame(alignment: .leading)
                 }
@@ -119,7 +119,7 @@ struct ShopDetailInfoView: View {
                                         ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
                                     }
                                 }
-                                .font(Font.pretendardRegular16)
+                                .font(.pretendardRegular16)
                             }
                         }
                         if shopData.breakTimeHours.isEmpty {
@@ -129,7 +129,7 @@ struct ShopDetailInfoView: View {
                     .padding(10)
                 } label: {
                     Text("브레이크 타임")
-                        .font(Font.pretendardMedium18)
+                        .font(.pretendardMedium18)
                         .lineSpacing(5)
                         .frame(alignment: .leading)
                 }

@@ -29,7 +29,7 @@ struct SearchUserCellView: View {
             .padding()
             
             Text(user.nickname)
-                .fontWeight(.bold)
+                .font(.pretendardMedium16)
                 .foregroundColor(.white)
             Spacer()
             

@@ -34,7 +34,7 @@ struct ModifyReservationView: View {
             
             VStack(alignment: .leading) {
                 Text("예약 일시")
-                    .font(Font.pretendardBold18)
+                    .font(.pretendardBold18)
                 
                 HStack {
                     Image(systemName: "calendar")
@@ -49,7 +49,7 @@ struct ModifyReservationView: View {
                         Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                     }
                 }
-                .font(Font.pretendardMedium24)
+                .font(.pretendardMedium24)
                 .padding()
                 .background(Color("SubGrayColor"))
                 .padding(.bottom)
@@ -63,7 +63,7 @@ struct ModifyReservationView: View {
                 }
                 
                 Text("인원")
-                    .font(Font.pretendardBold24)
+                    .font(.pretendardBold24)
                 
                 HStack {
                     Image(systemName: "person")
@@ -75,7 +75,7 @@ struct ModifyReservationView: View {
                         Image(systemName: showingNumbers ? "chevron.up.circle": "chevron.down.circle")
                     }
                 }
-                .font(Font.pretendardMedium18)
+                .font(.pretendardMedium18)
                 .padding()
                 .background(Color.subGrayColor)
                 .padding(.bottom, 20)
@@ -84,7 +84,7 @@ struct ModifyReservationView: View {
                     HStack {
                         Image(systemName: "info.circle")
                         Text("1~6명 까지 선택 가능합니다.")
-                            .font(Font.pretendardRegular16)
+                            .font(.pretendardRegular16)
                     }
                     
                     Divider()

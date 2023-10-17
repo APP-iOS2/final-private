@@ -33,7 +33,7 @@ struct DateTimePickerView: View {
                     Spacer()
                     Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                 }
-                .font(Font.pretendardBold24)
+                .font(.pretendardBold24)
             }
             .tint(.primary)
             Divider()
@@ -76,7 +76,7 @@ struct DateTimePickerView: View {
                     Spacer()
                     Image(systemName: showingTime ? "chevron.up.circle": "chevron.down.circle")
                 }
-                .font(Font.pretendardBold24)
+                .font(.pretendardBold24)
             }
             .tint(.primary)
             Divider()

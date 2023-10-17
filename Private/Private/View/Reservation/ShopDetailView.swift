@@ -91,20 +91,20 @@ struct ShopDetailBodyView: View {
                     HStack(spacing: 10) {
                         Text(shopData.name)
                             .foregroundColor(.chatTextColor)
-                            .font(Font.pretendardBold28)
+                            .font(.pretendardBold28)
                         
                         Divider()
                             .frame(height: 25)
                         
                         Text(shopData.category.categoryName)
-                            .font(Font.pretendardMedium18)
+                            .font(.pretendardMedium18)
                     }
                     
                     Section {
                         if isExpanded {
                             HStack(spacing: 5) {
                                 Text(shopData.addressDetail)
-                                    .font(Font.pretendardRegular14)
+                                    .font(.pretendardRegular14)
                                 
                                 Image(systemName: "doc.on.doc")
                                     .resizable()
@@ -115,7 +115,7 @@ struct ShopDetailBodyView: View {
                     } header: {
                         HStack(spacing: 2) {
                             Text(shopData.address)
-                                .font(Font.pretendardMedium18)
+                                .font(.pretendardMedium18)
                             
                             Image(systemName: isExpanded ? "chevron.down": "chevron.right")
                         }
@@ -142,10 +142,10 @@ struct ShopDetailBodyView: View {
             }
             .padding(.horizontal, 10)
             
-            Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(Font.pretendardRegular16)) {
+            Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(.pretendardRegular16)) {
                 ForEach(ShopDetailCategory.allCases, id: \.self) { category in
                     Text(category.rawValue)
-                        .font(Font.pretendardRegular16)
+                        .font(.pretendardRegular16)
                         .foregroundColor(.chatTextColor)
                 }
             }
@@ -197,7 +197,7 @@ struct ShopDetailFooterView: View {
                     .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                 
                 Text("\(999)+") // bookmarks count
-                    .font(Font.pretendardBold14)
+                    .font(.pretendardBold14)
             }
             
             Button {
