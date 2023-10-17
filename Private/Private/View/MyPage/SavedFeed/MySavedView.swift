@@ -48,7 +48,6 @@ struct MySavedView: View {
                         .gesture(
                             LongPressGesture()
                                 .onChanged { _ in
-                                    
                                     isLongPressing = true
                                 }
                         )
