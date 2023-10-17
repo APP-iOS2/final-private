@@ -11,8 +11,7 @@ struct ReservationView: View {
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var holidayManager: HolidayManager
-    
-    @ObservedObject var calendarData = CalendarData()
+    @EnvironmentObject var calendarData: CalendarData
     
     @State private var showingDate: Bool = false    // 예약 일시 선택
     @State private var showingNumbers: Bool = false // 예약 인원 선택
@@ -29,7 +28,6 @@ struct ReservationView: View {
     private let range = 1...6  // stepper 인원제한
     
     let shopData: Shop
-    let sortedWeekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
     
     var body: some View {
         NavigationStack {
@@ -49,7 +47,7 @@ struct ReservationView: View {
                         Image(systemName: "calendar")
                         HStack {
                             // 이 때 호출하면 언제 메소드는 언제 호출되는거야?
-                            Text(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))
+                            Text(reservationStore.getReservationDate(reservationDate: calendarData.selectedDate))
                             Text(" / ")
                             Text(isSelectedTime ? self.reservedTime + " \(self.reservedHour)시" : "시간")
                         }
@@ -69,11 +67,6 @@ struct ReservationView: View {
                     
                     if showingDate {
                         DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: $isSelectedTime, shopData: shopData)
-                            .onChange(of: calendarData.selectedDate) { newValue in
-                                temporaryReservation.date = newValue
-                                print("클래스에 있는 데이트: \(calendarData.selectedDate)")
-                                print("임시 예약 일: \(temporaryReservation.date)")
-                            }
                             .onChange(of: temporaryReservation.time) { newValue in
                                 self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
                                 self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1
@@ -131,7 +124,7 @@ struct ReservationView: View {
                             .font(Font.pretendardMedium18)
                         
                         VStack(alignment: .leading) {
-                            ForEach(sortedWeekdays, id: \.self) { day in
+                            ForEach(calendarData.sortedWeekdays, id: \.self) { day in
                                 if let hours = shopData.breakTimeHours[day] {
                                     HStack {
                                         Text("\(day)")
@@ -167,6 +160,7 @@ struct ReservationView: View {
                     
                     HStack {
                         ReservationButton(text: "다음단계") {
+                            temporaryReservation.date = calendarData.selectedDate
                             isShwoingConfirmView.toggle()
                         }
                         .foregroundStyle(isSelectedTime ? .primary : Color.gray)
@@ -191,5 +185,6 @@ struct ReservationView_Previews: PreviewProvider {
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
             .environmentObject(HolidayManager())
+            .environmentObject(CalendarData())
     }
 }
