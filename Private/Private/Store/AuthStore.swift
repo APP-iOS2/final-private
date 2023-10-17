@@ -13,6 +13,7 @@ import GoogleSignIn
 import Combine
 import AuthenticationServices
 import CryptoKit
+import FirebaseCore
 
 class AuthStore: ObservableObject {
     
