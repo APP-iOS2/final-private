@@ -170,6 +170,227 @@ final class ShopStore: ObservableObject {
             return Self.shop
         }
     }
+    
+    /// 북마크 추가
+    func addBookmark(document: String, userID: String) {
+        let db = Firestore.firestore()
+        let shopRef = db.collection("Shop").document(document)
+
+        shopRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                var originalBookmarks = document.data()?["bookmarks"] as? [String] ?? []
+                
+                if !originalBookmarks.contains(userID) {
+                    originalBookmarks.append(userID)
+                    
+                    shopRef.updateData(["bookmarks": originalBookmarks]) { error in
+                        if let error = error {
+                            print("\(error.localizedDescription)")
+                        }
+                    }
+                }
+            
+//                self.shopList. //
+                // 1. 아예 메모리 상의 있는 것만 업데이트
+                // 2. 서버로부터 다시 가져와서 published를 재구성(이게 맞음)
+                
+                
+            }
+        }
+    }
+    
+//    func fetchShop(document: String, userID: String) {
+//        let db = Firestore.firestore()
+//        let shopRef = db.collection("Shop").document(document)
+//
+//        shopRef.getDocument { snapshot, error in
+//            if let error = error {
+//                print("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥\(error.localizedDescription)")
+//            } else if let shopData = snapshot?.data(), let shop = Shop(documentData: shopData) {
+//                self.shop = shop
+//                print("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+//            }
+//        }
+//        
+//        print("✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨")
+//    }
+    
+    /// 북마크 삭제
+    func deleteBookmark(document: String, userID: String) {
+        let db = Firestore.firestore()
+        let shopRef = db.collection("Shop").document(document)
+        
+        shopRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                var originalBookmarks = document.data()?["bookmarks"] as? [String] ?? []
+
+                if let index = originalBookmarks.firstIndex(of: userID) {
+                    originalBookmarks.remove(at: index)
+
+                    shopRef.updateData(["bookmarks": originalBookmarks]) { error in
+                        if let error = error {
+                            print("\(error.localizedDescription)")
+                        }
+                    }
+                    print("🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵")
+                }
+            }
+        }
+    }
+    
+    /// 사용자가 해당 Shop을 북마크했는지 확인
+    func checkBookmark(document: String, userID: String) -> Bool {
+        let db = Firestore.firestore()
+        let shopRef = db.collection("Shop").document(document)
+        var doesBookmarkExist: Bool = false
+
+        shopRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let bookmarks = document.data()?["bookmarks"] as? [String] {
+                    if bookmarks.contains(userID) {
+                        doesBookmarkExist = true
+                    }
+                }
+            }
+        }
+        
+        print("------------------------------------------------------------------------------------------bool: \(doesBookmarkExist)------------------------------------------------------------------------------------------------------------------------")
+        return doesBookmarkExist
+        
+        // Replace "your_field_name" with the name of the array field you want to search in
+//        shopRef.whereField("bookmarks", arrayContains: userID)
+//            .getDocuments { (querySnapshot, error) in
+//                if let error = error {
+//                    print("💗\(error.localizedDescription)💗")
+//                } else {
+//                    if let documents = querySnapshot?.documents, !documents.isEmpty {
+//                        // Data found in Firestore
+//                        return true
+//                    } else {
+//                        // Data not found in Firestore
+//                        return false
+//                    }
+//                }
+//            }
+    }
+    
+    /// Shop의 북마크 수
+    func checkBookmarkCount(document: String, userID: String, completion: @escaping (Int) -> Void) {
+        let db = Firestore.firestore()
+        let shopRef = db.collection("Shop").document(document)
+
+        shopRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let bookmarks = document.data()?["bookmarks"] as? [String] {
+                    completion(bookmarks.count)
+                } else {
+                    completion(0)
+                }
+            } else {
+                completion(0)
+            }
+        }
+    }
+    
+    func checkBookmarkCounts(document: String, userID: String) -> Int {
+        let db = Firestore.firestore()
+        let shopRef = db.collection("Shop").document(document)
+        var bookmarkCounts: Int = 0
+
+        shopRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let bookmarks = document.data()?["bookmarks"] as? [String] {
+                    bookmarkCounts = bookmarks.count
+                }
+            }
+        }
+        
+        return bookmarkCounts
+    }
+    
+//    func checkBookmark(document: String, userID: String) -> Int {
+//        let db = Firestore.firestore()
+//        let shopRef = db.collection("Shop").document(document)
+//
+//        shopRef.getDocument { (document, error) in
+//            if let document = document, document.exists {
+//                if let bookmarks = document.data()?["bookmarks"] as? [String] {
+//                    return bookmarks.count
+//                }
+//            }
+//        }
+//
+//        return 0
+//    }
+    
+    func fetchShop(document: String, userID: String) {
+        let db = Firestore.firestore()
+        let shopRef = db.collection("Shop").document(document)
+        
+//        shopRef.getDocument { snapshot, error in
+//            if let error = error {
+//                print("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥\(error.localizedDescription)")
+//            } else if let shopData = snapshot?.data(), let shop = Shop(documentData: shopData) {
+//                self.shop = shop
+//                print("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+//            }
+//            print("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+//        }
+        shopRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+//                let data = document.data()
+                var data = [String: Any]()
+                data = document.data() ?? [:]
+                
+                // 카테고리 rawValue의 쓰일 값 미리 받아오기
+                guard let categotyRawValue = data["category"] as? Int else {
+                    print("카테고리 미입력 =========")
+                    return
+                }
+                
+                // NMGLatLng로 쓰일 GeoPoint 미리 받아오기
+                guard let location = data["coord"] as? GeoPoint else {
+                    print("위치정보 없음 =========")
+                    return
+                }
+                
+                // 임시 휴무일: [Timestamp] -> [Date]
+                guard let tempHoliday = data["temporaryHoliday"] as? [Timestamp] else {
+                    print("휴무일 없음 =========")
+                    return
+                }
+                
+                let items: Array<ShopItem> = self.getReservationItems(document: "reservationItems", data: data)
+                let menus: Array<ShopItem> = self.getReservationItems(document: "menu", data: data)
+                let dateArray = tempHoliday.map { $0.dateValue() }
+                let breakTimeHoursData = self.getBusinessTime(document: "breakTimeHours", data: data)
+                let businessTimeHoursData = self.getBusinessTime(document: "weeklyBusinessHours", data: data)
+                
+                let id: String = document.documentID
+                let name: String = data["name"] as? String ?? ""
+                let category: Category = Category(rawValue: categotyRawValue) ?? .brunch
+                let coord: CodableNMGLatLng = location.toCodableNMGLatLng()
+                let address: String = data["address"] as? String ?? ""
+                let addressDetail: String = data["addressDetail"] as? String ?? ""
+                let shopTelNumber: String = data["shopTelNumber"] as? String ?? ""
+                let shopInfo: String = data["shopInfo"] as? String ?? ""
+                let shopImageURL: String = data["shopImageURL"] as? String ?? ""
+                let shopOwner: String = data["shopOwner"] as? String ?? ""
+                let businessNumber: String = data["businessNumber"] as? String ?? ""
+                let reservationItems: Array<ShopItem>? = items
+                let bookmarks: Array<String> = data["bookmarks"] as? [String] ?? []
+                let menu: Array<ShopItem> = menus
+                let regularHoliday: Array<String> = data["regularHoliday"] as? [String] ?? []
+                let temporaryHoliday: Array<Date> = dateArray
+                let breakTimeHours: [String: BusinessHours] = breakTimeHoursData
+                let weeklyBusinessHours:[String: BusinessHours] = businessTimeHoursData
+                
+                let shopData: Shop = Shop(id: id, name: name, category: category, coord: coord, address: address, addressDetail: addressDetail, shopTelNumber: shopTelNumber, shopInfo: shopInfo, shopImageURL: shopImageURL, shopOwner: shopOwner, businessNumber: businessNumber, reservationItems: reservationItems, bookmarks: bookmarks, menu: menu, regularHoliday: regularHoliday, temporaryHoliday: temporaryHoliday, breakTimeHours: breakTimeHours, weeklyBusinessHours: weeklyBusinessHours)
+            }
+        }
+        
+        print("✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨")
+    }
 }
 
 
