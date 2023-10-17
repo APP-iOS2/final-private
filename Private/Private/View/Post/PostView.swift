@@ -117,7 +117,7 @@ struct PostView: View {
                     
                     if searchResult.title.isEmpty {
                         Text("장소를 선택해주세요")
-                            .font(.body)
+                            .font(.pretendardRegular12)
                             .foregroundColor(.secondary)
                     } else {
 //                        Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
@@ -145,13 +145,13 @@ struct PostView: View {
 
                         } label: {
                             Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                                .font(.body)
+                                .font(.pretendardRegular12)
                         }
                         .sheet(isPresented: $clickLocation) {
                             LocationView(coord: $coord, searchResult: $searchResult)
                         }
                         Text(searchResult.address)
-                            .font(.caption)
+                            .font(.pretendardRegular10)
                             .foregroundStyle(.secondary)
                         
                     }
@@ -215,9 +215,9 @@ struct PostView: View {
                         
                     HStack {
                         Text("카테고리")
-                            .font(.title2).fontWeight(.semibold)
+                            .font(.pretendardMedium20)
                         Text("(최대 3개)")
-                            .font(.footnote)
+                            .font(.pretendardRegular12)
                             .foregroundColor(.secondary)
                     }
                     
@@ -226,7 +226,7 @@ struct PostView: View {
                             VStack {
                                 if selectedToggle[index] {
                                     Text(Category.allCases[index].categoryName)
-                                        .font(.body)
+                                        .font(.pretendardMedium16)
                                         .foregroundColor(.black)
                                         .frame(width: 70, height: 30)
                                         .padding(.vertical, 4)

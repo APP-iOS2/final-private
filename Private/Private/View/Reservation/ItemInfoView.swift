@@ -20,18 +20,18 @@ struct ItemInfoView: View {
             
             HStack {
                 Text(shopItem.name)
-                    .font(Font.pretendardBold24)
+                    .font(.pretendardBold24)
                 
                 Spacer()
             }
             
             Text("\(shopItem.price)원")
-                .font(Font.pretendardBold18)
+                .font(.pretendardBold18)
                 .foregroundColor(Color("AccentColor"))
                 .padding(.bottom)
 
             Text("2023.09.20 ~ 2023.12.25")  // 데이터에 없음
-                .font(Font.pretendardRegular14)
+                .font(.pretendardRegular14)
                 .foregroundColor(.secondary)
         }
         .frame(height: 100)

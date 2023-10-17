@@ -45,7 +45,7 @@ struct MyPageFeedView: View {
                                         .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text("\(feedListFeed.writerNickname)")
-                                            .font(.headline)
+                                            .font(.pretendardSemiBold16)
                                         Text("\(feedListFeed.writerName)")
                                         Text("\(feedListFeed.createdDate)")
                                     }
