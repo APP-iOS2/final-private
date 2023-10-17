@@ -21,6 +21,8 @@ struct ShopListView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject var shopStore: ShopStore
+    @EnvironmentObject var userStore: UserStore
+
     @StateObject var coordinator: Coordinator = Coordinator.shared
     
     @Binding var root: Bool
@@ -78,7 +80,8 @@ struct ShopListView: View {
                         return CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord1) < CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord2)
                     }
                 }), id: \.self) { shop in
-                        ShopListCell(shop: shop)
+//                        ShopListCell(shop: shop)
+                    ShopListCell(shopViewModel: ShopViewModel(shop: shop, userID: userStore.user.id), shop: shop)
                             .padding(.vertical, 5)
                             .foregroundColor(colorScheme == ColorScheme.dark ? Color.white : Color.black)
                 }
@@ -111,11 +114,13 @@ struct ShopListView: View {
 struct ShopListView_Previews: PreviewProvider {
     static var previews: some View {
         ShopListView(root: .constant(true), selection: .constant(4))
-//        ShopListView(locationText: "")
     }
 }
 
 struct ShopListCell: View {
+    
+    @EnvironmentObject var userStore: UserStore
+    @ObservedObject var shopViewModel: ShopViewModel
     
     @State var isShowingDetailView: Bool = false
     
@@ -148,7 +153,7 @@ struct ShopListCell: View {
                 }
             }
             .navigationDestination(isPresented: $isShowingDetailView) {
-                ShopDetailView(shopData: shop)
+                ShopDetailView(shopViewModel: ShopViewModel(shop: shop, userID: userStore.user.email))
             }
         }
     }
