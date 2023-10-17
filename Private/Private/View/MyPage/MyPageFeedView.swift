@@ -46,8 +46,9 @@ struct MyPageFeedView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text("\(feedListFeed.writerNickname)")
                                             .font(.headline)
-                                        Text("\(feedListFeed.writerName)")
                                         Text("\(feedListFeed.createdDate)")
+                                            .font(.pretendardRegular12)
+                                            .foregroundColor(.primary.opacity(0.8))
                                     }
                                     Spacer()
                                 }
@@ -75,15 +76,17 @@ struct MyPageFeedView: View {
                             }
                             .padding(.top, 8)
                             .frame(width: .screenWidth, height: .screenWidth)
-                            HStack() {
+                            HStack(alignment: .top) {
                                 Text("\(feedListFeed.contents)")
                                     .font(.pretendardRegular16)
                                     .foregroundColor(.primary)
-                                    .frame(width: UIScreen.main.bounds.width * 0.85, alignment: .leading)
+                                Spacer()
                             }
                             .padding(.top,20)
+                            .padding(.leading, .screenWidth/2 - .screenWidth*0.45)
                         }
                         .id(feedList.firstIndex(of: feedListFeed))
+                        .padding(.bottom, 60)
                         Spacer ()
                     }
                     .onAppear{
@@ -91,6 +94,7 @@ struct MyPageFeedView: View {
                             ScrollViewProxy.scrollTo(feedList.firstIndex(of:feed) ,anchor: .top)
                         }
                     }
+                    
                 }
             }
         }
