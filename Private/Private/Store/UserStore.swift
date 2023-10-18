@@ -268,7 +268,7 @@ final class UserStore: ObservableObject {
     func deletePlace(_ feed: MyFeed) {
         Firestore.firestore().collection("User").document(user.email)
             .collection("SavedPlace")
-            .document("\(feed.writerProfileImage)")
+            .document("\(feed.images[0].suffix(32))")
             .delete()
     }
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
