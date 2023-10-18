@@ -150,8 +150,8 @@
 		E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E385FAB42AC161EE00AC7255 /* PostStore.swift */; };
 		E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3876FC22AC294E200CFE728 /* PictureView.swift */; };
 		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
+		E3A5A0BF2ADF71D800DB13B3 /* PostNaverMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A5A0BE2ADF71D800DB13B3 /* PostNaverMap.swift */; };
 		E3A782542ADD601C0042AAB9 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A782532ADD601B0042AAB9 /* LocationView.swift */; };
-		E3B9ED822ADEA90100F7E109 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E3B9ED812ADEA90100F7E109 /* GoogleService-Info.plist */; };
 		E3B9ED842ADEC76600F7E109 /* LocationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B9ED832ADEC76600F7E109 /* LocationDetailView.swift */; };
 		E3EB7BC92AD53BAC00D9DF8B /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EB7BC82AD53BAC00D9DF8B /* UploadView.swift */; };
 		E421E2D52ACE9FF800FE1DAD /* UserImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */; };
@@ -303,8 +303,8 @@
 		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
 		E3876FC22AC294E200CFE728 /* PictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
+		E3A5A0BE2ADF71D800DB13B3 /* PostNaverMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNaverMap.swift; sourceTree = "<group>"; };
 		E3A782532ADD601B0042AAB9 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
-		E3B9ED812ADEA90100F7E109 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E3B9ED832ADEC76600F7E109 /* LocationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailView.swift; sourceTree = "<group>"; };
 		E3EB7BC82AD53BAC00D9DF8B /* UploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadView.swift; sourceTree = "<group>"; };
 		E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImagePickerView.swift; sourceTree = "<group>"; };
@@ -690,6 +690,7 @@
 			children = (
 				3CB734072ABD6EEF00D82503 /* MapMainView.swift */,
 				63BB09992ABD87BD002CCE4E /* NaverMap.swift */,
+				E3A5A0BE2ADF71D800DB13B3 /* PostNaverMap.swift */,
 				3C2FC8EF2ACE9B740034F561 /* MapFeedSheetView.swift */,
 				3C2FC8ED2ACE9B740034F561 /* MapReviewRowView.swift */,
 				E3071A242AD9204D00090B62 /* MapSearchView.swift */,
@@ -1123,6 +1124,7 @@
 				0679CAC22ABD876400F48BE4 /* ShopDetailMenuView.swift in Sources */,
 				3CB7340C2ABEFEBC00D82503 /* CGFloat+.swift in Sources */,
 				3CCD2DE82ABC31FD005709F4 /* Message.swift in Sources */,
+				E3A5A0BF2ADF71D800DB13B3 /* PostNaverMap.swift in Sources */,
 				E47B3F792AC16B61002164A6 /* MyFeed.swift in Sources */,
 				63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */,
 				D18A01302ACE38C1009F07F8 /* Button.swift in Sources */,

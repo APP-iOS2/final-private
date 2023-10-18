@@ -100,4 +100,14 @@ class LocationSearchStore: ObservableObject {
         
         return output
     }
+    func changeCoordinates(_ input: Double, _ index: Int) -> String? {
+ 
+        let inputString = String(input)
+        let index = inputString.index(inputString.startIndex, offsetBy: index)
+        var output = inputString
+        output.remove(at: output.index(before: index))
+        return output
+
+    }
+
 }

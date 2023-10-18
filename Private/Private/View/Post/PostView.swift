@@ -24,14 +24,14 @@ struct PostView: View {
     
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     @StateObject private var postStore: PostStore = PostStore()
-    @ObservedObject var coordinator: Coordinator = Coordinator.shared
-
+    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
+    
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var isPostViewPresented: Bool /// PostView
     @Binding var coord: NMGLatLng
     @Binding var searchResult: SearchResult
-
+    
     @State private var selectedWriter: String = "김아무개"
     @State private var text: String = "" /// 텍스트마스터 내용
     @State private var textPlaceHolder: String = "당신의 경험을 적어주세요!" /// 텍스트마스터 placeholder
@@ -44,19 +44,20 @@ struct PostView: View {
     @State private var visitedShop: String = ""
     @State private var feedId: String = ""
     @State private var myselectedCategory: [String] = []
-
+    
     @State private var clickLocation: Bool = false
     @State private var isImagePickerPresented: Bool = false /// 업로드뷰에서 이미지 선택 뷰
     @State private var ImageViewPresented: Bool = true /// 처음 이미지 뷰
     @State private var showLocation: Bool = false
     @State private var isshowAlert = false /// 업로드 알럿
     @State private var categoryAlert: Bool = false /// 카테고리 초과 알럿
-    @State private var isSearchedLocation: Bool = false /// 장소 검색 시트 
+    @State private var isSearchedLocation: Bool = false /// 장소 검색 시트
+    @State private var registrationAlert: Bool = false /// 신규 장소 저장완료 알럿
 
-    @State private var selectedImage: [UIImage]?
+    @State private var selectedImage: [UIImage]? = []
     @FocusState private var isTextMasterFocused: Bool
     
-//    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
+    //    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
@@ -97,10 +98,10 @@ struct PostView: View {
                         }
                     }
                     .padding(.vertical, 10)
-
+                    
                     //MARK: 내용
                     TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize, placeholder: textPlaceHolder)
-
+                    
                         .padding(.trailing, 10)
                     
                     //MARK: 장소
@@ -115,50 +116,53 @@ struct PostView: View {
                                 .presentationDetents([.fraction(0.75), .large])
                         }
                         .sheet(isPresented: $isSearchedLocation) {
-                            LocationView(coord: $coord, searchResult: $searchResult)
+                            LocationView(coord: $coord, searchResult: $searchResult, registrationAlert: $registrationAlert)
                         }
                     }
                     .padding(.vertical, 10)
                     
-                    if searchResult.title.isEmpty {
-                        Text("장소를 선택해주세요")
-                            .font(.pretendardRegular12)
-                            .foregroundColor(.secondary)
-                    } else {
-//                        Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-//                            .font(.body)
-//                            .onTapGesture {
-//                                clickLocation = true
-//                                
-//                                lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
-//                                lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
-//                                
-                        //                                coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                        //                                print("위도값: \(lat), 경도값: \(lng)")
-                        //                                print("지정장소 클릭")
-                        //                                coordinator.moveCameraPosition()
-                        //                            }
-                        Button {
-                            lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
-                            lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
-                            
-                            coordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                            print("위도값: \(coord.lat), 경도값: \(coord.lng)")
-                            print("지정장소 클릭")
-                            clickLocation.toggle()
-                            coordinator.moveCameraPosition()
-                            coordinator.makeSearchLocationMarker()
-                        } label: {
-                            Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                        if searchResult.title.isEmpty && postCoordinator.newMarkerTitle.isEmpty {
+                            Text("장소를 선택해주세요")
                                 .font(.pretendardRegular12)
+                                .foregroundColor(.secondary)
+                        } else {
+                            Button {
+                                lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
+                                lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
+                                
+                                postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                                print("위도값: \(coord.lat), 경도값: \(coord.lng)")
+                                print("지정장소 클릭")
+                                clickLocation.toggle()
+                                postCoordinator.moveCameraPosition()
+                                postCoordinator.makeSearchLocationMarker()
+                            } label: {
+                                if !postCoordinator.newMarkerTitle.isEmpty {
+                                    Text("신규장소: \(postCoordinator.newMarkerTitle)")
+                                } else {
+                                    Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                                        .font(.pretendardRegular12)
+                                }
+                            }
+                            .sheet(isPresented: $clickLocation) {
+                                LocationDetailView()
+                            }
+                            Text(searchResult.address)
+                                .font(.pretendardRegular10)
+                                .foregroundStyle(.secondary)
+                            HStack {
+                            Spacer()
+                            Button {
+                                searchResult.title = ""
+                                searchResult.roadAddress = ""
+                                postCoordinator.newMarkerTitle = ""
+                            } label: {
+                                Label("", systemImage: "xmark")
+                            }
                         }
-                        .sheet(isPresented: $clickLocation) {
-                            LocationDetailView()
-                        }
-                        Text(searchResult.address)
-                            .font(.pretendardRegular10)
-                            .foregroundStyle(.secondary)
-                        
+//                            if !postCoordinator.newMarkerTitle.isEmpty {
+//                                Text("신규장소: \(postCoordinator.newMarkerTitle)")
+//                            }
                     }
                     Divider()
                         .padding(.vertical, 10)
@@ -215,9 +219,9 @@ struct PostView: View {
                     }
                     Divider()
                         .padding(.vertical, 10)
-
+                    
                     //MARK: 카테고리
-                        
+                    
                     HStack {
                         Text("카테고리")
                             .font(.pretendardMedium20)
@@ -269,20 +273,21 @@ struct PostView: View {
                         .font(.pretendardBold18)
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .foregroundColor(.white)
-                        .background(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty ? Color.gray : Color.accentColor)
+                        .background(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == "") ? Color.gray : Color.accentColor)
                         .cornerRadius(7)
                         .padding(EdgeInsets(top: 25, leading: 0, bottom: 0, trailing: 13))
                         .onTapGesture {
-                                isshowAlert = true
+                            isshowAlert = true
                         }
-                        
-                        .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty)
+                    
+                        .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == ""))
+                    
                 } // leading VStack
-               
+                
             }
-//            .sheet(isPresented: $ImageViewPresented) {
-//                ImagePickerView(selectedImages: $selectedImage)
-//            }
+            //            .sheet(isPresented: $ImageViewPresented) {
+            //                ImagePickerView(selectedImages: $selectedImage)
+            //            }
             // toolbar 자리
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -347,26 +352,26 @@ struct PostView: View {
         
         if let selectedImages = selectedImage {
             var imageUrls: [String] = []
-
+            
             for image in selectedImages {
                 guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
-
+                
                 let storageRef = storage.reference().child(UUID().uuidString) //
-
+                
                 storageRef.putData(imageData) { _, error in
                     if let error = error {
                         print("Error uploading image: \(error)")
                         return
                     }
-
+                    
                     storageRef.downloadURL { url, error in
                         guard let imageUrl = url?.absoluteString else { return }
                         imageUrls.append(imageUrl)
-
+                        
                         if imageUrls.count == selectedImages.count {
-  
+                            
                             feed.images = imageUrls
-
+                            
                             do {
                                 try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
                             } catch {
