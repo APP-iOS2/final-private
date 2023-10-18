@@ -26,7 +26,7 @@ class HolidayManager: ObservableObject {
             switch result {
             case .success(let holidayDatas):
                 
-                DispatchQueue.main.async {
+                DispatchQueue.main.async {  // 비동기 안하면 데이터 받기 전에 추가해서 빈배열만 나옴
                     self.publicHolidays.append(contentsOf: holidayDatas.map { $0.toDictionary() })
                 }
 
