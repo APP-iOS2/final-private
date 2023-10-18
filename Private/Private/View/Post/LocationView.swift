@@ -30,20 +30,20 @@ struct LocationView: View {
     
     var body: some View {
         VStack {
-            Text("Print를 위해 잠시 넣어둠 Tapped LatLng: \(coordinator.tappedLatLng?.description ?? "N/A")")
+            Text("지도를 클릭하여 신규장소를 저장할 수 있습니다.")
             NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView,
                      markerTitle: $coordinator.newMarkerTitle,
                      markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
             
         }
         .onAppear {
-            coordinator.checkIfLocationServicesIsEnabled()
+            //            coordinator.checkIfLocationServicesIsEnabled()
             Coordinator.shared.feedStore.feedList = feedStore.feedList
             coordinator.makeMarkers()
         }
-        .onChange(of: coord, perform: { _ in
-            coordinator.fetchUserLocation()
-        })
+        //        .onChange(of: coord, perform: { _ in
+        //            coordinator.fetchUserLocation()
+        //        })
         .alert("신규 장소를 저장합니다.", isPresented: $coordinator.newMarkerAlert) {
             TextField("신규 장소 등록", text: $coordinator.newMarkerTitle)
                 .autocapitalization(.none)
@@ -96,5 +96,9 @@ struct LocationView: View {
 struct LocationView_Previews: PreviewProvider {
     static var previews: some View {
         LocationView(coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
+            .environmentObject(UserStore())
+            .environmentObject(FeedStore())
+            .environmentObject(ShopStore())
+        
     }
 }
