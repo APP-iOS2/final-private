@@ -19,6 +19,9 @@ struct MapFeedCellView: View {
     @State private var isShowingChatSendView: Bool = false
     @State private var messageToSend: String = ""
     
+    @State private var message: String = ""
+    @State private var isShowingMessageTextField: Bool = false
+    
     var feed: MyFeed
     
     var body: some View {
@@ -95,16 +98,16 @@ struct MapFeedCellView: View {
                                 .frame(width: .screenWidth*0.035)
                         }
                         Button {
-                            //isChatRoomActive = true
-                            //채팅룸으로 이동
-                            isShowingChatSendView.toggle()
+                            withAnimation {
+                                isShowingMessageTextField.toggle()
+                            }
                         } label: {
-                            Image(systemName: "paperplane")
+                            Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
                                 .font(.pretendardRegular14)
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 8)
-                                .background(Color.darkGrayColor)
+                                .background(isShowingMessageTextField ? Color.privateColor : Color.darkGrayColor)
                                 .cornerRadius(30)
                         }
                         .sheet(isPresented: $isShowingChatSendView) {
@@ -122,6 +125,18 @@ struct MapFeedCellView: View {
                 Spacer()
             }
             .padding(.leading, 20)
+            
+            if isShowingMessageTextField {
+                SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
+                    let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
+                    chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
+                    message = ""
+                }
+                .padding(.top, 10)
+            }
+            
+            Divider()
+                .padding(.vertical, 10)
         }
     }
 }

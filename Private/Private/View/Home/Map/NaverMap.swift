@@ -153,8 +153,6 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     }
     //MARK: 마커 생성
     func makeMarkers() {
-        print("makeMarkers")
-        print("makeMarkers: \(feedList)")
         var tempMarkers: [NMFMarker] = []
         
         for feedMarker in feedList {
@@ -177,28 +175,14 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
             tempMarkers.append(marker)
         }
         
-//        let marker = NMFMarker()
-//        marker.position = NMGLatLng(lat: 37.572389, lng: 126.9769117)
-//        marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
-//        marker.captionText = "광화문광장"
-//        marker.captionMinZoom = 10
-//        marker.captionMaxZoom = 17
-//        marker.subCaptionText = "피드 수: \(feedStore.feedList.count)"
-//        marker.captionTextSize = 12
-//        marker.iconImage = NMFOverlayImage(name: "placeholder")
-//        marker.width = CGFloat(40)
-//        marker.height = CGFloat(40)
-//        
-//        tempMarkers.append(marker)
-        
         markers = tempMarkers
         
         for marker in markers {
             marker.mapView = view.mapView
         }
         markerTapped()
-//        userStore.saveFeed(MyFeed())
     }
+    
     // MARK: 해당 장소 이동 시 위치 좌표에 마커
     func makeSearchLocationMarker() {
         let marker = NMFMarker()

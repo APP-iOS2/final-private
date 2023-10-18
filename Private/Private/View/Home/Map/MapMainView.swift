@@ -26,25 +26,15 @@ struct MapMainView: View {
         }
         .onAppear {
             coordinator.checkIfLocationServicesIsEnabled()
-            print("MapMainView \(feedStore.feedList)")
             Coordinator.shared.feedList = feedStore.feedList
             coordinator.makeMarkers()
         }
-//        .onChange(of: coord, perform: { _ in
-//                coordinator.fetchUserLocation()
-//        })
-//        .onChange(of: coord, perform: { _ in
-//                coordinator.fetchUserLocation()
-//        })
  
         .sheet(isPresented: $coordinator.showMarkerDetailView) {
-            MapFeedSheetView(feedList: feedStore.feedList.filter { $0.id == coordinator.currentFeedId })
+            MapFeedSheetView(feed: feedStore.feedList.filter { $0.id == coordinator.currentFeedId }[0])
                 .presentationDetents([.height(400), .large])
         }
         
-            //            .task {
-            //                await shopStore.getAllShopData()
-            //            }
         .overlay(
             TextField("", text: $coordinator.newMarkerTitle)
                 .opacity(0)

@@ -135,13 +135,17 @@ struct FeedCellView: View {
                             .frame(width: .screenWidth*0.035)
                     }
                     Button {
-                        isShowingMessageTextField.toggle()
+                        withAnimation {
+                            isShowingMessageTextField.toggle()
+                        }
                     } label: {
-                        
                         Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: .screenWidth * 0.05)
+                            .font(.pretendardRegular14)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(isShowingMessageTextField ? Color.privateColor : Color.darkGrayColor)
+                            .cornerRadius(30)
                     }
                 }
             }
@@ -152,6 +156,14 @@ struct FeedCellView: View {
         }
         .padding(.top, -25)
         .padding(.bottom, 0)
+        
+        if isShowingMessageTextField {
+            SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
+                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
+                chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
+                message = ""
+            }
+        }
         
         HStack {
             Button {
@@ -197,13 +209,8 @@ struct FeedCellView: View {
         .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
         .background(Color.darkGraySubColor)
         
-        if isShowingMessageTextField {
-            SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
-                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
-                chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
-                message = ""
-            }
-        }
+        Divider()
+            .padding(.vertical, 10)
     }
     //.padding(.top, 20)
 }
