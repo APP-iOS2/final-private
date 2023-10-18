@@ -16,7 +16,7 @@ struct FeedMainView: View {
             ScrollView {
                 ForEach(feedStore.feedList) { feed in
                     
-                    FeedCellView(feed: feed)
+                    FeedCellView(feed: feed, filteredFeedList: [MyFeed]())
                         .padding(.bottom,15)
                 }
             }

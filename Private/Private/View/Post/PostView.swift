@@ -30,6 +30,7 @@ struct PostView: View {
     @Binding var selection: Int
     @Binding var isPostViewPresented: Bool /// PostView
     @Binding var coord: NMGLatLng
+    @Binding var searchResult: SearchResult
 
     @State private var selectedWriter: String = "김아무개"
     @State private var text: String = "" /// 텍스트마스터 내용
@@ -50,11 +51,12 @@ struct PostView: View {
     @State private var showLocation: Bool = false
     @State private var isshowAlert = false /// 업로드 알럿
     @State private var categoryAlert: Bool = false /// 카테고리 초과 알럿
+    @State private var isSearchedLocation: Bool = false /// 장소 검색 시트 
 
     @State private var selectedImage: [UIImage]?
     @FocusState private var isTextMasterFocused: Bool
     
-    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
+//    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
@@ -109,8 +111,11 @@ struct PostView: View {
                             Label("장소", systemImage: "location")
                         }
                         .sheet(isPresented: $showLocation) {
-                            LocationSearchView(showLocation: $showLocation, searchResult: $searchResult)
+                            LocationSearchView(showLocation: $showLocation, searchResult: $searchResult, isSearchedLocation: $isSearchedLocation)
                                 .presentationDetents([.fraction(0.75), .large])
+                        }
+                        .sheet(isPresented: $isSearchedLocation) {
+                            LocationView(coord: $coord, searchResult: $searchResult)
                         }
                     }
                     .padding(.vertical, 10)
@@ -128,27 +133,27 @@ struct PostView: View {
 //                                lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
 //                                lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
 //                                
-//                                coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-//                                print("위도값: \(lat), 경도값: \(lng)")
-//                                print("지정장소 클릭")
-//                                coordinator.moveCameraPosition()
-//                            }
-                        Button{
+                        //                                coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                        //                                print("위도값: \(lat), 경도값: \(lng)")
+                        //                                print("지정장소 클릭")
+                        //                                coordinator.moveCameraPosition()
+                        //                            }
+                        Button {
                             lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
                             lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
                             
-                            coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                            print("위도값: \(lat), 경도값: \(lng)")
+                            coordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                            print("위도값: \(coord.lat), 경도값: \(coord.lng)")
                             print("지정장소 클릭")
+                            clickLocation.toggle()
                             coordinator.moveCameraPosition()
-                            clickLocation = true 
-
+                            coordinator.makeSearchLocationMarker()
                         } label: {
                             Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                 .font(.pretendardRegular12)
                         }
                         .sheet(isPresented: $clickLocation) {
-                            LocationView(coord: $coord, searchResult: $searchResult)
+                            LocationDetailView()
                         }
                         Text(searchResult.address)
                             .font(.pretendardRegular10)
@@ -400,9 +405,10 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)))
+        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
+        
     }
 }
 

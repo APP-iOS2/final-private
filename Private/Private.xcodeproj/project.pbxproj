@@ -151,6 +151,8 @@
 		E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3876FC22AC294E200CFE728 /* PictureView.swift */; };
 		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
 		E3A782542ADD601C0042AAB9 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A782532ADD601B0042AAB9 /* LocationView.swift */; };
+		E3B9ED822ADEA90100F7E109 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E3B9ED812ADEA90100F7E109 /* GoogleService-Info.plist */; };
+		E3B9ED842ADEC76600F7E109 /* LocationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B9ED832ADEC76600F7E109 /* LocationDetailView.swift */; };
 		E3EB7BC92AD53BAC00D9DF8B /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EB7BC82AD53BAC00D9DF8B /* UploadView.swift */; };
 		E421E2D52ACE9FF800FE1DAD /* UserImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */; };
 		E4419C492ADE261200AC1A9F /* OtherShopInfoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4419C482ADE261200AC1A9F /* OtherShopInfoCardView.swift */; };
@@ -302,6 +304,8 @@
 		E3876FC22AC294E200CFE728 /* PictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
 		E3A782532ADD601B0042AAB9 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
+		E3B9ED812ADEA90100F7E109 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E3B9ED832ADEC76600F7E109 /* LocationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailView.swift; sourceTree = "<group>"; };
 		E3EB7BC82AD53BAC00D9DF8B /* UploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadView.swift; sourceTree = "<group>"; };
 		E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImagePickerView.swift; sourceTree = "<group>"; };
 		E4419C482ADE261200AC1A9F /* OtherShopInfoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherShopInfoCardView.swift; sourceTree = "<group>"; };
@@ -530,6 +534,7 @@
 				E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */,
 				E3876FC22AC294E200CFE728 /* PictureView.swift */,
 				E3A782532ADD601B0042AAB9 /* LocationView.swift */,
+				E3B9ED832ADEC76600F7E109 /* LocationDetailView.swift */,
 				3C9747762AD4E309007AE3CB /* LocationSearchView.swift */,
 			);
 			path = Post;
@@ -1068,6 +1073,7 @@
 				B54DFCE72AD93389004A3CA2 /* CalendarData.swift in Sources */,
 				3C3716262ABD15CD004E8419 /* ShopStore.swift in Sources */,
 				D1DC8D512ACEAE2C0087CBD7 /* OtherPageView.swift in Sources */,
+				E3B9ED842ADEC76600F7E109 /* LocationDetailView.swift in Sources */,
 				E3071A252AD9204D00090B62 /* MapSearchView.swift in Sources */,
 				3CB734082ABD6EEF00D82503 /* MapMainView.swift in Sources */,
 				3C37162C2ABD1789004E8419 /* ChatRoomStore.swift in Sources */,

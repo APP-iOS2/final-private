@@ -40,6 +40,7 @@ struct MapSearchView: View {
                             coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
                             print("위도값: \(lat), 경도값: \(lng)")
                             coordinator.moveCameraPosition()
+                            coordinator.makeSearchLocationMarker()
                             dismiss()
                             
                         } label: {
