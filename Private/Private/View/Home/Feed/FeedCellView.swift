@@ -111,13 +111,7 @@ struct FeedCellView: View {
                 HStack{
                     Button {
                         if(userStore.user.myFeed.contains(feed.images[0])) {
-                            for userStoreImageId in userStore.user.myFeed {
-                                for myFeed in userStore.mySavedFeedList {
-                                    if userStoreImageId == myFeed.images[0] {
-                                        userStore.deleteFeed(myFeed)
-                                    }
-                                }
-                            }
+                            userStore.deleteFeed(feed)
                             userStore.user.myFeed.removeAll { $0 == feed.images[0] }
                             userStore.updateUser(user: userStore.user)
                         } else {
@@ -169,13 +163,7 @@ struct FeedCellView: View {
         HStack {
             Button {
                 if (userStore.user.bookmark.contains("\(feed.images[0].suffix(32))")) {
-                    for placeId in userStore.user.bookmark {
-                        for userStorePlaceId in userStore.mySavedPlaceList {
-                            if placeId == userStorePlaceId.writerProfileImage {
-                                userStore.deletePlace(userStorePlaceId)
-                            }
-                        }
-                    }
+                    userStore.deletePlace(feed)
                     userStore.user.bookmark.removeAll { $0 == "\(feed.images[0].suffix(32))" }
                     userStore.updateUser(user: userStore.user)
                 } else {
