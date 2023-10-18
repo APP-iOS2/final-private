@@ -12,11 +12,12 @@ struct MyHistoryView: View {
     
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var reservationStore: ReservationStore
+    @EnvironmentObject private var feedStore: FeedStore
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
     @State var isReservation: Bool = false
     @State var isMyPageFeedSheet: Bool = false 
-    @State var selctedFeed : MyFeed = MyFeed()
+    //@State var selctedFeed : MyFeed = MyFeed()
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
@@ -36,7 +37,7 @@ struct MyHistoryView: View {
                         ) {
                             ForEach(userStore.myFeedList, id: \.self) { feed in
                                 Button {
-                                    selctedFeed = feed
+                                    feedStore.selctedFeed = feed
                                     isMyPageFeedSheet = true
                                 } label: {
                                     KFImage(URL(string:feed.images[0])) .placeholder {
@@ -46,8 +47,8 @@ struct MyHistoryView: View {
                                         .frame(width: .screenWidth*0.33,height: .screenWidth*0.33)
                                         .clipShape(Rectangle())
                                 }
-                                .sheet(isPresented: $isMyPageFeedSheet){
-                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed, feedList: userStore.myFeedList)
+                                .sheet(isPresented: $isMyPageFeedSheet) {
+                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.myFeedList)
                                         .presentationDetents([.height(.screenHeight)])
                                 }
                             }

@@ -15,6 +15,7 @@ import GoogleSignIn
 struct PrivateApp: App {
     
     @StateObject private var userStore = UserStore()
+    @StateObject private var feedStore = FeedStore()
     @StateObject private var reservationStore = ReservationStore()
     @StateObject private var shopStore = ShopStore()
     @StateObject private var holidayManager = HolidayManager()
@@ -32,7 +33,7 @@ struct PrivateApp: App {
             LaunchView()
                 .environmentObject(AuthStore())
                 .environmentObject(userStore)
-                .environmentObject(FeedStore())
+                .environmentObject(feedStore)
                 .environmentObject(SearchStore())
                 .environmentObject(ChatRoomStore())
                 .environmentObject(reservationStore)
