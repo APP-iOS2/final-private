@@ -4,16 +4,13 @@
 //
 //  Created by yeon on 10/10/23.
 //
-
 import SwiftUI
 import NMapsMap
 import Kingfisher
 //import Combine
-
 struct FeedCellView: View {
     
     var feed: MyFeed
-
     @State private var currentPicture = 0
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
     @EnvironmentObject private var feedStore: FeedStore
@@ -114,13 +111,7 @@ struct FeedCellView: View {
                 HStack{
                     Button {
                         if(userStore.user.myFeed.contains(feed.images[0])) {
-                            for userStoreImageId in userStore.user.myFeed {
-                                for myFeed in userStore.mySavedFeedList {
-                                    if userStoreImageId == myFeed.images[0] {
-                                        userStore.deleteFeed(myFeed)
-                                    }
-                                }
-                            }
+                            userStore.deleteFeed(feed)
                             userStore.user.myFeed.removeAll { $0 == feed.images[0] }
                             userStore.updateUser(user: userStore.user)
                         } else {
@@ -172,13 +163,7 @@ struct FeedCellView: View {
         HStack {
             Button {
                 if (userStore.user.bookmark.contains("\(feed.images[0].suffix(32))")) {
-                    for placeId in userStore.user.bookmark {
-                        for userStorePlaceId in userStore.mySavedPlaceList {
-                            if placeId == userStorePlaceId.writerProfileImage {
-                                userStore.deletePlace(userStorePlaceId)
-                            }
-                        }
-                    }
+                    userStore.deletePlace(feed)
                     userStore.user.bookmark.removeAll { $0 == "\(feed.images[0].suffix(32))" }
                     userStore.updateUser(user: userStore.user)
                 } else {
@@ -191,6 +176,7 @@ struct FeedCellView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 15)
+                    .foregroundColor(.primary)
                     .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
                     .padding(.top, 5)
             }
@@ -217,6 +203,5 @@ struct FeedCellView: View {
     }
     //.padding(.top, 20)
 }
-
 //https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/81789D33-A401-4701-AB9F-ABBBE6DEC156?alt=media&token=a9b1fcdc-c1f9-48ec-87af-d7b617376365
 // https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/39968E65-7EB6-4D5D-AC00-8C8578AABFFF?alt=media&token=149585b7-ad7a-445a-a770-2e13af631ba0

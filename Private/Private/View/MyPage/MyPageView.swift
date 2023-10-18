@@ -75,7 +75,17 @@ struct MyPageView: View {
                     viewNumber = 1
                 }label: {
                     HStack {
-                        viewNumber == 1 ? Image("bookmark_fill") : Image ("bookmark")
+                        if viewNumber == 1 {
+                            Image("bookmark_fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 15)
+                        } else {
+                            Image ("bookmark")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 15)
+                        }
                         Text("저장한 피드")
                     }
                     .font(.pretendardRegular12)
@@ -96,7 +106,7 @@ struct MyPageView: View {
                     .foregroundColor(viewNumber == 2 ? .privateColor : .white)
                     .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
-                    .modifier(BottomBorder(showBorder: viewNumber == 2))
+                    .modifier(YellowBottomBorder(showBorder: viewNumber == 2))
                 }
             }
             .padding(.top, 20)
