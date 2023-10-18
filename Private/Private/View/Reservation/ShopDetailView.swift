@@ -235,7 +235,7 @@ struct ShopDetailFooterView: View {
         })
         .frame(alignment: .bottom)
         .fullScreenCover(isPresented: $isReservationPresented) {
-            ReservationView(isReservationPresented: $isReservationPresented, shopData: viewModel.shop)
+            ReservationView(isReservationPresented: $isReservationPresented, shopData: shopViewModel.shop)
         }
         .task {
             shopViewModel.fetchShop(shopID: shopViewModel.shop.id)
