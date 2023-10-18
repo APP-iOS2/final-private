@@ -54,7 +54,7 @@ struct LocationView: View {
             Button("등록") {
                 coordinator.newMarkerAlert = false
                 coordinator.makeMarkers()
-                creatFeed()
+//                creatFeed()
             }
             //            .task {
             //                await shopStore.getAllShopData()

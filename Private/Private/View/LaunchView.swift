@@ -34,6 +34,8 @@ struct LaunchView: View {
                         userStore.fetchMyInfo(userEmail: email, completion: { result in
                             if result {
                                 self.isActive = true
+                            } else {
+                                self.isActive = true
                             }
                         })
                         userStore.fetchCurrentUser(userEmail: email)
@@ -41,6 +43,7 @@ struct LaunchView: View {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                         withAnimation {
+                            self.isActive = true
                             self.isloading.toggle()
                         }
                     }
