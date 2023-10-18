@@ -37,7 +37,7 @@ struct MapFeedSheetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 15)
-                        .foregroundColor(.primary)
+                        .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
                         .padding(.top, 5)
 
                 }

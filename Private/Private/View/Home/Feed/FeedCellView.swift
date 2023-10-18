@@ -129,10 +129,11 @@ struct FeedCellView: View {
                             userStore.updateUser(user: userStore.user)
                         }
                     } label: {
-                        Image(systemName: userStore.user.myFeed.contains( feed.images[0]) ? "bookmark.fill" : "bookmark")
+                        Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark")
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: .screenWidth*0.035)
+                            .scaledToFit()
+                            .frame(width: 20)
+                            .padding(.trailing, 5)
                     }
                     Button {
                         withAnimation {
@@ -140,9 +141,12 @@ struct FeedCellView: View {
                         }
                     } label: {
                         Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20)
                             .font(.pretendardRegular14)
                             .foregroundColor(.white)
-                            .padding(.horizontal, 16)
+                            .padding(.horizontal, 25)
                             .padding(.vertical, 8)
                             .background(isShowingMessageTextField ? Color.privateColor : Color.darkGrayColor)
                             .cornerRadius(30)
@@ -168,7 +172,6 @@ struct FeedCellView: View {
         HStack {
             Button {
                 if (userStore.user.bookmark.contains("\(feed.images[0].suffix(32))")) {
-                    print("핀, 장소 저장")
                     for placeId in userStore.user.bookmark {
                         for userStorePlaceId in userStore.mySavedPlaceList {
                             if placeId == userStorePlaceId.writerProfileImage {
@@ -188,7 +191,7 @@ struct FeedCellView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 15)
-                    .foregroundColor(.primary)
+                    .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
                     .padding(.top, 5)
             }
             .padding(.leading, 15)
