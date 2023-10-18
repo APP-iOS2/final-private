@@ -25,9 +25,10 @@ struct LaunchView: View {
         } else {
             if isloading {
                 VStack {
-                    Text("Private")
-                        .font(.pretendardBold28)
-                        .foregroundStyle(.foreground)
+                    Image("SplashImage")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: .screenWidth)
                 }
                 .onAppear {
                     if let email = authStore.currentUser?.email {

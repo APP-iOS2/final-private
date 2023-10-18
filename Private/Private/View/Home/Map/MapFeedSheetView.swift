@@ -55,7 +55,6 @@ struct MapFeedSheetView: View {
                 Spacer()
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 20)
             .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
             .background(Color.darkGraySubColor)
             
