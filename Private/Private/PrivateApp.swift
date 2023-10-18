@@ -17,6 +17,7 @@ import KakaoSDKAuth
 struct PrivateApp: App {
     
     @StateObject private var userStore = UserStore()
+    @StateObject private var feedStore = FeedStore()
     @StateObject private var reservationStore = ReservationStore()
     @StateObject private var shopStore = ShopStore()
     @StateObject private var holidayManager = HolidayManager()
@@ -38,7 +39,7 @@ struct PrivateApp: App {
             LaunchView()
                 .environmentObject(AuthStore())
                 .environmentObject(userStore)
-                .environmentObject(FeedStore())
+                .environmentObject(feedStore)
                 .environmentObject(SearchStore())
                 .environmentObject(ChatRoomStore())
                 .environmentObject(reservationStore)
@@ -47,6 +48,7 @@ struct PrivateApp: App {
                 .environmentObject(followStore)
                 .task {
                     await shopStore.getAllShopData()
+                    feedStore.fetchFeeds()
                 }
                 .onOpenURL { url in
                     // 뷰가 속한 Window에 대한 URL을 받았을 때 호출할 Handler를 등록하는 함수

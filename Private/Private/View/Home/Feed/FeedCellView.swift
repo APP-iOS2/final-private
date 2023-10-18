@@ -11,8 +11,9 @@ import Kingfisher
 //import Combine
 
 struct FeedCellView: View {
-    var feed: MyFeed
     
+    var feed: MyFeed
+
     @State private var currentPicture = 0
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
     @EnvironmentObject private var feedStore: FeedStore
@@ -99,8 +100,7 @@ struct FeedCellView: View {
             .frame(width: .screenWidth, height: .screenWidth)
         }
         
-        
-        HStack(alignment: .top){
+        HStack(alignment: .top) {
             HStack(alignment: .top) {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
@@ -108,6 +108,7 @@ struct FeedCellView: View {
                 
             }
             .padding(.leading, .screenWidth/2 - .screenWidth*0.45 )
+            
             Spacer()
             VStack {
                 HStack{
@@ -177,7 +178,6 @@ struct FeedCellView: View {
                     .frame(width: 15)
                     .foregroundColor(.primary)
                     .padding(.top, 5)
-                
             }
             .padding(.leading, 15)
             

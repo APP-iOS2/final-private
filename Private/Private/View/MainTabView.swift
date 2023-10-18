@@ -86,6 +86,9 @@ struct MainTabView: View {
                 }
                 .tint(.privateColor)
             }
+            .onAppear {
+                print("onAppear: \(userStore.user)")
+            }
         }
     }
 }

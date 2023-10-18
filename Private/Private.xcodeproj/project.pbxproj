@@ -51,6 +51,7 @@
 		3C69C8BB2ADD67A1004476D1 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427542ACF965B00EECCD8 /* Pretendard-Regular.otf */; };
 		3C69C8BC2ADD67A4004476D1 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427582ACF965B00EECCD8 /* Pretendard-SemiBold.otf */; };
 		3C69C8BD2ADD67A6004476D1 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427592ACF965B00EECCD8 /* Pretendard-Thin.otf */; };
+		3C69C8C12ADF6B1A004476D1 /* MapFeedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */; };
 		3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */; };
 		3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */; };
 		3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */; };
@@ -218,6 +219,7 @@
 		3C37162B2ABD1789004E8419 /* ChatRoomStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomStore.swift; sourceTree = "<group>"; };
 		3C37B1B32AC02481004A8E7E /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		3C57893A2AC27BAF00D8B7EA /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
+		3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFeedCellView.swift; sourceTree = "<group>"; };
 		3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
 		3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 		26357CE02AD532A00098C8F5 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				3CB734092ABD6F0100D82503 /* FeedMainView.swift */,
 				26357CE32AD532D50098C8F5 /* FeedListView.swift */,
 				26357CE52AD532E70098C8F5 /* FeedCellView.swift */,
 				26357CE72AD533010098C8F5 /* EmptyFeed.swift */,
@@ -513,9 +516,8 @@
 		3CCD2DEA2ABC34C1005709F4 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				26357CE02AD532A00098C8F5 /* Feed */,
 				3CCD2DF12ABC3546005709F4 /* MainHomeView.swift */,
-				3CB734092ABD6F0100D82503 /* FeedMainView.swift */,
+				26357CE02AD532A00098C8F5 /* Feed */,
 				63BB09982ABD8783002CCE4E /* Map */,
 				3C79CE212AC1101E00CEA98D /* Chat */,
 			);
@@ -699,6 +701,7 @@
 				3CB734072ABD6EEF00D82503 /* MapMainView.swift */,
 				63BB09992ABD87BD002CCE4E /* NaverMap.swift */,
 				3C2FC8EF2ACE9B740034F561 /* MapFeedSheetView.swift */,
+				3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */,
 				3C2FC8ED2ACE9B740034F561 /* MapReviewRowView.swift */,
 				E3071A242AD9204D00090B62 /* MapSearchView.swift */,
 				3C94275A2ACF9C1800EECCD8 /* MapMarkerFeedView.swift */,
@@ -1121,6 +1124,7 @@
 				E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */,
 				3C2FC9042ACE9BC40034F561 /* SendMessageTextFieldModifier.swift in Sources */,
 				06C796CE2ABD5C5C0043C395 /* ShopDetailView.swift in Sources */,
+				3C69C8C12ADF6B1A004476D1 /* MapFeedCellView.swift in Sources */,
 				3CCD2DE02ABC314A005709F4 /* Shop.swift in Sources */,
 				B5BEAA232AC154430002CC2C /* ReservationDetailView.swift in Sources */,
 				3C9747772AD4E309007AE3CB /* LocationSearchView.swift in Sources */,
