@@ -8,20 +8,13 @@
 import SwiftUI
 import NMapsMap
 import Kingfisher
-//import Combine
 
 struct FeedCellView: View {
-    
     var feed: MyFeed
-
+    var filteredFeedList: [MyFeed]
+    
     @State private var currentPicture = 0
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
-    @EnvironmentObject private var feedStore: FeedStore
-    @EnvironmentObject var chatRoomStore: ChatRoomStore
-    
-    @State private var message: String = ""
-    @State private var isShowingMessageTextField: Bool = false
-    @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
     
     var body: some View {
         VStack {
@@ -44,41 +37,6 @@ struct FeedCellView: View {
                         .foregroundColor(.primary.opacity(0.8))
                 }
                 Spacer()
-                
-                HStack {
-                    if feed.writerNickname == userStore.user.nickname {
-                        Button(action: {
-                            // 수정 및 삭제 옵션을 표시하는 액션 시트 표시
-                            isActionSheetPresented.toggle()
-                        }) {
-                            Image(systemName: "ellipsis")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 15)
-                                .foregroundColor(.primary)
-                                .padding(.top, 5)
-                                .padding(.leading, 15)
-                                .padding(.trailing, 15)
-                        }
-                        .actionSheet(isPresented: $isActionSheetPresented) {
-                            ActionSheet(
-                                title: Text("선택하세요"),
-                                buttons: [
-                                    .default(Text("수정")) {
-                                        print("수정")
-                                    },
-                                    .destructive(Text("삭제")) {
-                                        print("삭제")
-                                        feedStore.deleteFeed(writerNickname: feed.writerNickname)
-                                    },
-                                    .cancel() // 취소 버튼
-                                ]
-                            )
-                        }
-                    }
-                }
-                
-                
             }
             .padding(.leading, 20)
             
@@ -100,7 +58,8 @@ struct FeedCellView: View {
             .frame(width: .screenWidth, height: .screenWidth)
         }
         
-        HStack(alignment: .top) {
+        
+        HStack(alignment: .top){
             HStack(alignment: .top) {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
@@ -108,19 +67,12 @@ struct FeedCellView: View {
                 
             }
             .padding(.leading, .screenWidth/2 - .screenWidth*0.45 )
-            
             Spacer()
             VStack {
                 HStack{
                     Button {
                         if(userStore.user.myFeed.contains(feed.images[0])) {
-                            for userStoreImageId in userStore.user.myFeed {
-                                for myFeed in userStore.mySavedFeedList {
-                                    if userStoreImageId == myFeed.images[0] {
-                                        userStore.deleteFeed(myFeed)
-                                    }
-                                }
-                            }
+                            userStore.deleteFeed(feed)
                             userStore.user.myFeed.removeAll { $0 == feed.images[0] }
                             userStore.updateUser(user: userStore.user)
                         } else {
@@ -129,16 +81,14 @@ struct FeedCellView: View {
                             userStore.updateUser(user: userStore.user)
                         }
                     } label: {
-                        Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark")
+                        Image( systemName: userStore.user.myFeed.contains( feed.images[0]) ? "bookmark.fill" : "bookmark")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20)
                             .padding(.trailing, 5)
                     }
                     Button {
-                        withAnimation {
-                            isShowingMessageTextField.toggle()
-                        }
+                        print("DM 보내기")
                     } label: {
                         Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
                             .resizable()
@@ -161,24 +111,11 @@ struct FeedCellView: View {
         .padding(.top, -25)
         .padding(.bottom, 0)
         
-        if isShowingMessageTextField {
-            SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
-                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
-                chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
-                message = ""
-            }
-        }
-        
         HStack {
             Button {
                 if (userStore.user.bookmark.contains("\(feed.images[0].suffix(32))")) {
-                    for placeId in userStore.user.bookmark {
-                        for userStorePlaceId in userStore.mySavedPlaceList {
-                            if placeId == userStorePlaceId.writerProfileImage {
-                                userStore.deletePlace(userStorePlaceId)
-                            }
-                        }
-                    }
+                    print("핀, 장소 저장")
+                    userStore.deletePlace(feed)
                     userStore.user.bookmark.removeAll { $0 == "\(feed.images[0].suffix(32))" }
                     userStore.updateUser(user: userStore.user)
                 } else {
@@ -211,9 +148,6 @@ struct FeedCellView: View {
         .padding(.horizontal, 10)
         .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
         .background(Color.darkGraySubColor)
-        
-        Divider()
-            .padding(.vertical, 10)
     }
     //.padding(.top, 20)
 }
