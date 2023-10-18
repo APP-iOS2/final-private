@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestore
 import FirebaseAuth
 import GoogleSignIn
 import Combine
@@ -16,8 +17,10 @@ import KakaoSDKAuth
 import KakaoSDKUser
 
 class AuthStore: ObservableObject {
-    @EnvironmentObject var userStore: UserStore
+    
     @Published var currentUser: Firebase.User?
+    
+    let userStore: UserStore = UserStore()
     
     init() {
         currentUser = Auth.auth().currentUser
@@ -53,7 +56,19 @@ class AuthStore: ObservableObject {
             let email = googleUser.profile?.email ?? ""
             let name = googleUser.profile?.name ?? ""
             
-            let userData: [String: Any] = ["email": email, "name": name]
+            let userData: [String: Any] = ["email" : email,
+                                           "name" : name,
+                                           "nickname" : "",
+                                           "phoneNumber" : "",
+                                           "profileImageURL" : "",
+                                           "follower" : [],
+                                           "following" : [],
+                                           "myFeed" : [],
+                                           "savedFeed" : [],
+                                           "bookmark" : [],
+                                           "chattingRoom" : [],
+                                           "myReservation" : []
+                                          ]
             
             if let error = error {
                 print(error.localizedDescription)
@@ -85,8 +100,8 @@ class AuthStore: ObservableObject {
                     }
                 } else {
                     Firestore.firestore().collection("User").document((user?.profile?.email)!).getDocument { snapshot, error in
-                        let currentData = snapshot!.data()
-                        
+                        _ = snapshot!.data()
+                                                                                                            
                         Auth.auth().signIn(with: credential) { result, error in
                             if let error = error {
                                 print(error.localizedDescription)
@@ -111,7 +126,22 @@ class AuthStore: ObservableObject {
             print(error.localizedDescription)
         }
     }
-    
+  
+    func doubleCheckNickname(nickname: String) async -> Bool {
+        do {
+            let datas = try await Firestore.firestore().collection("User").document(nickname).getDocument()
+            if let data = datas.data(), !data.isEmpty {
+                return false
+            } else {
+                return true
+            }
+        }
+        catch {
+            debugPrint("getDocument 에러")
+            return false
+        }
+    }
+        
 //    func kakaoAuthSignIn() {
 //        if AuthApi.hasToken() {
 //            // 발급된 토큰이 있는 지 확인

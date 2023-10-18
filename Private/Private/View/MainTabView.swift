@@ -6,20 +6,23 @@
 //
 
 import SwiftUI
+import NMapsMap
 
 struct MainTabView: View {
     
     init() {
         UITabBar.appearance().backgroundColor = UIColor(Color.tabColor)
     }
-    
+    @EnvironmentObject var followStore: FollowStore
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
+    @EnvironmentObject var searchStore: SearchStore
   
     @StateObject private var feedStore: FeedStore = FeedStore()
-    @StateObject private var searchStore: SearchStore = SearchStore()
-     
+//    @StateObject private var searchStore: SearchStore = SearchStore()
+    @State private var coord: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
+
     @State var selection: Int = 1
     @State private var rootSection1: Bool = false
     @State private var rootSection2: Bool = false
@@ -27,6 +30,8 @@ struct MainTabView: View {
     @State private var rootSection4: Bool = false
     @State private var rootSection5: Bool = false
     
+    @State private var showLocation: Bool = false
+    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     var selectionBinding: Binding<Int> { Binding (
         get: {
             self.selection
@@ -52,7 +57,6 @@ struct MainTabView: View {
     )}
     
     var nicknameIsEmpty: Bool {
-        print("닉네임: \(userStore.user.nickname)")
         return userStore.user.nickname.isEmpty
     }
     
@@ -63,22 +67,24 @@ struct MainTabView: View {
         } else {
             NavigationStack {
                 TabView(selection: selectionBinding) {
-                    MainHomeView(root: $rootSection1, selection: $selection).tabItem {
+                    MainHomeView(root: $rootSection1, selection: $selection, showLocation: $showLocation, searchResult: $searchResult).tabItem {
                         Image(systemName: "house.fill")
                     }.tag(1)
                     SearchView(root: $rootSection2, selection: $selection).tabItem {
                         Image(systemName: "magnifyingglass")
+                            .environmentObject(followStore)
                     }.tag(2)
-                    PostView(root: $rootSection3, selection: $selection).tabItem {
+                    UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true), showLocation: $showLocation, searchResult: $searchResult, coord: $coord).tabItem {
                         Image(systemName: "plus")
                     }.tag(3)
-                    ShopDetailView(root: $rootSection4, selection: $selection).tabItem {
+                    ShopListView(root: $rootSection4, selection: $selection).tabItem {
                         Image(systemName: "calendar.badge.clock")
                     }.tag(4)
                     MyPageView(root: $rootSection5, selection: $selection).tabItem {
                         Image(systemName: "person.fill")
                     }.tag(5)
                 }
+                .tint(.privateColor)
             }
         }
     }
@@ -87,5 +93,7 @@ struct MainTabView: View {
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
         MainTabView()
+            .environmentObject(UserStore())
+            .environmentObject(ShopStore())
     }
 }

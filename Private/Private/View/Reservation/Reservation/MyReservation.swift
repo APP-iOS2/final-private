@@ -9,12 +9,14 @@ import SwiftUI
 
 struct MyReservation: View {
     @EnvironmentObject var reservationStore: ReservationStore
-    @Binding var isShowingMyReservation: Bool
+    @EnvironmentObject var shopStore: ShopStore
     
+    @Binding var isShowingMyReservation: Bool
+        
     var body: some View {
         NavigationStack {
             ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack {
+                VStack {
                     ForEach(reservationStore.reservationList, id: \.self) { reservation in
                         ReservationCardView(reservation: reservation)
                     }
@@ -27,7 +29,7 @@ struct MyReservation: View {
                             isShowingMyReservation.toggle()
                         } label: {
                             Text("확인")
-                                .font(Font.pretendardMedium20)
+                                .font(.pretendardMedium20)
                         }
                     }
                 }
@@ -40,5 +42,6 @@ struct MyReservation_Previews: PreviewProvider {
     static var previews: some View {
         MyReservation(isShowingMyReservation: Binding.constant(true))
             .environmentObject(ReservationStore())
+            .environmentObject(ShopStore())
     }
 }

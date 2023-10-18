@@ -10,54 +10,52 @@ import UIKit
 import NMapsMap
 
 struct MapMainView: View {
-    @State var coord: (Double, Double) = (126.9784147, 37.5666805)
     
+    @StateObject private var locationSearchStore = LocationSearchStore.shared
+    @StateObject var coordinator: Coordinator = Coordinator.shared
+    @EnvironmentObject var shopStore: ShopStore
+    @EnvironmentObject var feedStore: FeedStore
+    @State private var coord: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
     var body: some View {
-        ZStack {
-            Button(action: {coord = (129.05562775, 35.1379222)}) {
-                Text("Move to Busan")
-                    .background(.white)
-            }
-            .zIndex(1)
-            Spacer()
-            UIMapView(coord: coord)
-                .edgesIgnoringSafeArea(.vertical)
+        VStack {
+            Text("Print를 위해 잠시 넣어둠 Tapped LatLng: \(coordinator.tappedLatLng?.description ?? "N/A")")
+            NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView,
+                     markerTitle: $coordinator.newMarkerTitle,
+                     markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
+
         }
-       
-       
-    }
-}
-
-struct UIMapView: UIViewRepresentable {
-    // 받아오는 좌표
-    var coord: (Double, Double)
-    
-    // 지도 뷰 만드는 메서드
-    func makeUIView(context: Context) -> NMFNaverMapView {
-        let view = NMFNaverMapView()
-        view.showZoomControls = false
-        view.mapView.positionMode = .direction
-        view.mapView.zoomLevel = 17
+        .onAppear {
+            coordinator.checkIfLocationServicesIsEnabled()
+            Coordinator.shared.feedStore.feedList = feedStore.feedList
+            coordinator.makeMarkers()
+        }
+//        .onChange(of: coord, perform: { _ in
+//                coordinator.fetchUserLocation()
+//        })
+        .onChange(of: coord, perform: { _ in
+                coordinator.fetchUserLocation()
+        })
+ 
+        .sheet(isPresented: $coordinator.showMarkerDetailView) {
+            MapFeedSheetView()
+                .presentationDetents([.height(400), .large])
+        }
         
-        // mapView위에 좌표 추가
-        let marker = NMFMarker()
-        marker.position = NMGLatLng(lat: 37.5670135, lng: 126.9783740)
-        marker.mapView = view.mapView
-        return view
-    }
+            //            .task {
+            //                await shopStore.getAllShopData()
+            //            }
+        .overlay(
+            TextField("", text: $coordinator.newMarkerTitle)
+                .opacity(0)
+                .frame(width: 0, height: 0)
+        )    }
     
-    // 지도 포커스 이동
-    func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
-        let coord = NMGLatLng(lat: coord.1, lng: coord.0)
-                let cameraUpdate = NMFCameraUpdate(scrollTo: coord)
-                cameraUpdate.animation = .fly
-                cameraUpdate.animationDuration = 1
-                uiView.mapView.moveCamera(cameraUpdate)
-    }
 }
 
-struct MapMainView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapMainView()
-    }
-}
+//struct MapMainView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MapMainView()
+//            .environmentObject(ShopStore())
+//            .environmentObject(FeedStore())
+//    }
+//}

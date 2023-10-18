@@ -20,16 +20,16 @@ struct MapReviewRowView: View {
                 VStack {
                     HStack {
                         VStack(alignment: .leading, spacing: 10) {
-                            Image(feed.writer.profileImageURL)
+                            Image(feed.writerProfileImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 50)
                                 .clipShape(Circle())
                         }
                         VStack {
-                            Text(feed.writer.nickname)
+                            Text(feed.writerNickname)
                                 .font(.pretendardSemiBold14)
-                            Text(feed.writer.name)
+                            Text(feed.writerName)
                                 .font(.pretendardSemiBold12)
                         }
                         Spacer()
@@ -81,11 +81,11 @@ struct MapReviewRowView: View {
     }
 }
 
-struct MapReviewRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(dummyFeeds, id: \.id) { feed in
-            MapReviewRowView(feed: feed)
-                .environmentObject(ChatRoomStore()) // 미리보기에 ChatRoomStore를 주입
-        }
-    }
-}
+//struct MapReviewRowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ForEach(dummyFeeds, id: \.id) { feed in
+//            MapReviewRowView(feed: feed)
+//                .environmentObject(ChatRoomStore()) // 미리보기에 ChatRoomStore를 주입
+//        }
+//    }
+//}

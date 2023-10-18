@@ -3,71 +3,82 @@
 //  Private
 //
 //  Created by 변상우 on 2023/09/22.
-//
+
 import Foundation
-import FirebaseStorage
+import Firebase
+import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
+
+
 
 final class FeedStore: ObservableObject {
     
-    @Published var feedList: [Feed] = []
-    private let dbRef = Firestore.firestore().collection("User")
+    // @Published 는 SwiftUI에서 ObservableObject의 프로퍼티가 변경될 때 View를 업데이트하도록 합니다.
+    @Published var feedList: [MyFeed] = []
     
+    // Firestore 데이터베이스의 "Feed" 컬렉션에 대한 참조를 생성합니다.
+    private let dbRef = Firestore.firestore().collection("Feed")
+    
+    // 초기화 함수에서 피드를 가져옵니다.
     init() {
-//        feedList.append(FeedStore.feed)
+        fetchFeeds()
     }
-    
-//    static let feed = Feed(
-//        writer: UserStore.user,
-//        images: ["userDefault"],
-//        contents: "데이트하기 좋은곳 찾으신다면 추천! 기본은하고 분위기가 좋음. 오므라이스도 맛있다.",
-//        visitedShop: ShopStore.shop,
-//        category: [Category.koreanFood]
-//    )
-    
-    func addFeed(_ feed: Feed) {
-        
-    }
-    func removeImage(_ image: Feed) {
-        var index: Int = 0
-        
-        for tempImage in feedList {
-            
-            if tempImage.id == image.id {
-                feedList.remove(at: index)
-                break
+    // 피드를 Firestore에서 가져오는 함수입니다.
+    func fetchFeeds() {
+        // Firestore에서 실시간으로 데이터를 가져오기 위해 addSnapshotListener를 사용합니다.
+        dbRef.addSnapshotListener { [weak self] (querySnapshot, error) in
+            // 에러가 있다면 콘솔에 출력하고 반환합니다.
+            if let error = error {
+                print("Error fetching documents: \(error.localizedDescription)")
+                return
             }
-            index += 1
+                                   
+            self?.feedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
+                let data = queryDocumentSnapshot.data()
+                var feed = MyFeed(documentData: data)
+                feed?.createdAt = data["createdAt"] as? Double ?? 0.0 // createdAt 값을 Double로 설정
+                return feed
+            }
+            .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
     }
-    
-    func uploadImageToFirebase (image: UIImage) async -> String? {
-
-        guard let imageData = image.jpegData(compressionQuality: 0.4) else { return nil }
-        let imagePath = "images/\(UUID().uuidString).jpg"
-        let imageRef = Storage.storage().reference().child(imagePath)
-        
-        let metaData = StorageMetadata()
-        metaData.contentType = "image/jpeg"
-        
-        do {
-            let _ = try await imageRef.putDataAsync(imageData)
-            let url = try await imageRef.downloadURL()
-            return url.absoluteString
-        } catch let error {
-            print(error.localizedDescription)
-            return nil
-        }
+  
+    func addFeed(_ feed: MyFeed) {
+        dbRef.document(feed.id).collection("Feed")
+            .document(feed.id)
+            .setData(["writerNickname": feed.writerNickname,
+                      "writerName": feed.writerName,
+                      "writerProfileImage": feed.writerProfileImage,
+                      "images": feed.images,
+                      "contents": feed.contents,
+                      "createdAt": feed.createdAt,
+                      "title": feed.title,
+                      "category": feed.category,
+                      "address": feed.address,
+                      "roadAddress": feed.roadAddress,
+                      "mapx": feed.mapx,
+                      "mapy": feed.mapy,
+                     ])
+    }
+  
+    // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
+    private func makeFeedData(from feed: MyFeed) -> [String: Any] {
+        return [
+            "writerNickname": feed.writerNickname,
+            "writerName": feed.writerName,
+            "writerProfileImage": feed.writerProfileImage,
+            "images": feed.images,
+            "contents": feed.contents,
+            "createdAt": Timestamp(date: Date(timeIntervalSince1970: feed.createdAt)),
+            "title": feed.title,
+            "category": feed.category,
+            "address": feed.address,
+            "roadAddress": feed.roadAddress,
+            "mapx": feed.mapx,
+            "mapy": feed.mapy,
+        ]
     }
     
-    func updateFeed(_ feed: Feed) {
-        dbRef.document(feed.id).updateData([
-            "writer" : feed.writer,
-            "image" : feed.images,
-            "contents" : feed.contents,
-            "createdAt" : feed.createdAt,
-            "visitedShop": feed.visitedShop,
-            "category": feed.category
-        ])
-    }
 }
+

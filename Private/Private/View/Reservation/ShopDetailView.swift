@@ -7,9 +7,11 @@
 
 import SwiftUI
 import Kingfisher
-
-// Todo: - UI 관련
-/// - Picker 지우고 라이브러리로 변경
+import UniformTypeIdentifiers
+import Firebase
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseStorage
 
 enum ShopDetailCategory: String, CaseIterable {
     case shopInfo = "가게 정보"
@@ -21,48 +23,56 @@ struct ShopDetailView: View {
     
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
-    
+    @EnvironmentObject private var userStore: UserStore
+
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     @State var isReservationPresented: Bool = false
     
-    @Binding var root: Bool
-    @Binding var selection: Int
-    
-    let dummyShop = ShopStore.shop
-    
+//    @State var shopData: Shop
+    @ObservedObject var shopViewModel: ShopViewModel
+        
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
                 //                LazyVStack(pinnedViews: .sectionHeaders) {
                 ZStack(alignment: .topLeading) {
                     Section {
-                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopDetailName: dummyShop.name, shopDetailCategoryName: dummyShop.category.categoryName, shopDetailAddress: dummyShop.address, shopDetailAddressDetail: dummyShop.addressDetail)
+//                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopData: shopData)
+                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopData: shopViewModel.shop)
                             .padding(.top, CGFloat.screenHeight * 0.2)
                     } header: {
-                        ShopDetailHeaderView(shopDetailImageURL: dummyShop.shopImageURL)
+//                        ShopDetailHeaderView(shopData: shopData)
+                        ShopDetailHeaderView(shopData: shopViewModel.shop)
                     }
                 }
             }
             
-            ShopDetailFooterView(isReservationPresented: $isReservationPresented)
+//            ShopDetailFooterView(isReservationPresented: $isReservationPresented, isBookmarked: $shopViewModel.shop.b, viewModel: shopViewModel)
+//            ShopDetailFooterView(isReservationPresented: $isReservationPresented, isBookmarked: $shopViewModel.isBookmarked, viewModel: shopViewModel)
+//            ShopDetailFooterView(isReservationPresented: $isReservationPresented, viewModel: shopViewModel)
+            ShopDetailFooterView(isReservationPresented: $isReservationPresented, isBookmarked: shopViewModel.isBookmarked, bookmarkCounts: shopViewModel.bookmarkCounts, viewModel: shopViewModel)
+        }
+        .task {
+            await shopStore.getAllShopData()
         }
     }
 }
 
-struct ShopDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        ShopDetailView(root: .constant(true), selection: .constant(4))
-            .environmentObject(ShopStore())
-            .environmentObject(ReservationStore())
-    }
-}
+//struct ShopDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+////        ShopDetailView(shopData: ShopStore.shop, shopViewModel: <#ShopViewModel#>)
+////        ShopDetailView(shopViewModel: ShopViewModel(shop: <#T##Shop#>, userID: <#T##String#>))
+//            .environmentObject(ShopStore())
+//            .environmentObject(ReservationStore())
+//    }
+//}
 
 struct ShopDetailHeaderView: View {
     
-    let shopDetailImageURL: String
+    @State var shopData: Shop
     
     var body: some View {
-        KFImage(URL(string: shopDetailImageURL)!)
+        KFImage(URL(string: shopData.shopImageURL)!)
             .placeholder({
                 ProgressView()
             })
@@ -79,10 +89,7 @@ struct ShopDetailBodyView: View {
     @State var isExpanded: Bool = false
     @Binding var selectedShopDetailCategory: ShopDetailCategory
     
-    let shopDetailName: String
-    let shopDetailCategoryName: String
-    let shopDetailAddress: String
-    let shopDetailAddressDetail: String
+    @State var shopData: Shop
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -92,39 +99,32 @@ struct ShopDetailBodyView: View {
                         .frame(height: 10)
                     
                     HStack(spacing: 10) {
-                        Text(shopDetailName)
+                        Text(shopData.name)
                             .foregroundColor(.chatTextColor)
-                            .font(Font.pretendardBold28)
+                            .font(.pretendardBold28)
                         
                         Divider()
                             .frame(height: 25)
                         
-                        Text(shopDetailCategoryName)
-                            .font(Font.pretendardMedium18)
+                        Text(shopData.category.categoryName)
+                            .font(.pretendardMedium18)
                     }
                     
-                    Section {
-                        if isExpanded {
-                            HStack(spacing: 5) {
-                                Text(shopDetailAddressDetail)
-                                    .font(Font.pretendardRegular14)
-                                
-                                Image(systemName: "doc.on.doc")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 15, height: 15)
-                            }
+                    HStack(alignment: .center, spacing: 5) {
+                        Text(shopData.address + " " + shopData.addressDetail)
+                            .font(.pretendardMedium16)
+                        
+                        Button {
+                            copyToClipboard(shopData.address + " " + shopData.addressDetail)
+                        } label: {
+                            Image(systemName: "doc.on.doc")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 15, height: 15)
+
                         }
-                    } header: {
-                        HStack(spacing: 2) {
-                            Text(shopDetailAddress)
-                                .font(Font.pretendardMedium18)
-                            
-                            Image(systemName: isExpanded ? "chevron.down": "chevron.right")
-                        }
-                        .onTapGesture {
-                            isExpanded.toggle()
-                        }
+                        
+                        Spacer()
                     }
                     
                     Spacer()
@@ -145,23 +145,22 @@ struct ShopDetailBodyView: View {
             }
             .padding(.horizontal, 10)
             
-            Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(Font.pretendardRegular16)) {
+            Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(.pretendardRegular16)) {
                 ForEach(ShopDetailCategory.allCases, id: \.self) { category in
                     Text(category.rawValue)
-                        .font(Font.pretendardRegular16)
+                        .font(.pretendardRegular16)
                         .foregroundColor(.chatTextColor)
                 }
             }
             .pickerStyle(.segmented)
             .padding(10)
-            .padding(.bottom, 5)
             
             ScrollView {
                 switch selectedShopDetailCategory {
                 case .shopInfo:
-                    ShopDetailInfoView()
+                    ShopDetailInfoView(shopData: shopData)
                 case .shopMenu:
-                    ShopDetailMenuView()
+                    ShopDetailMenuView(shopData: shopData)
                 case .shopCurrentReview:
                     ShopwDetailCurrentReviewView()
                 }
@@ -180,25 +179,88 @@ struct ShopDetailBodyView: View {
         })
         .cornerRadius(12)
     }
+    
+    func copyToClipboard(_ text: String) {
+        UIPasteboard.general.string = text
+    }
 }
 
 struct ShopDetailFooterView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
+    @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject var shopStore: ShopStore
+
     @Binding var isReservationPresented: Bool
+    
+//    @State var isBookmarked: Bool = false // 임시!
+//    @Binding var isBookmarked: Bool
+    @State var isBookmarked: Bool
+    @State var bookmarkCounts: Int
+    
+//    @ObservedObject var viewModel: ShopViewModel
+    @State var viewModel: ShopViewModel
+    
+//    @State var shopData: Shop
+    
+//    @ObservedObject var shopViewModel: ShopViewModel = ShopViewModel(shop: shopData)
     
     var body: some View {
         HStack(spacing: 10) {
             VStack(spacing: 2) {
-                Image(systemName: "bookmark")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 25)
-                    .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
+                Button {
+                    print("🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️🏳️\(viewModel.isBookmarked)")
+                    if viewModel.isBookmarked {
+                        viewModel.isBookmarked = false
+                        isBookmarked = false
+                        viewModel.bookmarkCounts -= 1
+                        bookmarkCounts -= 1
+//                    if isBookmarked {
+//                    if viewModel.checkIfUserBookmarkedShop() {
+//                        shopStore.deleteBookmark(document: shopData.id, userID: userStore.user.email)
+//                        shopStore.deleteBookmark(document: viewModel.shop.id, userID: userStore.user.email)
+                        viewModel.unbookmarkShop()
+                    } else {
+                        viewModel.isBookmarked = true
+                        isBookmarked = true
+                        viewModel.bookmarkCounts += 1
+                        bookmarkCounts += 1
+//                        shopStore.addBookmark(document: shopData.id, userID: userStore.user.email)
+//                        shopStore.addBookmark(document: viewModel.shop.id, userID: userStore.user.email)
+                        viewModel.bookmarkShop()
+                    }
+
+//                    isBookmarked.toggle()
+                    
+//                    viewModel.checkIfUserBookmarkedShop() ? viewModel.unbookmarkShop() : viewModel.bookmarkShop()
+//                    if viewModel.checkIfUserBookmarkedShop() {
+//                        print("북마크가 되어 있으므로 언북마크 합니다💛")
+//                        viewModel.unbookmarkShop()
+//                    } else {
+//                        print("북마크가 안🤍되어 있으므로 북마크 합니다🤍")
+//                        viewModel.bookmarkShop()
+//                    }
+                } label: {
+//                    Button {
+//                        viewModel.tweet.didLike ?? false ? viewModel.unlikeTweet() : viewModel.likeTweet()
+//                    } label: {
+//                        Image(systemName: viewModel.tweet.didLike ?? false ? "heart.fill" : "heart")
+//                            .font(.subheadline)
+//                            .foregroundColor(viewModel.tweet.didLike ?? false ? .red : .gray)
+//                    }
+                    
+//                    Image(systemName: viewModel.isBookmarked ? "bookmark.fill" : "bookmark")
+                    Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+//                    Image(systemName: viewModel.checkIfUserBookmarkedShop() ? "bookmark.fill" : "bookmark")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
+                }
                 
-                Text("\(999)+") // bookmarks count
-                    .font(Font.pretendardBold14)
+                Text("\(bookmarkCounts)")
+                    .font(.pretendardSemiBold12)
             }
             
             Button {
@@ -207,11 +269,10 @@ struct ShopDetailFooterView: View {
                 Text("예약하기")
                     .frame(maxWidth: .infinity)
             }
-            .frame(height: CGFloat.screenHeight * 0.05)
+            .frame(height: CGFloat.screenHeight * 0.065)
             .frame(maxWidth: .infinity)
             .tint(.primary)
             .background(Color("AccentColor"))
-            .cornerRadius(12)
             .cornerRadius(12)
         }
         .padding(10)
@@ -227,7 +288,76 @@ struct ShopDetailFooterView: View {
         })
         .frame(alignment: .bottom)
         .sheet(isPresented: $isReservationPresented) {
-            ReservationView(shopData: ShopStore.shop)
+//            ReservationView(isReservationPresented: $isReservationPresented, shopData: shopData)
+            ReservationView(isReservationPresented: $isReservationPresented, shopData: viewModel.shop)
         }
+        .task {
+//            viewModel.fetchShop()
+            Task {
+                viewModel.fetch()
+            }
+        }
+        .refreshable {
+//            viewModel.fetchShop()
+            Task {
+                viewModel.fetch()
+            }
+        }
+    }
+}
+
+class ShopViewModel: ObservableObject {
+    
+    @Published var shop: Shop
+    @Published var isBookmarked: Bool
+    @Published var bookmarkCounts: Int
+    
+    var userID: String
+    
+    let shopService = ShopStore()
+    
+    init(shop: Shop, userID: String) {
+        self.shop = shop
+        self.userID = userID
+        self.isBookmarked = shopService.checkBookmark(document: shop.id, userID: userID)
+        self.bookmarkCounts = shopService.checkBookmarkCounts(document: shop.id, userID: userID)
+//        self.checkIfUserBookmarkedShop()
+    }
+    
+    func bookmarkShop() {
+        print("❤️북마크")
+        shopService.addBookmark(document: shop.id, userID: userID)
+//        self.isBookmarked.toggle()
+//        self.bookmarkCounts += 1
+//        fetchShop()
+        shopService.fetchShop(document: shop.id, userID: userID)
+    }
+    
+    func unbookmarkShop() {
+        print("💚언북마크")
+        shopService.deleteBookmark(document: shop.id, userID: userID)
+//        self.isBookmarked.toggle()
+//        self.bookmarkCounts -= 1
+//        fetchShop()
+        shopService.fetchShop(document: shop.id, userID: userID)
+    }
+    
+    func checkIfUserBookmarkedShop() -> Bool {
+        return shopService.checkBookmark(document: shop.id, userID: userID)
+    }
+    
+    func checkBookmarkCount() -> Int {
+        return shopService.checkBookmarkCounts(document: shop.id, userID: userID)
+//        var resCount = 0
+//        shopService.checkBookmarkCount(document: shop.id, userID: userID) { count in
+//            print("⭐️\(count)⭐️")
+//            resCount = count
+//        }
+//
+//        return resCount
+    }
+    
+    func fetch() {
+        shopService.fetchShop(document: shop.id, userID: userID)
     }
 }

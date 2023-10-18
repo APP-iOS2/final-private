@@ -12,48 +12,61 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseCore
 import Combine
+import Kingfisher
 
 struct PostView: View {
-    
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.presentationMode) var presentationMode
     
+    @EnvironmentObject var feedStore: FeedStore
+    @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var userDataStore: UserStore
+    
+    @StateObject private var locationSearchStore = LocationSearchStore.shared
+    @StateObject private var postStore: PostStore = PostStore()
+    @ObservedObject var coordinator: Coordinator = Coordinator.shared
+
     @Binding var root: Bool
     @Binding var selection: Int
-    
-    @EnvironmentObject private var feedStore: FeedStore
-    @EnvironmentObject private var userStore: UserStore
-    @StateObject private var postStore: PostStore = PostStore()
-    
+    @Binding var isPostViewPresented: Bool /// PostView
+    @Binding var coord: NMGLatLng
+    @Binding var searchResult: SearchResult
+
     @State private var selectedWriter: String = "김아무개"
-    @State private var text: String = ""
+    @State private var text: String = "" /// 텍스트마스터 내용
+    @State private var textPlaceHolder: String = "당신의 경험을 적어주세요!" /// 텍스트마스터 placeholder
+    @State private var lat: String = ""
+    @State private var lng: String = ""
+    
     @State private var writer: String = ""
     @State private var images: [String] = []
     @State private var createdAt: Double = Date().timeIntervalSince1970
     @State private var visitedShop: String = ""
     @State private var feedId: String = ""
+    @State private var myselectedCategory: [String] = []
 
     @State private var clickLocation: Bool = false
-    @State private var isImagePickerPresented: Bool = false
-    @State private var ImageViewPresented: Bool = true
+    @State private var isImagePickerPresented: Bool = false /// 업로드뷰에서 이미지 선택 뷰
+    @State private var ImageViewPresented: Bool = true /// 처음 이미지 뷰
     @State private var showLocation: Bool = false
-    @State private var isshowAlert = false
-    
+    @State private var isshowAlert = false /// 업로드 알럿
+    @State private var categoryAlert: Bool = false /// 카테고리 초과 알럿
+    @State private var isSearchedLocation: Bool = false /// 장소 검색 시트 
+
     @State private var selectedImage: [UIImage]?
     @FocusState private var isTextMasterFocused: Bool
     
-    private let minLine: Int = 7
-    private let maxLine: Int = 8
-    private let fontSize: Double = 24
+//    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
+    @State private var selectedCategories: Set<MyCategory> = []
+    @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
-    @State var selectedCategory: [String] = []
-    @State var myselectedCategory: [MyCategory] = [.koreanFood, .brunch]
+    private let minLine: Int = 10
+    private let maxLine: Int = 12
+    private let fontSize: Double = 24
+    private let maxSelectedCategories = 3
     
     var db = Firestore.firestore()
     var storage = Storage.storage()
-    //    var categoryString: [String] {
-    //        selectedCategory.map { $0.rawValue }
-    //    }
-//    let resultString = categoryString.joined(separator: ",")
     
     var body: some View {
         NavigationStack {
@@ -61,13 +74,21 @@ struct PostView: View {
                 VStack(alignment: .leading) {
                     HStack {
                         ZStack {
-                            Circle()
-                                .frame(width: .screenWidth*0.19)
-                            Image(systemName: "person")
-                                .resizable()
-                                .frame(width: .screenWidth*0.19, height: 65)
-                                .foregroundColor(.gray)
-                                .clipShape(Circle())
+                            if userStore.user.profileImageURL.isEmpty {
+                                Circle()
+                                    .frame(width: .screenWidth*0.15)
+                                Image(systemName: "person")
+                                    .resizable()
+                                    .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
+                                    .foregroundColor(Color.darkGraySubColor)
+                                    .clipShape(Circle())
+                            } else {
+                                KFImage(URL(string: userStore.user.profileImageURL))
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
+                                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                            }
                         }
                         
                         VStack(alignment: .leading, spacing: 5) {
@@ -78,10 +99,8 @@ struct PostView: View {
                     .padding(.vertical, 10)
 
                     //MARK: 내용
-                    TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize)
-                        .onTapGesture {
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                        }
+                    TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize, placeholder: textPlaceHolder)
+
                         .padding(.trailing, 10)
                     
                     //MARK: 장소
@@ -91,45 +110,63 @@ struct PostView: View {
                         } label: {
                             Label("장소", systemImage: "location")
                         }
-                        .sheet(isPresented: $showLocation){
-                            NavigationStack {
-                                MapMainView()
-                                    .toolbar {
-                                        ToolbarItem(placement: .navigationBarLeading) {
-                                            Button {
-                                                showLocation = false
-                                            } label: {
-                                                Text("취소")
-                                            }
-                                        }
-                                    }
-                                    .font(.pretendardBold18)
-                            }
+                        .sheet(isPresented: $showLocation) {
+                            LocationSearchView(showLocation: $showLocation, searchResult: $searchResult, isSearchedLocation: $isSearchedLocation)
+                                .presentationDetents([.fraction(0.75), .large])
+                        }
+                        .sheet(isPresented: $isSearchedLocation) {
+                            LocationView(coord: $coord, searchResult: $searchResult)
                         }
                     }
                     .padding(.vertical, 10)
-                
-                    if clickLocation {
-                        Text("해당 장소")
-                            .font(.body)
-                        // 맵 관련 로직
-                    } else {
+                    
+                    if searchResult.title.isEmpty {
                         Text("장소를 선택해주세요")
-                            .font(.body)
+                            .font(.pretendardRegular12)
                             .foregroundColor(.secondary)
+                    } else {
+//                        Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+//                            .font(.body)
+//                            .onTapGesture {
+//                                clickLocation = true
+//                                
+//                                lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
+//                                lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
+//                                
+                        //                                coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                        //                                print("위도값: \(lat), 경도값: \(lng)")
+                        //                                print("지정장소 클릭")
+                        //                                coordinator.moveCameraPosition()
+                        //                            }
+                        Button {
+                            lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
+                            lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
+                            
+                            coordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                            print("위도값: \(coord.lat), 경도값: \(coord.lng)")
+                            print("지정장소 클릭")
+                            clickLocation.toggle()
+                            coordinator.moveCameraPosition()
+                            coordinator.makeSearchLocationMarker()
+                        } label: {
+                            Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                                .font(.pretendardRegular12)
+                        }
+                        .sheet(isPresented: $clickLocation) {
+                            LocationDetailView()
+                        }
+                        Text(searchResult.address)
+                            .font(.pretendardRegular10)
+                            .foregroundStyle(.secondary)
+                        
                     }
                     Divider()
                         .padding(.vertical, 10)
-
+                    
                     //MARK: 사진
                     HStack {
                         Label("사진", systemImage: "camera")
-                        Text("(최대 10장)")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                        
                         Spacer()
-                        
                         Button {
                             isImagePickerPresented.toggle()
                         } label: {
@@ -137,6 +174,9 @@ struct PostView: View {
                         }
                         .sheet(isPresented: $isImagePickerPresented) {
                             ImagePickerView(selectedImages: $selectedImage)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(Color.white)
+                                .transition(.move(edge: .leading))
                         }
                     }
                     
@@ -155,10 +195,14 @@ struct PostView: View {
                                                 selectedImage?.remove(at: index)
                                             }
                                         } label: {
-                                            Image(systemName: "x.circle")
-                                                .font(.pretendardBold24)
-                                                .foregroundColor(.accentColor)
-                                                .padding(8)
+                                            ZStack {
+                                                Circle()
+                                                    .frame(width: .screenWidth*0.06)
+                                                Image(systemName: "x.circle")
+                                                    .font(.pretendardBold24)
+                                                    .foregroundColor(.primary)
+                                                    .padding(8)
+                                            }
                                         }
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                                     }
@@ -173,50 +217,133 @@ struct PostView: View {
                         .padding(.vertical, 10)
 
                     //MARK: 카테고리
-                    CatecoryView(selectedCategory: $selectedCategory)
+                        
+                    HStack {
+                        Text("카테고리")
+                            .font(.pretendardMedium20)
+                        Text("(최대 3개)")
+                            .font(.pretendardRegular12)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    LazyVGrid(columns: createGridColumns(), spacing: 20) {
+                        ForEach (Category.allCases.indices, id: \.self) { index in
+                            VStack {
+                                if selectedToggle[index] {
+                                    Text(Category.allCases[index].categoryName)
+                                        .font(.pretendardMedium16)
+                                        .foregroundColor(.black)
+                                        .frame(width: 70, height: 30)
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 4)
+                                        .background(Color.accentColor)
+                                        .cornerRadius(7)
+                                } else {
+                                    Text(Category.allCases[index].categoryName)
+                                        .frame(width: 70, height: 30)
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 4)
+                                        .cornerRadius(7)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 7)
+                                                .stroke(Color.darkGrayColor, lineWidth: 1.5)
+                                        )
+                                }
+                            }
+                            .onTapGesture {
+                                if myselectedCategory.count < maxSelectedCategories || selectedToggle[index] {
+                                    toggleCategorySelection(at: index)
+                                    print(myselectedCategory)
+                                } else {
+                                    categoryAlert = true
+                                    print("3개 초과 선택")
+                                }
+                            }
+                            
+                        }
+                    }
+                    .padding(.trailing, 8)
+                    
+                    //MARK: 업로드
+                    Text("업로드")
+                        .font(.pretendardBold18)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .foregroundColor(.white)
+                        .background(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty ? Color.gray : Color.accentColor)
+                        .cornerRadius(7)
+                        .padding(EdgeInsets(top: 25, leading: 0, bottom: 0, trailing: 13))
+                        .onTapGesture {
+                                isshowAlert = true
+                        }
+                        
+                        .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty)
                 } // leading VStack
+               
             }
-            .fullScreenCover(isPresented: $ImageViewPresented) {
-                ImagePickerView(selectedImages: $selectedImage)
-            }
+//            .sheet(isPresented: $ImageViewPresented) {
+//                ImagePickerView(selectedImages: $selectedImage)
+//            }
+            // toolbar 자리
             .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        dismiss()
+                        isPostViewPresented = false
+                        selection = 1
+                        print("뷰 닫기")
                     } label: {
                         Text("취소")
                     }
                 }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button {
-                        isshowAlert = true
-                    } label: {
-                        Text("완료")
-                    }
-                }
+            }
+            .onTapGesture {
+                hideKeyboard()
             }
             .alert(isPresented: $isshowAlert) {
                 let firstButton = Alert.Button.cancel(Text("취소")) {
-                    print("primary button pressed")
+                    print("취소 버튼 클릭")
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
-                    fetch()
-                    print("secondary button pressed")
+                    creatFeed()
+                    isPostViewPresented = false
+                    selection = 1
+                    print("완료 버튼 클릭")
+                    
                 }
                 return Alert(title: Text("게시물 작성"),
                              message: Text("작성을 완료하시겠습니까?"),
                              primaryButton: firstButton, secondaryButton: secondButton)
             }
+            
             .padding(.leading, 12)
             .navigationTitle("글쓰기")
             .navigationBarTitleDisplayMode(.inline)
         } // navigationStack
+        .alert(isPresented: $categoryAlert) {
+            Alert(
+                title: Text("선택 초과"),
+                message: Text("최대 3개까지 선택 가능합니다."),
+                dismissButton: .default(Text("확인"))
+            )
+        }
     } // body
     
     //MARK: 파베함수
-    func fetch() {
+    func creatFeed() {
         //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
-        var feed = MyFeed(writer: writer, images: images, contents: text, createdAt: createdAt, visitedShop: visitedShop, category: selectedCategory)
+        
+        var feed = MyFeed(writerNickname: userStore.user.nickname,
+                          writerName: userStore.user.name,
+                          writerProfileImage: userStore.user.profileImageURL,
+                          images: images,
+                          contents: text,
+                          createdAt: createdAt,
+                          title: searchResult.title.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""),
+                          category: myselectedCategory,
+                          address: searchResult.address,
+                          roadAddress: searchResult.roadAddress,
+                          mapx: searchResult.mapx,
+                          mapy: searchResult.mapy
+        )
         
         if let selectedImages = selectedImage {
             var imageUrls: [String] = []
@@ -241,7 +368,12 @@ struct PostView: View {
                             feed.images = imageUrls
 
                             do {
-                                try db.collection("User").document(feed.id).setData(from: feed)
+                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
+                            } catch {
+                                print("Error saving feed: \(error)")
+                            }
+                            do {
+                                try db.collection("Feed").document(feed.id).setData(from: feed)
                             } catch {
                                 print("Error saving feed: \(error)")
                             }
@@ -251,13 +383,32 @@ struct PostView: View {
             }
         }
     }
+    func toggleCategorySelection(at index: Int) {
+        selectedToggle[index].toggle()
+        if selectedToggle[index] {
+            
+            myselectedCategory.append(MyCategory.allCases[index].rawValue)
+        } else {
+            
+            if let selectedIndex = myselectedCategory.firstIndex(of: MyCategory.allCases[index].rawValue) {
+                myselectedCategory.remove(at: selectedIndex)
+            }
+        }
+    }
+    
+    func createGridColumns() -> [GridItem] {
+        let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
+        return columns
+    }
+    
 }
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(root: .constant(true), selection: .constant(3))
+        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
+        
     }
 }
 

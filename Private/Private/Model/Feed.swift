@@ -6,20 +6,28 @@
 //
 
 import Foundation
+import Firebase
+import FirebaseFirestore
 
-struct Feed: Identifiable, Hashable {
+struct Feed: Identifiable, Codable, Hashable {
     
-    let id: String = UUID().uuidString
-    
-    var writer: User
+    var id: String = UUID().uuidString
+
+    var writerNickname: String
+    var writerName: String
+    var writerProfileImage: String
     var images: [String]
     var contents: String
     var createdAt: Double = Date().timeIntervalSince1970
-    var visitedShop: Shop
-    var category: [Category]
+    var title: String
+    var category: [String]
+    var address: String
+    var roadAddress: String
+    var mapx: String
+    var mapy: String
 }
 
-enum Category: Int, CaseIterable, Hashable {
+enum Category: Int, CaseIterable, Hashable, Codable {
     case koreanFood
     case westernFood
     case japaneseFood
@@ -42,3 +50,32 @@ enum Category: Int, CaseIterable, Hashable {
         }
     }
 }
+
+/*
+extension Feed {
+    init?(documentData: [String: Any]) {
+        self.contents = documentData["contents"] as? String ?? ""
+        
+        let visitedShopData = documentData["visitedShop"] as? [String: Any] ?? [:]
+        
+        guard let visitedShop = Shop(documentData: visitedShopData) else {
+            return nil
+        }
+        self.visitedShop = visitedShop
+        
+        let writerData = documentData["writer"] as? [String: Any] ?? [:]
+        self.writer = User(document: writerData) ?? User()
+        
+        self.images = documentData["images"] as? [String] ?? []
+        
+        if let createdAtTimestamp = documentData["createdAt"] as? Timestamp {
+            self.createdAt = createdAtTimestamp.dateValue().timeIntervalSince1970
+        } else {
+            self.createdAt = Date().timeIntervalSince1970
+        }
+        
+        let categoryData = documentData["category"] as? [Int] ?? []
+        self.category = categoryData.compactMap(Category.init(rawValue:))
+    }
+}
+*/

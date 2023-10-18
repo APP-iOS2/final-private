@@ -27,3 +27,24 @@ struct BottomBorder: ViewModifier {
         }
     }
 }
+
+struct YellowBottomBorder: ViewModifier {
+    
+    let showBorder: Bool
+    
+    func body(content: Content) -> some View {
+        Group {
+            if showBorder {
+                content.overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(height: 2)
+                        .foregroundColor(.privateColor)
+                        .padding(.top, 10)
+                    , alignment: .bottom
+                )
+            } else {
+                content
+            }
+        }
+    }
+}
