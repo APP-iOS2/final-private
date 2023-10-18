@@ -18,7 +18,7 @@ final class FeedStore: ObservableObject {
     @Published var feedList: [MyFeed] = []
     
     // Firestore 데이터베이스의 "Feed" 컬렉션에 대한 참조를 생성합니다.
-    private let dbRef = Firestore.firestore().collection("Feed")
+    private let feedRef = Firestore.firestore().collection("Feed")
     
     // 초기화 함수에서 피드를 가져옵니다.
     init() {
@@ -27,13 +27,13 @@ final class FeedStore: ObservableObject {
     // 피드를 Firestore에서 가져오는 함수입니다.
     func fetchFeeds() {
         // Firestore에서 실시간으로 데이터를 가져오기 위해 addSnapshotListener를 사용합니다.
-        dbRef.addSnapshotListener { [weak self] (querySnapshot, error) in
+        feedRef.addSnapshotListener { [weak self] (querySnapshot, error) in
             // 에러가 있다면 콘솔에 출력하고 반환합니다.
             if let error = error {
                 print("Error fetching documents: \(error.localizedDescription)")
                 return
             }
-                                   
+            
             self?.feedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
                 let data = queryDocumentSnapshot.data()
                 var feed = MyFeed(documentData: data)
@@ -44,36 +44,8 @@ final class FeedStore: ObservableObject {
         }
     }
     
-//    @MainActor
-//    func fetchFeedsWhenAppLaunching() async {
-//        do {
-//            let documents = try await Firestore.firestore().collection("Feed").getDocuments()
-//            
-//            var tempFeedList: [MyFeed] = []
-//            
-//            for document in documents.documents {
-//                let data = document.data()
-//                
-//                var feed = MyFeed(documentData: data)
-//                feed?.createdAt = data["createdAt"] as? Double ?? 0.0
-//                
-//                if let feed = feed {
-//                    tempFeedList.append(feed)
-//                }
-//            }
-//            
-//            tempFeedList.sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) })
-//            
-//            self.feedList = tempFeedList
-//            
-//            print("fetchFeedsWhenAppLaunching: \(feedList)")
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//    }
-    
     func addFeed(_ feed: MyFeed) {
-        dbRef.document(feed.id).collection("Feed")
+        feedRef.document(feed.id).collection("Feed")
             .document(feed.id)
             .setData(["writerNickname": feed.writerNickname,
                       "writerName": feed.writerName,
@@ -89,7 +61,7 @@ final class FeedStore: ObservableObject {
                       "mapy": feed.mapy,
                      ])
     }
-  
+    
     // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
         return [
@@ -107,6 +79,51 @@ final class FeedStore: ObservableObject {
             "mapy": feed.mapy,
         ]
     }
-    
+    /*
+    func deleteFeed(writerNickname: String) {
+        //Firestore.firestore().collection("Feed")
+        let feedRef = feedRef.document(Feed.writerNickname).delete() { error in
+            if let error = error {
+                print("Error deleting feed from Firebase: \(error.localizedDescription)")
+            } else {
+                print("Feed deleted from Firebase successfully")
+            }
+        }
+    }
+     */
+    func deleteFeed(writerNickname: String) {
+        // Firestore.firestore().collection("Feed")
+        
+        // 특정 writerNickname을 가진 피드를 찾아서 삭제
+        let query = feedRef.whereField("writerNickname", isEqualTo: writerNickname)
+        
+        query.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error deleting feed from Firebase: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+                print("No documents found.")
+                return
+            }
+            
+            for document in documents {
+                // 해당 문서를 삭제
+                document.reference.delete { error in
+                    if let error = error {
+                        print("Error deleting feed from Firebase: \(error.localizedDescription)")
+                    } else {
+                        print("Feed deleted from Firebase successfully")
+                    }
+                }
+            }
+        }
+    }
 }
+//
+
+
+
+
 
