@@ -117,7 +117,7 @@ final class ChatRoomStore: ObservableObject {
         let messageCollection2 = subCollection2.collection("Message")
         
         userCollection
-            .getDocuments { (querySnapshot, error) in
+            .addSnapshotListener { (querySnapshot, error) in
                 if let error = error {
                     print("Error getting chat room documents: \(error)")
                     return
@@ -257,31 +257,26 @@ final class ChatRoomStore: ObservableObject {
         ]
     }
     
-    func fetchChatRoom(sender: User) {
-        Firestore.firestore().document("\(sender.email)").getDocument { snapshot, error in
-            if let error = error {
-                print("Error fetching user: \(error.localizedDescription)")
-            } else if let chatRoomData = snapshot?.data() {
-                if let chatroomDictArray = chatRoomData["chattingRoom"] as? [[String: Any]] {
-                    for dict in chatroomDictArray {
-                        if let chatroom = ChatRoom(document: dict) {
-                            self.chatRoomList.append(chatroom)
-                        }
-                    }
-                }
-            }
-        }
-        print("\(chatRoomList)")
-    }
-    
-    func findChatRoom(firstNickname: String, secondNickname: String) -> ChatRoom? {
+    func findChatRoom(user:User, firstNickname: String, secondNickname: String) -> ChatRoom? {
         for chatRoom in self.chatRoomList {
                if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
                   (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
                    return chatRoom
                }
            }
-           return nil
+        
+        let newChatRoom = ChatRoom(firstUserNickname: firstNickname, firstUserProfileImage: "", secondUserNickname: secondNickname, secondUserProfileImage: "")
+            
+            addChatRoomToUser(user: user, chatRoom: newChatRoom)
+            subscribeToChatRoomChanges(user: user)
+        
+        for chatRoom in self.chatRoomList {
+                if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
+                   (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
+                    return chatRoom
+                }
+            }
+        return nil
     }
     
     init() {
