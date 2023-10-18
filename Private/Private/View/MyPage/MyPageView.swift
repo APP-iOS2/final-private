@@ -49,7 +49,7 @@ struct MyPageView: View {
                 } label: {
                     HStack {
                         Image(systemName: "calendar.badge.clock")
-                        Text("에약내역")
+                        Text("예약내역")
                             .font(.pretendardRegular14)
                     }
                     .foregroundColor(.primary)
@@ -65,37 +65,38 @@ struct MyPageView: View {
                         Text("내 피드")
                     }
                     .font(.pretendardRegular12)
-                    .foregroundColor(.chatTextColor)
+                    .foregroundColor(viewNumber == 0 ? .privateColor : .white)
                     .frame(width: .screenWidth*0.3)
-                    .padding(.bottom,15.0)
-                    .modifier(BottomBorder(showBorder: viewNumber == 0))
+                    .padding(.bottom, 15)
+                    .modifier(YellowBottomBorder(showBorder: viewNumber == 0))
                 }
                 Spacer()
                 Button {
                     viewNumber = 1
                 }label: {
                     HStack {
-                        viewNumber == 1 ? Image(systemName: "bookmark.fill") : Image (systemName: "bookmark")
-                        Text("내가 저장한 피드")
-                    }.font(.pretendardRegular12)
-                        .foregroundColor(.chatTextColor)
-                        .frame(width: .screenWidth*0.3)
-                        .padding(.bottom,15.0)
-                        .modifier(BottomBorder(showBorder: viewNumber == 1))
+                        viewNumber == 1 ? Image("bookmark_fill") : Image ("bookmark")
+                        Text("저장한 피드")
+                    }
+                    .font(.pretendardRegular12)
+                    .foregroundColor(viewNumber == 1 ? .privateColor : .white)
+                    .frame(width: .screenWidth*0.3)
+                    .padding(.bottom, 15)
+                    .modifier(YellowBottomBorder(showBorder: viewNumber == 1))
                 }
                 Spacer()
                 Button {
                     viewNumber = 2
                 }label: {
                     HStack {
-                        viewNumber == 2 ? Image(systemName: "pin.fill")
-                        : Image (systemName: "pin")
-                        Text("내가 저장한 장소")
-                    }.font(.pretendardRegular12)
-                        .foregroundColor(.chatTextColor)
-                        .frame(width: .screenWidth*0.3)
-                        .padding(.bottom,15.0)
-                        .modifier(BottomBorder(showBorder: viewNumber == 2))
+                        viewNumber == 2 ? Image(systemName: "pin.fill") : Image (systemName: "pin")
+                        Text("저장한 장소")
+                    }
+                    .font(.pretendardRegular12)
+                    .foregroundColor(viewNumber == 2 ? .privateColor : .white)
+                    .frame(width: .screenWidth*0.3)
+                    .padding(.bottom, 15)
+                    .modifier(BottomBorder(showBorder: viewNumber == 2))
                 }
             }
             .padding(.top, 20)
