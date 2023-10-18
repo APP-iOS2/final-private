@@ -34,7 +34,7 @@ struct PostView: View {
     
     @State private var selectedWriter: String = "김아무개"
     @State private var text: String = "" /// 텍스트마스터 내용
-    @State private var textPlaceHolder: String = "당신의 경험을 적어주세요!" /// 텍스트마스터 placeholder
+    @State private var textPlaceHolder: String = "나만의 Private한 장소에 대해 적어주세요!" /// 텍스트마스터 placeholder
     @State private var lat: String = ""
     @State private var lng: String = ""
     
@@ -63,7 +63,7 @@ struct PostView: View {
     
     private let minLine: Int = 10
     private let maxLine: Int = 12
-    private let fontSize: Double = 24
+    private let fontSize: Double = 18
     private let maxSelectedCategories = 3
     
     var db = Firestore.firestore()
@@ -116,7 +116,7 @@ struct PostView: View {
                                 .presentationDetents([.fraction(0.75), .large])
                         }
                         .sheet(isPresented: $isSearchedLocation) {
-                            LocationView(coord: $coord, searchResult: $searchResult, registrationAlert: $registrationAlert)
+                            LocationView(coord: $coord, searchResult: $searchResult, isSearchedLocation: $isSearchedLocation)
                         }
                     }
                     .padding(.vertical, 10)
@@ -131,25 +131,25 @@ struct PostView: View {
                                 lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
                                 
                                 postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                                postCoordinator.newMarkerTitle = searchResult.title
                                 print("위도값: \(coord.lat), 경도값: \(coord.lng)")
                                 print("지정장소 클릭")
                                 clickLocation.toggle()
                                 postCoordinator.moveCameraPosition()
                                 postCoordinator.makeSearchLocationMarker()
                             } label: {
-                                if !postCoordinator.newMarkerTitle.isEmpty {
-                                    Text("신규장소: \(postCoordinator.newMarkerTitle)")
-                                } else {
-                                    Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                                        .font(.pretendardRegular12)
-                                }
+                                Text("\(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                                    .font(.pretendardRegular12)
                             }
                             .sheet(isPresented: $clickLocation) {
                                 LocationDetailView()
+                                    .presentationDetents([.height(.screenHeight * 0.6), .large])
                             }
-                            Text(searchResult.address)
-                                .font(.pretendardRegular10)
-                                .foregroundStyle(.secondary)
+                            if (!searchResult.address.isEmpty) {
+                                Text(searchResult.address)
+                                    .font(.pretendardRegular10)
+                                    .foregroundStyle(.secondary)
+                            }
                             HStack {
                             Spacer()
                             Button {

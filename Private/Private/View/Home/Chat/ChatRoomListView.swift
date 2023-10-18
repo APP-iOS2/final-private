@@ -63,12 +63,12 @@ struct ChatRoomListView: View {
         .navigationBarBackButtonHidden(true)
         .backButtonArrow()
         .navigationBarItems(trailing: EditButton().foregroundColor(.privateColor))
-        .navigationBarItems(trailing: Button {
-            chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)
-            chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
-        } label: {
-            Image(systemName: "plus.bubble")
-        })
+//        .navigationBarItems(trailing: Button {
+//            chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)
+//            chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
+//        } label: {
+//            Image(systemName: "plus.bubble")
+//        })
     }
     
     func deleteChatRoom(at offsets: IndexSet) {

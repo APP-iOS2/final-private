@@ -29,10 +29,11 @@ struct LocationSearchView: View {
                         } label: {
                             VStack(alignment: .leading) {
                                 Text("\(location.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                                    .foregroundStyle(.primary)
+                                    .font(.pretendardMedium16)
+                                    .foregroundStyle(Color.privateColor)
                                 Text("\(location.roadAddress)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                     .font(.pretendardRegular12)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(Color.privateColor)
                             }
                         }
                         .padding()
@@ -52,6 +53,9 @@ struct LocationSearchView: View {
             })
         }
         .padding()
+        .onAppear {
+            locationSearchStore.requestSearchLocationResultList(query: searchText)
+        }
     }
 }
 
