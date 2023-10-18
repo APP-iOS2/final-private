@@ -10,8 +10,8 @@ import NMapsMap
 import Kingfisher
 
 struct FeedCellView: View {
+    
     var feed: MyFeed
-    var filteredFeedList: [MyFeed]
 
     @State private var currentPicture = 0
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
@@ -59,7 +59,7 @@ struct FeedCellView: View {
         }
         
 
-        HStack(alignment: .top){
+        HStack(alignment: .top) {
             HStack(alignment: .top) {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
@@ -67,40 +67,42 @@ struct FeedCellView: View {
                
             }
             .padding(.leading, .screenWidth/2 - .screenWidth*0.45 )
+            
             Spacer()
-          VStack {
-              HStack{
-                  Button {
-                      if(userStore.user.myFeed.contains(feed.images[0])) {
-                          for userStoreImageId in userStore.user.myFeed {
-                              for myFeed in userStore.mySavedFeedList {
-                                  if userStoreImageId == myFeed.images[0] {
-                                      userStore.deleteFeed(myFeed)
-                                  }
-                              }
-                          }
-                          userStore.user.myFeed.removeAll { $0 == feed.images[0] }
-                          userStore.updateUser(user: userStore.user)
-                      } else {
-                          userStore.saveFeed(feed) //장소 저장 로직(사용가능)
-                          userStore.user.myFeed.append(feed.images[0])
-                          userStore.updateUser(user: userStore.user)
-                      }
-                  } label: {
-                      Image( systemName: userStore.user.myFeed.contains( feed.images[0]) ? "bookmark.fill" : "bookmark")
-                          .resizable()
-                          .aspectRatio(contentMode: .fit)
-                          .frame(width: .screenWidth*0.035)
-                  }
-                  Button {
-                      print("DM 보내기")
-                  } label: {
-                      Image(systemName: "paperplane")
-                          .resizable()
-                          .aspectRatio(contentMode: .fit)
-                          .frame(width: .screenWidth*0.05)
-                  }
-              }
+            
+            VStack {
+                HStack {
+                    Button {
+                        if(userStore.user.myFeed.contains(feed.images[0])) {
+                            for userStoreImageId in userStore.user.myFeed {
+                                for myFeed in userStore.mySavedFeedList {
+                                    if userStoreImageId == myFeed.images[0] {
+                                        userStore.deleteFeed(myFeed)
+                                    }
+                                }
+                            }
+                            userStore.user.myFeed.removeAll { $0 == feed.images[0] }
+                            userStore.updateUser(user: userStore.user)
+                        } else {
+                            userStore.saveFeed(feed) //장소 저장 로직(사용가능)
+                            userStore.user.myFeed.append(feed.images[0])
+                            userStore.updateUser(user: userStore.user)
+                        }
+                    } label: {
+                        Image( systemName: userStore.user.myFeed.contains( feed.images[0]) ? "bookmark.fill" : "bookmark")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: .screenWidth*0.035)
+                    }
+                    Button {
+                        print("DM 보내기")
+                    } label: {
+                        Image(systemName: "paperplane")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: .screenWidth*0.05)
+                    }
+                }
             }
             .font(.pretendardMedium24)
             .foregroundColor(.primary)
@@ -111,30 +113,30 @@ struct FeedCellView: View {
         .padding(.bottom, 0)
        
         HStack {
-                Button {
-                    if (userStore.user.bookmark.contains("\(feed.images[0].suffix(32))")) {
-                        print("핀, 장소 저장")
-                        for placeId in userStore.user.bookmark {
-                            for userStorePlaceId in userStore.mySavedPlaceList {
-                                if placeId == userStorePlaceId.writerProfileImage {
-                                    userStore.deletePlace(userStorePlaceId)
-                                }
+            Button {
+                if (userStore.user.bookmark.contains("\(feed.images[0].suffix(32))")) {
+                    print("핀, 장소 저장")
+                    for placeId in userStore.user.bookmark {
+                        for userStorePlaceId in userStore.mySavedPlaceList {
+                            if placeId == userStorePlaceId.writerProfileImage {
+                                userStore.deletePlace(userStorePlaceId)
                             }
                         }
-                        userStore.user.bookmark.removeAll { $0 == "\(feed.images[0].suffix(32))" }
-                        userStore.updateUser(user: userStore.user)
-                    } else {
-                        userStore.savePlace(feed) //장소 저장 로직(사용가능)
-                        userStore.user.bookmark.append("\(feed.images[0].suffix(32))")
-                        userStore.updateUser(user: userStore.user)
                     }
-                } label: {
-                    Image(systemName: userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? "pin.fill": "pin")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 15)
-                        .foregroundColor(.primary)
-                        .padding(.top, 5)
+                    userStore.user.bookmark.removeAll { $0 == "\(feed.images[0].suffix(32))" }
+                    userStore.updateUser(user: userStore.user)
+                } else {
+                    userStore.savePlace(feed) //장소 저장 로직(사용가능)
+                    userStore.user.bookmark.append("\(feed.images[0].suffix(32))")
+                    userStore.updateUser(user: userStore.user)
+                }
+            } label: {
+                Image(systemName: userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? "pin.fill": "pin")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 15)
+                    .foregroundColor(.primary)
+                    .padding(.top, 5)
 
             }
             .padding(.leading, 15)

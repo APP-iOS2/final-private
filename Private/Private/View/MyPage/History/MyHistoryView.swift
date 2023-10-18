@@ -16,7 +16,7 @@ struct MyHistoryView: View {
     @State var isMap: Bool = false
     @State var isReservation: Bool = false
     @State var isMyPageFeedSheet: Bool = false 
-    @State var selctedFeed : MyFeed = MyFeed()
+//    @State var selctedFeed : MyFeed = MyFeed()
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
@@ -92,7 +92,7 @@ struct MyHistoryView: View {
                         ) {
                             ForEach(userStore.myFeedList, id: \.self) { feed in
                                 Button {
-                                    selctedFeed = feed
+//                                    selctedFeed = feed
                                     isMyPageFeedSheet = true
                                 } label: {
                                     KFImage(URL(string:feed.images[0])) .placeholder {
@@ -103,7 +103,7 @@ struct MyHistoryView: View {
                                         .clipShape(Rectangle())
                                 }
                                 .sheet(isPresented: $isMyPageFeedSheet){
-                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed, feedList: userStore.myFeedList)
+                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feed, feedList: userStore.myFeedList)
                                         .presentationDetents([.height(.screenHeight)])
                                 }
                             }
@@ -126,6 +126,9 @@ struct MyHistoryView: View {
                 }
             }
             Spacer()
+        }
+        .onAppear {
+            print("onAppear: \(userStore.myFeedList)")
         }
     }
 }

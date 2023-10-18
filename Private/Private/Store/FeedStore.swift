@@ -43,7 +43,35 @@ final class FeedStore: ObservableObject {
             .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
     }
-  
+    
+//    @MainActor
+//    func fetchFeedsWhenAppLaunching() async {
+//        do {
+//            let documents = try await Firestore.firestore().collection("Feed").getDocuments()
+//            
+//            var tempFeedList: [MyFeed] = []
+//            
+//            for document in documents.documents {
+//                let data = document.data()
+//                
+//                var feed = MyFeed(documentData: data)
+//                feed?.createdAt = data["createdAt"] as? Double ?? 0.0
+//                
+//                if let feed = feed {
+//                    tempFeedList.append(feed)
+//                }
+//            }
+//            
+//            tempFeedList.sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) })
+//            
+//            self.feedList = tempFeedList
+//            
+//            print("fetchFeedsWhenAppLaunching: \(feedList)")
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//    }
+    
     func addFeed(_ feed: MyFeed) {
         dbRef.document(feed.id).collection("Feed")
             .document(feed.id)

@@ -12,7 +12,7 @@ struct MapReviewRowView: View {
     @State private var isShowingChatSendView: Bool = false
     @State private var messageToSend: String = ""
     
-    var feed: Feed
+    var feed: MyFeed
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
