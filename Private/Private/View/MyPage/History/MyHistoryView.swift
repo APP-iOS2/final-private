@@ -103,8 +103,8 @@ struct MyHistoryView: View {
                                         .clipShape(Rectangle())
                                 }
                                 .sheet(isPresented: $isMyPageFeedSheet){
-                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed)
-                                        .presentationDetents([.height(.screenHeight * 0.7)])
+                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed, feedList: userStore.myFeedList)
+                                        .presentationDetents([.height(.screenHeight)])
                                 }
                             }
                         }

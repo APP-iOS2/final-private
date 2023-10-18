@@ -22,11 +22,11 @@ struct EmptyFeed: View {
               
                 Text("팔로잉 목록이 없습니다.")
                 
-                    .font(.title)
+                    .font(.pretendardBold24)
                     .foregroundColor(.gray)
                 
                 Text("새로운 친구를 팔로잉하러 가보세요!")
-                    .font(.subheadline)
+                    .font(.pretendardSemiBold16)
                     .foregroundColor(.secondary)
                 
                 NavigationLink(destination: SearchView(root: .constant(true), selection: .constant(0))) {
@@ -38,14 +38,15 @@ struct EmptyFeed: View {
                 }
             } else if feedType == .noFeed {
                 Text("피드가 없습니다.")
-                    .font(.title)
+                    .font(.pretendardBold24)
                     .foregroundColor(.gray)
                 
                 Text("친구들의 피드를 확인하려면 팔로잉하세요!")
-                    .font(.subheadline)
+                    .font(.pretendardSemiBold16)
                     .foregroundColor(.secondary)
                 NavigationLink(destination: SearchView(root: .constant(true), selection: .constant(0))) {
                     Text("팔로잉하러 가기")
+                        .font(.pretendardSemiBold16)
                         .padding()
                         .background(Color.blue)
                         .foregroundColor(.white)

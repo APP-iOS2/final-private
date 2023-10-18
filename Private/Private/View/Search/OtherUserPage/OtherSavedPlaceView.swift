@@ -17,7 +17,7 @@ struct OtherSavedPlaceView: View {
                     .font(.pretendardBold24)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
-                ShopInfoCardView(mySavedPlaceList: otherSavedPlaceList)
+                OtherShopInfoCardView(mySavedPlaceList: otherSavedPlaceList)
             }
         }
     }

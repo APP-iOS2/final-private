@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ReservationCardView: View {
+    @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var shopStore: ShopStore
     
@@ -19,6 +21,7 @@ struct ReservationCardView: View {
     
     @State private var shopData: Shop = ShopStore.shop
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
+    @State private var reservedDate: String = ""
 
     private let currentDate = Date()
     var reservation: Reservation
@@ -32,7 +35,7 @@ struct ReservationCardView: View {
                 Spacer()
                 Menu {
                     NavigationLink {
-                        ShopDetailView(shopData: shopData)
+                        ShopDetailView(shopViewModel: ShopViewModel(shop: shopData, userID: userStore.user.id))
                     } label: {
                         Text("가게보기")
                     }
@@ -53,17 +56,41 @@ struct ReservationCardView: View {
                     }
                 } label: {
                     Image(systemName: "ellipsis")
-                        .padding(20)
+                        .frame(width: 25, height: 20)
                 }
+                
                 .foregroundColor(Color.secondary)
             }
-            Text(shopData.name)
-                .font(.pretendardMedium18)
             
+            HStack {
+                Text(reservedDate)
+                Text("\(temporaryReservation.time)시")
+            }
+            HStack(alignment: .top) {
+                KFImage(URL(string: shopData.shopImageURL)!)
+                    .placeholder({
+                        ProgressView()
+                    })
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .clipped()
+                    .padding(.trailing, 2)
+                
+                VStack(alignment: .leading) {
+                    Text(shopData.name)
+                        .font(.pretendardBold20)
+                        .padding(.bottom, 6)
+                    
+//                    ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: temporaryReservation.date))
+//                    ReservationCardCell(title: "예약 시간", content: "\(temporaryReservation.time)시")
+                    ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
+                }
+            }
             
-            ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: temporaryReservation.date))
-            ReservationCardCell(title: "예약 시간", content: "\(temporaryReservation.time)시")
-            ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
+//            ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: temporaryReservation.date))
+//            ReservationCardCell(title: "예약 시간", content: "\(temporaryReservation.time)시")
+//            ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
             //ReservationCardCell(title: "총 비용", content: "\(temporaryReservation.totalPrice)원")
                 .padding(.bottom)
             
@@ -86,6 +113,7 @@ struct ReservationCardView: View {
         .cornerRadius(12)
         .onAppear {
             self.temporaryReservation = self.reservation
+            self.reservedDate = reservationStore.getReservationDate(reservationDate: self.temporaryReservation.date)
             self.reservationState = reservationStore.isFinishedReservation(date: temporaryReservation.date, time: temporaryReservation.time)
             
             // 현재시간과 예약시간이 1시간 이내이면 disable
@@ -151,12 +179,13 @@ struct ReservationCardCell: View {
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             Text("\(title)")
-                .font(Font.pretendardMedium18)
+                .font(.pretendardMedium18)
             
             Spacer()
             
             Text("\(content)")
-                .font(Font.pretendardMedium16)
+                .font(.pretendardMedium16)
         }
+        .padding(.bottom, 1)
     }
 }

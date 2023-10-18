@@ -31,7 +31,7 @@ struct FeedCellView: View {
                     .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("\(feed.writerNickname)")
-                        .font(.headline)
+                        .font(.pretendardMedium16)
                     Text("\(feed.createdDate)")
                         .font(.pretendardRegular12)
                         .foregroundColor(.primary.opacity(0.8))

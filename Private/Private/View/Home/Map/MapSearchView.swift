@@ -48,7 +48,7 @@ struct MapSearchView: View {
                                 Text("\(location.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                     .foregroundStyle(.primary)
                                 Text("\(location.roadAddress)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                                    .font(.caption)
+                                    .font(.pretendardRegular12)
                                     .foregroundStyle(.secondary)
                             }
                         }

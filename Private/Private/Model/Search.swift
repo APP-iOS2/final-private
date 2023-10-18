@@ -26,10 +26,10 @@ struct SearchResult: Codable, Hashable {
 
 struct ReverseGeoCodingResult: Codable {
     let status: Status
-    let results: [Result]
+    let results: [GeoCodingResult]
 }
 
-struct Result: Codable {
+struct GeoCodingResult: Codable {
     let name: String
     let code: Code
     let region: Region
