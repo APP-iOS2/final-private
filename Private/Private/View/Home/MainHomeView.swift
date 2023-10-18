@@ -32,9 +32,9 @@ struct MainHomeView: View {
                         Image(systemName: "map")
                         Text("지도")
                     }
-                    .foregroundColor(selectedNumber == 0 ? .primary : .subGrayColor)
+                    .foregroundColor(selectedNumber == 0 ? .privateColor : .subGrayColor)
                     .padding(.bottom, 10)
-                    .modifier(BottomBorder(showBorder: selectedNumber == 0))
+                    .modifier(YellowBottomBorder(showBorder: selectedNumber == 0))
                     
                     Button {
                         selectedNumber = 1
@@ -42,9 +42,9 @@ struct MainHomeView: View {
                         Image(systemName: "text.justify")
                         Text("피드")
                     }
-                    .foregroundColor(selectedNumber == 1 ? .primary : .subGrayColor)
+                    .foregroundColor(selectedNumber == 1 ? .privateColor : .subGrayColor)
                     .padding(.bottom, 10)
-                    .modifier(BottomBorder(showBorder: selectedNumber == 1))
+                    .modifier(YellowBottomBorder(showBorder: selectedNumber == 1))
                     
                     Spacer()
                     
