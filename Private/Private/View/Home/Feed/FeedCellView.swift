@@ -99,20 +99,12 @@ struct FeedCellView: View {
                     Button {
                         isShowingMessageTextField.toggle()
                     } label: {
-                        Image(systemName: "paperplane")
+                        
+                        Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: .screenWidth * 0.05)
                     }
-                    
-                    //                  NavigationLink {
-                    //                      ChatRoomView(chatRoom: chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: ""))
-                    //                                     } label: {
-                    //                                         Image(systemName: "paperplane")
-                    //                                             .resizable()
-                    //                                             .aspectRatio(contentMode: .fit)
-                    //                                             .frame(width: .screenWidth * 0.05)
-                    //                                     }
                 }
             }
             .font(.pretendardMedium24)
