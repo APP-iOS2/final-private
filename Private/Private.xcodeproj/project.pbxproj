@@ -11,6 +11,10 @@
 		06194EB72ACDC94A0017262D /* ExpandableText in Frameworks */ = {isa = PBXBuildFile; productRef = 06194EB62ACDC94A0017262D /* ExpandableText */; };
 		064974B82AD67CC500FFEEB2 /* SwiftUIFlowLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 064974B72AD67CC500FFEEB2 /* SwiftUIFlowLayout */; };
 		06628C1F2ACF8FDE009373DD /* AppDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */; };
+		06628C222ACFCE7C009373DD /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 06628C212ACFCE7C009373DD /* KakaoSDK */; };
+		06628C242ACFCE7C009373DD /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 06628C232ACFCE7C009373DD /* KakaoSDKAuth */; };
+		06628C262ACFCE7C009373DD /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 06628C252ACFCE7C009373DD /* KakaoSDKCommon */; };
+		06628C282ACFCE7C009373DD /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 06628C272ACFCE7C009373DD /* KakaoSDKUser */; };
 		0679CAC22ABD876400F48BE4 /* ShopDetailMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0679CAC12ABD876400F48BE4 /* ShopDetailMenuView.swift */; };
 		0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0697A2F42AC12523001B859C /* ShopDetailCurrentReviewView.swift */; };
 		069C67372AC26D2D00A5275F /* ShopDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069C67362AC26D2D00A5275F /* ShopDetailInfoView.swift */; };
@@ -47,6 +51,7 @@
 		3C69C8BB2ADD67A1004476D1 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427542ACF965B00EECCD8 /* Pretendard-Regular.otf */; };
 		3C69C8BC2ADD67A4004476D1 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427582ACF965B00EECCD8 /* Pretendard-SemiBold.otf */; };
 		3C69C8BD2ADD67A6004476D1 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9427592ACF965B00EECCD8 /* Pretendard-Thin.otf */; };
+		3C69C8C12ADF6B1A004476D1 /* MapFeedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */; };
 		3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */; };
 		3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */; };
 		3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */; };
@@ -93,6 +98,7 @@
 		3CB734082ABD6EEF00D82503 /* MapMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB734072ABD6EEF00D82503 /* MapMainView.swift */; };
 		3CB7340A2ABD6F0100D82503 /* FeedMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB734092ABD6F0100D82503 /* FeedMainView.swift */; };
 		3CB7340C2ABEFEBC00D82503 /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7340B2ABEFEBC00D82503 /* CGFloat+.swift */; };
+		3CB869FC2ADFAB0300DAE655 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CB869FB2ADFAB0300DAE655 /* GoogleService-Info.plist */; };
 		3CCD2DDE2ABC3141005709F4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DDD2ABC3141005709F4 /* User.swift */; };
 		3CCD2DE02ABC314A005709F4 /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DDF2ABC314A005709F4 /* Shop.swift */; };
 		3CCD2DE22ABC3177005709F4 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CCD2DE12ABC3177005709F4 /* Feed.swift */; };
@@ -157,7 +163,6 @@
 		E421E2D52ACE9FF800FE1DAD /* UserImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */; };
 		E4419C492ADE261200AC1A9F /* OtherShopInfoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4419C482ADE261200AC1A9F /* OtherShopInfoCardView.swift */; };
 		E47089A22AD8E5A500D168BA /* MyPageFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47089A12AD8E5A500D168BA /* MyPageFeedView.swift */; };
-		E475A01E2ADE171C000A2856 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E475A01D2ADE171C000A2856 /* GoogleService-Info.plist */; };
 		E4778D832ACD33BE0099D924 /* MyFollowerFollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */; };
 		E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D842ACD3E060099D924 /* MyFollowerView.swift */; };
 		E4778D872ACD3EF40099D924 /* MyFollowingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4778D862ACD3EF40099D924 /* MyFollowingView.swift */; };
@@ -214,6 +219,7 @@
 		3C37162B2ABD1789004E8419 /* ChatRoomStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomStore.swift; sourceTree = "<group>"; };
 		3C37B1B32AC02481004A8E7E /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		3C57893A2AC27BAF00D8B7EA /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
+		3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFeedCellView.swift; sourceTree = "<group>"; };
 		3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
 		3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
@@ -239,6 +245,7 @@
 		3CB734072ABD6EEF00D82503 /* MapMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMainView.swift; sourceTree = "<group>"; };
 		3CB734092ABD6F0100D82503 /* FeedMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMainView.swift; sourceTree = "<group>"; };
 		3CB7340B2ABEFEBC00D82503 /* CGFloat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+.swift"; sourceTree = "<group>"; };
+		3CB869FB2ADFAB0300DAE655 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3CCD2DDD2ABC3141005709F4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Private/Model/User.swift; sourceTree = SOURCE_ROOT; };
 		3CCD2DDF2ABC314A005709F4 /* Shop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Shop.swift; path = Private/Model/Shop.swift; sourceTree = SOURCE_ROOT; };
 		3CCD2DE12ABC3177005709F4 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Feed.swift; path = Private/Model/Feed.swift; sourceTree = SOURCE_ROOT; };
@@ -310,7 +317,6 @@
 		E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImagePickerView.swift; sourceTree = "<group>"; };
 		E4419C482ADE261200AC1A9F /* OtherShopInfoCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherShopInfoCardView.swift; sourceTree = "<group>"; };
 		E47089A12AD8E5A500D168BA /* MyPageFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeedView.swift; sourceTree = "<group>"; };
-		E475A01D2ADE171C000A2856 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E4778D822ACD33BE0099D924 /* MyFollowerFollowingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerFollowingView.swift; sourceTree = "<group>"; };
 		E4778D842ACD3E060099D924 /* MyFollowerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerView.swift; sourceTree = "<group>"; };
 		E4778D862ACD3EF40099D924 /* MyFollowingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowingView.swift; sourceTree = "<group>"; };
@@ -331,9 +337,11 @@
 				3CA3037C2AB8376700FEC7BD /* FirebaseFunctionsCombine-Community in Frameworks */,
 				3CA303742AB8376700FEC7BD /* FirebaseFirestore in Frameworks */,
 				3C5789392AC2604600D8B7EA /* GoogleSignInSwift in Frameworks */,
+				06628C262ACFCE7C009373DD /* KakaoSDKCommon in Frameworks */,
 				3CA303602AB8376700FEC7BD /* FirebaseAnalyticsSwift in Frameworks */,
 				3CA3035C2AB8376700FEC7BD /* FirebaseAnalytics in Frameworks */,
 				3CA3035E2AB8376700FEC7BD /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				06628C222ACFCE7C009373DD /* KakaoSDK in Frameworks */,
 				3CA303842AB8376700FEC7BD /* FirebaseMLModelDownloader in Frameworks */,
 				3C5789372AC2604600D8B7EA /* GoogleSignIn in Frameworks */,
 				3CA303782AB8376700FEC7BD /* FirebaseFirestoreSwift in Frameworks */,
@@ -341,6 +349,8 @@
 				3CA303622AB8376700FEC7BD /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				3CA303682AB8376700FEC7BD /* FirebaseAuth in Frameworks */,
 				B54DFCE32AD7D643004A3CA2 /* FSCalendar in Frameworks */,
+				06628C242ACFCE7C009373DD /* KakaoSDKAuth in Frameworks */,
+				06628C282ACFCE7C009373DD /* KakaoSDKUser in Frameworks */,
 				3CA3036C2AB8376700FEC7BD /* FirebaseCrashlytics in Frameworks */,
 				3CA3038C2AB8376700FEC7BD /* FirebaseRemoteConfigSwift in Frameworks */,
 				3CDE564F2AB89F1D00594DF9 /* PopupView in Frameworks */,
@@ -398,6 +408,7 @@
 		26357CE02AD532A00098C8F5 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				3CB734092ABD6F0100D82503 /* FeedMainView.swift */,
 				26357CE32AD532D50098C8F5 /* FeedListView.swift */,
 				26357CE52AD532E70098C8F5 /* FeedCellView.swift */,
 				26357CE72AD533010098C8F5 /* EmptyFeed.swift */,
@@ -505,9 +516,8 @@
 		3CCD2DEA2ABC34C1005709F4 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				26357CE02AD532A00098C8F5 /* Feed */,
 				3CCD2DF12ABC3546005709F4 /* MainHomeView.swift */,
-				3CB734092ABD6F0100D82503 /* FeedMainView.swift */,
+				26357CE02AD532A00098C8F5 /* Feed */,
 				63BB09982ABD8783002CCE4E /* Map */,
 				3C79CE212AC1101E00CEA98D /* Chat */,
 			);
@@ -573,7 +583,7 @@
 		3CCD2DFF2ABC3A3F005709F4 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
-				E475A01D2ADE171C000A2856 /* GoogleService-Info.plist */,
+				3CB869FB2ADFAB0300DAE655 /* GoogleService-Info.plist */,
 				3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */,
 				3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */,
 				3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */,
@@ -692,6 +702,7 @@
 				63BB09992ABD87BD002CCE4E /* NaverMap.swift */,
 				E3A5A0BE2ADF71D800DB13B3 /* PostNaverMap.swift */,
 				3C2FC8EF2ACE9B740034F561 /* MapFeedSheetView.swift */,
+				3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */,
 				3C2FC8ED2ACE9B740034F561 /* MapReviewRowView.swift */,
 				E3071A242AD9204D00090B62 /* MapSearchView.swift */,
 				3C94275A2ACF9C1800EECCD8 /* MapMarkerFeedView.swift */,
@@ -827,6 +838,10 @@
 				064974B72AD67CC500FFEEB2 /* SwiftUIFlowLayout */,
 				3C9747742AD4E201007AE3CB /* Alamofire */,
 				B54DFCE22AD7D643004A3CA2 /* FSCalendar */,
+				06628C212ACFCE7C009373DD /* KakaoSDK */,
+				06628C232ACFCE7C009373DD /* KakaoSDKAuth */,
+				06628C252ACFCE7C009373DD /* KakaoSDKCommon */,
+				06628C272ACFCE7C009373DD /* KakaoSDKUser */,
 			);
 			productName = Private;
 			productReference = 3CF3D8C12AB82A97003689A6 /* Private.app */;
@@ -912,6 +927,7 @@
 				064974B62AD67CC500FFEEB2 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */,
 				3C9747732AD4E201007AE3CB /* XCRemoteSwiftPackageReference "Alamofire" */,
 				B54DFCE12AD7D643004A3CA2 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				06628C202ACFCE7C009373DD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			productRefGroup = 3CF3D8C22AB82A97003689A6 /* Products */;
 			projectDirPath = "";
@@ -931,7 +947,7 @@
 			files = (
 				3CF3D8CC2AB82A99003689A6 /* Preview Assets.xcassets in Resources */,
 				3C69C8B82ADD6797004476D1 /* Pretendard-Bold.otf in Resources */,
-				E475A01E2ADE171C000A2856 /* GoogleService-Info.plist in Resources */,
+				3CB869FC2ADFAB0300DAE655 /* GoogleService-Info.plist in Resources */,
 				3CF3D8C92AB82A99003689A6 /* Assets.xcassets in Resources */,
 				3C69C8BD2ADD67A6004476D1 /* Pretendard-Thin.otf in Resources */,
 				3C69C8BC2ADD67A4004476D1 /* Pretendard-SemiBold.otf in Resources */,
@@ -1109,6 +1125,7 @@
 				E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */,
 				3C2FC9042ACE9BC40034F561 /* SendMessageTextFieldModifier.swift in Sources */,
 				06C796CE2ABD5C5C0043C395 /* ShopDetailView.swift in Sources */,
+				3C69C8C12ADF6B1A004476D1 /* MapFeedCellView.swift in Sources */,
 				3CCD2DE02ABC314A005709F4 /* Shop.swift in Sources */,
 				B5BEAA232AC154430002CC2C /* ReservationDetailView.swift in Sources */,
 				3C9747772AD4E309007AE3CB /* LocationSearchView.swift in Sources */,
@@ -1538,6 +1555,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		06628C202ACFCE7C009373DD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		3C5789352AC2604600D8B7EA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -1598,6 +1623,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 064974B62AD67CC500FFEEB2 /* XCRemoteSwiftPackageReference "swiftui-flow-layout" */;
 			productName = SwiftUIFlowLayout;
+		};
+		06628C212ACFCE7C009373DD /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06628C202ACFCE7C009373DD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
+		};
+		06628C232ACFCE7C009373DD /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06628C202ACFCE7C009373DD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		06628C252ACFCE7C009373DD /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06628C202ACFCE7C009373DD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		06628C272ACFCE7C009373DD /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 06628C202ACFCE7C009373DD /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
 		};
 		3C5789362AC2604600D8B7EA /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;

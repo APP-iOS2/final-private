@@ -163,6 +163,7 @@ final class UserStore: ObservableObject {
             .document(user.email).delete()
     }
     
+    
     //    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
     
     //    static let user = User(
@@ -213,6 +214,21 @@ final class UserStore: ObservableObject {
             print("Error bookMark Feed: \(error)")
         }
     }
+    
+    //MARK: 현재 유저의 닉네임을 불러오는 함수
+        func getCurrentUserNickname(completion: @escaping (String?) -> Void) {
+               let userRef = Firestore.firestore().collection("User").document(user.email)
+               
+               userRef.getDocument { (document, error) in
+                   if let document = document, document.exists {
+                       let data = document.data()
+                       let nickname = data?["nickname"] as? String
+                       completion(nickname)
+                   } else {
+                       completion(nil)
+                   }
+               }
+        }
     
     func createMarker() {
         
@@ -268,7 +284,7 @@ final class UserStore: ObservableObject {
     func deletePlace(_ feed: MyFeed) {
         Firestore.firestore().collection("User").document(user.email)
             .collection("SavedPlace")
-            .document("\(feed.writerProfileImage)")
+            .document("\(feed.images[0].suffix(32))")
             .delete()
     }
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {

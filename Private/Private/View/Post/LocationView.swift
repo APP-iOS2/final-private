@@ -45,7 +45,7 @@ struct LocationView: View {
         }
         .onAppear {
             //            coordinator.checkIfLocationServicesIsEnabled()
-            Coordinator.shared.feedStore.feedList = feedStore.feedList
+            Coordinator.shared.feedList = feedStore.feedList
 //            postCoordinator.makeMarkers()
         }
         //        .onChange(of: coord, perform: { _ in

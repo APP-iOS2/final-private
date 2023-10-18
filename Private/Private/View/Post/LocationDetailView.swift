@@ -23,7 +23,7 @@ struct LocationDetailView: View {
             
         }
         .onAppear {
-            Coordinator.shared.feedStore.feedList = feedStore.feedList
+            Coordinator.shared.feedList = feedStore.feedList
             postCoordinator.makeMarkers()
         }
     }
