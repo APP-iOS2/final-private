@@ -19,7 +19,7 @@ struct MyFollowingView: View {
             ForEach(followingUserList, id:\.self) { following in
                 HStack {
                     NavigationLink() {
-                        OtherPageView(user:following)
+                        OtherPage(followStore: followStore, user:following)
                     } label: {
                         if following.profileImageURL.isEmpty {
                             ZStack {

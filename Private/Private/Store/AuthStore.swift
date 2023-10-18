@@ -15,11 +15,14 @@ import AuthenticationServices
 import CryptoKit
 import KakaoSDKAuth
 import KakaoSDKUser
+import FirebaseCore
 
 class AuthStore: ObservableObject {
     
     @Published var currentUser: Firebase.User?
+    @Published var userSession: User?
     
+    static let shared = AuthStore()
     let userStore: UserStore = UserStore()
     
     init() {
@@ -67,7 +70,9 @@ class AuthStore: ObservableObject {
                                            "savedFeed" : [],
                                            "bookmark" : [],
                                            "chattingRoom" : [],
-                                           "myReservation" : []
+                                           "myReservation" : [],
+                                           "isFollowed" : false,
+                                           "isCurrentUser": true
                                           ]
             
             if let error = error {

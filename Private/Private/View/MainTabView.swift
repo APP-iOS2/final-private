@@ -72,7 +72,6 @@ struct MainTabView: View {
                     }.tag(1)
                     SearchView(root: $rootSection2, selection: $selection).tabItem {
                         Image(systemName: "magnifyingglass")
-                            .environmentObject(followStore)
                     }.tag(2)
                     UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true), showLocation: $showLocation, searchResult: $searchResult, coord: $coord).tabItem {
                         Image(systemName: "plus")

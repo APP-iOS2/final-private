@@ -1,21 +1,26 @@
 //
-//  OtherPageView.swift
+//  OtherPage.swift
 //  Private
 //
-//  Created by 박범수 on 10/5/23.
+//  Created by 박범수 on 10/18/23.
 //
 
 import SwiftUI
 
-struct OtherPageView: View {
+struct OtherPage: View {
     @EnvironmentObject private var userStore: UserStore
+    @ObservedObject var followStore: FollowStore
+    /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
     @State var viewNumber: Int = 0
-    
-    let user:User
+    let user: User
     
     var body: some View {
         NavigationStack {
-            OtherInfoView(user: user)
+            HStack {
+                Spacer()
+            }
+//            UserInfoView(followStore: followStore, user: user)
+            UserInfoView()
                 .padding(.top,-15.0)
             HStack {
                 Spacer()
@@ -24,7 +29,7 @@ struct OtherPageView: View {
                 }label: {
                     HStack {
                         viewNumber == 0 ? Image( systemName: "location.fill") : Image (systemName: "location")
-                        Text("내 기록")
+                        Text("기록")
                     }
                     .font(.pretendardRegular12)
                     .foregroundColor(.chatTextColor)
@@ -32,25 +37,27 @@ struct OtherPageView: View {
                     .padding(.bottom,15.0)
                     .modifier(BottomBorder(showBorder: viewNumber == 0))
                 }
+                Spacer()
                 Button {
                     viewNumber = 1
                 }label: {
                     HStack {
                         viewNumber == 1 ? Image(systemName: "bookmark.fill") : Image (systemName: "bookmark")
-                        Text("내가 저장한 피드")
+                        Text("저장한 피드")
                     }.font(.pretendardRegular12)
                         .foregroundColor(.chatTextColor)
                         .frame(width: .screenWidth*0.95*0.3)
                         .padding(.bottom,15.0)
                         .modifier(BottomBorder(showBorder: viewNumber == 1))
                 }
+                Spacer()
                 Button {
                     viewNumber = 2
                 }label: {
                     HStack {
                         viewNumber == 2 ? Image(systemName: "pin.fill")
                         : Image (systemName: "pin")
-                        Text("내가 저장한 장소")
+                        Text("저장한 장소")
                     }.font(.pretendardRegular12)
                         .foregroundColor(.chatTextColor)
                         .frame(width: .screenWidth*0.95*0.3)
@@ -66,16 +73,12 @@ struct OtherPageView: View {
                 .padding(.top, -8)
             
             TabView(selection: $viewNumber) {
-                OtherHistoryView(user: User(), otherFeedList: userStore.otherFeedList).tag(0)
-                OtherSavedView(user: User(), otherSavedFeedList: userStore.otherSavedFeedList).tag(1)
-                OtherSavedPlaceView(user: User(), otherSavedPlaceList: userStore.otherSavedPlaceList).tag(2)
+                MyHistoryView().tag(0)
+                MySavedView().tag(1)
+                MySavedPlaceView().tag(2)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             Spacer()
-                .onAppear {
-                    userStore.fetchotherUser(userEmail: user.email)
-                }
         }
     }
 }
-

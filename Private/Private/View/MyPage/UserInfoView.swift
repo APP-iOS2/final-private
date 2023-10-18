@@ -12,6 +12,8 @@ struct UserInfoView: View {
     
     @EnvironmentObject private var userStore: UserStore
     @State var isModify: Bool = false
+//    @ObservedObject var followStore: FollowStore
+//    let user: User
     var body: some View {
         HStack {
             VStack() {

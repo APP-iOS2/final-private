@@ -7,9 +7,11 @@
 
 import Foundation
 import Firebase
+import FirebaseFirestoreSwift
 
-struct User: Hashable {
-    let id: String = UUID().uuidString
+struct User: Identifiable, Hashable {
+//    let id: String = UUID().uuidString
+    @DocumentID var id: String?
     let email: String
     var name: String
     var nickname: String
@@ -22,6 +24,9 @@ struct User: Hashable {
     var bookmark: [String]
     var chattingRoom: [ChatRoom]
     var myReservation: [Reservation]
+    
+    var isFollowed: Bool? = false
+    var isCurrentUser: Bool { return AuthStore.shared.currentUser?.uid == id}
     
     init?(document: [String: Any]) {
            guard
@@ -36,7 +41,8 @@ struct User: Hashable {
                let savedFeed = document["savedFeed"] as? [Feed],
                let bookmark = document["bookmark"] as? [String],
                let chattingRoom = document["chattingRoom"] as? [ChatRoom],
-               let myReservation = document["myReservation"] as? [Reservation]
+               let myReservation = document["myReservation"] as? [Reservation],
+               let isFollowed = document["isFollowed"] as? Bool
                // 다른 필드들에 대한 추출 작업을 추가합니다.
            else {
                return nil // 필수 필드가 없을 경우 초기화를 실패시킵니다.
@@ -54,6 +60,7 @@ struct User: Hashable {
         self.bookmark = bookmark
         self.chattingRoom = chattingRoom
         self.myReservation = myReservation
+        self.isFollowed = isFollowed
     }
     
     init() {
@@ -69,6 +76,7 @@ struct User: Hashable {
         self.bookmark = []
         self.chattingRoom = []
         self.myReservation = []
+        self.isFollowed = false
     }
     
     func toDictionary() -> [String: Any] {
@@ -83,7 +91,8 @@ struct User: Hashable {
                    "savedFeed": savedFeed,
                    "bookmark": bookmark,
                    "chattingRoom": chattingRoom,
-                   "myReservation": myReservation
+                   "myReservation": myReservation,
+                   "isFollowed": isFollowed ?? false
                   ]
        }
 }

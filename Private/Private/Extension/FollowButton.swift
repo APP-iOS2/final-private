@@ -9,21 +9,26 @@
 import SwiftUI
 
 struct FollowButton: View {
-    @EnvironmentObject var userStore: UserStore
-    @EnvironmentObject var followStore: FollowStore
-
-    var user:User
+    @ObservedObject var followStore: FollowStore
+    var isFollowed : Bool { return followStore.user.isFollowed ?? false}
+    @State private var showEditProfile = false
     
-    @State private var backgroundColor = Color.white
-    
-
     var body: some View {
-        Button {
-            followStore.manageFollow(userId: user.nickname, myNickName: userStore.user.nickname, userEmail: user.email)
-            followStore.followCheck.toggle()
-        } label: {
-            Text((followStore.followCheck) ? "팔로잉" : "팔로우")
+            HStack {
+                Button(action: {isFollowed ? followStore.unfollow() : followStore.follow() }, label: {
+                    Text(isFollowed ? "팔로잉" : "팔로우") // 삼항연산 사용
+                        .font(.pretendardSemiBold14)
+                        .frame(width: .screenWidth * 0.2, height: 12)
+                        .foregroundColor(.black)
+                        .background(isFollowed ? Color("AccentColor") : Color.white)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 3)
+                                .stroke(Color.gray, lineWidth: isFollowed ? 1 : 0)
+                        )
+                }).cornerRadius(3)
+            }
         }
-        .background((followStore.followCheck) ? Color("AccentColor") : Color.white)
     }
-}
+
+
+

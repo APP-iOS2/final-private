@@ -9,127 +9,56 @@ import Foundation
 import Firebase
 
 final class FollowStore: ObservableObject {
-    @Published var followerList: [String] = []
-    @Published var followingList: [String] = []
+    @Published var user: User
     
-    @Published var followers = 0
-    @Published var following = 0
-    @Published var followCheck = false
-    
-    static var db = Firestore.firestore()
-    static var UserCollection = db.collection("User")
-    static let currentUserRef = UserCollection.document("currentUserID")
-    
-    
-    static func followingCollection(userid: String) ->  CollectionReference{
-        
-        return UserCollection.document(userid).collection("following")
+    init(user: User) {
+        self.user = user
+        checkIfUserIsFollowed()
+//        fetchUserStats()
     }
     
-    static func followersCollection(userid: String) ->  CollectionReference{
-        
-        return UserCollection.document(userid).collection("follower")
-    }
-    
-    static func followingID(nickname: String) -> DocumentReference {
-        
-        return UserCollection.document((Auth.auth().currentUser?.email)!).collection("following").document(nickname)
-    }
-    
-    static func followersID(email: String, nickname: String) -> DocumentReference {
-        
-        return UserCollection.document(email).collection("follower").document(nickname)
-    }
-    
-    func followState(userid: String) {
-        FollowStore.followingID(nickname: userid).getDocument {
-            (document, error) in
-            
-            if let doc = document, doc.exists {
-                self.followCheck = true
-            } else {
-                self.followCheck = false
-            }
+    func follow() {
+        guard let uid = user.id else { return }
+
+        UserService.follow(uid: uid) { _ in
+            self.user.isFollowed = true
         }
     }
     
-    
-    func updateFollowCount(userId: String) {
+    func unfollow() {
+        guard let uid = user.id else { return }
         
-        FollowStore.followingCollection(userid: userId).getDocuments { (snap, error) in
-            
-            if let doc = snap?.documents {
-                self.following = doc.count
-            }
-        }
-        
-        FollowStore.followersCollection(userid: userId).getDocuments { (snap, error) in
-            
-            if let doc = snap?.documents {
-                self.followers = doc.count
-            }
+        UserService.unfollow(uid: uid) { _ in
+            self.user.isFollowed = false
         }
     }
     
-    //팔로우 상태를 체크후 팔로우 언팔로우 하는 함수
-    func manageFollow(userId: String, myNickName: String, userEmail: String) {
-        
-        if !followCheck {
-            follow(userId: userId, myNickName: myNickName, OtherEmail: userEmail)
-            updateFollowCount(userId: userId)
-        } else {
-            unfollow(userId: userId, myNickName: myNickName, userEmail: userEmail)
-            updateFollowCount(userId: userId)
+    // 이 메소드없으면 프로젝트 재실행 시 디폴트로 unfollow 상태의 뷰가 보인다
+    func checkIfUserIsFollowed() {
+        guard !user.isCurrentUser else { return } // can't follow oneself
+        guard let uid = user.id else { return }
+
+        UserService.checkIfUserIsFollowed(uid: uid) { isFollowed in
+            self.user.isFollowed = isFollowed
         }
     }
     
-    //팔로우
-    func follow(userId: String, myNickName: String, OtherEmail: String) {
-        
-        FollowStore.followingID(nickname: userId).setData(["following": FieldValue.arrayUnion([userId])]) { (err) in
-            if err == nil {
-                self.followingList.append(userId)
-            }
-        }
-        
-        FollowStore.followersID(email: OtherEmail, nickname: myNickName).setData(["follower": FieldValue.arrayUnion([myNickName])]) { (err) in
-            if err == nil {
-                self.followerList.append(myNickName)
-            }
-        }
-    }
-    
-    //언팔로우
-    func unfollow(userId: String, myNickName: String, userEmail: String) {
-        
-            FollowStore.followingID(nickname: userId).getDocument { (document, err) in
-            if let doc = document, doc.exists {
-                doc.reference.delete()
-                if let index = self.followingList.firstIndex(of: userId) {
-                                self.followingList.remove(at: index)
-                            }
-            }
-        }
-        
-        FollowStore.followersID(email: userEmail, nickname: myNickName).getDocument { (document, err) in
-            if let doc = document, doc.exists {
-                doc.reference.delete()
-                if let index = self.followerList.firstIndex(of: myNickName) {
-                    self.followerList.remove(at: index)
-                }
-            }
-        }
-    }
-    
-//        func likeButtonTapped(user: User) {
-//            let isLiked = user.nickname.contains(where: { $0.id == user.id })
-//            if isLiked {
-//                guard let index = user.nickname.firstIndex(where: { $0.id == followerList.id }) else { return }
-//                user.nickname.remove(at: index)
-//            } else {
-//                user.nickname.append(followers)
+//    func fetchUserStats() {
+//        let uid = user.id
+//        
+//        followingCollection.document(uid).collection("user-following").getDocuments { snapshot, _ in
+//            guard let following = snapshot?.documents.count else { return }
+//            
+//            followerCollection.document(uid).collection("user-followers").getDocuments { snapshot, _ in
+//                guard let followers = snapshot?.documents.count else { return }
+//                
+//                postCollection.whereField("ownerUid", isEqualTo: uid).getDocuments { snapshot, _ in
+//                    guard let posts = snapshot?.documents.count else { return }
+//                    
+//                    self.user.stats = UserStats(following: following, posts: posts, followers: followers)
+//                    
+//                }
 //            }
 //        }
-    
-    
-} //
+//    }
+}

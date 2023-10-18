@@ -35,7 +35,8 @@ struct ReservationCardView: View {
                 Spacer()
                 Menu {
                     NavigationLink {
-                        ShopDetailView(shopViewModel: ShopViewModel(shop: shopData, userID: userStore.user.id))
+                        // !!
+                        ShopDetailView(shopViewModel: ShopViewModel(shop: shopData, userID: userStore.user.id!))
                     } label: {
                         Text("가게보기")
                     }

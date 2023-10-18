@@ -80,8 +80,8 @@ struct ShopListView: View {
                         return CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord1) < CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord2)
                     }
                 }), id: \.self) { shop in
-//                        ShopListCell(shop: shop)
-                    ShopListCell(shopViewModel: ShopViewModel(shop: shop, userID: userStore.user.id), shop: shop)
+//                        ShopListCell(shop: shop) !!
+                    ShopListCell(shopViewModel: ShopViewModel(shop: shop, userID: userStore.user.id!), shop: shop)
                             .padding(.vertical, 5)
                             .foregroundColor(colorScheme == ColorScheme.dark ? Color.white : Color.black)
                 }
