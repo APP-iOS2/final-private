@@ -22,7 +22,7 @@ struct ChatRoomView: View {
                 Text(message.content)
                     .padding(10)
                     .padding(.horizontal, 5)
-                    .background(Color.accentColor)
+                    .background(Color.privateColor)
                     .foregroundColor(.black)
                     .cornerRadius(20)
                     .frame(maxWidth: .infinity, alignment: .trailing)
@@ -32,14 +32,13 @@ struct ChatRoomView: View {
                     .padding(10)
                     .padding(.horizontal, 5)
                     .background(Color.lightGrayColor)
-                    .foregroundColor(.chatTextColor)
+                    .foregroundColor(.white)
                     .cornerRadius(20)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .listRowSeparator(.hidden)
             }
         }
         .listStyle(.plain)
-        
         
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -74,6 +73,8 @@ struct ChatRoomView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
         
         .onAppear {
             chatRoomStore.fetchMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname)

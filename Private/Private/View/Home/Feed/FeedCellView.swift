@@ -83,16 +83,23 @@ struct FeedCellView: View {
                     } label: {
                         Image( systemName: userStore.user.myFeed.contains( feed.images[0]) ? "bookmark.fill" : "bookmark")
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: .screenWidth*0.035)
+                            .scaledToFit()
+                            .frame(width: 20)
+                            .padding(.trailing, 5)
                     }
                     Button {
                         print("DM 보내기")
                     } label: {
-                        Image(systemName: "paperplane")
+                        Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: .screenWidth*0.05)
+                            .scaledToFit()
+                            .frame(width: 20)
+                            .font(.pretendardRegular14)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 25)
+                            .padding(.vertical, 8)
+                            .background(isShowingMessageTextField ? Color.privateColor : Color.darkGrayColor)
+                            .cornerRadius(30)
                     }
                 }
             }
@@ -121,7 +128,7 @@ struct FeedCellView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 15)
-                    .foregroundColor(.primary)
+                    .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
                     .padding(.top, 5)
             }
             .padding(.leading, 15)

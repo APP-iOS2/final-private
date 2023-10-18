@@ -48,3 +48,23 @@ struct YellowBottomBorder: ViewModifier {
         }
     }
 }
+
+struct BackButtonArrowModifier: ViewModifier {
+    @Environment(\.dismiss) private var dismiss
+
+    func body(content: Content) -> some View {
+        content.toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.backward")
+                        .resizable()
+                        .scaledToFit()
+                        .font(.pretendardSemiBold16)
+                        .foregroundColor(Color.privateColor)
+                }
+            }
+        }
+    }
+}
