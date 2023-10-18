@@ -27,19 +27,46 @@ struct MyPageView: View {
                 }
             }
             UserInfoView()
-                .padding(.top,-15.0)
+                .padding(.top,-20.0)
+                .padding(.bottom, 20)
             HStack {
-                Spacer()
+                NavigationLink {
+                    MapMainView()
+                } label: {
+                    HStack {
+                        Image(systemName: "map")
+                        Text("내 마커")
+                            .font(.pretendardRegular14)
+                    }
+                    .foregroundColor(.primary)
+                }
+                .frame(width: .screenWidth*0.5)
+                Divider()
+                    .background(Color.primary)
+                    .frame(height: .screenHeight*0.02)
+                NavigationLink {
+                    MyReservation(isShowingMyReservation: .constant(true))
+                } label: {
+                    HStack {
+                        Image(systemName: "calendar.badge.clock")
+                        Text("에약내역")
+                            .font(.pretendardRegular14)
+                    }
+                    .foregroundColor(.primary)
+                }
+                .frame(width: .screenWidth*0.5)
+            }
+            HStack {
                 Button {
                     viewNumber = 0
                 }label: {
                     HStack {
                         viewNumber == 0 ? Image( systemName: "location.fill") : Image (systemName: "location")
-                        Text("내 기록")
+                        Text("내 피드")
                     }
                     .font(.pretendardRegular12)
                     .foregroundColor(.chatTextColor)
-                    .frame(width: .screenWidth*0.95*0.3)
+                    .frame(width: .screenWidth*0.3)
                     .padding(.bottom,15.0)
                     .modifier(BottomBorder(showBorder: viewNumber == 0))
                 }
@@ -52,7 +79,7 @@ struct MyPageView: View {
                         Text("내가 저장한 피드")
                     }.font(.pretendardRegular12)
                         .foregroundColor(.chatTextColor)
-                        .frame(width: .screenWidth*0.95*0.3)
+                        .frame(width: .screenWidth*0.3)
                         .padding(.bottom,15.0)
                         .modifier(BottomBorder(showBorder: viewNumber == 1))
                 }
@@ -66,17 +93,15 @@ struct MyPageView: View {
                         Text("내가 저장한 장소")
                     }.font(.pretendardRegular12)
                         .foregroundColor(.chatTextColor)
-                        .frame(width: .screenWidth*0.95*0.3)
+                        .frame(width: .screenWidth*0.3)
                         .padding(.bottom,15.0)
                         .modifier(BottomBorder(showBorder: viewNumber == 2))
                 }
-                Spacer()
             }
-            .padding(.top, 37)
+            .padding(.top, 20)
             Divider()
                 .background(Color.primary)
-                .frame(width: .screenWidth*0.925)
-                .padding(.top, -8)
+                .padding(.top, -9)
             
             TabView(selection: $viewNumber) {
                 MyHistoryView().tag(0)
