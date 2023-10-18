@@ -12,7 +12,7 @@ struct ReservationCardView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var shopStore: ShopStore
-    
+
     @State private var isShowDeleteMyReservationAlert: Bool = false
     @State private var isShowRemoveReservationAlert: Bool = false
     @State private var isShowModifyView: Bool = false

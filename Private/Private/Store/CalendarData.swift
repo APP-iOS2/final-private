@@ -10,7 +10,7 @@ import Foundation
 class CalendarData: ObservableObject {
     @Published var titleOfMonth: Date = Date()
     @Published var currentPage: Date = Date()
-    @Published var selectedDate: Date = Date()
+    @Published var selectedDate: Date = Date()  // ReservationStore에 있는걸로 사용하면 FSCalendar에서 따로 동작
     
     let sortedWeekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
 
