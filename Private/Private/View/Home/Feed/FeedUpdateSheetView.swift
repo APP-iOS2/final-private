@@ -1,0 +1,416 @@
+//
+//
+//import SwiftUI
+//import NMapsMap
+//import FirebaseStorage
+//import FirebaseFirestore
+//import FirebaseFirestoreSwift
+//import FirebaseCore
+//import Combine
+//import Kingfisher
+//
+//struct FeedUpdateSheetView: View {
+//    @Environment(\.dismiss) private var dismiss
+//    @Environment(\.presentationMode) var presentationMode
+//    
+//    @EnvironmentObject var feedStore: FeedStore
+//    @EnvironmentObject var userStore: UserStore
+//    @EnvironmentObject var userDataStore: UserStore
+//    
+//    @StateObject private var locationSearchStore = LocationSearchStore.shared
+//    @StateObject private var postStore: PostStore = PostStore()
+//    @ObservedObject var coordinator: Coordinator = Coordinator.shared
+//    
+//    @Binding var root: Bool
+//    @Binding var selection: Int
+//    @Binding var isPostViewPresented: Bool /// PostView
+//    @Binding var coord: NMGLatLng
+//    @Binding var searchResult: SearchResult
+//    
+//    @State private var selectedWriter: String = "김아무개"
+//    @State private var text: String = "" /// 텍스트마스터 내용
+//    @State private var textPlaceHolder: String = "당신의 경험을 적어주세요!" /// 텍스트마스터 placeholder
+//    @State private var lat: String = ""
+//    @State private var lng: String = ""
+//    
+//    @State private var writer: String = ""
+//    @State private var images: [String] = []
+//    @State private var createdAt: Double = Date().timeIntervalSince1970
+//    @State private var visitedShop: String = ""
+//    @State private var feedId: String = ""
+//    @State private var myselectedCategory: [String] = []
+//    
+//    @State private var clickLocation: Bool = false
+//    @State private var isImagePickerPresented: Bool = false /// 업로드뷰에서 이미지 선택 뷰
+//    @State private var ImageViewPresented: Bool = true /// 처음 이미지 뷰
+//    @State private var showLocation: Bool = false
+//    @State private var isshowAlert = false /// 업로드 알럿
+//    @State private var categoryAlert: Bool = false /// 카테고리 초과 알럿
+//    @State private var isSearchedLocation: Bool = false /// 장소 검색 시트
+//    
+//    @State private var selectedImage: [UIImage]?
+//    @FocusState private var isTextMasterFocused: Bool
+//    
+//    //    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
+//    @State private var selectedCategories: Set<MyCategory> = []
+//    @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
+//    
+//    private let minLine: Int = 10
+//    private let maxLine: Int = 12
+//    private let fontSize: Double = 24
+//    private let maxSelectedCategories = 3
+//    
+//    var db = Firestore.firestore()
+//    var storage = Storage.storage()
+//    
+//    var body: some View {
+//        NavigationStack {
+//            ScrollView {
+//                VStack(alignment: .leading) {
+//                    HStack {
+//                        ZStack {
+//                            if userStore.user.profileImageURL.isEmpty {
+//                                Circle()
+//                                    .frame(width: .screenWidth*0.15)
+//                                Image(systemName: "person")
+//                                    .resizable()
+//                                    .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
+//                                    .foregroundColor(Color.darkGraySubColor)
+//                                    .clipShape(Circle())
+//                            } else {
+//                                KFImage(URL(string: userStore.user.profileImageURL))
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fill)
+//                                    .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
+//                                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+//                            }
+//                        }
+//                        
+//                        VStack(alignment: .leading, spacing: 5) {
+//                            Text(userStore.user.name)
+//                            Text("@\(userStore.user.nickname)")
+//                        }
+//                    }
+//                    .padding(.vertical, 10)
+//                    
+//                    //MARK: 내용
+//                    TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize, placeholder: textPlaceHolder)
+//                    
+//                        .padding(.trailing, 10)
+//                    
+//                    //MARK: 장소
+//                    VStack {
+//                        Button {
+//                            showLocation = true
+//                        } label: {
+//                            Label("장소", systemImage: "location")
+//                        }
+//                        .sheet(isPresented: $showLocation) {
+//                            LocationSearchView(showLocation: $showLocation, searchResult: $searchResult, isSearchedLocation: $isSearchedLocation)
+//                                .presentationDetents([.fraction(0.75), .large])
+//                        }
+//                        .sheet(isPresented: $isSearchedLocation) {
+//                            LocationView(coord: $coord, searchResult: $searchResult)
+//                        }
+//                    }
+//                    .padding(.vertical, 10)
+//                    
+//                    if searchResult.title.isEmpty {
+//                        Text("장소를 선택해주세요")
+//                            .font(.pretendardRegular12)
+//                            .foregroundColor(.secondary)
+//                    } else {
+//                      
+//                        Button {
+//                            lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
+//                            lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
+//                            
+//                            coordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+//                            print("위도값: \(coord.lat), 경도값: \(coord.lng)")
+//                            print("지정장소 클릭")
+//                            clickLocation.toggle()
+//                            coordinator.moveCameraPosition()
+//                            coordinator.makeSearchLocationMarker()
+//                        } label: {
+//                            Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+//                                .font(.pretendardRegular12)
+//                        }
+//                        .sheet(isPresented: $clickLocation) {
+//                            LocationDetailView()
+//                        }
+//                        Text(searchResult.address)
+//                            .font(.pretendardRegular10)
+//                            .foregroundStyle(.secondary)
+//                        
+//                    }
+//                    Divider()
+//                        .padding(.vertical, 10)
+//                    
+//                    //MARK: 사진
+//                    HStack {
+//                        Label("사진", systemImage: "camera")
+//                        Spacer()
+//                        Button {
+//                            isImagePickerPresented.toggle()
+//                        } label: {
+//                            Label("", systemImage: "plus")
+//                        }
+//                        .sheet(isPresented: $isImagePickerPresented) {
+//                            ImagePickerView(selectedImages: $selectedImage)
+//                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                                .background(Color.white)
+//                                .transition(.move(edge: .leading))
+//                        }
+//                    }
+//                    
+//                    ScrollView(.horizontal) {
+//                        HStack(alignment: .center) {
+//                            if let images = selectedImage, !images.isEmpty {
+//                                ForEach(images, id: \.self) { image in
+//                                    ZStack {
+//                                        Image(uiImage: image)
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fill)
+//                                            .frame(width: 150, height: 150)
+//                                            .clipShape(Rectangle())
+//                                        Button {
+//                                            if let index = selectedImage?.firstIndex(of: image) {
+//                                                selectedImage?.remove(at: index)
+//                                            }
+//                                        } label: {
+//                                            ZStack {
+//                                                Circle()
+//                                                    .frame(width: .screenWidth*0.06)
+//                                                Image(systemName: "x.circle")
+//                                                    .font(.pretendardBold24)
+//                                                    .foregroundColor(.primary)
+//                                                    .padding(8)
+//                                            }
+//                                        }
+//                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+//                                    }
+//                                }
+//                            } else {
+//                                Text("최소 1장의 사진이 필요합니다!")
+//                                    .foregroundStyle(.red)
+//                            }
+//                        }
+//                    }
+//                    Divider()
+//                        .padding(.vertical, 10)
+//                    
+//                    //MARK: 카테고리
+//                    
+//                    HStack {
+//                        Text("카테고리")
+//                            .font(.pretendardMedium20)
+//                        Text("(최대 3개)")
+//                            .font(.pretendardRegular12)
+//                            .foregroundColor(.secondary)
+//                    }
+//                    
+//                    //let catecoryViewInstance = CatecoryView(selectedCategory: Binding<[String]>),
+//                    LazyVGrid(columns: CatecoryView.createGridColumns(), spacing: 20) {
+//                        ForEach (Category.allCases.indices, id: \.self) { index in
+//                            VStack {
+//                                if selectedToggle[index] {
+//                                    Text(Category.allCases[index].categoryName)
+//                                        .font(.pretendardMedium16)
+//                                        .foregroundColor(.black)
+//                                        .frame(width: 70, height: 30)
+//                                        .padding(.vertical, 4)
+//                                        .padding(.horizontal, 4)
+//                                        .background(Color.accentColor)
+//                                        .cornerRadius(7)
+//                                } else {
+//                                    Text(Category.allCases[index].categoryName)
+//                                        .frame(width: 70, height: 30)
+//                                        .padding(.vertical, 4)
+//                                        .padding(.horizontal, 4)
+//                                        .cornerRadius(7)
+//                                        .overlay(
+//                                            RoundedRectangle(cornerRadius: 7)
+//                                                .stroke(Color.darkGrayColor, lineWidth: 1.5)
+//                                        )
+//                                }
+//                            }
+//                            .onTapGesture {
+//                                if myselectedCategory.count < maxSelectedCategories || selectedToggle[index] {
+//                                    CatecoryView.toggleCategorySelection(at: index)
+//                                    print(myselectedCategory)
+//                                } else {
+//                                    categoryAlert = true
+//                                    print("3개 초과 선택")
+//                                }
+//                            }
+//                            
+//                        }
+//                    }
+//                    .padding(.trailing, 8)
+//                    
+//                    
+//                    //MARK: 업로드
+//                    Text("업로드")
+//                        .font(.pretendardBold18)
+//                        .frame(maxWidth: .infinity, minHeight: 50)
+//                        .foregroundColor(.white)
+//                        .background(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty ? Color.gray : Color.accentColor)
+//                        .cornerRadius(7)
+//                        .padding(EdgeInsets(top: 25, leading: 0, bottom: 0, trailing: 13))
+//                        .onTapGesture {
+//                            isshowAlert = true
+//                        }
+//                    
+//                        .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty)
+//                }
+//                
+//            }
+//            
+//            
+//   
+//            
+//            .toolbar {
+//                ToolbarItem(placement: .topBarLeading) {
+//                    Button {
+//                        isPostViewPresented = false
+//                        selection = 1
+//                        print("뷰 닫기")
+//                    } label: {
+//                        Text("취소")
+//                    }
+//                }
+//            }
+//            .onTapGesture {
+//                hideKeyboard()
+//            }
+//            .alert(isPresented: $isshowAlert) {
+//                let firstButton = Alert.Button.cancel(Text("취소")) {
+//                    print("취소 버튼 클릭")
+//                }
+//                let secondButton = Alert.Button.default(Text("완료")) {
+//                    //feedStore.updateFeed(feed)
+//                    //isUpdateSheetPresented = false
+//                    selection = 1
+//                    print("완료 버튼 클릭")
+//                    
+//                }
+//                return Alert(title: Text("게시물 수정"),
+//                             message: Text("수정을 완료하시겠습니까?"),
+//                             primaryButton: firstButton, secondaryButton: secondButton)
+//            }
+//            
+//            .padding(.leading, 12)
+//            .navigationTitle("글쓰기")
+//            .navigationBarTitleDisplayMode(.inline)
+//        } // navigationStack
+//        .alert(isPresented: $categoryAlert) {
+//            Alert(
+//                title: Text("선택 초과"),
+//                message: Text("최대 3개까지 선택 가능합니다."),
+//                dismissButton: .default(Text("확인"))
+//            )
+//        }
+//    } // body
+//}
+
+import SwiftUI
+import Kingfisher
+
+struct FeedUpdateSheetView: View {
+    @Binding var isFeedUpdateSheet: Bool
+    @State private var currentPicture: Int = 0
+    @State private var isEnlarge: Bool = false
+    var feed: MyFeed
+    var feedList:[MyFeed]
+    var body: some View {
+        VStack{
+            HStack {
+                Spacer()
+                Button {
+                    isFeedUpdateSheet = false
+                } label: {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.primary)
+                }
+            }
+            .padding()
+            
+            ScrollView {
+                ScrollViewReader { ScrollViewProxy in
+                    ForEach(feedList, id: \.self) { feedListFeed in
+                        VStack{
+                            VStack {
+                                HStack {
+                                    KFImage(URL(string: feedListFeed.writerProfileImage))
+                                        .resizable()
+                                        .placeholder {
+                                            Image("userDefault")
+                                                .resizable()
+                                                .clipShape(Circle())
+                                                .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
+                                        }
+                                        .clipShape(Circle())
+                                        .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text("\(feedListFeed.writerNickname)")
+                                            .font(.pretendardSemiBold16)
+                                        Text("\(feedListFeed.createdDate)")
+                                            .font(.pretendardRegular12)
+                                            .foregroundColor(.primary.opacity(0.8))
+                                    }
+                                    Spacer()
+                                }
+                                .padding(.leading, 20)
+                                
+                                TabView(selection: $currentPicture) {
+                                    ForEach(feedListFeed.images, id: \.self) { image in
+                                        KFImage(URL(string: image )) .placeholder {
+                                            Image(systemName: "photo")
+                                        }
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)  // 너비와 높이를 화면 너비의 90%로 설정
+                                        .clipped()
+                                        .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
+                                        .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
+                                        .tag(Int(feedListFeed.images.firstIndex(of: image) ?? 0))
+                                        .onTapGesture {
+                                            isEnlarge.toggle()
+                                        }
+                                    }
+                                    //.tag()
+                                }
+                                .tabViewStyle(PageTabViewStyle())
+                            }
+                            .padding(.top, 8)
+                            .frame(width: .screenWidth, height: .screenWidth)
+                            HStack(alignment: .top) {
+                                Text("\(feedListFeed.contents)")
+                                    .font(.pretendardRegular16)
+                                    .foregroundColor(.primary)
+                                Spacer()
+                            }
+                            .padding(.top,20)
+                            .padding(.leading, .screenWidth/2 - .screenWidth*0.45)
+                        }
+                        .id(feedList.firstIndex(of: feedListFeed))
+                        .padding(.bottom, 60)
+                        Spacer ()
+                    }
+                    .onAppear{
+                        withAnimation {
+                            ScrollViewProxy.scrollTo(feedList.firstIndex(of:feed) ,anchor: .top)
+                        }
+                    }
+                    
+                }
+            }
+        }
+    }
+}
+
+struct isFeedUpdateSheetView_Previews: PreviewProvider {
+    static var previews: some View {
+        MyPageFeedView(isMyPageFeedSheet: .constant(true), feed: MyFeed(), feedList: [MyFeed()])
+    }
+}

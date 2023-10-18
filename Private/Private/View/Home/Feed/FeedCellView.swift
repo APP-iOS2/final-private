@@ -8,6 +8,7 @@
 import SwiftUI
 import NMapsMap
 import Kingfisher
+import FirebaseStorage
 
 struct FeedCellView: View {
     var feed: MyFeed
@@ -17,7 +18,14 @@ struct FeedCellView: View {
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
     @EnvironmentObject private var feedStore: FeedStore
     
+    
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
+    
+//    var db = Firestore.firestore()
+    var storage = Storage.storage()
+    
+    @State private var isUpdateSheetPresented = false // 업데이트 시트 표시 여부를 관리하는 상태 변수
+    @State private var updatedText: String = "" // 수정된 내용을 저장할 상태 변수
     
     var body: some View {
         VStack {
@@ -62,6 +70,7 @@ struct FeedCellView: View {
                                 buttons: [
                                     .default(Text("수정")) {
                                         print("수정")
+                                        isUpdateSheetPresented = true // 수정 버튼을 눌렀을 때 업데이트 시트를 표시
                                     },
                                     .destructive(Text("삭제")) {
                                         print("삭제")
@@ -72,10 +81,8 @@ struct FeedCellView: View {
                             )
                         }
                     }
-                }
-                
-                
-            }
+                } // HStack (수정, 삭제)
+            }// HStack
             .padding(.leading, 20)
             
             TabView(selection: $currentPicture) {
@@ -198,3 +205,13 @@ struct FeedCellView: View {
 
 //https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/81789D33-A401-4701-AB9F-ABBBE6DEC156?alt=media&token=a9b1fcdc-c1f9-48ec-87af-d7b617376365
 // https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/39968E65-7EB6-4D5D-AC00-8C8578AABFFF?alt=media&token=149585b7-ad7a-445a-a770-2e13af631ba0
+//    func updateFeed(_ feed: Feed) {
+//        dbRef.document(feed.id).updateData([
+//            "writer" : feed.writer,
+//            "image" : feed.images,
+//            "contents" : feed.contents,
+//            "createdAt" : feed.createdAt,
+//            "visitedShop": feed.visitedShop,
+//            "category": feed.category
+//        ])
+//    }

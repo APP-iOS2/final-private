@@ -19,6 +19,7 @@ final class FeedStore: ObservableObject {
     
     // Firestore 데이터베이스의 "Feed" 컬렉션에 대한 참조를 생성합니다.
     private let feedRef = Firestore.firestore().collection("Feed")
+    private let dbRef = Firestore.firestore().collection("User")
     
     // 초기화 함수에서 피드를 가져옵니다.
     init() {
@@ -62,7 +63,7 @@ final class FeedStore: ObservableObject {
                      ])
     }
     
-    // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
+    //MARK: Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
         return [
             "writerNickname": feed.writerNickname,
@@ -79,18 +80,7 @@ final class FeedStore: ObservableObject {
             "mapy": feed.mapy,
         ]
     }
-    /*
-    func deleteFeed(writerNickname: String) {
-        //Firestore.firestore().collection("Feed")
-        let feedRef = feedRef.document(Feed.writerNickname).delete() { error in
-            if let error = error {
-                print("Error deleting feed from Firebase: \(error.localizedDescription)")
-            } else {
-                print("Feed deleted from Firebase successfully")
-            }
-        }
-    }
-     */
+    //MARK: Feed 를 삭제하는 함수 입니다
     func deleteFeed(writerNickname: String) {
         // Firestore.firestore().collection("Feed")
         
@@ -118,10 +108,33 @@ final class FeedStore: ObservableObject {
                     }
                 }
             }
+        }//end deleteFeed
+        
+        func updateFeed(_ feed: Feed) {
+            Firestore.firestore().collection("Feed").document(feed.id).updateData([
+                "writerNickname": feed.writerNickname,
+                "writerName": feed.writerName,
+                "writerProfileImage": feed.writerProfileImage,
+                "images": feed.images,
+                "contents": feed.contents,
+                "createdAt": feed.createdAt,
+                "title": feed.title,
+                "category": feed.category,
+                "address": feed.address,
+                "roadAddress": feed.roadAddress,
+                "mapx": feed.mapx,
+                "mapy": feed.mapy
+            ]) { error in
+                if let error = error {
+                    print("Error updating feed: \(error.localizedDescription)")
+                } else {
+                    print("Feed updated successfully")
+                }
+            }
         }
     }
 }
-//
+
 
 
 
