@@ -57,7 +57,9 @@ struct DateTimePickerView: View {
     var body: some View {
         ScrollView {
             Button {
-                showingDate.toggle()
+                withAnimation(.easeIn(duration: 0.5)) {
+                    showingDate.toggle()
+                }
             } label: {
                 HStack {
                     Image(systemName: "calendar")
@@ -109,7 +111,10 @@ struct DateTimePickerView: View {
             }
             
             Button {
-                showingTime.toggle()
+                showingTime.toggle()  // 여기서 애니메이션 주면 애니메이션이 살짝 되다 중간에 멈춤
+//                withAnimation(.easeIn(duration: 0.5)) {
+//                    showingTime.toggle()
+//                }
             } label: {
                 HStack {
                     Image(systemName: "clock")

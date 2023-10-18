@@ -55,6 +55,9 @@ struct ReservationView: View {
                         
                         Button {
                             showingDate.toggle()
+//                            withAnimation(.easeIn(duration: 0.5)) {
+//                                showingDate.toggle()
+//                            }
                         } label: {
                             Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                         }
@@ -82,6 +85,9 @@ struct ReservationView: View {
                         Spacer()
                         Button {
                             showingNumbers.toggle()
+//                            withAnimation(.easeIn(duration: 0.5)) {
+//                                showingNumbers.toggle()
+//                            }
                         } label: {
                             Image(systemName: showingNumbers ? "chevron.up.circle": "chevron.down.circle")
                         }
@@ -174,6 +180,10 @@ struct ReservationView: View {
             .padding()
             .onAppear {
                 self.temporaryReservation.shopId = self.shopData.id
+                // calendarData의 데이타를 모두 바꿔줘야 함
+                calendarData.selectedDate = Date()
+                calendarData.currentPage = Date()
+                calendarData.titleOfMonth = Date()
             }
         }
     }
