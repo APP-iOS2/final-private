@@ -8,15 +8,18 @@
 import SwiftUI
 import NMapsMap
 import Kingfisher
+//import Combine
 
 struct FeedCellView: View {
     var feed: MyFeed
-    var filteredFeedList: [MyFeed]
     
     @State private var currentPicture = 0
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
     @EnvironmentObject private var feedStore: FeedStore
+    @EnvironmentObject var chatRoomStore: ChatRoomStore
     
+    @State private var message: String = ""
+    @State private var isShowingMessageTextField: Bool = false
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
     
     var body: some View {
@@ -125,18 +128,19 @@ struct FeedCellView: View {
                             userStore.updateUser(user: userStore.user)
                         }
                     } label: {
-                        Image( systemName: userStore.user.myFeed.contains( feed.images[0]) ? "bookmark.fill" : "bookmark")
+                        Image(systemName: userStore.user.myFeed.contains( feed.images[0]) ? "bookmark.fill" : "bookmark")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: .screenWidth*0.035)
                     }
                     Button {
-                        print("DM 보내기")
+                        isShowingMessageTextField.toggle()
                     } label: {
-                        Image(systemName: "paperplane")
+                        
+                        Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: .screenWidth*0.05)
+                            .frame(width: .screenWidth * 0.05)
                     }
                 }
             }
@@ -192,6 +196,14 @@ struct FeedCellView: View {
         .padding(.horizontal, 10)
         .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
         .background(Color.darkGraySubColor)
+        
+        if isShowingMessageTextField {
+            SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
+                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
+                chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
+                message = ""
+            }
+        }
     }
     //.padding(.top, 20)
 }
