@@ -45,6 +45,7 @@ struct LaunchView: View {
                         withAnimation {
                             self.isActive = true
                             self.isloading.toggle()
+                            self.isActive = true
                         }
                     }
                 }
