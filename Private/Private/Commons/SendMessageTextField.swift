@@ -20,6 +20,7 @@ struct SendMessageTextField: View {
                 .disableAutocorrection(true) // 자동수정 비활성화
                 .padding(10)
                 .padding(.leading, 5)
+                .padding(.trailing, 40)
                 .background(Color.lightGrayColor)
                 .cornerRadius(20)
             
@@ -37,7 +38,7 @@ struct SendMessageTextField: View {
                     }
             }
             .padding(.trailing, 5)
-            .zIndex(1)
+            .zIndex(3)
         }
         .frame(width: .screenWidth * 0.9, height: 40)
         .padding(.bottom, 10)

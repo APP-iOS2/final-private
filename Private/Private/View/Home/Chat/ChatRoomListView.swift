@@ -60,19 +60,15 @@ struct ChatRoomListView: View {
         }
         .navigationTitle("채팅방")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing: EditButton().foregroundColor(.accentColor))
-        .navigationBarItems(trailing:
-                                Button{print(":::chatRoom")
-//                                print("\(chatRoom)")
-                                // 테스트를 위한 더미데이터
-//                                let chatRoom = ChatRoom(otherUser: otherUser, messages: [Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)])
-                                chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
+        .navigationBarItems(trailing: EditButton().foregroundColor(.privateColor))
+        .navigationBarItems(trailing: Button {
+            chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)
             chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
         } label: {
-                                Image(systemName: "plus.bubble")
-        }
-                            )
-                            
+            Image(systemName: "plus.bubble")
+        })
     }
     
     func deleteChatRoom(at offsets: IndexSet) {
