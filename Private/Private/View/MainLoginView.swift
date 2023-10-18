@@ -39,6 +39,17 @@ struct MainLoginView: View {
                 authStore.signInGoogle()
             }
             .frame(width: .screenWidth * 0.9)
+            
+            Button {
+                authStore.openKakaoService()
+            } label: {
+                Image("KakaoLogin")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: .screenWidth * 0.9)
+            }
+            .frame(width: .screenWidth * 0.9)
+            
             Spacer()
         }
         .onDisappear {

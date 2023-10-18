@@ -26,4 +26,17 @@ class AppDateFormatter {
     func fullDateString(from date: Date) -> String {
         return fullDateFormatter.string(from: date)
     }
+    
+    private let dayFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "EEEE"
+        df.timeZone = TimeZone(abbreviation: "KST")
+        df.locale = Locale(identifier: "ko_KR")
+        
+        return df
+    }()
+    
+    func dayString(from date: Date) -> String {
+        return dayFormatter.string(from: date)
+    }
 }

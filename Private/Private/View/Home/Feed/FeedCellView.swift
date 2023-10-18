@@ -15,11 +15,13 @@ struct FeedCellView: View {
     
     @State private var currentPicture = 0
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
+    @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject var chatRoomStore: ChatRoomStore
     
     @State private var message: String = ""
     @State private var isShowingMessageTextField: Bool = false
-        
+    @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
+    
     var body: some View {
         VStack {
             HStack {
@@ -35,12 +37,47 @@ struct FeedCellView: View {
                     .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("\(feed.writerNickname)")
-                        .font(.headline)
+                        .font(.pretendardMedium16)
                     Text("\(feed.createdDate)")
                         .font(.pretendardRegular12)
                         .foregroundColor(.primary.opacity(0.8))
                 }
                 Spacer()
+                
+                HStack {
+                    if feed.writerNickname == userStore.user.nickname {
+                        Button(action: {
+                            // 수정 및 삭제 옵션을 표시하는 액션 시트 표시
+                            isActionSheetPresented.toggle()
+                        }) {
+                            Image(systemName: "ellipsis")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 15)
+                                .foregroundColor(.primary)
+                                .padding(.top, 5)
+                                .padding(.leading, 15)
+                                .padding(.trailing, 15)
+                        }
+                        .actionSheet(isPresented: $isActionSheetPresented) {
+                            ActionSheet(
+                                title: Text("선택하세요"),
+                                buttons: [
+                                    .default(Text("수정")) {
+                                        print("수정")
+                                    },
+                                    .destructive(Text("삭제")) {
+                                        print("삭제")
+                                        feedStore.deleteFeed(writerNickname: feed.writerNickname)
+                                    },
+                                    .cancel() // 취소 버튼
+                                ]
+                            )
+                        }
+                    }
+                }
+                
+                
             }
             .padding(.leading, 20)
             

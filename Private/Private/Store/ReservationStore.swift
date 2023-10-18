@@ -28,12 +28,16 @@ final class ReservationStore: ObservableObject {
     func getReservationDate(reservationDate: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")  // 요일을 한국어로 얻기 위해 로케일 설정
+        let currentYear = Calendar.current.component(.year, from: Date())
+        let reservationYear = Calendar.current.component(.year, from: reservationDate)
         
-        if Calendar.current.isDateInToday(reservationDate) {
+        if Calendar.current.isDateInToday(reservationDate) {  // 예약 날짜가 오늘일 때
             // 예약 날짜가 오늘일 경우
             dateFormatter.dateFormat = "오늘(E)"
+        } else if currentYear == reservationYear {  // 올 해일 때
+            dateFormatter.dateFormat = "MM월 dd일(E)"
         } else {
-            dateFormatter.dateFormat = "MM월 dd일"
+            dateFormatter.dateFormat = "yy년 MM월 dd일(E)"
         }
         
         let dateString = dateFormatter.string(from: reservationDate)

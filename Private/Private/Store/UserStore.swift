@@ -92,9 +92,10 @@ final class UserStore: ObservableObject {
             }
             self.myFeedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
                 let data = queryDocumentSnapshot.data()
-                return MyFeed(documentData: data)
-            } ?? []
-            self.myFeedList.sort{$0.createdAt < $1.createdAt}
+                var feed = MyFeed(documentData: data)
+                feed?.createdAt = data["createdAt"] as? Double ?? 0.0
+                return feed
+            } .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
         Firestore.firestore().collection("User").document(userEmail).collection("SavedFeed").addSnapshotListener { querySnapshot, error in
             if let error = error {
@@ -102,9 +103,10 @@ final class UserStore: ObservableObject {
             }
             self.mySavedFeedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
                 let data = queryDocumentSnapshot.data()
-                return MyFeed(documentData: data)
-            } ?? []
-            self.mySavedFeedList.sort{$0.createdAt < $1.createdAt}
+                var feed = MyFeed(documentData: data)
+                feed?.createdAt = data["createdAt"] as? Double ?? 0.0
+                return feed
+            }.sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
         Firestore.firestore().collection("User").document(userEmail).collection("SavedPlace").addSnapshotListener { querySnapshot, error in
             if let error = error {
@@ -112,9 +114,10 @@ final class UserStore: ObservableObject {
             }
             self.mySavedPlaceList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
                 let data = queryDocumentSnapshot.data()
-                return MyFeed(documentData: data)
-            } ?? []
-            self.mySavedPlaceList.sort{$0.createdAt < $1.createdAt}
+                var feed = MyFeed(documentData: data)
+                feed?.createdAt = data["createdAt"] as? Double ?? 0.0
+                return feed
+            } .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
     }
     
@@ -125,9 +128,10 @@ final class UserStore: ObservableObject {
             }
             self.otherFeedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
                 let data = queryDocumentSnapshot.data()
-                return MyFeed(documentData: data)
-            } ?? []
-            self.otherFeedList.sort{$0.createdAt < $1.createdAt}
+                var feed = MyFeed(documentData: data)
+                feed?.createdAt = data["createdAt"] as? Double ?? 0.0
+                return feed
+            }.sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
         Firestore.firestore().collection("User").document(userEmail).collection("SavedFeed").addSnapshotListener { querySnapshot, error in
             if let error = error {
@@ -135,9 +139,10 @@ final class UserStore: ObservableObject {
             }
             self.otherSavedFeedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
                 let data = queryDocumentSnapshot.data()
-                return MyFeed(documentData: data)
-            } ?? []
-            self.otherSavedFeedList.sort{$0.createdAt < $1.createdAt}
+                var feed = MyFeed(documentData: data)
+                feed?.createdAt = data["createdAt"] as? Double ?? 0.0
+                return feed
+            } .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
         Firestore.firestore().collection("User").document(userEmail).collection("SavedPlace").addSnapshotListener { querySnapshot, error in
             if let error = error {
@@ -145,9 +150,11 @@ final class UserStore: ObservableObject {
             }
             self.otherSavedPlaceList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
                 let data = queryDocumentSnapshot.data()
-                return MyFeed(documentData: data)
-            } ?? []
-            self.otherSavedPlaceList.sort{$0.createdAt < $1.createdAt}
+                var feed = MyFeed(documentData: data)
+                feed?.createdAt = data["createdAt"] as? Double ?? 0.0
+                return feed
+            }
+            .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
     }
     
@@ -155,6 +162,7 @@ final class UserStore: ObservableObject {
         Firestore.firestore().collection("User")
             .document(user.email).delete()
     }
+    
     
     //    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
     
@@ -207,6 +215,21 @@ final class UserStore: ObservableObject {
         }
     }
     
+    //MARK: 현재 유저의 닉네임을 불러오는 함수
+        func getCurrentUserNickname(completion: @escaping (String?) -> Void) {
+               let userRef = Firestore.firestore().collection("User").document(user.email)
+               
+               userRef.getDocument { (document, error) in
+                   if let document = document, document.exists {
+                       let data = document.data()
+                       let nickname = data?["nickname"] as? String
+                       completion(nickname)
+                   } else {
+                       completion(nil)
+                   }
+               }
+        }
+    
     func createMarker() {
         
     }
@@ -248,6 +271,7 @@ final class UserStore: ObservableObject {
                       "writerProfileImage": "\(feed.images[0].suffix(32))",
                       "images": feed.images,
                       "contents": "",
+                      "createdAt": feed.createdAt,
                       "title": feed.title,
                       "category": feed.category,
                       "address": feed.address,
@@ -263,6 +287,21 @@ final class UserStore: ObservableObject {
             .document("\(feed.writerProfileImage)")
             .delete()
     }
-    
+    private func makeFeedData(from feed: MyFeed) -> [String: Any] {
+        return [
+            "writerNickname": feed.writerNickname,
+            "writerName": feed.writerName,
+            "writerProfileImage": feed.writerProfileImage,
+            "images": feed.images,
+            "contents": feed.contents,
+            "createdAt": Timestamp(date: Date(timeIntervalSince1970: feed.createdAt)),
+            "title": feed.title,
+            "category": feed.category,
+            "address": feed.address,
+            "roadAddress": feed.roadAddress,
+            "mapx": feed.mapx,
+            "mapy": feed.mapy,
+        ]
+    }
 }
 

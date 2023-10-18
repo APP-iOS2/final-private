@@ -40,6 +40,7 @@ struct MapSearchView: View {
                             coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
                             print("위도값: \(lat), 경도값: \(lng)")
                             coordinator.moveCameraPosition()
+                            coordinator.makeSearchLocationMarker()
                             dismiss()
                             
                         } label: {
@@ -47,7 +48,7 @@ struct MapSearchView: View {
                                 Text("\(location.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                     .foregroundStyle(.primary)
                                 Text("\(location.roadAddress)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                                    .font(.caption)
+                                    .font(.pretendardRegular12)
                                     .foregroundStyle(.secondary)
                             }
                         }

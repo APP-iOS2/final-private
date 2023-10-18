@@ -35,7 +35,7 @@ struct UploadView: View {
             print("업로드 뷰 올라옴")
         }
         .fullScreenCover(isPresented: $isPostViewPresented) {
-            PostView(root: $root, selection: $selection, isPostViewPresented: $isPostViewPresented, coord: $coord)
+            PostView(root: $root, selection: $selection, isPostViewPresented: $isPostViewPresented, coord: $coord, searchResult: $searchResult)
 //                .onDisappear {
 //                    selection = 1
 //                    print("홈뷰로 이동")

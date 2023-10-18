@@ -46,6 +46,15 @@
       }
     },
     {
+      "identity" : "fscalendar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/WenchaoD/FSCalendar.git",
+      "state" : {
+        "revision" : "0fbdec5172fccb90f707472eeaea4ffe095278f6",
+        "version" : "2.8.4"
+      }
+    },
+    {
       "identity" : "googleappmeasurement",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",
@@ -118,6 +127,15 @@
       }
     },
     {
+      "identity" : "kakao-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kakao/kakao-ios-sdk",
+      "state" : {
+        "revision" : "ca8c7e9c3ca81367661f4333ad758bea9fb50dc3",
+        "version" : "2.18.0"
+      }
+    },
+    {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher.git",
@@ -169,6 +187,15 @@
       "state" : {
         "revision" : "cf62cdaea48b77f1a631e5cb3aeda6047c2cba1d",
         "version" : "1.23.0"
+      }
+    },
+    {
+      "identity" : "swiftui-flow-layout",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/globulus/swiftui-flow-layout.git",
+      "state" : {
+        "revision" : "de7da3440c3b87ba94adfa98c698828d7746a76d",
+        "version" : "1.0.5"
       }
     }
   ],

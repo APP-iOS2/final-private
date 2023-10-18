@@ -21,9 +21,9 @@ struct CatecoryView: View {
             
             HStack {
                 Text("카테고리")
-                    .font(.title2).fontWeight(.semibold)
+                    .font(.pretendardMedium20)
                 Text("(최대 3개)")
-                    .font(.footnote)
+                    .font(.pretendardRegular12)
                     .foregroundColor(.secondary)
             }
             
@@ -32,7 +32,7 @@ struct CatecoryView: View {
                     VStack {
                         if selectedToggle[index] {
                             Text(Category.allCases[index].categoryName)
-                                .font(.body)
+                                .font(.pretendardMedium16)
                                 .foregroundColor(.black)
                                 .frame(width: 70, height: 30)
                                 .padding(.vertical, 4)

@@ -10,11 +10,15 @@ import SwiftUI
 struct ReservationView: View {
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
+    @EnvironmentObject var holidayManager: HolidayManager
+    
+    @ObservedObject var calendarData = CalendarData()
     
     @State private var showingDate: Bool = false    // 예약 일시 선택
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var isSelectedTime: Bool = false
     @State private var isShwoingConfirmView: Bool = false
+    
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
@@ -25,6 +29,7 @@ struct ReservationView: View {
     private let range = 1...6  // stepper 인원제한
     
     let shopData: Shop
+    let sortedWeekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
     
     var body: some View {
         NavigationStack {
@@ -38,11 +43,12 @@ struct ReservationView: View {
                         .opacity(0)
                     
                     Text("예약 일시")
-                        .font(Font.pretendardBold18)
+                        .font(.pretendardBold18)
                     
                     HStack {
                         Image(systemName: "calendar")
                         HStack {
+                            // 이 때 호출하면 언제 메소드는 언제 호출되는거야?
                             Text(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))
                             Text(" / ")
                             Text(isSelectedTime ? self.reservedTime + " \(self.reservedHour)시" : "시간")
@@ -55,13 +61,19 @@ struct ReservationView: View {
                             Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                         }
                     }
-                    .font(Font.pretendardMedium24)
+                    .font(.pretendardMedium18)
                     .padding()
                     .background(Color("SubGrayColor"))
+                    .cornerRadius(12)
                     .padding(.bottom)
                     
                     if showingDate {
-                        DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: $isSelectedTime)
+                        DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: $isSelectedTime, shopData: shopData)
+                            .onChange(of: calendarData.selectedDate) { newValue in
+                                temporaryReservation.date = newValue
+                                print("클래스에 있는 데이트: \(calendarData.selectedDate)")
+                                print("임시 예약 일: \(temporaryReservation.date)")
+                            }
                             .onChange(of: temporaryReservation.time) { newValue in
                                 self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
                                 self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1
@@ -69,7 +81,7 @@ struct ReservationView: View {
                     }
                     
                     Text("인원")
-                        .font(Font.pretendardBold24)
+                        .font(.pretendardBold18)
                     
                     HStack {
                         Image(systemName: "person")
@@ -82,18 +94,18 @@ struct ReservationView: View {
                         }
                         .disabled(!isSelectedTime)
                     }
-                    .font(Font.pretendardMedium18)
+                    .font(.pretendardMedium18)
                     .padding()
                     .background(Color.subGrayColor)
+                    .cornerRadius(12)
                     .padding(.bottom, 20)
                     
-                    // 뷰 따로 빼야함
                     // 가게 예약 가능인원 정보를 받을지 말지 정해야함
                     if showingNumbers {
                         HStack {
                             Image(systemName: "info.circle")
                             Text("1~6명 까지 선택 가능합니다.")
-                                .font(Font.pretendardRegular16)
+                                .font(.pretendardRegular16)
                         }
                         
                         Divider()
@@ -111,15 +123,42 @@ struct ReservationView: View {
                             Image(systemName: "info.circle")
                             Text("알립니다")
                         }
-                        .font(Font.pretendardBold18)
+                        .font(.pretendardBold18)
                         .foregroundColor(Color("AccentColor"))
                         .padding(.bottom, 6)
                         
-                        // BreakTime에 대한 Data 없음
                         Text("Break Time")
-                        Text("월~금: 15:00 ~ 17:00")
-                        Text("토~일: 15:00 ~ 17:00")
-                        Text("당일 예약은 예약을 받지 않습니다.\n예약시간은 10분 경과시, 자동 취소됩니다.\n양해부탁드립니다.")
+                            .font(Font.pretendardMedium18)
+                        
+                        VStack(alignment: .leading) {
+                            ForEach(sortedWeekdays, id: \.self) { day in
+                                if let hours = shopData.breakTimeHours[day] {
+                                    HStack {
+                                        Text("\(day)")
+                                        
+                                        Spacer()
+                                        
+                                        if shopData.regularHoliday.contains(where: { holidayString in
+                                            return holidayString == day
+                                        }) {
+                                            Text("정기 휴무")
+                                        } else {
+                                            ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
+                                        }
+                                    }
+                                    .font(Font.pretendardRegular16)
+                                    .padding(.bottom, 1)
+                                }
+                            }
+                            if shopData.breakTimeHours.isEmpty {
+                                Text("브레이크 타임이 없습니다.")
+                            }
+                        }
+                        .padding(10)
+                        
+                        Text("당일 예약은 예약시간 1시간 전까지 가능합니다.")
+                            .padding(.bottom, 1)
+                        Text("예약시간은 10분 경과시, 자동 취소됩니다.\n양해부탁드립니다.")
                     }
                     .padding()
                     .background(Color.subGrayColor)
@@ -151,5 +190,6 @@ struct ReservationView_Previews: PreviewProvider {
         ReservationView(isReservationPresented: .constant(true), shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
+            .environmentObject(HolidayManager())
     }
 }
