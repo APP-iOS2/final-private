@@ -27,6 +27,7 @@ enum LoginPlatform {
 class AuthStore: ObservableObject {
     
     @Published var currentUser: Firebase.User?
+    @Published var welcomeToast: Bool = false
     @Published var loginPlatform: LoginPlatform = .none
     
     let userStore: UserStore = UserStore()
@@ -100,8 +101,8 @@ class AuthStore: ObservableObject {
                                 print(error.localizedDescription)
                             } else {
                                 if let user = User(document: userData) {
-                                    print("로그인성공1")
                                     self.currentUser = result?.user
+                                    welcomeToast = true
                                     self.userStore.createUser(user: user)
                                     self.loginPlatform = .google
                                 }
@@ -118,6 +119,7 @@ class AuthStore: ObservableObject {
                                 return
                             } else {
                                 self.currentUser = result?.user
+                                welcomeToast = true
                                 self.loginPlatform = .google
                             }
                         }
