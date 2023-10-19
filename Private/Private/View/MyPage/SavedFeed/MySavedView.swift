@@ -14,9 +14,9 @@ struct MySavedView: View {
     @State var isMyPageFeedSheet: Bool = false
     @State var selctedFeed : MyFeed = MyFeed()
     @State private var isLongPressing = false
-    var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
-                               GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
-                               GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]
+    var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
+                               GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
+                               GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
     var body: some View {
         ScrollView {
             if userStore.mySavedFeedList.isEmpty {
@@ -38,7 +38,7 @@ struct MySavedView: View {
                                 Image(systemName: "photo")
                             }.resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: .screenWidth*0.95*0.3 ,height: .screenWidth*0.95*0.3)
+                                .frame(width: .screenWidth * 0.33, height: .screenWidth * 0.33)
                                 .clipShape(Rectangle())
                         }
                         .sheet(isPresented: $isMyPageFeedSheet){
@@ -62,6 +62,7 @@ struct MySavedView: View {
                 }
             }
         }
+        .ignoresSafeArea()
     }
 }
 

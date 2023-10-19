@@ -37,14 +37,19 @@ struct TextMaster: View {
         self.becomeFirstResponder = becomeFirstResponder
         self.placeholder = placeholder
         
-        let font = UIFont.systemFont(ofSize: fontSize)
-        self.font = font
-        _dynamicHeight = State(initialValue: font.lineHeight * CGFloat(minLine) + 16) // textContainerInset 디폴트 값은 top, bottom 으로 각각 패딩 8 씩 들어감
+        let font = UIFont(name: "Pretendard-Regular", size: fontSize)
+        self.font = font!
+        _dynamicHeight = State(initialValue: font!.lineHeight * CGFloat(minLine) + 16) // textContainerInset 디폴트 값은 top, bottom 으로 각각 패딩 8 씩 들어감
     }
     
     var body: some View {
         
         ZStack(alignment: .topLeading) {
+//            RoundedRectangle(cornerRadius: 10) // 테두리를 둥글게 만들기 위한 RoundedRectangle 사용
+//                .fill(Color.clear)
+//                .border(Color.privateColor, width: 1)
+//                .frame(height: dynamicHeight)
+            
             if text.isEmpty {
                 Text(placeholder)
                     .font(.custom(font.familyName, size: font.pointSize))
@@ -63,7 +68,7 @@ struct TextMaster: View {
                 becomeFirstResponder: becomeFirstResponder)
             .frame(height: dynamicHeight)
             .focused(isFocused)
-            .border(isFocused.wrappedValue ? Color.blue : Color.gray, width: 1)
+//            .border(isFocused.wrappedValue ? Color.privateColor : Color.gray, width: 1)
         }
     }
 }
@@ -86,6 +91,7 @@ fileprivate struct UITextViewRepresentable: UIViewRepresentable {
     textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     textView.isScrollEnabled = false
     textView.bounces = false
+    textView.layer.cornerRadius = 10
 
     if becomeFirstResponder {
       textView.becomeFirstResponder()

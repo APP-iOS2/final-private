@@ -13,9 +13,9 @@ struct LocationSearchView: View {
     
     @Binding var showLocation: Bool
     @Binding var searchResult: SearchResult
+    @Binding var isSearchedLocation: Bool
     
     @State private var searchText: String = ""
-    
     var body: some View {
         VStack(alignment: .leading) {
             SearchBarTextField(text: $searchText, placeholder: "원하는 위치명을 입력하세요.")
@@ -29,26 +29,38 @@ struct LocationSearchView: View {
                         } label: {
                             VStack(alignment: .leading) {
                                 Text("\(location.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                                    .foregroundStyle(.primary)
+                                    .font(.pretendardMedium16)
+                                    .foregroundStyle(Color.privateColor)
                                 Text("\(location.roadAddress)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                     .font(.pretendardRegular12)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(Color.privateColor)
                             }
                         }
                         .padding()
                     }
+                    
+
                 }
+            }
+            Button {
+                isSearchedLocation = true
+                showLocation = false
+            } label: {
+                Text("원하시는 장소가 없으신가요?")
             }
             .onChange(of: searchText, perform: { _ in
                 locationSearchStore.requestSearchLocationResultList(query: searchText)
             })
         }
         .padding()
+        .onAppear {
+            locationSearchStore.requestSearchLocationResultList(query: searchText)
+        }
     }
 }
 
 struct LocationSearchView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationSearchView(showLocation: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
+        LocationSearchView(showLocation: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), isSearchedLocation: .constant(true))
     }
 }

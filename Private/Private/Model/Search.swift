@@ -16,10 +16,10 @@ struct SearchResultList: Codable {
 }
 
 struct SearchResult: Codable, Hashable {
-    let title: String
+    var title: String
     let category: String
     let address: String
-    let roadAddress: String
+    var roadAddress: String
     let mapx: String
     let mapy: String
 }

@@ -25,26 +25,35 @@ struct MainHomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                HStack {
-                    Button {
-                        selectedNumber = 0
-                    } label: {
-                        Image(systemName: "map")
-                        Text("지도")
+                HStack(alignment: .bottom) {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Button {
+                                selectedNumber = 0
+                            } label: {
+                                Image(systemName: "map")
+                                Text("지도")
+                            }
+                            .font(.pretendardBold20)
+                            .foregroundColor(selectedNumber == 0 ? .privateColor : .subGrayColor)
+                            .padding(.bottom, 10)
+                            .padding(.trailing, 10)
+                            .modifier(YellowBottomBorder(showBorder: selectedNumber == 0))
+                            
+                            Button {
+                                selectedNumber = 1
+                            } label: {
+                                Image(systemName: "text.justify")
+                                Text("피드")
+                            }
+                            .font(.pretendardBold20)
+                            .foregroundColor(selectedNumber == 1 ? .privateColor : .subGrayColor)
+                            .padding(.bottom, 10)
+                            .padding(.trailing, 10)
+                            .modifier(YellowBottomBorder(showBorder: selectedNumber == 1))
+                        }
                     }
-                    .foregroundColor(selectedNumber == 0 ? .primary : .subGrayColor)
-                    .padding(.bottom, 10)
-                    .modifier(BottomBorder(showBorder: selectedNumber == 0))
-                    
-                    Button {
-                        selectedNumber = 1
-                    } label: {
-                        Image(systemName: "text.justify")
-                        Text("피드")
-                    }
-                    .foregroundColor(selectedNumber == 1 ? .primary : .subGrayColor)
-                    .padding(.bottom, 10)
-                    .modifier(BottomBorder(showBorder: selectedNumber == 1))
                     
                     Spacer()
                     
@@ -53,14 +62,25 @@ struct MainHomeView: View {
                         print("검색 버튼 클릭")
                     } label: {
                         Image(systemName: "magnifyingglass")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 22)
+                            .padding(.bottom, 10)
+                            .padding(.trailing, 10)
                     }
                     
                     NavigationLink {
                         ChatRoomListView()
                     } label: {
                         Image(systemName: "paperplane")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 22)
+                            .padding(.bottom, 10)
+                            .padding(.trailing, 10)
                     }
                 }
+                .frame(height: 50)
             }
             .padding(.leading, 10)
             .padding(.horizontal, 10)
