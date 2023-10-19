@@ -52,7 +52,7 @@ struct ReservationDetailView: View {
                 .cornerRadius(8)
                 .padding(.bottom)
                 
-                ReservationCardCell(title: "최종 결제할 금액", content: "\(reservationData.numberOfPeople) 원")
+                ReservationCardCell(title: "최종 결제할 금액", content: reservationData.priceStr)
                     .padding(.bottom)
                 
                 Divider()
@@ -101,7 +101,7 @@ struct ReservationDetailView: View {
             ReservationButton(text: "예약하기") {
                 isShowingAlert.toggle()
             }
-//            .tint(.primary)
+            .foregroundStyle(Color.black)
             .padding()
             .alert("예약 확정", isPresented: $isShowingAlert) {
                 Button() {
