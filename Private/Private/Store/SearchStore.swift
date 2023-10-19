@@ -42,9 +42,9 @@ final class SearchStore: ObservableObject {
     
     func searchUser(searchTerm: String) async {
         self.searchUserLists = []
-        let db = Firestore.firestore()
         
-        let query = db.collection("User")
+        
+        let query = userCollection
                      .whereField("nickname", isEqualTo: searchTerm)
                      .limit(to: 10)
         
