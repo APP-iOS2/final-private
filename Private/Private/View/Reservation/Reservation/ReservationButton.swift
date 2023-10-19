@@ -16,16 +16,24 @@ struct ReservationButton: View {
             self.action()
         } label: {
             Text(self.text)
+                .font(.pretendardBold18)
                 .frame(maxWidth: .infinity)
                 .padding()
         }
+        .foregroundStyle(Color.black)
         .background(Color("AccentColor"))
         .cornerRadius(12)
     }
 }
 
-//struct MyButton_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MyButton(action: performAction { print("버튼 눌림")}, text: "예약하기")
-//    }
-//}
+struct MyButton_Previews: PreviewProvider {
+    let action: () -> Void = {
+        print("액션 클로저가 호출되었습니다.")
+    }
+    
+    static var previews: some View {
+        ReservationButton(text: "예약하기") {
+            print("프리뷰")
+        }
+    }
+}

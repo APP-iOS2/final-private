@@ -61,6 +61,7 @@ struct ReservationDetailView: View {
                 VStack(alignment: .leading) {
                     Text("예약자 정보")
                         .font(.pretendardMedium20)
+                        .foregroundStyle(Color.privateColor)
                         .padding(.bottom, 2)
                     
                     ReservationCardCell(title: "예약자", content: userStore.user.name)
@@ -77,6 +78,7 @@ struct ReservationDetailView: View {
                 VStack(alignment: .leading) {
                     Text("판매자 정보")
                         .font(.pretendardMedium20)
+                        .foregroundStyle(Color.privateColor)
                         .padding(.bottom, 2)
                     
                     ReservationCardCell(title: "상호", content: shopData.name)
@@ -99,7 +101,7 @@ struct ReservationDetailView: View {
             ReservationButton(text: "예약하기") {
                 isShowingAlert.toggle()
             }
-            .tint(.primary)
+//            .tint(.primary)
             .padding()
             .alert("예약 확정", isPresented: $isShowingAlert) {
                 Button() {

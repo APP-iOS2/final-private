@@ -97,7 +97,7 @@ struct ReservationView: View {
                                 }
                             } label: {
                                 Image(systemName: showingNumbers ? "chevron.up.circle": "chevron.down.circle")
-                                    .foregroundStyle(Color.privateColor)
+                                    .foregroundStyle(isSelectedTime ? Color.privateColor : Color.secondary)
                             }
                             .disabled(!isSelectedTime)
                         }

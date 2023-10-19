@@ -181,7 +181,6 @@ struct ReservationCardCell: View {
         HStack(alignment: .center, spacing: 0) {
             Text("\(title)")
                 .font(.pretendardMedium18)
-                .foregroundStyle(Color.privateColor)
             
             Spacer()
             

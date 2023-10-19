@@ -217,19 +217,23 @@ struct ShopDetailFooterView: View {
                     .font(.pretendardSemiBold12)
             }
             
-            Button {
+            ReservationButton(text: "예약하기") {
                 isReservationPresented.toggle()
-            } label: {
-                Text("예약하기")
-                    .font(.pretendardBold20)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
             }
-            .frame(height: CGFloat.screenHeight * 0.065)
-            .frame(maxWidth: .infinity)
-            .tint(.primary)
-            .background(Color.privateColor)
-            .cornerRadius(12)
+            
+//            Button {
+//                isReservationPresented.toggle()
+//            } label: {
+//                Text("예약하기")
+//                    .font(.pretendardBold20)
+//                    .foregroundStyle(.black)
+//                    .frame(maxWidth: .infinity)
+//            }
+//            .frame(height: CGFloat.screenHeight * 0.065)
+//            .frame(maxWidth: .infinity)
+//            .tint(.primary)
+//            .background(Color.privateColor)
+//            .cornerRadius(12)
         }
         .padding(10)
         .frame(width: CGFloat.screenWidth, height: CGFloat.screenHeight * 0.1)
