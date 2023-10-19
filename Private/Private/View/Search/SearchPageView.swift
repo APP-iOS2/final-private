@@ -43,7 +43,7 @@ struct SearchPageView: View {
                         }
                 } else {
                     Text("최근 검색 기록이 없습니다")
-                        .font(.pretendardRegular12)
+                        .font(.pretendardRegular16)
                         .foregroundColor(.secondary)
                 }
                 
@@ -95,7 +95,7 @@ struct SearchPageView: View {
                     }
                 } else {
                     Text("최근 검색 기록이 없습니다")
-                        .font(.pretendardRegular12)
+                        .font(.pretendardRegular16)
                         .foregroundColor(.gray)
                 }
             }
