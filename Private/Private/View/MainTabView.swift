@@ -67,20 +67,32 @@ struct MainTabView: View {
             NavigationStack {
                 TabView(selection: selectionBinding) {
                     MainHomeView(root: $rootSection1, selection: $selection, showLocation: $showLocation, searchResult: $searchResult).tabItem {
-                        Image(systemName: "house.fill")
-                    }.tag(1)
+                        Label("홈", systemImage: "house.fill")
+                    }
+                    .padding(.bottom, 5)
+                    .tag(1)
                     SearchView(root: $rootSection2, selection: $selection).tabItem {
-                        Image(systemName: "magnifyingglass")
-                    }.tag(2)
+                        Label("검색", systemImage: "magnifyingglass")
+                    }
+                    .padding(.bottom, 5)
+                    .tag(2)
                     UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true), showLocation: $showLocation, searchResult: $searchResult, coord: $coord).tabItem {
                         Image(systemName: "plus")
-                    }.tag(3)
+                    }
+                    .padding(.bottom, 5)
+                    .tag(3)
                     ShopListView(root: $rootSection4, selection: $selection).tabItem {
                         Image(systemName: "calendar.badge.clock")
-                    }.tag(4)
+                        Text("예약")
+                    }
+                    .padding(.bottom, 5)
+                    .tag(4)
                     MyPageView(root: $rootSection5, selection: $selection).tabItem {
                         Image(systemName: "person.fill")
-                    }.tag(5)
+                        Text("마이페이지")
+                    }
+                    .padding(.bottom, 5)
+                    .tag(5)
                 }
                 .tint(.privateColor)
             }

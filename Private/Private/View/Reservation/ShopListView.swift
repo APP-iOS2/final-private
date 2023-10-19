@@ -77,7 +77,6 @@ struct ShopListView: View {
                 }
             }
         }
-        .padding(10)
         .fullScreenCover(isPresented: $isShowingFilteringView) {
             ShopListFilteringView(originalShopCategory: selectedShopCategory, originalShopListSortCriterion: selectedShopListSortCriterion, selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingFilteringView: $isShowingFilteringView)
         }
