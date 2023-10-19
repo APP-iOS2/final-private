@@ -121,15 +121,4 @@ final class FollowStore: ObservableObject {
         }
     }
     
-//        func likeButtonTapped(user: User) {
-//            let isLiked = user.nickname.contains(where: { $0.id == user.id })
-//            if isLiked {
-//                guard let index = user.nickname.firstIndex(where: { $0.id == followerList.id }) else { return }
-//                user.nickname.remove(at: index)
-//            } else {
-//                user.nickname.append(followers)
-//            }
-//        }
-    
-    
 } //

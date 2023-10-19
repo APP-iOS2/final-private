@@ -80,11 +80,15 @@ struct OtherInfoView: View {
                 .padding(.bottom, 10.0)
                 
                 FollowButton(user: user)
-                        .font(.pretendardRegular14)
+                        .font(.pretendardSemiBold14)
                         .frame(width: .screenWidth*0.5, height: 32)
+                        .foregroundColor(.black)
                         .background(followStore.followCheck ? Color("AccentColor") : Color.white)
                         .cornerRadius(8)
-                        .foregroundColor(.black)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 3)
+                                .stroke(Color.gray, lineWidth: followStore.followCheck ? 1 : 0)
+                        )
             }
             .padding(.top, 40.0)
         }
