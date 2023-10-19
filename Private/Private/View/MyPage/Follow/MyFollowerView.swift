@@ -25,7 +25,7 @@ struct MyFollowerView: View {
                             ZStack {
                                 Circle()
                                     .frame(width: .screenWidth*0.13)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.primary)
                                 Image(systemName: "person.fill")
                                     .resizable()
                                     .frame(width: .screenWidth*0.115,height: .screenWidth*0.115)

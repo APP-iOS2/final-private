@@ -28,7 +28,7 @@ struct MyHistoryView: View {
                     if userStore.myFeedList.isEmpty {
                         Text("게시물이 존재 하지 않습니다.")
                             .font(.pretendardBold24)
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .padding(.top, .screenHeight * 0.2 + 37.2)
                     } else {
                         LazyVGrid(
