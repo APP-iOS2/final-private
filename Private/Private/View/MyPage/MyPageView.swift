@@ -96,10 +96,17 @@ struct MyPageView: View {
                                 .scaledToFit()
                                 .frame(width: 15)
                         } else {
-                            Image ("bookmark")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 15)
+                            if colorScheme == ColorScheme.dark {
+                                Image ("bookmark_dark")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 15)
+                            } else {
+                                Image ("bookmark_light")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 15)
+                            }
                         }
                         Text("저장한 피드")
                     }
