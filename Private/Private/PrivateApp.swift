@@ -22,6 +22,7 @@ struct PrivateApp: App {
     @StateObject private var shopStore = ShopStore()
     @StateObject private var holidayManager = HolidayManager()
     @StateObject private var followStore = FollowStore()
+    @StateObject private var chatRoomStore = ChatRoomStore()
     
     init() {
         let providerFactory = AppCheckDebugProviderFactory()
@@ -41,7 +42,7 @@ struct PrivateApp: App {
                 .environmentObject(userStore)
                 .environmentObject(feedStore)
                 .environmentObject(SearchStore())
-                .environmentObject(ChatRoomStore())
+                .environmentObject(chatRoomStore)
                 .environmentObject(reservationStore)
                 .environmentObject(shopStore)
                 .environmentObject(holidayManager)
