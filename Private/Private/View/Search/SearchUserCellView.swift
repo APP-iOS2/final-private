@@ -6,39 +6,30 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct SearchUserCellView: View {
     
     @EnvironmentObject private var followStore: FollowStore
     
-    var user: User
+    let user: User
     
     var body: some View {
         HStack {
-            AsyncImage(url: URL(string: user.profileImageURL)) { image in
-                image
-                    .resizable()
-                    .frame(width: 44, height: 44)
-                    .aspectRatio(contentMode: .fill)
-                    .clipShape(Circle())
-            } placeholder: {
-                Circle()
-                    .foregroundColor(.secondary)
+            KFImage(URL(string: user.profileImageURL))
+                .resizable()
+                .frame(width: 48, height: 48)
+                .aspectRatio(contentMode: .fill)
+                .clipShape(Circle())
+            
+            VStack(alignment: .leading) {
+                Text(user.nickname)
+                    .font(.pretendardSemiBold14)
+                
+                Text(user.name)
+                    .font(.pretendardRegular10)
             }
-            .frame(width: 44, height: 44)
-            .padding()
-            
-            Text(user.nickname)
-                .font(.pretendardMedium16)
-                .foregroundColor(.white)
-            Spacer()
-            
-            FollowButton(user: user)
-                .font(.pretendardBold18)
-                .frame(width: .screenWidth * 0.2, height: 12)
-                .padding(12)
-                .foregroundColor(.black)
-                .cornerRadius(18)
+            Spacer() // // HStack 내의 가장 위에 쓰면 모든 요소가 오른쪽 정렬
         }
     }
 }

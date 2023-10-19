@@ -14,7 +14,7 @@ struct ChatRoomListView: View {
     @EnvironmentObject var userStore: UserStore
     
     @State private var searchText: String = ""
-    
+    @State private var inSearchMode = false
     // 사용자 정보 생성
 //    let user = User(email: "example@example.com", name: "John Doe")
 
@@ -30,7 +30,7 @@ struct ChatRoomListView: View {
     
     var body: some View {
         List {
-            SearchBarTextField(text: $searchText, placeholder: "검색")
+            SearchBarTextField(text: $searchText, isEditing: $inSearchMode, placeholder: "검색")
                 .padding(.top, 10)
                 .listRowSeparator(.hidden)
             
