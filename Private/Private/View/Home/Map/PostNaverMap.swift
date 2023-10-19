@@ -182,14 +182,14 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
         marker.mapView = view.mapView
         markers.append(marker)
     }
-    // MARK: 해당 장소 이동 시 위치 좌표에 마커
+    // MARK: 신규장소 등록 후 선택하여 이동 시 위치 좌표에 마커
     func makeNewLocationMarker() {
         
         removeAllMarkers()
         
         let marker = NMFMarker()
-        marker.position = NMGLatLng(lat: tappedLatLng.lat, lng: tappedLatLng.lng)
-        
+        marker.position = tappedLatLng
+        print("신규마커 이동시 좌표: \(tappedLatLng)")
         marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
         marker.captionMinZoom = 10
         marker.captionMaxZoom = 17
