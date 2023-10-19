@@ -15,11 +15,9 @@ struct ChatRoomListView: View {
     
     @State private var searchText: String = ""
     
-//    var chatRoom = ChatRoom(firstUserNickname: "boogie", firstUserProfileImage: "", secondUserNickname: "ii", secondUserProfileImage: "")
-    
     var body: some View {
         List {
-            SearchBarTextField(text: $searchText, placeholder: "검색")
+            SearchBarTextField(text: $searchText, isEditing: $inSearchMode, placeholder: "검색")
                 .padding(.top, 10)
                 .listRowSeparator(.hidden)
             
@@ -52,19 +50,9 @@ struct ChatRoomListView: View {
         }
         .navigationTitle("채팅방")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing: EditButton().foregroundColor(.accentColor))
-//        .navigationBarItems(trailing:
-//                                Button{print(":::chatRoom")
-//                                print("\(chatRoom)")
-                                // 테스트를 위한 더미데이터
-//                                let chatRoom = ChatRoom(otherUser: otherUser, messages: [Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)])
-            //채팅방 추가
-//                                chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)
-//        } label: {
-//                                Image(systemName: "plus.bubble")
-//        }
-                            
-                            
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
+        .navigationBarItems(trailing: EditButton().foregroundColor(.privateColor))
     }
     
     func deleteChatRoom(at offsets: IndexSet) {

@@ -28,25 +28,13 @@ struct ShopListView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     
-    @State var selectedShopCategory: Category = .koreanFood
+    @State var selectedShopCategory: Category = .general
     @State var selectedShopListSortCriterion: ShopListSortCriterion = .basic
     
-    @State var isShowingSheet: Bool = false
-    
-    @State var currentLocation: String = ""
-    
-//    init(locationText: String) {
-//        _currentLocation = State(initialValue: coordinator.convertLocationToAddress())
-//    }
+    @State var isShowingFilteringView: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .center, spacing: 0) {
-                Text("\(currentLocation)")
-                
-                Spacer()
-            }
-            
             HStack(alignment: .center, spacing: 0) {
                 Text("\(selectedShopCategory.categoryName), \(selectedShopListSortCriterion.rawValue)")
                     .font(Font.pretendardSemiBold16)
@@ -54,8 +42,7 @@ struct ShopListView: View {
                 Spacer()
                 
                 Button {
-//                    convertLocationToAddress(location: CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng))
-                    isShowingSheet.toggle()
+                    isShowingFilteringView.toggle()
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease")
                         .resizable()
@@ -67,7 +54,11 @@ struct ShopListView: View {
             
             ScrollView(.vertical) {
                 ForEach(shopStore.shopList.filter({ shop in
-                    return shop.category == selectedShopCategory
+                    if selectedShopCategory == Category.general {
+                        return true
+                    } else {
+                        return shop.category == selectedShopCategory
+                    }
                 }).sorted(by: { shop1, shop2 in
                     switch selectedShopListSortCriterion {
                     case .basic:
@@ -80,54 +71,32 @@ struct ShopListView: View {
                         return CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord1) < CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng).distance(from: coord2)
                     }
                 }), id: \.self) { shop in
-//                        ShopListCell(shop: shop)
-                    ShopListCell(shopViewModel: ShopViewModel(shop: shop, userID: userStore.user.id), shop: shop)
+                    ShopListCell(shop: shop)
                             .padding(.vertical, 5)
                             .foregroundColor(colorScheme == ColorScheme.dark ? Color.white : Color.black)
                 }
             }
         }
-        .padding(10)
-        .sheet(isPresented: $isShowingSheet) {
-            ShopListFilterSheetView(originalShopCategory: selectedShopCategory, originalShopListSortCriterion: selectedShopListSortCriterion, selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingSheet: $isShowingSheet)
+        .fullScreenCover(isPresented: $isShowingFilteringView) {
+            ShopListFilteringView(originalShopCategory: selectedShopCategory, originalShopListSortCriterion: selectedShopListSortCriterion, selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingFilteringView: $isShowingFilteringView)
         }
-//        .onAppear {
-////            currentLocation = convertLocationToAddress(location: CLLocation(latitude: coordinator.coord.lat, longitude: coordinator.coord.lng))
-//            currentLocation = coordinator.convertLocationToAddress()
-//        }
     }
-    
-//    func convertLocationToAddress(location: CLLocation) -> String {
-//        var locationString: String = ""
-//        let geocoder = CLGeocoder()
-//
-//        geocoder.reverseGeocodeLocation(location) { placemarks, error in
-//            if error == nil, let placemark = placemarks?.first {
-//                locationString = "\(placemark.country ?? "") \(placemark.locality ?? "") \(placemark.name ?? "")"
-//            }
-//        }
-//
-//        return locationString
-//    }
 }
 
 struct ShopListView_Previews: PreviewProvider {
     static var previews: some View {
         ShopListView(root: .constant(true), selection: .constant(4))
             .environmentObject(ShopStore())
-//        ShopListView(locationText: "")
     }
 }
-
 
 struct ShopListCell: View {
     
     @EnvironmentObject var userStore: UserStore
-    @ObservedObject var shopViewModel: ShopViewModel
     
     @State var isShowingDetailView: Bool = false
     
-    let shop: Shop
+    @State var shop: Shop
     
     var body: some View {
         NavigationStack {
@@ -156,13 +125,13 @@ struct ShopListCell: View {
                 }
             }
             .navigationDestination(isPresented: $isShowingDetailView) {
-                ShopDetailView(shopViewModel: ShopViewModel(shop: shop, userID: userStore.user.email))
+                ShopDetailView(shop: shop)
             }
         }
     }
 }
 
-struct ShopListFilterSheetView: View {
+struct ShopListFilteringView: View {
     
     @State var originalShopCategory: Category
     @State var originalShopListSortCriterion: ShopListSortCriterion
@@ -170,7 +139,7 @@ struct ShopListFilterSheetView: View {
     @Binding var selectedShopCategory: Category
     @Binding var selectedShopListSortCriterion: ShopListSortCriterion
     
-    @Binding var isShowingSheet: Bool
+    @Binding var isShowingFilteringView: Bool
 
     var body: some View {
         NavigationStack {
@@ -179,7 +148,6 @@ struct ShopListFilterSheetView: View {
                     FlowLayout(mode: .scrollable, items: Category.allCases, itemSpacing: 5) { data in
                         Button {
                             selectedShopCategory = data
-                            print(selectedShopCategory.categoryName)
                         } label: {
                             Text(data.categoryName)
                                 .font(Font.pretendardBold14)
@@ -196,6 +164,7 @@ struct ShopListFilterSheetView: View {
                 }
                 
                 Divider()
+                    .padding(.vertical, 10)
                 
                 Section {
                     FlowLayout(mode: .scrollable, items: ShopListSortCriterion.allCases, itemSpacing: 5) { data in
@@ -224,14 +193,15 @@ struct ShopListFilterSheetView: View {
                     Button {
                         selectedShopCategory = originalShopCategory
                         selectedShopListSortCriterion = originalShopListSortCriterion
-                        isShowingSheet.toggle()
+                        isShowingFilteringView.toggle()
                     } label: {
                         Text("취소")
                     }
                 }
+                
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        isShowingSheet.toggle()
+                        isShowingFilteringView.toggle()
                     } label: {
                         Text("적용")
                     }

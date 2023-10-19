@@ -18,7 +18,6 @@ struct MapMainView: View {
     @State private var coord: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
     var body: some View {
         VStack {
-            Text("Print를 위해 잠시 넣어둠 Tapped LatLng: \(coordinator.tappedLatLng?.description ?? "N/A")")
             NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView,
                      markerTitle: $coordinator.newMarkerTitle,
                      markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
@@ -32,7 +31,7 @@ struct MapMainView: View {
  
         .sheet(isPresented: $coordinator.showMarkerDetailView) {
             MapFeedSheetView(feed: feedStore.feedList.filter { $0.id == coordinator.currentFeedId }[0])
-                .presentationDetents([.height(400), .large])
+                .presentationDetents([.height(.screenHeight * 0.55)])
         }
         
         .overlay(

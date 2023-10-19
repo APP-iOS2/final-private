@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-struct User: Hashable {
+struct User: Identifiable, Hashable {
     let id: String = UUID().uuidString
     let email: String
     var name: String

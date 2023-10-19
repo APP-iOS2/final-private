@@ -37,7 +37,7 @@ struct MapFeedSheetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 15)
-                        .foregroundColor(.primary)
+                        .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
                         .padding(.top, 5)
 
                 }
@@ -55,7 +55,6 @@ struct MapFeedSheetView: View {
                 Spacer()
             }
             .padding(.horizontal, 20)
-            .padding(.bottom, 20)
             .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
             .background(Color.darkGraySubColor)
             

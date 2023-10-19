@@ -10,9 +10,9 @@ import Kingfisher
 
 struct OtherInfoView: View {
     
-    @EnvironmentObject private var followStore: FollowStore
-    @EnvironmentObject private var userStore :UserStore
-    @State var isModify: Bool = false
+    @EnvironmentObject var followStore: FollowStore
+    @EnvironmentObject var userStore :UserStore
+    @State private var isModify: Bool = false
     
     let user:User
     var body: some View {
@@ -80,11 +80,15 @@ struct OtherInfoView: View {
                 .padding(.bottom, 10.0)
                 
                 FollowButton(user: user)
-                        .font(.pretendardRegular14)
+                        .font(.pretendardSemiBold14)
                         .frame(width: .screenWidth*0.5, height: 32)
+                        .foregroundColor(.black)
                         .background(followStore.followCheck ? Color("AccentColor") : Color.white)
                         .cornerRadius(8)
-                        .foregroundColor(.black)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 3)
+                                .stroke(Color.gray, lineWidth: followStore.followCheck ? 1 : 0)
+                        )
             }
             .padding(.top, 40.0)
         }

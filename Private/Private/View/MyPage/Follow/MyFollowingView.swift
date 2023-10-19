@@ -40,7 +40,7 @@ struct MyFollowingView: View {
                         }
                         Text("\(following.nickname)")
                             .font(.pretendardMedium18)
-                            .foregroundColor(.primary)
+                            .foregroundColor(.white)
                             .padding(.leading, 15)
                     }
                     Spacer()

@@ -11,27 +11,36 @@ import FirebaseFirestore
 
 struct LocationDetailView: View {
     @EnvironmentObject var feedStore: FeedStore
-    @ObservedObject var coordinator: Coordinator = Coordinator.shared
-    
+    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
+
     var body: some View {
-        VStack {
-            // 이 뷰에는 마커가 찍히지 않는 맵이 들어가야함(중앙 마커는 존재)
-            Text("해당 장소로 이동")
-            NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView,
-                     markerTitle: $coordinator.newMarkerTitle,
-                     markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
+        ZStack {
+            VStack {
+                Text("\(postCoordinator.newMarkerTitle)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                    .font(.pretendardRegular14)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    .background(Color.darkGrayColor)
+                    .cornerRadius(30)
+                Spacer()
+            }
+            .zIndex(1)
+            .padding(.top, 20)
+            
+            PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView, coord: $postCoordinator.coord, tappedLatLng: $postCoordinator.tappedLatLng)
             
         }
         .onAppear {
             Coordinator.shared.feedList = feedStore.feedList
-            coordinator.makeMarkers()
+            postCoordinator.makeSearchLocationMarker()
         }
     }
 }
 
 struct LocationDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationView(coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
+        LocationDetailView()
             .environmentObject(UserStore())
             .environmentObject(FeedStore())
             .environmentObject(ShopStore())

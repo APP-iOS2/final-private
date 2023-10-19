@@ -16,7 +16,7 @@ struct ReservationDetailView: View {
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
     
-    @Binding var isShwoingConfirmView: Bool  // 해당 뷰를 내리기 위함
+    @Binding var isShwoingDetailView: Bool  // 해당 뷰를 내리기 위함
     @Binding var isReservationPresented: Bool  // ReservationView를 내리기 위함
     
     @Binding var reservationData: Reservation  // 예약 데이터
@@ -27,6 +27,7 @@ struct ReservationDetailView: View {
             ScrollView {
                 Text(shopData.name)
                     .font(.pretendardBold24)
+                    .foregroundStyle(.white)
                     .padding(.bottom, 12)
                 
                 Divider()
@@ -39,7 +40,12 @@ struct ReservationDetailView: View {
                         Text("\(reservedTime) \(reservedHour):00")
                         Spacer()
                     }
+                    .font(.pretendardRegular16)
+                    .foregroundStyle(.white)
+                    
                     Text("인원: \(reservationData.numberOfPeople)명")
+                        .font(.pretendardRegular16)
+                        .foregroundStyle(.white)
                 }
                 .padding()
                 .background(Color.subGrayColor)
@@ -100,8 +106,10 @@ struct ReservationDetailView: View {
                     print(#fileID, #function, #line, "- 예약 확정")
                     reservationData.requirement = requirementText
                     reservationStore.addReservationToFirestore(reservationData: reservationData)
-                    isShwoingConfirmView.toggle()
-                    isReservationPresented.toggle()
+                    
+                    isShwoingDetailView = false
+                    isReservationPresented = false
+
                 } label: {
                     Text("예약하기")
                 }
@@ -113,6 +121,10 @@ struct ReservationDetailView: View {
                 }
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
+        
         .onTapGesture {
             hideKeyboard()
         }
@@ -121,7 +133,7 @@ struct ReservationDetailView: View {
 
 struct ReservationDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationDetailView(isShwoingConfirmView: .constant(true), isReservationPresented: .constant(true), reservationData: .constant(ReservationStore.tempReservation), shopData: ShopStore.shop)
+        ReservationDetailView(isShwoingDetailView: .constant(true), isReservationPresented: .constant(true), reservationData: .constant(ReservationStore.tempReservation), shopData: ShopStore.shop)
             .environmentObject(ReservationStore())
             .environmentObject(UserStore())
     }

@@ -12,7 +12,7 @@ struct ReservationCardView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var shopStore: ShopStore
-    
+
     @State private var isShowDeleteMyReservationAlert: Bool = false
     @State private var isShowRemoveReservationAlert: Bool = false
     @State private var isShowModifyView: Bool = false
@@ -35,7 +35,8 @@ struct ReservationCardView: View {
                 Spacer()
                 Menu {
                     NavigationLink {
-                        ShopDetailView(shopViewModel: ShopViewModel(shop: shopData, userID: userStore.user.id))
+//                        ShopDetailView(shopViewModel: ShopViewModel(shop: shopData, userID: userStore.user.id))
+                        ShopDetailView(shop: shopData)
                     } label: {
                         Text("가게보기")
                     }
@@ -180,6 +181,7 @@ struct ReservationCardCell: View {
         HStack(alignment: .center, spacing: 0) {
             Text("\(title)")
                 .font(.pretendardMedium18)
+                .foregroundStyle(Color.privateColor)
             
             Spacer()
             
