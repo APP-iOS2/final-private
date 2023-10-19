@@ -14,13 +14,9 @@ struct UserListView: View {
     // searchStore: SearchStore() 형태로 초기화하면 두 번 호출되니까 이렇게 하면 안됨, SearchView.swift에서 이미 초기화
     @Binding var searchTerm: String
     
-    var users: [User] {
-            return searchTerm.isEmpty ? searchStore.users : searchStore.filteredUsers(searchTerm)
-        }
-    
     var body: some View {
         VStack {
-            if users.isEmpty {
+            if searchStore.searchUserLists.isEmpty {
                 Text("해당 사용자가 없습니다.")
                     .font(.pretendardMedium16)
                     .foregroundColor(.gray)
@@ -33,7 +29,7 @@ struct UserListView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal)
-        .onDisappear {
+        .onAppear {
             Task {
                 await fetchSearchResults()
             }
@@ -43,7 +39,7 @@ struct UserListView: View {
     var searchUserResult: some View {
         ScrollView {
             LazyVStack {
-                ForEach(users, id: \.self) { user in
+                ForEach(searchStore.searchUserLists, id: \.self) { user in
                     NavigationLink {
                         LazyView(OtherPageView(user: user))
                     } label: {

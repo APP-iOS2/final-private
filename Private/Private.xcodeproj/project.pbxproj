@@ -145,7 +145,6 @@
 		D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */; };
 		D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */; };
 		D1D2F7FD2AE0CAAC00C89FB7 /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */; };
-		D1D2F8012AE10EC300C89FB7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F8002AE10EC300C89FB7 /* Constants.swift */; };
 		D1DC8D512ACEAE2C0087CBD7 /* OtherPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D502ACEAE2C0087CBD7 /* OtherPageView.swift */; };
 		D1DC8D532ACEAE690087CBD7 /* OtherInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D522ACEAE690087CBD7 /* OtherInfoView.swift */; };
 		D1DC8D552ACEAE910087CBD7 /* OtherHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D542ACEAE910087CBD7 /* OtherHistoryView.swift */; };
@@ -299,7 +298,6 @@
 		D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStore.swift; sourceTree = "<group>"; };
 		D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCellView.swift; sourceTree = "<group>"; };
 		D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
-		D1D2F8002AE10EC300C89FB7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D1DC8D502ACEAE2C0087CBD7 /* OtherPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherPageView.swift; sourceTree = "<group>"; };
 		D1DC8D522ACEAE690087CBD7 /* OtherInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherInfoView.swift; sourceTree = "<group>"; };
 		D1DC8D542ACEAE910087CBD7 /* OtherHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherHistoryView.swift; sourceTree = "<group>"; };
@@ -595,7 +593,6 @@
 				B5549FBC2AD59E3000695A8F /* RequirementTextEditor.swift */,
 				06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */,
 				D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */,
-				D1D2F8002AE10EC300C89FB7 /* Constants.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -1126,7 +1123,6 @@
 				3CA30E1F2AC3B686002B7A8B /* SignUpView.swift in Sources */,
 				3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */,
 				3CCD2DFE2ABC37F8005709F4 /* TextMaster.swift in Sources */,
-				D1D2F8012AE10EC300C89FB7 /* Constants.swift in Sources */,
 				3C2FC8F12ACE9B750034F561 /* MapMarkerDetailStore.swift in Sources */,
 				B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */,
 				3CCD2DE22ABC3177005709F4 /* Feed.swift in Sources */,

@@ -32,11 +32,6 @@ struct SearchView: View {
                             SearchPageView(searchTerm: $searchTerm)
                         }
                     }
-                    .onChange(of: searchTerm, perform: { _ in
-                        Task {
-                            await fetchSearchResults()
-                        }
-                    })
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -48,9 +43,8 @@ struct SearchView: View {
             }
         }
     }
-    func fetchSearchResults() async {
-        await searchStore.searchUser(searchTerm: searchTerm)
-        searchStore.addRecentSearch(searchTerm)
-    }
+}
+#Preview {
+    SearchView(root: .constant(true), selection: .constant(2))
 }
 

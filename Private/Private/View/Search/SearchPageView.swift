@@ -71,7 +71,6 @@ struct SearchPageView: View {
                 } label: {
                     Image(systemName: "xmark.fill")
                 }
-                .padding(.trailing, 10)
             }
             .padding(.bottom, 8)
         }
@@ -87,17 +86,17 @@ struct SearchPageView: View {
                         .font(.pretendardMedium24)
                         .padding()
                     
+                    Divider().padding()
                 }
-                VStack(alignment: .leading) {
-                    if !searchStore.searchUserLists.isEmpty {
-                        ForEach(searchStore.searchUserLists, id: \.self) { user in
-                            RecentUserRowView(user: user)
-                        }
-                    } else {
-                        Text("최근 검색 기록이 없습니다")
-                            .font(.pretendardRegular16)
-                            .foregroundColor(.gray)
+                
+                if !searchStore.searchUserLists.isEmpty {
+                    ForEach(searchStore.searchUserLists, id: \.self) { user in
+                        RecentUserRowView(user: user)
                     }
+                } else {
+                    Text("최근 검색 기록이 없습니다")
+                        .font(.pretendardRegular16)
+                        .foregroundColor(.gray)
                 }
             }
         }
