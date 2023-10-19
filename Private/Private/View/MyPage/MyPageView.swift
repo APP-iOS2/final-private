@@ -23,7 +23,7 @@ struct MyPageView: View {
                 } label: {
                     Image(systemName: "gearshape")
                         .padding(.trailing,30)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 }
             }
             UserInfoView()
@@ -38,11 +38,11 @@ struct MyPageView: View {
                         Text("내 마커")
                             .font(.pretendardRegular14)
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 }
                 .frame(width: .screenWidth*0.5)
                 Divider()
-                    .background(Color.white)
+                    .background(Color.primary)
                     .frame(height: .screenHeight*0.02)
                 NavigationLink {
                     MyReservation(isShowingMyReservation: .constant(true))
@@ -52,7 +52,7 @@ struct MyPageView: View {
                         Text("예약내역")
                             .font(.pretendardRegular14)
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 }
                 .frame(width: .screenWidth*0.5)
             }
@@ -65,7 +65,7 @@ struct MyPageView: View {
                         Text("내 피드")
                     }
                     .font(.pretendardRegular12)
-                    .foregroundColor(viewNumber == 0 ? .privateColor : .white)
+                    .foregroundColor(viewNumber == 0 ? .privateColor : .primary)
                     .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 0))
@@ -89,7 +89,7 @@ struct MyPageView: View {
                         Text("저장한 피드")
                     }
                     .font(.pretendardRegular12)
-                    .foregroundColor(viewNumber == 1 ? .privateColor : .white)
+                    .foregroundColor(viewNumber == 1 ? .privateColor : .primary)
                     .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 1))
@@ -103,7 +103,7 @@ struct MyPageView: View {
                         Text("저장한 장소")
                     }
                     .font(.pretendardRegular12)
-                    .foregroundColor(viewNumber == 2 ? .privateColor : .white)
+                    .foregroundColor(viewNumber == 2 ? .privateColor : .primary)
                     .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 2))

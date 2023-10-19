@@ -14,7 +14,7 @@ struct MySavedPlaceView: View {
             if userStore.mySavedPlaceList.isEmpty {
                 Text("저장한 북마크가 없습니다.")
                     .font(.pretendardBold24)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
                 ShopInfoCardView(mySavedPlaceList: userStore.mySavedPlaceList)
