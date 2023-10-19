@@ -19,8 +19,9 @@ struct FollowButton: View {
 
     var body: some View {
         Button {
-            followStore.manageFollow(userId: user.nickname, myNickName: userStore.user.nickname, userEmail: user.email)
             followStore.followCheck.toggle()
+            followStore.manageFollow(userId: user.nickname, myNickName: userStore.user.nickname, userEmail: user.email)
+            
         } label: {
             Text((followStore.followCheck) ? "팔로잉" : "팔로우")
         }
