@@ -23,6 +23,7 @@ struct PrivateApp: App {
     @StateObject private var holidayManager = HolidayManager()
     @StateObject private var followStore = FollowStore()
     @StateObject private var searchStore = SearchStore()
+    @StateObject private var calendarData = CalendarData()
     
     init() {
         let providerFactory = AppCheckDebugProviderFactory()
@@ -47,6 +48,7 @@ struct PrivateApp: App {
                 .environmentObject(shopStore)
                 .environmentObject(holidayManager)
                 .environmentObject(followStore)
+                .environmentObject(calendarData)
                 .task {
                     await shopStore.getAllShopData()
                 }

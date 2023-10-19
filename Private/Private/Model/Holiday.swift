@@ -105,33 +105,3 @@ struct PublicHoliday: Codable {
     let title: String
     let date: Date
 }
-
-class HolidayManager: ObservableObject {
-    @Published var publicHolidays: [[String: Any]] = []
-//    var holidayArray: [Item] = []
-    
-    let networkManager = NetworkManager.shared
-    
-    
-    init() {
-        self.fetchData()
-        
-    }
-    
-    func fetchData() {
-        
-        networkManager.fetchHoliday { result in
-            switch result {
-            case .success(let holidayDatas):
-                
-                DispatchQueue.main.async {
-                    self.publicHolidays = holidayDatas.map { $0.toDictionary() }
-                    print("publicHolidays: \(self.publicHolidays) !!!!!!!!!")
-                }
-
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-}
