@@ -18,7 +18,9 @@ struct MainTabView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
-  
+    @EnvironmentObject var searchStore: SearchStore
+    @EnvironmentObject var chatRoomStore: ChatRoomStore
+    
     @StateObject private var feedStore: FeedStore = FeedStore()
     @State private var coord: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
 
@@ -96,7 +98,12 @@ struct MainTabView: View {
             }
             .onAppear {
                 print("onAppear: \(userStore.user)")
+                chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
+                print("chatList:\(chatRoomStore.chatRoomList)")
             }
+//            .onChange(of: chatRoomStore.chatRoomList){ newValue in
+//                print("onChange:\(newValue)")
+//            }
         }
     }
 }

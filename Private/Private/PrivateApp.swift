@@ -22,6 +22,7 @@ struct PrivateApp: App {
     @StateObject private var shopStore = ShopStore()
     @StateObject private var holidayManager = HolidayManager()
     @StateObject private var followStore = FollowStore()
+    @StateObject private var chatRoomStore = ChatRoomStore()
     @StateObject private var searchStore = SearchStore()
     @StateObject private var calendarData = CalendarData()
     
@@ -42,8 +43,8 @@ struct PrivateApp: App {
                 .environmentObject(AuthStore())
                 .environmentObject(userStore)
                 .environmentObject(feedStore)
+                .environmentObject(chatRoomStore)
                 .environmentObject(searchStore)
-                .environmentObject(ChatRoomStore())
                 .environmentObject(reservationStore)
                 .environmentObject(shopStore)
                 .environmentObject(holidayManager)

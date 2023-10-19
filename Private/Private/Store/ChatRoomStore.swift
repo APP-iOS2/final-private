@@ -15,6 +15,7 @@ final class ChatRoomStore: ObservableObject {
     let userCollection = Firestore.firestore().collection("User")
     let docRef = Firestore.firestore().collection("User")
     
+    //@MainActor 검토
     func subscribeToChatRoomChanges (user: User) {
         print("email")
         print(user.email)
@@ -22,8 +23,6 @@ final class ChatRoomStore: ObservableObject {
         print(chatRoomList.count)
         print("user.nickname")
         print(user.nickname)
-        
-        var chatRooms: [ChatRoom] = []
         
         let userCollection = Firestore.firestore().collection("ChatRoom")
         
@@ -38,6 +37,8 @@ final class ChatRoomStore: ObservableObject {
                     print("No chat room documents found for the given nickname")
                     return
                 }
+                
+                var chatRooms: [ChatRoom] = []
                 
                 for document in querySnapshot.documents {
                     
@@ -55,19 +56,22 @@ final class ChatRoomStore: ObservableObject {
                                let secondUserProfileImage = chatRoomData["secondUserProfileImage"] as? String {
                                 let chatRoom = ChatRoom(firstUserNickname: firstUserNickname, firstUserProfileImage: firstUserProfileImage, secondUserNickname: secondUserNickname, secondUserProfileImage: secondUserProfileImage)
                                 chatRooms.append(chatRoom)
+                                
                             }
                         }
                     }
-                    
-                    DispatchQueue.main.async {
-                        self?.chatRoomList = chatRooms
-                    }
+                }
+                print("chatRooms::\(chatRooms)")
+                DispatchQueue.main.async {
+                    self?.chatRoomList = chatRooms
+                    print("chatRoomList::\(self?.chatRoomList)")
                 }
             }
     }
-    
+ 
     func addChatRoomToUser(user: User, chatRoom: ChatRoom) {
         let userCollection = Firestore.firestore().collection("ChatRoom")
+        
         if (user.nickname == chatRoom.firstUserNickname) {
             let subCollection = userCollection.document("\(user.nickname),\(chatRoom.secondUserNickname)")
             
@@ -77,7 +81,18 @@ final class ChatRoomStore: ObservableObject {
             chatRoomData["firstUserProfileImage"] = chatRoom.firstUserProfileImage
             chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
             chatRoomData["secondUserProfileImage"] = chatRoom.secondUserProfileImage
+//            chatRoomData["Message"] = []
             
+            // Create Message subcollection
+//               let messageSubcollection = subCollection.collection("Message")
+//               
+//            messageSubcollection.addDocument(data: [:]) { error in
+//                if let error = error {
+//                    print("Error adding document to Message subcollection: \(error.localizedDescription)")
+//                } else {
+//                    print("Document added to Message subcollection")
+//                }
+//            }
             
             subCollection.setData(chatRoomData) { error in
                 if let error = error {
@@ -87,6 +102,8 @@ final class ChatRoomStore: ObservableObject {
                 }
             }
         } else {
+            // Create Message subcollection
+            
             let subCollection = userCollection.document("\(user.nickname),\(chatRoom.firstUserNickname)")
             
             var chatRoomData: [String: Any] = [:]
@@ -95,7 +112,17 @@ final class ChatRoomStore: ObservableObject {
             chatRoomData["firstUserProfileImage"] = chatRoom.firstUserProfileImage
             chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
             chatRoomData["secondUserProfileImage"] = chatRoom.secondUserProfileImage
+//            chatRoomData["Message"] = []
             
+//            let messageSubcollection = subCollection.collection("Message")
+//            
+//         messageSubcollection.addDocument(data: [:]) { error in
+//             if let error = error {
+//                 print("Error adding document to Message subcollection: \(error.localizedDescription)")
+//             } else {
+//                 print("Document added to Message subcollection")
+//             }
+//         }
             subCollection.setData(chatRoomData) { error in
                 if let error = error {
                     print("Error adding chatRoom: \(error.localizedDescription)")
@@ -203,11 +230,9 @@ final class ChatRoomStore: ObservableObject {
         var messagesData: [String: Any] = [:]
         
         for message in messageList {
-            
             if let messageDict = messageToDictionary(message) {
                 print("messageDict:\(messageDict)")
                 messagesData = messageDict
-                
             } else {
                 print("Invalid message data")
                 return
@@ -259,27 +284,38 @@ final class ChatRoomStore: ObservableObject {
     
     func findChatRoom(user:User, firstNickname: String, secondNickname: String) -> ChatRoom? {
         for chatRoom in self.chatRoomList {
-               if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
-                  (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
-                   return chatRoom
-               }
-           }
-        
-        let newChatRoom = ChatRoom(firstUserNickname: firstNickname, firstUserProfileImage: "", secondUserNickname: secondNickname, secondUserProfileImage: "")
-            
-            addChatRoomToUser(user: user, chatRoom: newChatRoom)
-            subscribeToChatRoomChanges(user: user)
-        
-        for chatRoom in self.chatRoomList {
-                if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
-                   (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
-                    return chatRoom
-                }
+            if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
+                (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
+                return chatRoom
             }
+        }
+        
+        //chatRoom이 없는 경우 생성
+        print("::make new chatRoom")
+        let newChatRoom = ChatRoom(firstUserNickname: firstNickname, firstUserProfileImage: "", secondUserNickname: secondNickname, secondUserProfileImage: "")
+        
+        addChatRoomToUser(user: user, chatRoom: newChatRoom)
+//        for chatRoom in self.chatRoomList {
+//            if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
+//                (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
+//                return chatRoom
+//            }
+//        }
+        print("::chatRoomList is empty.")
         return nil
     }
     
+//    func searchChatRoom(firstNickname:String, secondNickname:String) -> ChatRoom {
+//        for chatRoom in self.chatRoomList {
+//                if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
+//                   (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
+//                    return chatRoom
+//                }
+//            }
+//    }
+    
     init() {
+        print("ChatRoomStore reset.")
         //        chatRoomList.append(ChatRoomStore.chatRoom)
         //        messageList = ChatRoomStore.chatRoom.messages
     }
