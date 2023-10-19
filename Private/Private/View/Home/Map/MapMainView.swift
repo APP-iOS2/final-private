@@ -8,11 +8,14 @@
 import SwiftUI
 import UIKit
 import NMapsMap
+import PopupView
 
 struct MapMainView: View {
     
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     @StateObject var coordinator: Coordinator = Coordinator.shared
+    
+    @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var feedStore: FeedStore
     @State private var coord: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
@@ -28,18 +31,33 @@ struct MapMainView: View {
             Coordinator.shared.feedList = feedStore.feedList
             coordinator.makeMarkers()
         }
- 
+        
         .sheet(isPresented: $coordinator.showMarkerDetailView) {
             MapFeedSheetView(feed: feedStore.feedList.filter { $0.id == coordinator.currentFeedId }[0])
                 .presentationDetents([.height(.screenHeight * 0.55)])
         }
         
-        .overlay(
-            TextField("", text: $coordinator.newMarkerTitle)
-                .opacity(0)
-                .frame(width: 0, height: 0)
-        )    }
-    
+        .popup(isPresented: $authStore.welcomeToast) {
+            ToastMessageView(message: "Private에 오신걸 환영합니다!")
+                .onDisappear {
+                    authStore.welcomeToast = true
+                }
+        } customize: {
+            $0
+                .autohideIn(2)
+                .type(.floater(verticalPadding: 20))
+                .position(.bottom)
+                .animation(.spring())
+                .closeOnTapOutside(true)
+                .backgroundColor(.clear)
+        }
+        
+//        .overlay(
+//            TextField("", text: $coordinator.newMarkerTitle)
+//                .opacity(0)
+//                .frame(width: 0, height: 0)
+//        )
+    }
 }
 
 //struct MapMainView_Previews: PreviewProvider {

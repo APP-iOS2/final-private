@@ -43,7 +43,7 @@ struct LaunchView: View {
                             }
                         })
                     } else {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             withAnimation {
                                 self.isActive = true
                                 self.isloading.toggle()

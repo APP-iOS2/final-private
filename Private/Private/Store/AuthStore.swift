@@ -28,7 +28,7 @@ class AuthStore: ObservableObject {
     
     @Published var currentUser: Firebase.User?
     @Published var welcomeToast: Bool = false
-    @Published var loginPlatform: LoginPlatform = .none
+    @Published var loginPlatform: LoginPlatform = .google
     
     let userStore: UserStore = UserStore()
     
@@ -102,7 +102,7 @@ class AuthStore: ObservableObject {
                             } else {
                                 if let user = User(document: userData) {
                                     self.currentUser = result?.user
-                                    welcomeToast = true
+                                    self.welcomeToast = true
                                     self.userStore.createUser(user: user)
                                     self.loginPlatform = .google
                                 }
@@ -119,7 +119,7 @@ class AuthStore: ObservableObject {
                                 return
                             } else {
                                 self.currentUser = result?.user
-                                welcomeToast = true
+                                self.welcomeToast = true
                                 self.loginPlatform = .google
                             }
                         }
