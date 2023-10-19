@@ -77,6 +77,8 @@ struct UserInfoModifyView: View {
                     .padding([.top,.bottom],15)
                 HStack {
                     Text("닉네임")
+                        .font(.pretendardMedium18)
+                        .foregroundColor(.primary)
                     TextField("\(userStore.user.nickname)", text: $mypageNickname)
                         .padding(.leading, 5)
                 }
@@ -90,14 +92,14 @@ struct UserInfoModifyView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(Text(userStore.user.nickname))
+        .navigationTitle(Text(userStore.user.nickname).font(.pretendardRegular16).foregroundColor(.primary))
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
                     isModify = false
                 } label: {
                     Text("취소")
-                        .font(.pretendardBold18)
+                        .font(.pretendardSemiBold16)
                         .foregroundColor(.primary)
                 }
             }
@@ -113,7 +115,7 @@ struct UserInfoModifyView: View {
                     isModify = false
                 } label: {
                     Text("수정")
-                        .font(.pretendardBold18)
+                        .font(.pretendardSemiBold16)
                         .foregroundColor(.accentColor)
                 }
             }

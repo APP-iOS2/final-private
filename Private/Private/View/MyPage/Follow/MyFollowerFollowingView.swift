@@ -21,6 +21,7 @@ struct MyFollowerFollowingView: View {
                         Text("\(userStore.user.follower.count)")
                         Text("팔로워")
                     }
+                    .font(.pretendardSemiBold16)
                     .padding(.bottom, 15)
                     .foregroundColor(.primary)
                     .modifier(BottomBorder(showBorder: viewNumber == 0))
@@ -33,6 +34,7 @@ struct MyFollowerFollowingView: View {
                         Text("\(userStore.user.following.count)")
                         Text("팔로잉")
                     }
+                    .font(.pretendardSemiBold16)
                     .padding(.bottom, 15)
                     .foregroundColor(.primary)
                     .modifier(BottomBorder(showBorder: viewNumber == 1))
