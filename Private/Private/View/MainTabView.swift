@@ -18,7 +18,6 @@ struct MainTabView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
-    @EnvironmentObject var searchStore: SearchStore
     @EnvironmentObject var chatRoomStore: ChatRoomStore
     
     @StateObject private var feedStore: FeedStore = FeedStore()

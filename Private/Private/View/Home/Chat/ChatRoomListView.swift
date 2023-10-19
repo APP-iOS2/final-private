@@ -14,6 +14,7 @@ struct ChatRoomListView: View {
     @EnvironmentObject var userStore: UserStore
     
     @State private var searchText: String = ""
+    @State private var inSearchMode = false
     
     var body: some View {
         List {
