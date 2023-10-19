@@ -9,13 +9,14 @@ import SwiftUI
 
 struct OtherPageView: View {
     @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var followStore: FollowStore
     @State private var viewNumber: Int = 0
     
     let user:User
     
     var body: some View {
         NavigationStack {
-            OtherInfoView(user: user)
+            OtherInfoView(user: user, followerList: followStore.followerList, followingList: followStore.followingList)
                 .padding(.top,-15.0)
             HStack {
                 Spacer()
