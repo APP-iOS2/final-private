@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OtherPageView: View {
     @EnvironmentObject private var userStore: UserStore
-    @State var viewNumber: Int = 0
+    @State private var viewNumber: Int = 0
     
     let user:User
     

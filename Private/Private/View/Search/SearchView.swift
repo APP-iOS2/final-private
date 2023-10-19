@@ -7,8 +7,8 @@
 import SwiftUI
 
 struct SearchView: View {
-    @EnvironmentObject private var searchStore: SearchStore
-    @EnvironmentObject private var followStore: FollowStore
+    @EnvironmentObject var searchStore: SearchStore
+    @EnvironmentObject var followStore: FollowStore
     
     @Binding var root: Bool
     @Binding var selection: Int
