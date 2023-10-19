@@ -62,6 +62,7 @@ struct ShopDetailInfoView: View {
 //                    Text("영업 전")  // 오픈 시간 전이면 영업 전, 마감 시간 이후 ~ 영업 종료
                     Text("\(isShopOpen(shopData))")
                         .font(.pretendardMedium18)
+                        .foregroundStyle(Color.black)
                         .padding(10)
                 }
                 .background(isShopOpen(shopData) == "영업중" ? Color.privateColor : Color.subGrayColor)

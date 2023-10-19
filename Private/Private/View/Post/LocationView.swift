@@ -75,6 +75,8 @@ struct LocationView: View {
                 postCoordinator.newMarkerAlert = false
                 newMarkerlat = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lat,  3) ?? ""
                 newMarkerlng = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lng , 4) ?? ""
+                
+                // postCoordinator.coord = NMGLatLng(lat: Double(newMarkerlat) ?? 0.0, lng: Double(newMarkerlng) ?? 0.0)
                 searchResult.title = text
                 isSearchedLocation = false
                 print("신규등록 시 \(newMarkerlat), \(newMarkerlng)")

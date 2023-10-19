@@ -11,6 +11,8 @@ import Kingfisher
 
 struct MapFeedCellView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject var chatRoomStore: ChatRoomStore
     
@@ -92,11 +94,19 @@ struct MapFeedCellView: View {
                                 userStore.updateUser(user: userStore.user)
                             }
                         } label: {
-                            Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20)
-                                .padding(.trailing, 5)
+                            if colorScheme == ColorScheme.dark {
+                                Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark_dark")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 20)
+                                    .padding(.trailing, 5)
+                            } else {
+                                Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark_light")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 20)
+                                    .padding(.trailing, 5)
+                            }
                         }
                         Button {
                             withAnimation {

@@ -47,7 +47,7 @@ struct ReservationConfirmView: View {
                 .cornerRadius(8)
                 .padding(.bottom)
                 
-                ReservationCardCell(title: "최종 결제할 금액", content: "\(reservationData.numberOfPeople) 원")
+                ReservationCardCell(title: "최종 결제할 금액", content: reservationData.priceStr)
                     .padding(.bottom)
                 
                 Divider()

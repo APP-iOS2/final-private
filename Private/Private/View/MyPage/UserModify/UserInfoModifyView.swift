@@ -26,7 +26,7 @@ struct UserInfoModifyView: View {
                         if userStore.user.profileImageURL.isEmpty {
                             Circle()
                                 .frame(width: .screenWidth*0.23)
-                                .foregroundColor(.white)
+                                .foregroundColor(.primary)
                             if ((selectedImage) != nil) {
                                 Image(uiImage: selectedImage!)
                                     .resizable()

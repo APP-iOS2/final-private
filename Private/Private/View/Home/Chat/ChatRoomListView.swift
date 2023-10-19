@@ -15,18 +15,6 @@ struct ChatRoomListView: View {
     
     @State private var searchText: String = ""
     @State private var inSearchMode = false
-    // 사용자 정보 생성
-//    let user = User(email: "example@example.com", name: "John Doe")
-
-    // 채팅방 정보 생성
-//    let otherUser = User(email: "other@example.com", name: "Jane Smith")
-//    let otherUser = User()
-//
-//    let message1 = Message(sender: "nickname1", content: "Hello!", timestamp: Date().timeIntervalSince1970)
-//    let message2 = Message(sender:  "nickname2", content: "Hi!", timestamp: Date().timeIntervalSince1970 + 1)
-    var chatRoom = ChatRoom(firstUserNickname: "boogie", firstUserProfileImage: "", secondUserNickname: "ii", secondUserProfileImage: "")
-    // addChatRoomToUser 메서드 호출하여 채팅방 추가
-//    addChatRoomToUser(user: user, chatRoom: chatRoom)
     
     var body: some View {
         List {
@@ -54,7 +42,10 @@ struct ChatRoomListView: View {
             
         }
         .onAppear{
-            chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
+            print("chatRoomStore.chatRoomList(ChatRoomListView)::\(chatRoomStore.chatRoomList)")
+//            print(chatRoomStore.chatRoomList)
+            //최상위  뷰로 호출 전환
+//            chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
 //            chatRoomStore.messageList = [message1]
 //            chatRoom = ChatRoom(otherUserName: "s", otherUserNickname: "boogie", otherUserProfileImage: "", messages: [message1,message2])
         }
@@ -63,12 +54,6 @@ struct ChatRoomListView: View {
         .navigationBarBackButtonHidden(true)
         .backButtonArrow()
         .navigationBarItems(trailing: EditButton().foregroundColor(.privateColor))
-//        .navigationBarItems(trailing: Button {
-//            chatRoomStore.addChatRoomToUser(user: userStore.user, chatRoom: chatRoom)
-//            chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
-//        } label: {
-//            Image(systemName: "plus.bubble")
-//        })
     }
     
     func deleteChatRoom(at offsets: IndexSet) {

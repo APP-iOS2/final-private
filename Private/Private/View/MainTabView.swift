@@ -18,7 +18,8 @@ struct MainTabView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
-  
+    @EnvironmentObject var chatRoomStore: ChatRoomStore
+    
     @StateObject private var feedStore: FeedStore = FeedStore()
     @State private var coord: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
 
@@ -77,19 +78,17 @@ struct MainTabView: View {
                     .padding(.bottom, 5)
                     .tag(2)
                     UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true), showLocation: $showLocation, searchResult: $searchResult, coord: $coord).tabItem {
-                        Image(systemName: "plus")
+                        Label("작성", systemImage: "plus")
                     }
                     .padding(.bottom, 5)
                     .tag(3)
                     ShopListView(root: $rootSection4, selection: $selection).tabItem {
-                        Image(systemName: "calendar.badge.clock")
-                        Text("예약")
+                        Label("예약", systemImage: "calendar.badge.clock")
                     }
                     .padding(.bottom, 5)
                     .tag(4)
                     MyPageView(root: $rootSection5, selection: $selection).tabItem {
-                        Image(systemName: "person.fill")
-                        Text("마이페이지")
+                        Label("마이페이지", systemImage: "person.fill")
                     }
                     .padding(.bottom, 5)
                     .tag(5)
@@ -98,7 +97,12 @@ struct MainTabView: View {
             }
             .onAppear {
                 print("onAppear: \(userStore.user)")
+                chatRoomStore.subscribeToChatRoomChanges(user: userStore.user)
+                print("chatList:\(chatRoomStore.chatRoomList)")
             }
+//            .onChange(of: chatRoomStore.chatRoomList){ newValue in
+//                print("onChange:\(newValue)")
+//            }
         }
     }
 }

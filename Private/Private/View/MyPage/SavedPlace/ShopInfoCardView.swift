@@ -18,57 +18,58 @@ struct ShopInfoCardView: View {
                     Image(systemName: "photo")
                 }
                 .resizable()
-                .frame(width: 80,height: 80)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: .screenWidth * 0.2, height: .screenWidth * 0.2)
                 .cornerRadius(10)
-                .padding(.leading,20)
+                .padding(.leading,7)
                 VStack(alignment: .leading) {
                     Text(place.title)
-                        .font(.pretendardBold18)
-                        .foregroundColor(.white)
+                        .font(.pretendardSemiBold16)
+                        .foregroundColor(.primary)
                         .padding(.bottom, 2)
                     VStack(alignment: .leading) {
                         HStack {
                             Label(
                                 title: { Text(place.category[0])
                                         .font(.pretendardRegular14)
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.primary)
                                 },
-                                icon: { Image(systemName: "fork.knife") }
+                                icon: { Image(systemName: "fork.knife").frame(width: 1).padding(.leading, 6).padding(.trailing, 4) }
                             )
                             Text("|")
                                 .font(.pretendardRegular14)
-                                .foregroundColor(.white)
+                                .foregroundColor(.primary)
                             Label(
                                 title: { Text("0") // 가게 좋아요 수 필요
                                         .font(.pretendardRegular14)
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.primary)
                                 },
-                                icon: { Image(systemName: "heart.fill") }
+                                icon: { Image(systemName: "heart.fill").frame(width: 1).padding([.leading,.trailing], 4) }
                             )
                             .font(.pretendardRegular14)
                             Text("|")
                                 .font(.pretendardRegular14)
-                                .foregroundColor(.white)
-                            Label(
-                                title: { Text("0") // 가게 북마크 수 필요
+                                .foregroundColor(.primary)
+                            HStack {
+                                Image(systemName: "bookmark.fill").frame(width: 0.5).padding([.leading,.trailing], 4)
+                                Text("0") // 가게 북마크 수 필요
                                         .font(.pretendardRegular14)
-                                        .foregroundColor(.white)
-                                },
-                                icon: { Image(systemName: "bookmark.fill") }
-                            )
-                            .font(.pretendardRegular14)
+                                }.foregroundColor(.primary)
                         }
-                        Label(
-                            title: { Text(place.roadAddress)
-                                    .font(.pretendardRegular14)
-                                    .foregroundColor(.white)
-                            },
-                            icon: { Image(systemName: "mappin") }
-                        )
+                        .padding(.top, 3)
+                        HStack{
+                            Image(systemName: "mappin")
+                                .frame(width: .screenWidth * 0.001)
+                                .padding([.leading,.trailing], 4)
+                            Text(place.roadAddress)
+                                .font(.pretendardRegular12)
+                                .foregroundColor(.primary)
+                                .padding(.leading,-3)
+                        }
                     }
                     .padding(.top,2)
                 }
-                .padding(.leading,5)
+                .padding(.leading,3)
                 Spacer()
                 Button {
                     userStore.deletePlace(place)
@@ -77,14 +78,14 @@ struct ShopInfoCardView: View {
                 } label: {
                     Image(systemName: "pin.circle.fill")
                                         .resizable()
-                                        .frame(width: 30, height: 30)
+                                        .frame(width: 25, height: 25)
                                         .foregroundColor(Color("AccentColor"))
-                                        .padding(.trailing,20)
+                                        .padding(.trailing,7)
                 }
             }
             Divider()
                 .background(Color.primary)
-                .frame(width: .screenWidth * 0.9)
+                .frame(width: .screenWidth * 0.98)
         }
     }
 }

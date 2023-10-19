@@ -47,7 +47,7 @@ struct MyPageFeedView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text("\(feedListFeed.writerNickname)")
                                             .font(.pretendardSemiBold16)
-                                            .foregroundColor(.white)
+                                            .foregroundColor(.primary)
                                         Text("\(feedListFeed.createdDate)")
                                             .font(.pretendardRegular12)
                                             .foregroundColor(.white.opacity(0.8))
@@ -81,7 +81,7 @@ struct MyPageFeedView: View {
                             HStack(alignment: .top) {
                                 Text("\(feedListFeed.contents)")
                                     .font(.pretendardRegular16)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.primary)
                                 Spacer()
                             }
                             .padding(.top,20)

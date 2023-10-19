@@ -28,30 +28,30 @@ struct SettingView: View {
                     Toggle(isOn: .constant(true), label: {
                         Text("모든알림")
                             .font(.pretendardRegular16)
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                     })
                 }, header: {
                     Text("알림")
                         .font(.pretendardRegular12)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 })
                 Section (content: {
                     HStack {
                         VStack {
                             Text("v1.0.0")
                                 .font(.pretendardRegular16)
-                                .foregroundColor(.white)
+                                .foregroundColor(.primary)
                         }
                         Spacer()
                         Text("최신 버전입니다.")
                             .font(.pretendardRegular12)
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                     }
                     
                 }, header: {
                     Text("현재버전")
                         .font(.pretendardRegular12)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 })
                 Section (content: {
                     Button{
@@ -62,7 +62,7 @@ struct SettingView: View {
                         HStack {
                             Text("로그아웃")
                                 .font(.pretendardRegular16)
-                                .foregroundColor(.white)
+                                .foregroundColor(.primary)
                             Spacer()
                             Image(systemName: "chevron.right")
                         }
@@ -72,16 +72,16 @@ struct SettingView: View {
                         Alert(
                             title: Text("로그아웃")
                                 .font(.pretendardRegular16)
-                                .foregroundColor(.white),
+                                .foregroundColor(.primary),
                             message: Text("로그아웃하시겠습니까?")
                                 .font(.pretendardRegular12)
-                                .foregroundColor(.white),
+                                .foregroundColor(.primary),
                             primaryButton:.destructive(Text("로그아웃")
                                 .font(.pretendardRegular12)
-                                .foregroundColor(.white), action: { authStore.signOutGoogle() }),
+                                .foregroundColor(.primary), action: { authStore.signOutGoogle() }),
                             secondaryButton: .cancel(Text("취소")
                                 .font(.pretendardRegular12)
-                                .foregroundColor(.white))
+                                .foregroundColor(.primary))
                         )
                     }
                     
