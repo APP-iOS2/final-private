@@ -69,6 +69,8 @@ struct PostView: View {
     var db = Firestore.firestore()
     var storage = Storage.storage()
     
+    let filteredCategories = Category.filteredCases
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -245,10 +247,10 @@ struct PostView: View {
                     }
                     
                     LazyVGrid(columns: createGridColumns(), spacing: 20) {
-                        ForEach (MyCategory.allCases.indices, id: \.self) { index in
+                        ForEach (filteredCategories.indices, id: \.self) { index in
                             VStack {
                                 if selectedToggle[index] {
-                                    Text(Category.allCases[index].categoryName)
+                                    Text(filteredCategories[index].categoryName)
                                         .font(.pretendardMedium16)
                                         .foregroundColor(.black)
                                         .frame(width: 70, height: 30)
@@ -257,7 +259,7 @@ struct PostView: View {
                                         .background(Color.privateColor)
                                         .cornerRadius(7)
                                 } else {
-                                    Text(Category.allCases[index].categoryName)
+                                    Text(filteredCategories[index].categoryName)
                                         .font(.pretendardMedium16)
                                         .foregroundColor(.white)
                                         .frame(width: 70, height: 30)

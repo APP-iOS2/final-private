@@ -51,6 +51,10 @@ enum Category: Int, CaseIterable, Hashable, Codable {
         case .cafe: return "카페"
         }
     }
+    
+    static var filteredCases: [Category] {
+        return allCases.filter { $0 != .general }
+    }
 }
 
 /*
