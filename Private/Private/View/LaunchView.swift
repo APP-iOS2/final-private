@@ -24,12 +24,14 @@ struct LaunchView: View {
              }
         } else {
             if isloading {
-                VStack {
-                    Image("SplashImage")
+                ZStack {
+                    Color.black
+                    Image("SplashDark")
                         .resizable()
                         .scaledToFit()
                         .frame(width: .screenWidth)
                 }
+                .edgesIgnoringSafeArea(.all)
                 .onAppear {
                     if let email = authStore.currentUser?.email {
                         userStore.fetchCurrentUser(userEmail: email)

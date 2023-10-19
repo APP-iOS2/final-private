@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct MyPageView: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
     @EnvironmentObject private var userStore: UserStore
     @Binding var root: Bool
     @Binding var selection: Int
@@ -17,11 +20,23 @@ struct MyPageView: View {
     var body: some View {
         NavigationStack {
             HStack {
+                if colorScheme == .dark {
+                    Image("private_dark")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: .screenWidth * 0.35)
+                } else {
+                    Image("private_light")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: .screenWidth * 0.35)
+                }
                 Spacer()
                 NavigationLink {
                     SettingView()
                 } label: {
                     Image(systemName: "gearshape")
+                        .padding(.top, 10)
                         .padding(.trailing,30)
                         .foregroundColor(.primary)
                 }
