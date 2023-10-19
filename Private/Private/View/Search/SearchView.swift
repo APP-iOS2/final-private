@@ -34,7 +34,8 @@ struct SearchView: View {
                     }
                     .onChange(of: searchTerm, perform: { _ in
                         Task {
-                            await fetchSearchResults()
+                            searchStore.fetchUsers()
+                             fetchSearchResults()
                         }
                     })
                 }
@@ -48,9 +49,8 @@ struct SearchView: View {
             }
         }
     }
-    func fetchSearchResults() async {
-        await searchStore.searchUser(searchTerm: searchTerm)
-        searchStore.addRecentSearch(searchTerm)
+    func fetchSearchResults() {
+         searchStore.addRecentSearch(searchTerm)
     }
 }
 

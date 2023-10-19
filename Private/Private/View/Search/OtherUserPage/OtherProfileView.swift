@@ -15,7 +15,7 @@ struct OtherProfileView: View {
     let user:User
     var body: some View {
         NavigationStack {
-            UserInfoView()
+            OtherInfoView(user: user)
                 .padding(.top,-20.0)
                 .padding(.bottom, 20)
             HStack {

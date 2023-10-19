@@ -35,7 +35,8 @@ struct UserListView: View {
         .padding(.horizontal)
         .onDisappear {
             Task {
-                await fetchSearchResults()
+                searchStore.fetchUsers()
+                fetchSearchResults()
             }
         }
     }
@@ -55,9 +56,8 @@ struct UserListView: View {
         }
     }
     
-    func fetchSearchResults() async {
-        await searchStore.searchUser(searchTerm: searchTerm)
-        searchStore.addRecentSearch(searchTerm)
+    func fetchSearchResults()  {
+         searchStore.addRecentSearch(searchTerm)
     }
     
 }
