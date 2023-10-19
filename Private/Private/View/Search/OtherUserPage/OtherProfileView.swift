@@ -9,13 +9,14 @@ import SwiftUI
 
 struct OtherProfileView: View {
     @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var followStore: FollowStore
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
     @State var viewNumber: Int = 0
     
     let user:User
     var body: some View {
         NavigationStack {
-            OtherInfoView(user: user)
+            OtherInfoView(user: user, followerList:followStore.followerList, followingList: followStore.followingList)
                 .padding(.top,-20.0)
                 .padding(.bottom, 20)
             HStack {
