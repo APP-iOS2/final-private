@@ -36,20 +36,23 @@ struct ShopDetailView: View {
     }
         
     var body: some View {
-        NavigationStack {
-            ScrollView(.vertical) {
-                ZStack(alignment: .topLeading) {
-                    Section {
-                        ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopData: shopViewModel.shop)
-                            .padding(.top, CGFloat.screenHeight * 0.2)
-                    } header: {
-                        ShopDetailHeaderView(shopData: shopViewModel.shop)
-                    }
+        ScrollView(.vertical) {
+            ZStack(alignment: .topLeading) {
+                Section {
+                    ShopDetailBodyView(selectedShopDetailCategory: $selectedShopDetailCategory, shopData: shopViewModel.shop)
+                        .padding(.top, CGFloat.screenHeight * 0.2)
+                } header: {
+                    ShopDetailHeaderView(shopData: shopViewModel.shop)
                 }
             }
-            
-            ShopDetailFooterView(isReservationPresented: $isReservationPresented, shopViewModel: shopViewModel)
         }
+        .navigationTitle("\(shopViewModel.shop.name)")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
+        
+        ShopDetailFooterView(isReservationPresented: $isReservationPresented, shopViewModel: shopViewModel)
+        
         .task {
             await shopStore.getAllShopData()
         }
@@ -89,7 +92,7 @@ struct ShopDetailBodyView: View {
                     
                     HStack(spacing: 10) {
                         Text(shopData.name)
-                            .foregroundColor(.chatTextColor)
+                            .foregroundColor(.white)
                             .font(.pretendardBold28)
                         
                         Divider()
@@ -109,6 +112,7 @@ struct ShopDetailBodyView: View {
                             Image(systemName: "doc.on.doc")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .foregroundStyle(Color.privateColor)
                                 .frame(width: 15, height: 15)
 
                         }
@@ -124,10 +128,13 @@ struct ShopDetailBodyView: View {
                 
                 Menu {
                     Text("카카오톡으로 공유하기")
+                        .font(.pretendardRegular14)
+                        .foregroundStyle(.white)
                 } label: {
                     Image(systemName: "square.and.arrow.up")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                        .foregroundStyle(Color.privateColor)
                         .frame(width: 25, height: 25)
                 }
                 .padding(.vertical, 20)
@@ -214,12 +221,14 @@ struct ShopDetailFooterView: View {
                 isReservationPresented.toggle()
             } label: {
                 Text("예약하기")
+                    .font(.pretendardBold20)
+                    .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
             }
             .frame(height: CGFloat.screenHeight * 0.065)
             .frame(maxWidth: .infinity)
             .tint(.primary)
-            .background(Color("AccentColor"))
+            .background(Color.privateColor)
             .cornerRadius(12)
         }
         .padding(10)

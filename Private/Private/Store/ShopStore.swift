@@ -89,8 +89,8 @@ final class ShopStore: ObservableObject {
                 let items: Array<ShopItem> = getReservationItems(document: "reservationItems", data: data)
                 let menus: Array<ShopItem> = getReservationItems(document: "menu", data: data)
                 let dateArray = tempHoliday.map { $0.dateValue() }
-                let breakTimeHoursData = getBusinessTime(document: "breakTimeHours", data: data)
-                let businessTimeHoursData = getBusinessTime(document: "weeklyBusinessHours", data: data)
+                let breakTimeHoursData = getBusinessTime(document: "breakTimeHour", data: data)
+                let businessTimeHoursData = getBusinessTime(document: "weeklyBusinessHour", data: data)
                 
                 
                 let id: String = document.documentID

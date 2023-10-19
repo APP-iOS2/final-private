@@ -245,7 +245,7 @@ struct PostView: View {
                     }
                     
                     LazyVGrid(columns: createGridColumns(), spacing: 20) {
-                        ForEach (Category.allCases.indices, id: \.self) { index in
+                        ForEach (MyCategory.allCases.indices, id: \.self) { index in
                             VStack {
                                 if selectedToggle[index] {
                                     Text(Category.allCases[index].categoryName)

@@ -33,22 +33,11 @@ struct ReservationView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Button {
-                    self.presentationMode.wrappedValue.dismiss()
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.title)
-                        .foregroundColor(.primary)
-                        .padding(20)
-                }
-             Spacer()
-            }
-
             NavigationStack {
                 ScrollView {
                     Text(shopData.name)
                         .font(.pretendardBold24)
+                        .foregroundStyle(.white)
                         .padding(.bottom)
                     
                     VStack(alignment: .leading) {
@@ -57,6 +46,7 @@ struct ReservationView: View {
                         
                         Text("예약 일시")
                             .font(.pretendardBold18)
+                            .foregroundStyle(.white)
                         
                         HStack {
                             Image(systemName: "calendar")
@@ -69,17 +59,19 @@ struct ReservationView: View {
                             Spacer()
                             
                             Button {
-                                showingDate.toggle()
-                                //                            withAnimation(.easeIn(duration: 0.5)) {
-                                //                                showingDate.toggle()
-                                //                            }
+//                                showingDate.toggle()
+                                withAnimation {
+                                    showingDate.toggle()
+                                }
                             } label: {
                                 Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
+                                    .foregroundStyle(Color.privateColor)
                             }
                         }
                         .font(.pretendardMedium18)
+                        .foregroundStyle(.white)
                         .padding()
-                        .background(Color("SubGrayColor"))
+                        .background(Color.subGrayColor)
                         .cornerRadius(12)
                         .padding(.bottom)
                         
@@ -99,16 +91,18 @@ struct ReservationView: View {
                             Text(isSelectedTime ? String(temporaryReservation.numberOfPeople) + "명" : "인원 선택")
                             Spacer()
                             Button {
-                                showingNumbers.toggle()
-                                //                            withAnimation(.easeIn(duration: 0.5)) {
-                                //                                showingNumbers.toggle()
-                                //                            }
+//                                showingNumbers.toggle()
+                                withAnimation {
+                                    showingNumbers.toggle()
+                                }
                             } label: {
                                 Image(systemName: showingNumbers ? "chevron.up.circle": "chevron.down.circle")
+                                    .foregroundStyle(Color.privateColor)
                             }
                             .disabled(!isSelectedTime)
                         }
                         .font(.pretendardMedium18)
+                        .foregroundStyle(.white)
                         .padding()
                         .background(Color.subGrayColor)
                         .cornerRadius(12)
@@ -138,11 +132,12 @@ struct ReservationView: View {
                                 Text("알립니다")
                             }
                             .font(.pretendardBold18)
-                            .foregroundColor(Color("AccentColor"))
+                            .foregroundColor(Color.privateColor)
                             .padding(.bottom, 6)
                             
                             Text("Break Time")
-                                .font(Font.pretendardMedium18)
+                                .font(.pretendardMedium18)
+                                .foregroundStyle(.white)
                             
                             VStack(alignment: .leading) {
                                 ForEach(calendarData.sortedWeekdays, id: \.self) { day in
@@ -160,7 +155,8 @@ struct ReservationView: View {
                                                 ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
                                             }
                                         }
-                                        .font(Font.pretendardRegular16)
+                                        .font(.pretendardRegular16)
+                                        .foregroundStyle(.white)
                                         .padding(.bottom, 1)
                                     }
                                 }
@@ -170,9 +166,13 @@ struct ReservationView: View {
                             }
                             .padding(10)
                             
-                            Text("당일 예약은 예약시간 1시간 전까지 가능합니다.")
-                                .padding(.bottom, 1)
-                            Text("예약시간은 10분 경과시, 자동 취소됩니다.\n양해부탁드립니다.")
+                            Group {
+                                Text("당일 예약은 예약시간 1시간 전까지 가능합니다.")
+                                    .padding(.bottom, 1)
+                                Text("예약시간은 10분 경과시, 자동 취소됩니다.\n양해부탁드립니다.")
+                            }
+                            .font(.pretendardRegular14)
+                            .foregroundStyle(.white)
                         }
                         .padding()
                         .background(Color.subGrayColor)
@@ -184,7 +184,8 @@ struct ReservationView: View {
                                 temporaryReservation.date = calendarData.selectedDate
                                 isShwoingDetailView.toggle()
                             }
-                            .foregroundStyle(isSelectedTime ? .primary : Color.gray)
+                            .font(.pretendardBold20)
+                            .foregroundStyle(isSelectedTime ? .white : Color.gray)
                             .disabled(!isSelectedTime)
                         }
                         .navigationDestination(isPresented: $isShwoingDetailView) {
@@ -193,6 +194,9 @@ struct ReservationView: View {
                     }// VStack
                 }// ScrollView
                 .padding()
+                .navigationBarBackButtonHidden(true)
+                .backButtonX()
+                
                 .onAppear {
                     self.temporaryReservation.shopId = self.shopData.id
                     // calendarData의 데이타를 모두 바꿔줘야 함

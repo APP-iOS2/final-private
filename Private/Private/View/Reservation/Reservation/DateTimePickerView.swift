@@ -57,20 +57,21 @@ struct DateTimePickerView: View {
     var body: some View {
         ScrollView {
             Button {
-                showingDate.toggle()
-//                withAnimation(.easeIn(duration: 0.5)) {
-//                    showingDate.toggle()
-//                }
+//                showingDate.toggle()
+                withAnimation(.easeIn(duration: 0.5)) {
+                    showingDate.toggle()
+                }
             } label: {
                 HStack {
                     Image(systemName: "calendar")
                     Text("날짜선택")
                     Spacer()
                     Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
+                        .foregroundStyle(Color.privateColor)
                 }
-                .font(.pretendardBold24)
+                .font(.pretendardBold18)
+                .foregroundStyle(.white)
             }
-            .tint(.primary)
             Divider()
                 .padding(.bottom)
             
@@ -84,6 +85,7 @@ struct DateTimePickerView: View {
                     } label: {
                         Image(systemName: "chevron.left")
                             .frame(width: 35, height: 35, alignment: .leading)
+                            .foregroundStyle(Color.privateColor)
                     }
                     .disabled(calendarData.disablePrevButton)
                     
@@ -93,6 +95,7 @@ struct DateTimePickerView: View {
                     } label: {
                         Image(systemName: "chevron.right")
                             .frame(width: 35, height: 35, alignment: .trailing)
+                            .foregroundStyle(Color.privateColor)
                     }
                     .disabled(calendarData.disableNextButton)
                     
@@ -122,10 +125,11 @@ struct DateTimePickerView: View {
                     Text("시간선택")
                     Spacer()
                     Image(systemName: showingTime ? "chevron.up.circle": "chevron.down.circle")
+                        .foregroundStyle(Color.privateColor)
                 }
-                .font(.pretendardBold24)
+                .font(.pretendardBold18)
+                .foregroundStyle(.white)
             }
-            .tint(.primary)
             Divider()
             
             // 시간 선택 화면 표시 여부
@@ -133,7 +137,7 @@ struct DateTimePickerView: View {
                 HStack {
                     Spacer()
                     Rectangle()
-                        .foregroundColor(Color("AccentColor"))
+                        .foregroundColor(Color.privateColor)
                         .frame(width: 16, height: 16)
                     Text("선택")
                         .padding(.trailing, 6)
@@ -165,8 +169,8 @@ struct DateTimePickerView: View {
                                             .frame(minWidth: 60, maxWidth: .infinity)
                                             .frame(height: 35)
                                     }
-                                    .background(timeSlot == self.temporaryReservation.time ? Color("AccentColor") : Color.subGrayColor)
-                                    .tint(timeSlot == self.temporaryReservation.time ? .primary : Color(.systemGray))
+                                    .background(timeSlot == self.temporaryReservation.time ? Color.privateColor : Color.subGrayColor)
+                                    .tint(timeSlot == self.temporaryReservation.time ? .black : Color(.systemGray))
                                     .cornerRadius(8)
                                 }
                             }
@@ -192,8 +196,8 @@ struct DateTimePickerView: View {
                                             .frame(minWidth: 60, maxWidth: .infinity)
                                             .frame(height: 35)
                                     }
-                                    .background(timeSlot == self.temporaryReservation.time ? Color("AccentColor") : Color.subGrayColor)
-                                    .tint(timeSlot == self.temporaryReservation.time ? Color(.label) : Color(.systemGray))
+                                    .background(timeSlot == self.temporaryReservation.time ? Color.privateColor : Color.subGrayColor)
+                                    .tint(timeSlot == self.temporaryReservation.time ? .black : Color(.systemGray))
                                     .cornerRadius(8)
                                 }
                             }
@@ -208,7 +212,8 @@ struct DateTimePickerView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .foregroundColor(.primary)
+                        .font(.pretendardMedium18)
+                        .foregroundColor(.white)
                         .background(Color.subGrayColor)
                         .cornerRadius(8)
                     }

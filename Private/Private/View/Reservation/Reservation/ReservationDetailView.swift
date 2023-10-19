@@ -27,6 +27,7 @@ struct ReservationDetailView: View {
             ScrollView {
                 Text(shopData.name)
                     .font(.pretendardBold24)
+                    .foregroundStyle(.white)
                     .padding(.bottom, 12)
                 
                 Divider()
@@ -39,7 +40,12 @@ struct ReservationDetailView: View {
                         Text("\(reservedTime) \(reservedHour):00")
                         Spacer()
                     }
+                    .font(.pretendardRegular16)
+                    .foregroundStyle(.white)
+                    
                     Text("인원: \(reservationData.numberOfPeople)명")
+                        .font(.pretendardRegular16)
+                        .foregroundStyle(.white)
                 }
                 .padding()
                 .background(Color.subGrayColor)
@@ -115,6 +121,10 @@ struct ReservationDetailView: View {
                 }
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
+        
         .onTapGesture {
             hideKeyboard()
         }

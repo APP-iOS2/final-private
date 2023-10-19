@@ -68,3 +68,23 @@ struct BackButtonArrowModifier: ViewModifier {
         }
     }
 }
+
+struct BackButtonXModifier: ViewModifier {
+    @Environment(\.dismiss) private var dismiss
+
+    func body(content: Content) -> some View {
+        content.toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .resizable()
+                        .scaledToFit()
+                        .font(.pretendardSemiBold16)
+                        .foregroundColor(Color.privateColor)
+                }
+            }
+        }
+    }
+}
