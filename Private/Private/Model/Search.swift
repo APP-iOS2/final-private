@@ -18,7 +18,7 @@ struct SearchResultList: Codable {
 struct SearchResult: Codable, Hashable {
     var title: String
     let category: String
-    let address: String
+    var address: String
     var roadAddress: String
     let mapx: String
     let mapy: String
