@@ -78,7 +78,7 @@ struct SettingView: View {
                                 .foregroundColor(.primary),
                             primaryButton:.destructive(Text("로그아웃")
                                 .font(.pretendardRegular12)
-                                .foregroundColor(.primary), action: { authStore.signOutGoogle() }),
+                                .foregroundColor(.primary), action: { platformLogout() }),
                             secondaryButton: .cancel(Text("취소")
                                 .font(.pretendardRegular12)
                                 .foregroundColor(.primary))
@@ -114,6 +114,19 @@ struct SettingView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)
+        }
+    }
+    
+    func platformLogout() {
+        switch authStore.loginPlatform {
+        case .google:
+            authStore.signOutGoogle()
+        case .kakao:
+            authStore.handleKakaoLogout()
+        case .email, .none:
+            print(#function)
+        default:
+            print(#function)
         }
     }
 }
