@@ -42,6 +42,7 @@
 		3C37162A2ABD176E004E8419 /* ReservationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3716292ABD176E004E8419 /* ReservationStore.swift */; };
 		3C37162C2ABD1789004E8419 /* ChatRoomStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C37162B2ABD1789004E8419 /* ChatRoomStore.swift */; };
 		3C37B1B42AC02481004A8E7E /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C37B1B32AC02481004A8E7E /* Color+.swift */; };
+		3C567BC32AE1B92F00BF02DF /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C567BC22AE1B92F00BF02DF /* ToastMessageView.swift */; };
 		3C5789372AC2604600D8B7EA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 3C5789362AC2604600D8B7EA /* GoogleSignIn */; };
 		3C5789392AC2604600D8B7EA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3C5789382AC2604600D8B7EA /* GoogleSignInSwift */; };
 		3C57893B2AC27BAF00D8B7EA /* AuthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C57893A2AC27BAF00D8B7EA /* AuthStore.swift */; };
@@ -216,6 +217,7 @@
 		3C3716292ABD176E004E8419 /* ReservationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationStore.swift; sourceTree = "<group>"; };
 		3C37162B2ABD1789004E8419 /* ChatRoomStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomStore.swift; sourceTree = "<group>"; };
 		3C37B1B32AC02481004A8E7E /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
+		3C567BC22AE1B92F00BF02DF /* ToastMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
 		3C57893A2AC27BAF00D8B7EA /* AuthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthStore.swift; sourceTree = "<group>"; };
 		3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFeedCellView.swift; sourceTree = "<group>"; };
 		3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
@@ -588,6 +590,7 @@
 				06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */,
 				D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */,
 				D1D2F8002AE10EC300C89FB7 /* Constants.swift */,
+				3C567BC22AE1B92F00BF02DF /* ToastMessageView.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -1165,6 +1168,7 @@
 				3C2FC8FB2ACE9B950034F561 /* MapToChatRoomView.swift in Sources */,
 				3C3716282ABD1762004E8419 /* FeedStore.swift in Sources */,
 				D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */,
+				3C567BC32AE1B92F00BF02DF /* ToastMessageView.swift in Sources */,
 				3C91AEA32AC40F6100E60D9B /* ShopInfoCardView.swift in Sources */,
 				D1A025812AE0B109004250E1 /* SearchPageView.swift in Sources */,
 				3CCD2DF62ABC3572005709F4 /* PostView.swift in Sources */,

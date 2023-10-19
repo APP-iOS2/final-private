@@ -7,8 +7,11 @@
 
 import SwiftUI
 import NMapsMap
+import PopupView
 
 struct MainHomeView: View {
+    
+    @EnvironmentObject var authStore: AuthStore
     @ObservedObject var coordinator: Coordinator = Coordinator.shared
     @ObservedObject var locationSearchStore = LocationSearchStore.shared
     
@@ -95,6 +98,20 @@ struct MainHomeView: View {
             } else if selectedNumber == 1 {
                 FeedMainView()
             }
+        }
+        .popup(isPresented: $authStore.welcomeToast) {
+            ToastMessageView(message: "환영합니다! 하이볼리입니다~!")
+                .onDisappear {
+                    authStore.welcomeToast = false
+                }
+        } customize: {
+            $0
+                .autohideIn(2)
+                .type(.floater(verticalPadding: 20))
+                .position(.bottom)
+                .animation(.spring())
+                .closeOnTapOutside(true)
+                .backgroundColor(.clear)
         }
     }
 }
