@@ -17,9 +17,17 @@ import FirebaseCore
 import KakaoSDKAuth
 import KakaoSDKUser
 
+enum LoginPlatform {
+    case email
+    case google
+    case kakao
+    case none
+}
+
 class AuthStore: ObservableObject {
     
     @Published var currentUser: Firebase.User?
+    @Published var loginPlatform: LoginPlatform = .none
     
     let userStore: UserStore = UserStore()
     
@@ -69,7 +77,7 @@ class AuthStore: ObservableObject {
                                            "bookmark" : [],
                                            "chattingRoom" : [],
                                            "myReservation" : []
-                                          ]
+            ]
             
             if let error = error {
                 print(error.localizedDescription)
@@ -95,6 +103,7 @@ class AuthStore: ObservableObject {
                                     print("로그인성공1")
                                     self.currentUser = result?.user
                                     self.userStore.createUser(user: user)
+                                    self.loginPlatform = .google
                                 }
                             }
                         }
@@ -102,13 +111,14 @@ class AuthStore: ObservableObject {
                 } else {
                     Firestore.firestore().collection("User").document((user?.profile?.email)!).getDocument { snapshot, error in
                         _ = snapshot!.data()
-                                                                                                            
+                        
                         Auth.auth().signIn(with: credential) { result, error in
                             if let error = error {
                                 print(error.localizedDescription)
                                 return
                             } else {
                                 self.currentUser = result?.user
+                                self.loginPlatform = .google
                             }
                         }
                     }
@@ -127,7 +137,7 @@ class AuthStore: ObservableObject {
             print(error.localizedDescription)
         }
     }
-  
+    
     func doubleCheckNickname(nickname: String) async -> Bool {
         do {
             let datas = try await Firestore.firestore().collection("User").document(nickname).getDocument()
@@ -142,102 +152,84 @@ class AuthStore: ObservableObject {
             return false
         }
     }
-        
-//    func kakaoAuthSignIn() {
-//        if AuthApi.hasToken() {
-//            // 발급된 토큰이 있는 지 확인
-//            UserApi.shared.accessTokenInfo { accessTokenInfo, error in
-//                if let error = error {
-//                    self.openKakaoService()
-//                } else {
-//                    // 토큰이 유효한 경우
-////                    self.loadUserInfo(idToken: <#String#>, accessToken: <#String#>)
-//                }
-//            }
-//        } else {
-//            // 토큰이 만료된 경우
-//            self.openKakaoService()
-//        }
-//    }
     
     // MARK: - 카카오톡 로그인
-    func openKakaoService() {
-        // 카카오톡 설치 여부 확인
+    
+    /// 카카오톡 설치 여부 확인하는 함수
+    func handleKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
             // 카카오톡이 설치되어 있는 경우, 카카오톡으로 로그인
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                 if let error = error {
-                    print(error)
-                    return
+                    print(" \(error.localizedDescription)")
                 } else {
-                    print("loginWithKakaoTalk() success.")
-                    guard let token = oauthToken else { return }
-                    guard let idToken = token.idToken else { return }
-                    let accessToken = token.accessToken
-                    self.loadUserInfo(idToken: idToken, accessToken: accessToken)
+                    self.loadKakaoUserInfo()
                 }
             }
         } else {
             // 카카오톡이 설치가 안 되어 있는 경우, 카카오 계정으로 로그인(웹뷰)
             UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
                 if let error = error {
-                    print(error)
-                }
-                else {
-                    print("loginWithKakaoAccount() success.")
-                    guard let token = oauthToken else { return }
-                    guard let idToken = token.idToken else { return }
-                    let accessToken = token.accessToken
-                    self.loadUserInfo(idToken: idToken, accessToken: accessToken)
+                    print("\(error.localizedDescription)")
+                } else {
+                    self.loadKakaoUserInfo()
                 }
             }
         }
     }
     
-    // MARK: - 카카오톡 유저 정보 받아오기
-    func loadUserInfo(idToken: String, accessToken: String) {
+    /// 카카오톡 유저 정보 받아오는 함수
+    func loadKakaoUserInfo() {
         UserApi.shared.me { user, error in
+            if let error = error {
+                print("\(error.localizedDescription)")
+                return
+            }
+            
             if let kakaoUser = user {
                 let email = kakaoUser.kakaoAccount?.email ?? ""
                 let name = kakaoUser.kakaoAccount?.profile?.nickname ?? ""
                 let profileImageUrl = kakaoUser.kakaoAccount?.profile?.profileImageUrl?.absoluteString ?? "person.fill"
                 
-                let userData: [String: Any] = ["email": email, "name": name, "profileImageURL": profileImageUrl]
+                let userData: [String: Any] = ["email" : email,
+                                               "name" : name,
+                                               "nickname" : "",
+                                               "phoneNumber" : "",
+                                               "profileImageURL" : profileImageUrl,
+                                               "follower" : [],
+                                               "following" : [],
+                                               "myFeed" : [],
+                                               "savedFeed" : [],
+                                               "bookmark" : [],
+                                               "chattingRoom" : [],
+                                               "myReservation" : []
+                ]
                 
-                if let error = error {
-                    print("카카오톡 유저 불러오기 error: \(error.localizedDescription)")
-                    return
-                }
-                
-                let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
-                
-                Firestore.firestore().collection("User").whereField("email", isEqualTo: (kakaoUser.kakaoAccount?.email)!)
+                Firestore.firestore().collection("User").whereField("email", isEqualTo: (user?.kakaoAccount?.email)!)
                     .getDocuments { snapshot, error in
                         if snapshot!.documents.isEmpty {
-                            if let error = error {
-                                print(error.localizedDescription)
-                            } else {
-                                Auth.auth().signIn(with: credential) { [unowned self] (result, error) in
-                                    if let error = error {
-                                        print(error.localizedDescription)
-                                    } else {
-                                        if let user = User(document: userData) {
-                                            print("카카오톡 로그인 성공 1")
-                                            self.currentUser = result?.user
-                                            self.userStore.createUser(user: user)
-                                        }
+                            Auth.auth().createUser(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
+                                if let error = error {
+                                    print("\(error.localizedDescription)")
+                                } else {
+                                    if let user = User(document: userData) {
+                                        self.currentUser = result?.user
+                                        self.userStore.createUser(user: user)
+                                        self.loginPlatform = .kakao
                                     }
                                 }
                             }
                         } else {
-                            Firestore.firestore().collection("User").document((kakaoUser.kakaoAccount?.email)!).getDocument { (snapshot, error) in
+                            Firestore.firestore().collection("User").document((user?.kakaoAccount?.email)!).getDocument { (snapshot, error) in
                                 let currentData = snapshot!.data()
-                                Auth.auth().signIn(with: credential) { result, error in
+                                
+                                Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
                                     if let error = error {
-                                        print(error.localizedDescription)
+                                        print("\(error.localizedDescription)")
                                         return
                                     } else {
                                         self.currentUser = result?.user
+                                        self.loginPlatform = .kakao
                                     }
                                 }
                             }
@@ -247,13 +239,12 @@ class AuthStore: ObservableObject {
         }
     }
     
-    // MARK: - 카카오톡 로그아웃
+    /// 카카오톡 로그아웃
     func handleKakaoLogout() {
         UserApi.shared.logout {(error) in
             if let error = error {
                 print(error)
-            }
-            else {
+            } else {
                 print("logout() success.")
             }
         }
