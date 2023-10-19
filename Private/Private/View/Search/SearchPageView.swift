@@ -111,7 +111,7 @@ struct SearchPageView: View {
         var body: some View {
             HStack {
                 NavigationLink {
-                    OtherPageView(user: user)
+                    OtherProfileView(user: user)
                 } label: {
                     SearchUserCellView(user: user)
                 }

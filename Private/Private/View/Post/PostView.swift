@@ -29,10 +29,8 @@ struct PostView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var isPostViewPresented: Bool /// PostView
-    @Binding var coord: NMGLatLng
     @Binding var searchResult: SearchResult
     
-    @State private var selectedWriter: String = "김아무개"
     @State private var text: String = "" /// 텍스트마스터 내용
     @State private var textPlaceHolder: String = "나만의 Private한 장소에 대해 적어주세요!" /// 텍스트마스터 placeholder
     @State private var lat: String = ""
@@ -58,8 +56,7 @@ struct PostView: View {
 
     @State private var selectedImage: [UIImage]? = []
     @FocusState private var isTextMasterFocused: Bool
-    
-    //    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
+
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
@@ -122,7 +119,7 @@ struct PostView: View {
                                 .presentationDetents([.fraction(0.75), .large])
                         }
                         .sheet(isPresented: $isSearchedLocation) {
-                            LocationView(coord: $coord, searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng, isSearchedLocation: $isSearchedLocation)
+                            LocationView(searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng, isSearchedLocation: $isSearchedLocation)
                         }
                     }
                     .padding(.vertical, 10)
@@ -139,7 +136,9 @@ struct PostView: View {
                                     if !postCoordinator.newMarkerTitle.isEmpty {
                                         clickLocation.toggle()
                                         postCoordinator.newLocalmoveCameraPosition()
-                                        postCoordinator.makeNewLocationMarker()
+//                                        postCoordinator.makeNewLocationMarker()
+                                        postCoordinator.makeSearchLocationMarker()
+
                                         
                                     } else {
                                         lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
@@ -147,7 +146,7 @@ struct PostView: View {
                                         
                                         postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
                                         postCoordinator.newMarkerTitle = searchResult.title
-                                        print("위도값: \(coord.lat), 경도값: \(coord.lng)")
+                                        print("위도값: \(postCoordinator.coord.lat), 경도값: \(postCoordinator.coord.lng)")
                                         print("지정장소 클릭")
                                         clickLocation.toggle()
                                         postCoordinator.moveCameraPosition()
@@ -509,7 +508,7 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
+        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
         
