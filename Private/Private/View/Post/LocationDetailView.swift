@@ -12,14 +12,12 @@ import FirebaseFirestore
 struct LocationDetailView: View {
     @EnvironmentObject var feedStore: FeedStore
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
-    
+
     var body: some View {
         VStack {
             // 이 뷰에는 마커가 찍히지 않는 맵이 들어가야함(중앙 마커는 존재)
             Text("해당 장소로 이동")
-            PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView,
-                     markerTitle: $postCoordinator.newMarkerTitle,
-                     markerTitleEdit: $postCoordinator.newMarkerAlert, coord: $postCoordinator.coord)
+            PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView, coord: $postCoordinator.coord, tappedLatLng: $postCoordinator.tappedLatLng)
             
         }
         .onAppear {

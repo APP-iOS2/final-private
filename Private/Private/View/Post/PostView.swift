@@ -37,6 +37,8 @@ struct PostView: View {
     @State private var textPlaceHolder: String = "당신의 경험을 적어주세요!" /// 텍스트마스터 placeholder
     @State private var lat: String = ""
     @State private var lng: String = ""
+    @State private var newMarkerlat: String = ""
+    @State private var newMarkerlng: String = ""
     
     @State private var writer: String = ""
     @State private var images: [String] = []
@@ -116,7 +118,7 @@ struct PostView: View {
                                 .presentationDetents([.fraction(0.75), .large])
                         }
                         .sheet(isPresented: $isSearchedLocation) {
-                            LocationView(coord: $coord, searchResult: $searchResult, registrationAlert: $registrationAlert)
+                            LocationView(coord: $coord, searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng)
                         }
                     }
                     .padding(.vertical, 10)
@@ -127,6 +129,11 @@ struct PostView: View {
                                 .foregroundColor(.secondary)
                         } else {
                             Button {
+                                if !postCoordinator.newMarkerTitle.isEmpty {
+                                    clickLocation.toggle()
+                                    postCoordinator.newLocalmoveCameraPosition()
+                                    postCoordinator.makeSearchLocationMarker()
+                                }
                                 lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
                                 lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
                                 
@@ -231,7 +238,7 @@ struct PostView: View {
                     }
                     
                     LazyVGrid(columns: createGridColumns(), spacing: 20) {
-                        ForEach (Category.allCases.indices, id: \.self) { index in
+                        ForEach (MyCategory.allCases.indices, id: \.self) { index in
                             VStack {
                                 if selectedToggle[index] {
                                     Text(Category.allCases[index].categoryName)
@@ -278,6 +285,7 @@ struct PostView: View {
                         .padding(EdgeInsets(top: 25, leading: 0, bottom: 0, trailing: 13))
                         .onTapGesture {
                             isshowAlert = true
+                            print("신규마커최종위치: \(newMarkerlat), \(newMarkerlng)")
                         }
                     
                         .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == ""))
@@ -308,11 +316,18 @@ struct PostView: View {
                     print("취소 버튼 클릭")
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
-                    creatFeed()
+                    print("registrationAlert 마지막상태: \(registrationAlert)")
+
+                    if postCoordinator.newMarkerTitle.isEmpty {
+                        creatFeed()
+                    } else {
+                        creatMarkerFeed()
+                    }
+                    registrationAlert = false
                     isPostViewPresented = false
                     selection = 1
                     print("완료 버튼 클릭")
-                    
+                    print("registrationAlert 마지막상태: \(registrationAlert)")
                 }
                 return Alert(title: Text("게시물 작성"),
                              message: Text("작성을 완료하시겠습니까?"),
@@ -333,6 +348,8 @@ struct PostView: View {
     } // body
     
     //MARK: 파베함수
+    
+    /// 일반적인 업로드 함수
     func creatFeed() {
         //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
         
@@ -388,6 +405,63 @@ struct PostView: View {
             }
         }
     }
+    /// 새로운 장소와 마커를 함께 저장할 때 쓰여지는 함수
+    func creatMarkerFeed() {
+        //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
+        
+        var feed = MyFeed(writerNickname: userStore.user.nickname,
+                          writerName: userStore.user.name,
+                          writerProfileImage: userStore.user.profileImageURL,
+                          images: images,
+                          contents: text,
+                          createdAt: createdAt,
+                          title: postCoordinator.newMarkerTitle,
+                          category: myselectedCategory,
+                          address: searchResult.address,
+                          roadAddress: searchResult.roadAddress,
+                          mapx: newMarkerlng,
+                          mapy: newMarkerlat
+        )
+        
+        if let selectedImages = selectedImage {
+            var imageUrls: [String] = []
+            
+            for image in selectedImages {
+                guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
+                
+                let storageRef = storage.reference().child(UUID().uuidString) //
+                
+                storageRef.putData(imageData) { _, error in
+                    if let error = error {
+                        print("Error uploading image: \(error)")
+                        return
+                    }
+                    
+                    storageRef.downloadURL { url, error in
+                        guard let imageUrl = url?.absoluteString else { return }
+                        imageUrls.append(imageUrl)
+                        
+                        if imageUrls.count == selectedImages.count {
+                            
+                            feed.images = imageUrls
+                            
+                            do {
+                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
+                            } catch {
+                                print("Error saving feed: \(error)")
+                            }
+                            do {
+                                try db.collection("Feed").document(feed.id).setData(from: feed)
+                            } catch {
+                                print("Error saving feed: \(error)")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     func toggleCategorySelection(at index: Int) {
         selectedToggle[index].toggle()
         if selectedToggle[index] {
