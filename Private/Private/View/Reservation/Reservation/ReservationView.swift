@@ -155,7 +155,7 @@ struct ReservationView: View {
                                 isShwoingDetailView.toggle()
                             }
                             .font(.pretendardBold20)
-                            .foregroundStyle(isSelectedTime ? .white : Color.gray)
+                            .foregroundStyle(isSelectedTime ? .black : Color.secondary)
                             .disabled(!isSelectedTime)
                         }
                         .navigationDestination(isPresented: $isShwoingDetailView) {

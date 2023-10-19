@@ -220,6 +220,7 @@ struct ShopDetailFooterView: View {
             ReservationButton(text: "예약하기") {
                 isReservationPresented.toggle()
             }
+            .foregroundStyle(Color.black)
             
 //            Button {
 //                isReservationPresented.toggle()

@@ -12,7 +12,7 @@ struct ReservationCardView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var shopStore: ShopStore
-
+    
     @State private var isShowDeleteMyReservationAlert: Bool = false
     @State private var isShowRemoveReservationAlert: Bool = false
     @State private var isShowModifyView: Bool = false
@@ -22,7 +22,7 @@ struct ReservationCardView: View {
     @State private var shopData: Shop = ShopStore.shop
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedDate: String = ""
-
+    
     private let currentDate = Date()
     var reservation: Reservation
     
@@ -35,7 +35,6 @@ struct ReservationCardView: View {
                 Spacer()
                 Menu {
                     NavigationLink {
-//                        ShopDetailView(shopViewModel: ShopViewModel(shop: shopData, userID: userStore.user.id))
                         ShopDetailView(shop: shopData)
                     } label: {
                         Text("가게보기")
@@ -83,29 +82,30 @@ struct ReservationCardView: View {
                         .font(.pretendardBold20)
                         .padding(.bottom, 6)
                     
-//                    ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: temporaryReservation.date))
-//                    ReservationCardCell(title: "예약 시간", content: "\(temporaryReservation.time)시")
                     ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
                 }
             }
+            .padding(.bottom)
             
-//            ReservationCardCell(title: "예약 날짜", content: dateToFullString(date: temporaryReservation.date))
-//            ReservationCardCell(title: "예약 시간", content: "\(temporaryReservation.time)시")
-//            ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
-            //ReservationCardCell(title: "총 비용", content: "\(temporaryReservation.totalPrice)원")
-                .padding(.bottom)
+            if reservationState == "이용 전" {
+                Text("예약 변경 및 취소는 예약시간 한 시간 전까지 가능합니다")
+                    .font(.pretendardRegular16)
+                    .foregroundStyle(Color.red)
+                    .padding(.bottom)
+            }
             
             HStack {
                 ReservationButton(text: "예약 변경") {
                     isShowModifyView.toggle()
                 }
-                .foregroundStyle(disableReservationButton ? Color.gray : .black)
+                .foregroundStyle(disableReservationButton ? Color.secondary : .black)
                 .disabled(disableReservationButton)
                 
                 ReservationButton(text: "예약 취소") {
                     isShowRemoveReservationAlert.toggle()
                 }
-                .foregroundStyle(disableReservationButton ? Color.gray : .black)
+                .font(.pretendardMedium18)
+                .foregroundStyle(disableReservationButton ? Color.secondary : .black)
                 .disabled(disableReservationButton)
             }
         }

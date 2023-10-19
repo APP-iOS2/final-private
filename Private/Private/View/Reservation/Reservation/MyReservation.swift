@@ -23,6 +23,9 @@ struct MyReservation: View {
                     .padding()
                 }
                 .padding()
+                .onAppear {
+                    reservationStore.fetchReservation()
+                }
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button {

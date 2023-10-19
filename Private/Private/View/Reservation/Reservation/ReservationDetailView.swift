@@ -101,7 +101,7 @@ struct ReservationDetailView: View {
             ReservationButton(text: "예약하기") {
                 isShowingAlert.toggle()
             }
-//            .tint(.primary)
+            .foregroundStyle(Color.black)
             .padding()
             .alert("예약 확정", isPresented: $isShowingAlert) {
                 Button() {
