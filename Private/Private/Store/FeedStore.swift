@@ -110,33 +110,100 @@ final class FeedStore: ObservableObject {
             }
         }//end deleteFeed
         
-        func updateFeed(_ feed: Feed) {
-            Firestore.firestore().collection("Feed").document(feed.id).updateData([
-                "writerNickname": feed.writerNickname,
-                "writerName": feed.writerName,
-                "writerProfileImage": feed.writerProfileImage,
-                "images": feed.images,
-                "contents": feed.contents,
-                "createdAt": feed.createdAt,
-                "title": feed.title,
-                "category": feed.category,
-                "address": feed.address,
-                "roadAddress": feed.roadAddress,
-                "mapx": feed.mapx,
-                "mapy": feed.mapy
-            ]) { error in
-                if let error = error {
-                    print("Error updating feed: \(error.localizedDescription)")
-                } else {
-                    print("Feed updated successfully")
-                }
-            }
-        }
+        
     }
 }
+//        func updateFeed(_ feed: MyFeed) {
+//            if let selectedImages = selectedImage {
+//                var imageUrls: [String] = []
+//
+//                for image in selectedImages {
+//                    guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
+//                    
+//                    let storageRef = storage.reference().child(UUID().uuidString) //
+//                    
+//                    storageRef.putData(imageData) { _, error in
+//                        if let error = error {
+//                            print("Error uploading image: \(error)")
+//                            return
+//                        }
+//                        
+//                        storageRef.downloadURL { url, error in
+//                            guard let imageUrl = url?.absoluteString else { return }
+//                            imageUrls.append(imageUrl)
+//                            
+//                            if imageUrls.count == selectedImages.count {
+//                                feed.images = imageUrls
+//                                
+//                                Firestore.firestore().collection("Feed").document(feed.id).updateData([
+//                                    "writerNickname": feed.writerNickname,
+//                                    "writerName": feed.writerName,
+//                                    "writerProfileImage": feed.writerProfileImage,
+//                                    "images": feed.images,
+//                                    "contents": feed.contents,
+//                                    "createdAt": feed.createdAt,
+//                                    "title": feed.title,
+//                                    "category": feed.category,
+//                                    "address": feed.address,
+//                                    "roadAddress": feed.roadAddress,
+//                                    "mapx": feed.mapx,
+//                                    "mapy": feed.mapy
+//                                ]) { error in
+//                                    if let error = error {
+//                                        print("Error updating feed: \(error.localizedDescription)")
+//                                    } else {
+//                                        print("Feed updated successfully")
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
 
 
 
 
 
+/*
+ if let selectedImages = selectedImage {
+     var imageUrls: [String] = []
+
+     for image in selectedImages {
+         guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
+
+         let storageRef = storage.reference().child(UUID().uuidString) //
+
+         storageRef.putData(imageData) { _, error in
+             if let error = error {
+                 print("Error uploading image: \(error)")
+                 return
+             }
+
+             storageRef.downloadURL { url, error in
+                 guard let imageUrl = url?.absoluteString else { return }
+                 imageUrls.append(imageUrl)
+
+                 if imageUrls.count == selectedImages.count {
+
+                     feed.images = imageUrls
+
+                     do {
+                         try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
+                     } catch {
+                         print("Error saving feed: \(error)")
+                     }
+                     do {
+                         try db.collection("Feed").document(feed.id).setData(from: feed)
+                     } catch {
+                         print("Error saving feed: \(error)")
+                     }
+                 }
+             }
+         }
+     }
+ }
+ 
+ */

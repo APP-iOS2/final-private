@@ -18,6 +18,12 @@ struct FeedCellView: View {
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
     @EnvironmentObject private var feedStore: FeedStore
     
+    @State private var root: Bool = false
+    @State private var selection: Int = 0
+    @State private var isPostViewPresented: Bool = false
+    @State private var coord: NMGLatLng = NMGLatLng(lat: 0, lng: 0) // 적절한 초기값으로 설정하세요.
+    @State private var searchResult: SearchResult? = nil
+    
     
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
     
@@ -69,8 +75,9 @@ struct FeedCellView: View {
                                 title: Text("선택하세요"),
                                 buttons: [
                                     .default(Text("수정")) {
+                                        
                                         print("수정")
-                                        isUpdateSheetPresented = true // 수정 버튼을 눌렀을 때 업데이트 시트를 표시
+                                        isUpdateSheetPresented.toggle()
                                     },
                                     .destructive(Text("삭제")) {
                                         print("삭제")
@@ -79,6 +86,13 @@ struct FeedCellView: View {
                                     .cancel() // 취소 버튼
                                 ]
                             )
+                        }
+                        .sheet(isPresented: $isUpdateSheetPresented) {
+                            FeedUpdateView(root: .constant(true), selection: .constant(0), isFeedUpdateViewPresented: .constant(true), coord: $coord, searchResult: .constant(SearchResult(title: feed.title, category: feed.category[0], address: feed.address, roadAddress: feed.roadAddress, mapx: feed.mapx, mapy: feed.mapy)), feed: feed) // feed를 전달합니다.
+                        
+//                        .sheet(isPresented: $isUpdateSheetPresented) {
+//                    
+//                            FeedUpdateView(root: .constant(true), selection: .constant(0), isFeedUpdateViewPresented: .constant(true), coord: $coord, searchResult: .constant(SearchResult(title: feed.title, category: feed.category[0], address: feed.address, roadAddress: feed.roadAddress, mapx: feed.mapx, mapy: feed.mapy)), feed: feed)
                         }
                     }
                 } // HStack (수정, 삭제)
@@ -205,13 +219,3 @@ struct FeedCellView: View {
 
 //https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/81789D33-A401-4701-AB9F-ABBBE6DEC156?alt=media&token=a9b1fcdc-c1f9-48ec-87af-d7b617376365
 // https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/39968E65-7EB6-4D5D-AC00-8C8578AABFFF?alt=media&token=149585b7-ad7a-445a-a770-2e13af631ba0
-//    func updateFeed(_ feed: Feed) {
-//        dbRef.document(feed.id).updateData([
-//            "writer" : feed.writer,
-//            "image" : feed.images,
-//            "contents" : feed.contents,
-//            "createdAt" : feed.createdAt,
-//            "visitedShop": feed.visitedShop,
-//            "category": feed.category
-//        ])
-//    }

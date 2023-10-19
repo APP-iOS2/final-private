@@ -119,6 +119,7 @@
 		3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F52AB83200003689A6 /* MainLoginView.swift */; };
 		63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB09992ABD87BD002CCE4E /* NaverMap.swift */; };
 		A6D3A1A22ADF94D5008812FF /* FeedUpdateSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D3A1A12ADF94D5008812FF /* FeedUpdateSheetView.swift */; };
+		A6D3A1A42ADFC6B3008812FF /* FeedUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D3A1A32ADFC6B2008812FF /* FeedUpdateView.swift */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
 		B54C14BF2AD45CC300E45636 /* ModifyReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */; };
@@ -270,6 +271,7 @@
 		63BB09992ABD87BD002CCE4E /* NaverMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverMap.swift; sourceTree = "<group>"; };
 		87739F481181992B30A0E64A /* Pods_Private.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D3A1A12ADF94D5008812FF /* FeedUpdateSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUpdateSheetView.swift; sourceTree = "<group>"; };
+		A6D3A1A32ADFC6B2008812FF /* FeedUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUpdateView.swift; sourceTree = "<group>"; };
 		B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
 		B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePickerView.swift; sourceTree = "<group>"; };
 		B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyReservationView.swift; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 				26357CE52AD532E70098C8F5 /* FeedCellView.swift */,
 				26357CE72AD533010098C8F5 /* EmptyFeed.swift */,
 				A6D3A1A12ADF94D5008812FF /* FeedUpdateSheetView.swift */,
+				A6D3A1A32ADFC6B2008812FF /* FeedUpdateView.swift */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -1142,6 +1145,7 @@
 				E47B3F772AC14A3B002164A6 /* MySavedPlaceView.swift in Sources */,
 				3CCD2DE42ABC3185005709F4 /* Reservation.swift in Sources */,
 				26357CE82AD533010098C8F5 /* EmptyFeed.swift in Sources */,
+				A6D3A1A42ADFC6B3008812FF /* FeedUpdateView.swift in Sources */,
 				060C7C522AD7BFC700306B67 /* ShopListView.swift in Sources */,
 				3C9747722AD4E1AE007AE3CB /* LocationSearchStore.swift in Sources */,
 				D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */,
