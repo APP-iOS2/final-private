@@ -158,7 +158,7 @@ struct ShopDetailBodyView: View {
                 case .shopMenu:
                     ShopDetailMenuView(shopData: shopData)
                 case .shopCurrentReview:
-                    ShopwDetailCurrentReviewView()
+                    ShopwDetailCurrentReviewView(shopData: shopData)
                 }
             }
             .padding([.top, .horizontal], 10)
