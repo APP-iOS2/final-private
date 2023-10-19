@@ -9,8 +9,8 @@ import Foundation
 import Firebase
 
 final class FollowStore: ObservableObject {
-    @Published var followerList: [String] = []
-    @Published var followingList: [String] = []
+    @Published var followerList: [String] = [] // User가 아닌 닉네임을 저장
+    @Published var followingList: [String] = [] // ""
     
     @Published var followers = 0
     @Published var following = 0
