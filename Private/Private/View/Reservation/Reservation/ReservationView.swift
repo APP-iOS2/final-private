@@ -200,9 +200,10 @@ struct ReservationView: View {
                 .onAppear {
                     self.temporaryReservation.shopId = self.shopData.id
                     // calendarData의 데이타를 모두 바꿔줘야 함
-                    calendarData.selectedDate = Date()
-                    calendarData.currentPage = Date()
-                    calendarData.titleOfMonth = Date()
+                    calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)
+                    calendarData.currentPage = calendarData.getSelectedDate(shopData: shopData)
+                    calendarData.titleOfMonth = calendarData.getSelectedDate(shopData: shopData)
+                    temporaryReservation.date = calendarData.getSelectedDate(shopData: shopData)
                 }
             }
         }
