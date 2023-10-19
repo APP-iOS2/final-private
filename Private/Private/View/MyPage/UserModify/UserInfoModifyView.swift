@@ -26,7 +26,7 @@ struct UserInfoModifyView: View {
                         if userStore.user.profileImageURL.isEmpty {
                             Circle()
                                 .frame(width: .screenWidth*0.23)
-                                .foregroundColor(.primary)
+                                .foregroundColor(.white)
                             if ((selectedImage) != nil) {
                                 Image(uiImage: selectedImage!)
                                     .resizable()
@@ -72,13 +72,13 @@ struct UserInfoModifyView: View {
                     UserImagePickerView(selectedImage: $selectedImage)
                 }
                 Divider()
-                    .background(Color.primary)
+                    .background(Color.white)
                     .frame(width: .screenWidth*0.9)
                     .padding([.top,.bottom],15)
                 HStack {
                     Text("닉네임")
                         .font(.pretendardMedium18)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                     TextField("\(userStore.user.nickname)", text: $mypageNickname)
                         .padding(.leading, 5)
                 }
@@ -92,7 +92,7 @@ struct UserInfoModifyView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(Text(userStore.user.nickname).font(.pretendardRegular16).foregroundColor(.primary))
+        .navigationTitle(Text(userStore.user.nickname).font(.pretendardRegular16).foregroundColor(.white))
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -100,7 +100,7 @@ struct UserInfoModifyView: View {
                 } label: {
                     Text("취소")
                         .font(.pretendardSemiBold16)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {

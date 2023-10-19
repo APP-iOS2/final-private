@@ -23,7 +23,7 @@ struct MyFollowerFollowingView: View {
                     }
                     .font(.pretendardSemiBold16)
                     .padding(.bottom, 15)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                     .modifier(BottomBorder(showBorder: viewNumber == 0))
                 }
                 Spacer()
@@ -36,7 +36,7 @@ struct MyFollowerFollowingView: View {
                     }
                     .font(.pretendardSemiBold16)
                     .padding(.bottom, 15)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                     .modifier(BottomBorder(showBorder: viewNumber == 1))
                 }
                 Spacer()

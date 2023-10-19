@@ -35,14 +35,14 @@ struct UserInfoView: View {
                 .padding(.bottom, 1.0)
                 Text(userStore.user.nickname)
                     .font(.pretendardBold24)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
             }.padding([.top, .trailing], 14)
             VStack {
                 HStack {
                     VStack {
                         Text("\(userStore.myFeedList.count)")
                             .font(.pretendardBold18)
-                            .foregroundColor(.primary)
+                            .foregroundColor(.white)
                             .padding(.bottom, 5.0)
                         Text("게시글")
                             .font(.pretendardBold14)

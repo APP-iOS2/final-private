@@ -24,35 +24,35 @@ struct ShopInfoCardView: View {
                 VStack(alignment: .leading) {
                     Text(place.title)
                         .font(.pretendardBold18)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                         .padding(.bottom, 2)
                     VStack(alignment: .leading) {
                         HStack {
                             Label(
                                 title: { Text(place.category[0])
                                         .font(.pretendardRegular14)
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(.white)
                                 },
                                 icon: { Image(systemName: "fork.knife") }
                             )
                             Text("|")
                                 .font(.pretendardRegular14)
-                                .foregroundColor(.primary)
+                                .foregroundColor(.white)
                             Label(
                                 title: { Text("0") // 가게 좋아요 수 필요
                                         .font(.pretendardRegular14)
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(.white)
                                 },
                                 icon: { Image(systemName: "heart.fill") }
                             )
                             .font(.pretendardRegular14)
                             Text("|")
                                 .font(.pretendardRegular14)
-                                .foregroundColor(.primary)
+                                .foregroundColor(.white)
                             Label(
                                 title: { Text("0") // 가게 북마크 수 필요
                                         .font(.pretendardRegular14)
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(.white)
                                 },
                                 icon: { Image(systemName: "bookmark.fill") }
                             )
@@ -61,7 +61,7 @@ struct ShopInfoCardView: View {
                         Label(
                             title: { Text(place.roadAddress)
                                     .font(.pretendardRegular14)
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(.white)
                             },
                             icon: { Image(systemName: "mappin") }
                         )
