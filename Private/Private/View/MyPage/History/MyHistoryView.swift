@@ -28,6 +28,7 @@ struct MyHistoryView: View {
                     if userStore.myFeedList.isEmpty {
                         Text("게시물이 존재 하지 않습니다.")
                             .font(.pretendardBold24)
+                            .foregroundColor(.white)
                             .padding(.top, .screenHeight * 0.2 + 37.2)
                     } else {
                         LazyVGrid(
@@ -61,6 +62,7 @@ struct MyHistoryView: View {
                     if reservationStore.reservationList.isEmpty {
                         Text("예약내역이 존재하지 않습니다.")
                             .font(.pretendardBold24)
+                            .foregroundColor(.primary)
                             .padding(.top, .screenHeight * 0.2)
                     } else {
                         MyReservation(isShowingMyReservation: .constant(true))

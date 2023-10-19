@@ -21,12 +21,14 @@ struct ShopDetailInfoView: View {
                     Image(systemName: "text.justify.leading")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
+                        .foregroundStyle(Color.privateColor)
                         .frame(width: 20, height: 20)
                 }
                 .frame(width: 25, height: 25)
                 
                 Text("소개")
                     .font(.pretendardMedium18)
+                    .foregroundStyle(Color.privateColor)
                 
                 Spacer()
             }
@@ -45,12 +47,14 @@ struct ShopDetailInfoView: View {
                     Image(systemName: "clock")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
+                        .foregroundStyle(Color.privateColor)
                         .frame(width: 25, height: 25)
                 }
                 .frame(width: 25, height: 25)
                 
                 Text("영업 시간")
                     .font(.pretendardMedium18)
+                    .foregroundStyle(Color.privateColor)
                 
                 Spacer()
                 
@@ -60,7 +64,7 @@ struct ShopDetailInfoView: View {
                         .font(.pretendardMedium18)
                         .padding(10)
                 }
-                .background(isShopOpen(shopData) == "영업중" ? Color("AccentColor") : Color("SubGrayColor"))
+                .background(isShopOpen(shopData) == "영업중" ? Color.privateColor : Color.subGrayColor)
                 .cornerRadius(12)
             }
             
@@ -107,6 +111,7 @@ struct ShopDetailInfoView: View {
                 } label: {
                     Text("휴무일")
                         .font(.pretendardMedium18)
+                        .foregroundStyle(Color.privateColor)
                         .lineSpacing(5)
                         .frame(alignment: .leading)
                 }
@@ -148,6 +153,7 @@ struct ShopDetailInfoView: View {
                 } label: {
                     Text("브레이크 타임")
                         .font(.pretendardMedium18)
+                        .foregroundStyle(Color.privateColor)
                         .lineSpacing(5)
                         .frame(alignment: .leading)
                 }

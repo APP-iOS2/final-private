@@ -25,7 +25,7 @@ struct MyFollowingView: View {
                             ZStack {
                                 Circle()
                                     .frame(width: .screenWidth*0.13)
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(.white)
                                 Image(systemName: "person.fill")
                                     .resizable()
                                     .frame(width: .screenWidth*0.115,height: .screenWidth*0.115)
@@ -40,7 +40,7 @@ struct MyFollowingView: View {
                         }
                         Text("\(following.nickname)")
                             .font(.pretendardMedium18)
-                            .foregroundColor(.primary)
+                            .foregroundColor(.white)
                             .padding(.leading, 15)
                     }
                     Spacer()

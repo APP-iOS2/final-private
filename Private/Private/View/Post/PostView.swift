@@ -34,7 +34,7 @@ struct PostView: View {
     
     @State private var selectedWriter: String = "김아무개"
     @State private var text: String = "" /// 텍스트마스터 내용
-    @State private var textPlaceHolder: String = "당신의 경험을 적어주세요!" /// 텍스트마스터 placeholder
+    @State private var textPlaceHolder: String = "나만의 Private한 장소에 대해 적어주세요!" /// 텍스트마스터 placeholder
     @State private var lat: String = ""
     @State private var lng: String = ""
     @State private var newMarkerlat: String = ""
@@ -65,7 +65,7 @@ struct PostView: View {
     
     private let minLine: Int = 10
     private let maxLine: Int = 12
-    private let fontSize: Double = 24
+    private let fontSize: Double = 18
     private let maxSelectedCategories = 3
     
     var db = Firestore.firestore()
@@ -112,6 +112,8 @@ struct PostView: View {
                             showLocation = true
                         } label: {
                             Label("장소", systemImage: "location")
+                                .font(.pretendardMedium16)
+                                .foregroundStyle(Color.privateColor)
                         }
                         .sheet(isPresented: $showLocation) {
                             LocationSearchView(showLocation: $showLocation, searchResult: $searchResult, isSearchedLocation: $isSearchedLocation)
@@ -122,50 +124,51 @@ struct PostView: View {
                         }
                     }
                     .padding(.vertical, 10)
-                    
-                        if searchResult.title.isEmpty && postCoordinator.newMarkerTitle.isEmpty {
-                            Text("장소를 선택해주세요")
-                                .font(.pretendardRegular12)
-                                .foregroundColor(.secondary)
-                        } else {
-                            Button {
-                                if !postCoordinator.newMarkerTitle.isEmpty {
+                      
+                    HStack {
+                        VStack(alignment: .leading) {
+                            if searchResult.title.isEmpty && postCoordinator.newMarkerTitle.isEmpty {
+                                Text("장소를 선택해주세요")
+                                    .font(.pretendardRegular12)
+                                    .foregroundColor(.secondary)
+                                    .padding(.bottom, 5)
+                            } else {
+                                Button {
+                                    lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
+                                    lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
+                                    
+                                    postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                                    postCoordinator.newMarkerTitle = searchResult.title
+                                    print("위도값: \(coord.lat), 경도값: \(coord.lng)")
+                                    print("지정장소 클릭")
                                     clickLocation.toggle()
-                                    postCoordinator.newLocalmoveCameraPosition()
+                                    postCoordinator.moveCameraPosition()
                                     postCoordinator.makeSearchLocationMarker()
-                                }
-                                lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
-                                lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
-                                
-                                postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                                print("위도값: \(coord.lat), 경도값: \(coord.lng)")
-                                print("지정장소 클릭")
-                                clickLocation.toggle()
-                                postCoordinator.moveCameraPosition()
-                                postCoordinator.makeSearchLocationMarker()
-                            } label: {
-                                if !postCoordinator.newMarkerTitle.isEmpty {
-                                    Text("신규장소: \(postCoordinator.newMarkerTitle)")
-                                } else {
-                                    Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                                } label: {
+                                    Text("\(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                         .font(.pretendardRegular12)
                                 }
+                                .sheet(isPresented: $clickLocation) {
+                                    LocationDetailView()
+                                        .presentationDetents([.height(.screenHeight * 0.6), .large])
+                                }
+                                if (!searchResult.address.isEmpty) {
+                                    Text(searchResult.address)
+                                        .font(.pretendardRegular10)
+                                        .foregroundStyle(.secondary)
+                                }
                             }
-                            .sheet(isPresented: $clickLocation) {
-                                LocationDetailView()
-                            }
-                            Text(searchResult.address)
-                                .font(.pretendardRegular10)
-                                .foregroundStyle(.secondary)
-                            HStack {
-                            Spacer()
-                            Button {
-                                searchResult.title = ""
-                                searchResult.roadAddress = ""
-                                postCoordinator.newMarkerTitle = ""
-                            } label: {
-                                Label("", systemImage: "xmark")
-                            }
+                        }
+                            
+                        Spacer()
+                        Button {
+                            searchResult.title = ""
+                            searchResult.roadAddress = ""
+                            postCoordinator.newMarkerTitle = ""
+                        } label: {
+                            Label("", systemImage: "xmark")
+                                .font(.pretendardMedium16)
+                                .foregroundStyle(Color.privateColor)
                         }
 //                            if !postCoordinator.newMarkerTitle.isEmpty {
 //                                Text("신규장소: \(postCoordinator.newMarkerTitle)")
@@ -177,11 +180,15 @@ struct PostView: View {
                     //MARK: 사진
                     HStack {
                         Label("사진", systemImage: "camera")
+                            .font(.pretendardMedium16)
+                            .foregroundStyle(Color.privateColor)
                         Spacer()
                         Button {
                             isImagePickerPresented.toggle()
                         } label: {
                             Label("", systemImage: "plus")
+                                .font(.pretendardMedium16)
+                                .foregroundStyle(Color.privateColor)
                         }
                         .sheet(isPresented: $isImagePickerPresented) {
                             ImagePickerView(selectedImages: $selectedImage)
@@ -210,8 +217,8 @@ struct PostView: View {
                                                 Circle()
                                                     .frame(width: .screenWidth*0.06)
                                                 Image(systemName: "x.circle")
-                                                    .font(.pretendardBold24)
-                                                    .foregroundColor(.primary)
+                                                    .font(.pretendardMedium20)
+                                                    .foregroundColor(Color.white)
                                                     .padding(8)
                                             }
                                         }
@@ -220,6 +227,7 @@ struct PostView: View {
                                 }
                             } else {
                                 Text("최소 1장의 사진이 필요합니다!")
+                                    .font(.pretendardRegular12)
                                     .foregroundStyle(.red)
                             }
                         }
@@ -232,6 +240,7 @@ struct PostView: View {
                     HStack {
                         Text("카테고리")
                             .font(.pretendardMedium20)
+                            .foregroundStyle(Color.privateColor)
                         Text("(최대 3개)")
                             .font(.pretendardRegular12)
                             .foregroundColor(.secondary)
@@ -247,10 +256,12 @@ struct PostView: View {
                                         .frame(width: 70, height: 30)
                                         .padding(.vertical, 4)
                                         .padding(.horizontal, 4)
-                                        .background(Color.accentColor)
+                                        .background(Color.privateColor)
                                         .cornerRadius(7)
                                 } else {
                                     Text(Category.allCases[index].categoryName)
+                                        .font(.pretendardMedium16)
+                                        .foregroundColor(.white)
                                         .frame(width: 70, height: 30)
                                         .padding(.vertical, 4)
                                         .padding(.horizontal, 4)
@@ -279,8 +290,8 @@ struct PostView: View {
                     Text("업로드")
                         .font(.pretendardBold18)
                         .frame(maxWidth: .infinity, minHeight: 50)
-                        .foregroundColor(.white)
-                        .background(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == "") ? Color.gray : Color.accentColor)
+                        .foregroundColor(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == "") ? .white : .black)
+                        .background(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == "") ? Color.darkGrayColor : Color.privateColor)
                         .cornerRadius(7)
                         .padding(EdgeInsets(top: 25, leading: 0, bottom: 0, trailing: 13))
                         .onTapGesture {

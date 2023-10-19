@@ -12,7 +12,7 @@ import FirebaseFirestore
 struct Feed: Identifiable, Codable, Hashable {
     
     var id: String = UUID().uuidString
-
+    
     var writerNickname: String
     var writerName: String
     var writerProfileImage: String
@@ -28,6 +28,7 @@ struct Feed: Identifiable, Codable, Hashable {
 }
 
 enum Category: Int, CaseIterable, Hashable, Codable {
+    case general
     case koreanFood
     case westernFood
     case japaneseFood
@@ -36,17 +37,18 @@ enum Category: Int, CaseIterable, Hashable, Codable {
     case pub
     case brunch
     case cafe
-
+    
     var categoryName: String {
         switch self {
-        case .koreanFood : return "한식"
-        case .westernFood : return "양식"
-        case .japaneseFood : return "일식"
-        case .chinessFood : return "중식"
-        case .dessert : return "디저트"
-        case .pub : return "술집"
-        case .brunch : return "브런치"
-        case .cafe : return "카페"
+        case .general: return "전체"
+        case .koreanFood: return "한식"
+        case .westernFood: return "양식"
+        case .japaneseFood: return "일식"
+        case .chinessFood: return "중식"
+        case .dessert: return "디저트"
+        case .pub: return "술집"
+        case .brunch: return "브런치"
+        case .cafe: return "카페"
         }
     }
 }

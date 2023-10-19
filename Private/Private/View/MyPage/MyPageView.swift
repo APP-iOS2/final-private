@@ -23,7 +23,7 @@ struct MyPageView: View {
                 } label: {
                     Image(systemName: "gearshape")
                         .padding(.trailing,30)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                 }
             }
             UserInfoView()
@@ -38,11 +38,11 @@ struct MyPageView: View {
                         Text("내 마커")
                             .font(.pretendardRegular14)
                     }
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                 }
                 .frame(width: .screenWidth*0.5)
                 Divider()
-                    .background(Color.primary)
+                    .background(Color.white)
                     .frame(height: .screenHeight*0.02)
                 NavigationLink {
                     MyReservation(isShowingMyReservation: .constant(true))
@@ -52,7 +52,7 @@ struct MyPageView: View {
                         Text("예약내역")
                             .font(.pretendardRegular14)
                     }
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                 }
                 .frame(width: .screenWidth*0.5)
             }
@@ -75,7 +75,17 @@ struct MyPageView: View {
                     viewNumber = 1
                 }label: {
                     HStack {
-                        viewNumber == 1 ? Image("bookmark_fill") : Image ("bookmark")
+                        if viewNumber == 1 {
+                            Image("bookmark_fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 15)
+                        } else {
+                            Image ("bookmark")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 15)
+                        }
                         Text("저장한 피드")
                     }
                     .font(.pretendardRegular12)
@@ -96,12 +106,12 @@ struct MyPageView: View {
                     .foregroundColor(viewNumber == 2 ? .privateColor : .white)
                     .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
-                    .modifier(BottomBorder(showBorder: viewNumber == 2))
+                    .modifier(YellowBottomBorder(showBorder: viewNumber == 2))
                 }
             }
             .padding(.top, 20)
             Divider()
-                .background(Color.primary)
+                .background(Color.white)
                 .padding(.top, -9)
             
             TabView(selection: $viewNumber) {

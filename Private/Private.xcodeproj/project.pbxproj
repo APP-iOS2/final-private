@@ -54,7 +54,6 @@
 		3C69C8C12ADF6B1A004476D1 /* MapFeedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */; };
 		3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */; };
 		3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */; };
-		3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */; };
 		3C91AEA22AC40F6100E60D9B /* UserInfoModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */; };
 		3C91AEA32AC40F6100E60D9B /* ShopInfoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C91AEA02AC40F6100E60D9B /* ShopInfoCardView.swift */; };
 		3C91AEA42AC40F6100E60D9B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C91AEA12AC40F6100E60D9B /* SettingView.swift */; };
@@ -126,6 +125,7 @@
 		63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB09992ABD87BD002CCE4E /* NaverMap.swift */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
+		B52FCD252ADEB47700E0364D /* HolidayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52FCD242ADEB47700E0364D /* HolidayManager.swift */; };
 		B54C14BF2AD45CC300E45636 /* ModifyReservationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */; };
 		B54DFCE32AD7D643004A3CA2 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = B54DFCE22AD7D643004A3CA2 /* FSCalendar */; };
 		B54DFCE52AD7D7AC004A3CA2 /* FSCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFCE42AD7D7AC004A3CA2 /* FSCalendarView.swift */; };
@@ -139,11 +139,12 @@
 		B5A315432ADCBF9D00363EC3 /* Holiday.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A315422ADCBF9D00363EC3 /* Holiday.swift */; };
 		B5A315452ADCCB8500363EC3 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A315442ADCCB8500363EC3 /* NetworkManager.swift */; };
 		B5BEAA232AC154430002CC2C /* ReservationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEAA222AC154430002CC2C /* ReservationDetailView.swift */; };
-		D1811CCF2AD78029006D2ECF /* PrivateIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1811CCE2AD78029006D2ECF /* PrivateIdentifiable.swift */; };
-		D18A01302ACE38C1009F07F8 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18A012F2ACE38C1009F07F8 /* Button.swift */; };
+		D1A0257F2AE0AC55004250E1 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0257E2AE0AC55004250E1 /* LazyView.swift */; };
+		D1A025812AE0B109004250E1 /* SearchPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A025802AE0B109004250E1 /* SearchPageView.swift */; };
+		D1A025852AE0B234004250E1 /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A025842AE0B234004250E1 /* UserListView.swift */; };
 		D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */; };
-		D1A6CA032ABD6B9A00AE59D0 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */; };
 		D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */; };
+		D1D2F7FD2AE0CAAC00C89FB7 /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */; };
 		D1DC8D512ACEAE2C0087CBD7 /* OtherPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D502ACEAE2C0087CBD7 /* OtherPageView.swift */; };
 		D1DC8D532ACEAE690087CBD7 /* OtherInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D522ACEAE690087CBD7 /* OtherInfoView.swift */; };
 		D1DC8D552ACEAE910087CBD7 /* OtherHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D542ACEAE910087CBD7 /* OtherHistoryView.swift */; };
@@ -222,7 +223,6 @@
 		3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFeedCellView.swift; sourceTree = "<group>"; };
 		3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
-		3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
 		3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoModifyView.swift; sourceTree = "<group>"; };
 		3C91AEA02AC40F6100E60D9B /* ShopInfoCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopInfoCardView.swift; sourceTree = "<group>"; };
 		3C91AEA12AC40F6100E60D9B /* SettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -278,6 +278,7 @@
 		87739F481181992B30A0E64A /* Pods_Private.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
 		B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePickerView.swift; sourceTree = "<group>"; };
+		B52FCD242ADEB47700E0364D /* HolidayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidayManager.swift; sourceTree = "<group>"; };
 		B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyReservationView.swift; sourceTree = "<group>"; };
 		B54DFCE42AD7D7AC004A3CA2 /* FSCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSCalendarView.swift; sourceTree = "<group>"; };
 		B54DFCE62AD93389004A3CA2 /* CalendarData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarData.swift; sourceTree = "<group>"; };
@@ -291,11 +292,12 @@
 		B5A315442ADCCB8500363EC3 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		B5BEAA222AC154430002CC2C /* ReservationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationDetailView.swift; sourceTree = "<group>"; };
 		BD81231EFA3DC67095A11398 /* Pods-PrivateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrivateTests.release.xcconfig"; path = "Target Support Files/Pods-PrivateTests/Pods-PrivateTests.release.xcconfig"; sourceTree = "<group>"; };
-		D1811CCE2AD78029006D2ECF /* PrivateIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateIdentifiable.swift; sourceTree = "<group>"; };
-		D18A012F2ACE38C1009F07F8 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		D1A0257E2AE0AC55004250E1 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
+		D1A025802AE0B109004250E1 /* SearchPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageView.swift; sourceTree = "<group>"; };
+		D1A025842AE0B234004250E1 /* UserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListView.swift; sourceTree = "<group>"; };
 		D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStore.swift; sourceTree = "<group>"; };
-		D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCellView.swift; sourceTree = "<group>"; };
+		D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
 		D1DC8D502ACEAE2C0087CBD7 /* OtherPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherPageView.swift; sourceTree = "<group>"; };
 		D1DC8D522ACEAE690087CBD7 /* OtherInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherInfoView.swift; sourceTree = "<group>"; };
 		D1DC8D542ACEAE910087CBD7 /* OtherHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherHistoryView.swift; sourceTree = "<group>"; };
@@ -448,10 +450,9 @@
 				3C37B1B32AC02481004A8E7E /* Color+.swift */,
 				3CB7340B2ABEFEBC00D82503 /* CGFloat+.swift */,
 				B59853632AC3BE4E00C45E76 /* String+.swift */,
-				D18A012F2ACE38C1009F07F8 /* Button.swift */,
 				D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */,
+				D1A0257E2AE0AC55004250E1 /* LazyView.swift */,
 				3C97476D2AD4DC4E007AE3CB /* Bundle+.swift */,
-				D1811CCE2AD78029006D2ECF /* PrivateIdentifiable.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -486,6 +487,7 @@
 				3C9747712AD4E1AE007AE3CB /* LocationSearchStore.swift */,
 				B54DFCE62AD93389004A3CA2 /* CalendarData.swift */,
 				B5A315442ADCCB8500363EC3 /* NetworkManager.swift */,
+				B52FCD242ADEB47700E0364D /* HolidayManager.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -528,7 +530,8 @@
 			isa = PBXGroup;
 			children = (
 				D1EC43992AC2D42F00B088EA /* SearchView.swift */,
-				D1A6CA022ABD6B9A00AE59D0 /* SearchResultView.swift */,
+				D1A025842AE0B234004250E1 /* UserListView.swift */,
+				D1A025802AE0B109004250E1 /* SearchPageView.swift */,
 				D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */,
 				D1DC8D4F2ACEAE180087CBD7 /* OtherUserPage */,
 			);
@@ -586,10 +589,10 @@
 				3CB869FB2ADFAB0300DAE655 /* GoogleService-Info.plist */,
 				3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */,
 				3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */,
-				3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */,
 				3C93B5072AC1549200788633 /* SendMessageTextField.swift */,
 				B5549FBC2AD59E3000695A8F /* RequirementTextEditor.swift */,
 				06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */,
+				D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -1084,6 +1087,7 @@
 				E47B3F732AC14A0F002164A6 /* MyHistoryView.swift in Sources */,
 				3CCD2DE62ABC319C005709F4 /* ChatRoom.swift in Sources */,
 				B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */,
+				D1A025852AE0B234004250E1 /* UserListView.swift in Sources */,
 				3C91AEA22AC40F6100E60D9B /* UserInfoModifyView.swift in Sources */,
 				3C93B5042AC12AE900788633 /* ChatRoomCellView.swift in Sources */,
 				3C2FC8F72ACE9B750034F561 /* MapMarkerDetailView.swift in Sources */,
@@ -1099,6 +1103,7 @@
 				3C3716242ABD15A4004E8419 /* UserStore.swift in Sources */,
 				3CF3D8C72AB82A97003689A6 /* LaunchView.swift in Sources */,
 				3CCD2DFA2ABC3588005709F4 /* MyPageView.swift in Sources */,
+				D1A0257F2AE0AC55004250E1 /* LazyView.swift in Sources */,
 				0697A2F52AC12523001B859C /* ShopDetailCurrentReviewView.swift in Sources */,
 				3CF3D8C52AB82A97003689A6 /* PrivateApp.swift in Sources */,
 				B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */,
@@ -1121,7 +1126,6 @@
 				3C2FC8F12ACE9B750034F561 /* MapMarkerDetailStore.swift in Sources */,
 				B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */,
 				3CCD2DE22ABC3177005709F4 /* Feed.swift in Sources */,
-				D1811CCF2AD78029006D2ECF /* PrivateIdentifiable.swift in Sources */,
 				E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */,
 				3C2FC9042ACE9BC40034F561 /* SendMessageTextFieldModifier.swift in Sources */,
 				06C796CE2ABD5C5C0043C395 /* ShopDetailView.swift in Sources */,
@@ -1129,8 +1133,8 @@
 				3CCD2DE02ABC314A005709F4 /* Shop.swift in Sources */,
 				B5BEAA232AC154430002CC2C /* ReservationDetailView.swift in Sources */,
 				3C9747772AD4E309007AE3CB /* LocationSearchView.swift in Sources */,
+				D1D2F7FD2AE0CAAC00C89FB7 /* SearchBarTextField.swift in Sources */,
 				E47B3F752AC14A22002164A6 /* MySavedView.swift in Sources */,
-				3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */,
 				3CB7340A2ABD6F0100D82503 /* FeedMainView.swift in Sources */,
 				D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */,
 				3CCD2DDE2ABC3141005709F4 /* User.swift in Sources */,
@@ -1144,7 +1148,6 @@
 				E3A5A0BF2ADF71D800DB13B3 /* PostNaverMap.swift in Sources */,
 				E47B3F792AC16B61002164A6 /* MyFeed.swift in Sources */,
 				63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */,
-				D18A01302ACE38C1009F07F8 /* Button.swift in Sources */,
 				D1DC8D572ACEAEBE0087CBD7 /* OtherSavedView.swift in Sources */,
 				E4778D872ACD3EF40099D924 /* MyFollowingView.swift in Sources */,
 				B5549FBF2AD5A26C00695A8F /* ReservationButton.swift in Sources */,
@@ -1175,6 +1178,7 @@
 				3C3716282ABD1762004E8419 /* FeedStore.swift in Sources */,
 				D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */,
 				3C91AEA32AC40F6100E60D9B /* ShopInfoCardView.swift in Sources */,
+				D1A025812AE0B109004250E1 /* SearchPageView.swift in Sources */,
 				3CCD2DF62ABC3572005709F4 /* PostView.swift in Sources */,
 				3C94275B2ACF9C1800EECCD8 /* MapMarkerFeedView.swift in Sources */,
 				3C97476E2AD4DC4E007AE3CB /* Bundle+.swift in Sources */,
@@ -1188,8 +1192,8 @@
 				B591C7202ACC59E700602727 /* MyReservation.swift in Sources */,
 				E3EB7BC92AD53BAC00D9DF8B /* UploadView.swift in Sources */,
 				3C2FC9032ACE9BC40034F561 /* ChatSendView.swift in Sources */,
+				B52FCD252ADEB47700E0364D /* HolidayManager.swift in Sources */,
 				3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */,
-				D1A6CA032ABD6B9A00AE59D0 /* SearchResultView.swift in Sources */,
 				3C2FC8F62ACE9B750034F561 /* MapFeedSheetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

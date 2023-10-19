@@ -10,7 +10,8 @@ import SwiftUI
 struct ModifyReservationView: View {
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
-    
+    @EnvironmentObject var calendarData: CalendarData
+
     @State private var showingDate: Bool = false    // 예약 일시 선택
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var reservedTime: String = ""
@@ -38,7 +39,7 @@ struct ModifyReservationView: View {
                 
                 HStack {
                     Image(systemName: "calendar")
-                    Text(reservationStore.getReservationDate(reservationDate: temporaryReservation.date))
+                    Text(reservationStore.getReservationDate(reservationDate: calendarData.selectedDate))
                     Text(" / ")
                     Text(self.reservedTime + " \(self.reservedHour)시")
                     Spacer()
@@ -108,6 +109,7 @@ struct ModifyReservationView: View {
                 .alert("예약 변경", isPresented: $isShowingAlert) {
                     Button() {
                         print(#fileID, #function, #line, "- 예약 확정")
+                        temporaryReservation.date = calendarData.selectedDate
                         temporaryReservation.requirement = requirementText
                         reservationStore.updateReservation(reservation: temporaryReservation)
                         isShowModifyView.toggle()
@@ -129,6 +131,10 @@ struct ModifyReservationView: View {
 //        }
         .padding()
         .onAppear {
+            calendarData.selectedDate = temporaryReservation.date
+            calendarData.currentPage = temporaryReservation.date
+            calendarData.titleOfMonth = temporaryReservation.date
+            
             self.reservedTime = reservationStore.conversionReservedTime(time: temporaryReservation.time).0
             self.reservedHour = reservationStore.conversionReservedTime(time: temporaryReservation.time).1
             if let requirement = temporaryReservation.requirement {

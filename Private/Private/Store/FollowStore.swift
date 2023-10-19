@@ -9,8 +9,8 @@ import Foundation
 import Firebase
 
 final class FollowStore: ObservableObject {
-    @Published var followerList: [String] = []
-    @Published var followingList: [String] = []
+    @Published var followerList: [String] = [] // User가 아닌 닉네임을 저장
+    @Published var followingList: [String] = [] // ""
     
     @Published var followers = 0
     @Published var following = 0
@@ -120,16 +120,5 @@ final class FollowStore: ObservableObject {
             }
         }
     }
-    
-//        func likeButtonTapped(user: User) {
-//            let isLiked = user.nickname.contains(where: { $0.id == user.id })
-//            if isLiked {
-//                guard let index = user.nickname.firstIndex(where: { $0.id == followerList.id }) else { return }
-//                user.nickname.remove(at: index)
-//            } else {
-//                user.nickname.append(followers)
-//            }
-//        }
-    
     
 } //

@@ -12,11 +12,11 @@ struct OtherHistoryView: View {
 
     @EnvironmentObject private var reservationStore: ReservationStore
     @EnvironmentObject private var userStore: UserStore
-    @State var isFeed: Bool = true
-    @State var isMap: Bool = false
-    @State var isReservation: Bool = false
-    @State var isMyPageFeedSheet: Bool = false
-    @State var selctedFeed : MyFeed = MyFeed()
+    @State private var isFeed: Bool = true
+    @State private var isMap: Bool = false
+    @State private var isReservation: Bool = false
+    @State private var isMyPageFeedSheet: Bool = false
+    @State private var selctedFeed : MyFeed = MyFeed()
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.95*0.3), spacing: 1, alignment:  nil)]

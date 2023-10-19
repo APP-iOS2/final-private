@@ -16,9 +16,10 @@ struct LocationSearchView: View {
     @Binding var isSearchedLocation: Bool
     
     @State private var searchText: String = ""
+    @State private var inSearchMode = false
     var body: some View {
         VStack(alignment: .leading) {
-            SearchBarTextField(text: $searchText, placeholder: "원하는 위치명을 입력하세요.")
+            SearchBarTextField(text: $searchText, isEditing: $inSearchMode, placeholder: "원하는 위치명을 입력하세요.")
             
             ScrollView {
                 VStack(alignment: .leading) {
@@ -29,10 +30,11 @@ struct LocationSearchView: View {
                         } label: {
                             VStack(alignment: .leading) {
                                 Text("\(location.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                                    .foregroundStyle(.primary)
+                                    .font(.pretendardMedium16)
+                                    .foregroundStyle(Color.privateColor)
                                 Text("\(location.roadAddress)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                     .font(.pretendardRegular12)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(Color.privateColor)
                             }
                         }
                         .padding()
@@ -52,6 +54,9 @@ struct LocationSearchView: View {
             })
         }
         .padding()
+        .onAppear {
+            locationSearchStore.requestSearchLocationResultList(query: searchText)
+        }
     }
 }
 
