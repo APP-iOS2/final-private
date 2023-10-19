@@ -154,33 +154,6 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
     func getNaverMapView() -> NMFNaverMapView {
         view
     }
-    //MARK: 마커 생성
-    func makeMarkers() {
-
-        var tempMarkers: [NMFMarker] = []
-        
-        let marker = NMFMarker()
-        //            let lat = locationSearchStore.formatCoordinates(shopMarker.mapy, 2) ?? ""
-        //            let lng = locationSearchStore.formatCoordinates(shopMarker.mapx, 3) ?? ""
-        //            coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-//        coord = NMGLatLng(lat: tappedLatLng?.lat ?? 0, lng: tappedLatLng?.lng ?? 0)
-        marker.position = tappedLatLng
-        //            marker.position = shopMarker.visitedShop.coord
-        marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
-        marker.captionText = newMarkerTitle
-        marker.captionMinZoom = 10
-        marker.captionMaxZoom = 17
-        marker.iconImage = NMFOverlayImage(name: "placeholder")
-        marker.width = CGFloat(40)
-        marker.height = CGFloat(40)
-        
-        tempMarkers.append(marker)
-        print("신규장소: \(marker.captionText)")
-        print("마커 생성위치: \(coord.lat), \(coord.lng)")
-        
-        markers = tempMarkers
-        
-    }
     
     func removeAllMarkers() {
         for marker in markers {
@@ -196,6 +169,26 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
         
         let marker = NMFMarker()
         marker.position = NMGLatLng(lat: coord.lat, lng: coord.lng)
+        
+        marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
+        marker.captionMinZoom = 10
+        marker.captionMaxZoom = 17
+        marker.captionText = newMarkerTitle.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: "")
+        marker.iconImage = NMFOverlayImage(name: "placeholder")
+        marker.width = CGFloat(40)
+        marker.height = CGFloat(40)
+        
+        // 새로운 마커 mapView에 추가
+        marker.mapView = view.mapView
+        markers.append(marker)
+    }
+    // MARK: 해당 장소 이동 시 위치 좌표에 마커
+    func makeNewLocationMarker() {
+        
+        removeAllMarkers()
+        
+        let marker = NMFMarker()
+        marker.position = NMGLatLng(lat: tappedLatLng.lat, lng: tappedLatLng.lng)
         
         marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
         marker.captionMinZoom = 10

@@ -73,14 +73,10 @@ struct LocationView: View {
             }
             Button("등록") {
                 postCoordinator.newMarkerAlert = false
-//                postCoordinator.makeMarkers()
                 newMarkerlat = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lat,  3) ?? ""
                 newMarkerlng = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lng , 4) ?? ""
-                
-                postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0.0, lng: Double(lng) ?? 0.0)
                 searchResult.title = text
                 isSearchedLocation = false
-//                creatMarkerFeed()
                 print("신규등록 시 \(newMarkerlat), \(newMarkerlng)")
 //                registrationAlert = true
             }
@@ -107,7 +103,7 @@ struct LocationView: View {
 
 struct LocationView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationView(coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), registrationAlert: .constant(false), newMarkerlat: .constant(""), newMarkerlng: .constant(""))
+        LocationView(coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), registrationAlert: .constant(false), newMarkerlat: .constant(""), newMarkerlng: .constant(""), isSearchedLocation: .constant(false))
             .environmentObject(UserStore())
             .environmentObject(FeedStore())
             .environmentObject(ShopStore())
