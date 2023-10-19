@@ -33,16 +33,20 @@ struct UserInfoView: View {
                     }
                 }
                 .padding(.bottom, 1.0)
-                Text(userStore.user.nickname).font(.pretendardBold24)
+                Text(userStore.user.nickname)
+                    .font(.pretendardBold24)
+                    .foregroundColor(.primary)
             }.padding([.top, .trailing], 14)
             VStack {
                 HStack {
                     VStack {
                         Text("\(userStore.myFeedList.count)")
                             .font(.pretendardBold18)
+                            .foregroundColor(.primary)
                             .padding(.bottom, 5.0)
                         Text("게시글")
                             .font(.pretendardBold14)
+                            .foregroundColor(.primary)
                     }
                     .padding(.trailing,19.0 )
                     NavigationLink {
