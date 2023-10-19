@@ -11,14 +11,16 @@ import Kingfisher
 struct OtherInfoView: View {
     
     @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var followStore: FollowStore
     @State var isModify: Bool = false
+    
     let user:User
     
     var body: some View {
         HStack {
             VStack() {
                 ZStack {
-                    if userStore.user.profileImageURL.isEmpty {
+                    if user.profileImageURL.isEmpty {
                         Circle()
                             .frame(width: .screenWidth*0.23)
                         Image(systemName: "person.fill")
@@ -27,7 +29,7 @@ struct OtherInfoView: View {
                             .foregroundColor(.gray)
                             .clipShape(Circle())
                     } else {
-                        KFImage(URL(string: userStore.user.profileImageURL))
+                        KFImage(URL(string: user.profileImageURL))
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: .screenWidth*0.23, height: .screenWidth*0.23)
@@ -35,7 +37,7 @@ struct OtherInfoView: View {
                     }
                 }
                 .padding(.bottom, 1.0)
-                Text(userStore.user.nickname)
+                Text(user.nickname)
                     .font(.pretendardBold24)
                     .foregroundColor(.white)
             }.padding([.top, .trailing], 14)
@@ -55,7 +57,7 @@ struct OtherInfoView: View {
                         MyFollowerFollowingView(viewNumber: 0)
                     } label: {
                         VStack {
-                            Text("\(userStore.user.follower.count)")
+                            Text("\(user.follower.count)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)
@@ -69,7 +71,7 @@ struct OtherInfoView: View {
                         MyFollowerFollowingView(viewNumber: 1)
                     } label: {
                         VStack {
-                            Text("\(userStore.user.following.count)")
+                            Text("\(user.following.count)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)
@@ -81,20 +83,16 @@ struct OtherInfoView: View {
                     
                 }
                 .padding(.bottom, 10.0)
-                Button{
-                    isModify = true
-                } label: {
-                    Text("프로필 편집")
-                        .font(.pretendardRegular14)
-                        .frame(width: .screenWidth*0.5, height: 32)
-                        .background(Color.subGrayColor)
-                        .cornerRadius(8)
-                        .foregroundColor(.primary)
-                }.sheet(isPresented: $isModify, content: {
-                    NavigationStack {
-                        UserInfoModifyView(isModify: $isModify, mypageNickname: "")
-                    }
-                })
+                FollowButton(user: user)
+                    .font(.pretendardSemiBold14)
+                    .frame(width: .screenWidth*0.5, height: 32)
+                    .foregroundColor(.black)
+                    .background(followStore.followCheck ? Color("AccentColor") : Color.white)
+                    .cornerRadius(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 3)
+                            .stroke(Color.gray, lineWidth: followStore.followCheck ? 1 : 0)
+                    )
             }
             .padding(.top, 40.0)
         }
