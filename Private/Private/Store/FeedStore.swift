@@ -9,14 +9,14 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
-
-
+import PhotosUI
+import SwiftUI
 
 final class FeedStore: ObservableObject {
     
     // @Published 는 SwiftUI에서 ObservableObject의 프로퍼티가 변경될 때 View를 업데이트하도록 합니다.
     @Published var feedList: [MyFeed] = []
-    
+    var storage = Storage.storage()
     // Firestore 데이터베이스의 "Feed" 컬렉션에 대한 참조를 생성합니다.
     private let feedRef = Firestore.firestore().collection("Feed")
     private let dbRef = Firestore.firestore().collection("User")
@@ -80,6 +80,7 @@ final class FeedStore: ObservableObject {
             "mapy": feed.mapy,
         ]
     }
+    
     //MARK: Feed 를 삭제하는 함수 입니다
     func deleteFeed(writerNickname: String) {
         // Firestore.firestore().collection("Feed")
@@ -108,102 +109,82 @@ final class FeedStore: ObservableObject {
                     }
                 }
             }
-        }//end deleteFeed
+        }
+    }//end deleteFeed
+    func uploadImageToFirebase (image: UIImage) async -> String? {
+
+        guard let imageData = image.jpegData(compressionQuality: 0.4) else { return nil }
+        let imagePath = "images/\(UUID().uuidString).jpg"
+        let imageRef = Storage.storage().reference().child(imagePath)
         
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
         
+        do {
+            let _ = try await imageRef.putDataAsync(imageData)
+            let url = try await imageRef.downloadURL()
+            return url.absoluteString
+        } catch let error {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    func updateFeed(_ updateFeed: MyFeed) async -> MyFeed {
+        var feed = updateFeed // feed를 var로 복사
+        if let toUpdateImages = selectedToUpdateImages {
+            var imageUrls: [String] = []
+            
+            // selectedImages를 사용하여 for-in 루프를 실행합니다.
+            for image in toUpdateImages {
+                guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
+                
+                let storageRef = storage.reference().child(UUID().uuidString) //
+                
+                storageRef.putData(imageData) { _, error in
+                    if let error = error {
+                        print("Error uploading image: \(error)")
+                        return
+                    }
+                    
+                    storageRef.downloadURL { url, error in
+                        guard let imageUrl = url?.absoluteString else { return }
+                        imageUrls.append(imageUrl)
+                        
+                        if imageUrls.count == selectedImages.count {
+                            feed.images = imageUrls
+                            
+                            Firestore.firestore().collection("Feed").document(feed.id).updateData([
+                                "writerNickname": feed.writerNickname,
+                                "writerName": feed.writerName,
+                                "writerProfileImage": feed.writerProfileImage,
+                                "images": feed.images,
+                                "contents": feed.contents,
+                                "createdAt": feed.createdAt,
+                                "title": feed.title,
+                                "category": feed.category,
+                                "address": feed.address,
+                                "roadAddress": feed.roadAddress,
+                                "mapx": feed.mapx,
+                                "mapy": feed.mapy
+                            ]) { error in
+                                if let error = error {
+                                    print("Error updating feed: \(error.localizedDescription)")
+                                } else {
+                                    print("Feed updated successfully")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return feed
     }
 }
-//        func updateFeed(_ feed: MyFeed) {
-//            if let selectedImages = selectedImage {
-//                var imageUrls: [String] = []
-//
-//                for image in selectedImages {
-//                    guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
-//                    
-//                    let storageRef = storage.reference().child(UUID().uuidString) //
-//                    
-//                    storageRef.putData(imageData) { _, error in
-//                        if let error = error {
-//                            print("Error uploading image: \(error)")
-//                            return
-//                        }
-//                        
-//                        storageRef.downloadURL { url, error in
-//                            guard let imageUrl = url?.absoluteString else { return }
-//                            imageUrls.append(imageUrl)
-//                            
-//                            if imageUrls.count == selectedImages.count {
-//                                feed.images = imageUrls
-//                                
-//                                Firestore.firestore().collection("Feed").document(feed.id).updateData([
-//                                    "writerNickname": feed.writerNickname,
-//                                    "writerName": feed.writerName,
-//                                    "writerProfileImage": feed.writerProfileImage,
-//                                    "images": feed.images,
-//                                    "contents": feed.contents,
-//                                    "createdAt": feed.createdAt,
-//                                    "title": feed.title,
-//                                    "category": feed.category,
-//                                    "address": feed.address,
-//                                    "roadAddress": feed.roadAddress,
-//                                    "mapx": feed.mapx,
-//                                    "mapy": feed.mapy
-//                                ]) { error in
-//                                    if let error = error {
-//                                        print("Error updating feed: \(error.localizedDescription)")
-//                                    } else {
-//                                        print("Feed updated successfully")
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
 
 
 
 
 
 
-/*
- if let selectedImages = selectedImage {
-     var imageUrls: [String] = []
-
-     for image in selectedImages {
-         guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
-
-         let storageRef = storage.reference().child(UUID().uuidString) //
-
-         storageRef.putData(imageData) { _, error in
-             if let error = error {
-                 print("Error uploading image: \(error)")
-                 return
-             }
-
-             storageRef.downloadURL { url, error in
-                 guard let imageUrl = url?.absoluteString else { return }
-                 imageUrls.append(imageUrl)
-
-                 if imageUrls.count == selectedImages.count {
-
-                     feed.images = imageUrls
-
-                     do {
-                         try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
-                     } catch {
-                         print("Error saving feed: \(error)")
-                     }
-                     do {
-                         try db.collection("Feed").document(feed.id).setData(from: feed)
-                     } catch {
-                         print("Error saving feed: \(error)")
-                     }
-                 }
-             }
-         }
-     }
- }
- 
- */

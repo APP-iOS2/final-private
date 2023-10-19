@@ -25,13 +25,14 @@ struct FeedUpdateView: View {
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     @StateObject private var postStore: PostStore = PostStore()
     @ObservedObject var coordinator: Coordinator = Coordinator.shared
-
+    
+    
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var isFeedUpdateViewPresented: Bool /// FeedUpdateView
     @Binding var coord: NMGLatLng
     @Binding var searchResult: SearchResult
-
+    
     @State private var selectedWriter: String = "김아무개"
     @State private var text: String = "" /// 텍스트마스터 내용
     @State private var textPlaceHolder: String = "수정하실 메세지를 넣어주세요" /// 텍스트마스터 placeholder
@@ -43,34 +44,43 @@ struct FeedUpdateView: View {
     @State private var createdAt: Double = Date().timeIntervalSince1970
     @State private var visitedShop: String = ""
     @State private var feedId: String = ""
-    @State private var myselectedCategory: [String] = []
-
+    @State private var updatedCategory: [String] = []
+    
     @State private var clickLocation: Bool = false
     @State private var isImagePickerPresented: Bool = false /// 업로드뷰에서 이미지 선택 뷰
     @State private var ImageViewPresented: Bool = true /// 처음 이미지 뷰
     @State private var showLocation: Bool = false
     @State private var isshowAlert = false /// 업로드 알럿
-    @State private var categoryAlert: Bool = false /// 카테고리 초과 알럿
+    @State private var categoryUpdateAlert: Bool = false /// 카테고리 초과 알럿
     @State private var isSearchedLocation: Bool = false /// 장소 검색 시트
-
+    
     @State private var selectedImage: [UIImage]?
     @FocusState private var isTextMasterFocused: Bool
     
-//    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
-    @State private var selectedCategories: Set<MyCategory> = []
-    @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
+    //    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
+//    @State private var selectedCategories: Set<MyCategory> = []
+//    @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
     @State var feed: MyFeed
-
+    
+    @Binding var selectedCategory: [String]
+    @State private var toUpdateCategories: Set<Category> = []
+    @State private var showAlert = false
+    @State private var myselectedtoupdateCategory: [MyCategory] = MyCategory.allCases
+    @State private var selectedUpdateToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
+    private let maxSelectedCategories = 3
+    
     
     private let minLine: Int = 10
     private let maxLine: Int = 12
     private let fontSize: Double = 24
-    private let maxSelectedCategories = 3
+//    private let maxSelectedCategories = 3
+    
+    private let maxSelectedToUpdateCategories = 3
     
     var db = Firestore.firestore()
     var storage = Storage.storage()
-   
+    
     var body: some View {
         
         NavigationStack {
@@ -101,11 +111,11 @@ struct FeedUpdateView: View {
                         }
                     }
                     .padding(.vertical, 10)
-
+                    
                     //MARK: 내용
                     Text("")
                     TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize, placeholder: textPlaceHolder)
-
+                    
                         .padding(.trailing, 10)
                     
                     //MARK: 장소
@@ -125,24 +135,13 @@ struct FeedUpdateView: View {
                     }
                     .padding(.vertical, 10)
                     
-                    if !searchResult.title.isEmpty {
+                    if searchResult.title.isEmpty {
                         Text("장소를 선택해주세요")
                             .font(.pretendardRegular12)
                             .foregroundColor(.secondary)
+                        Text("이전 장소:")
                     } else {
-//                        Text("장소: \(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-//                            .font(.body)
-//                            .onTapGesture {
-//                                clickLocation = true
-//
-//                                lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
-//                                lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
-//
-                        //                                coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                        //                                print("위도값: \(lat), 경도값: \(lng)")
-                        //                                print("지정장소 클릭")
-                        //                                coordinator.moveCameraPosition()
-                        //                            }
+                        //
                         Button {
                             lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
                             lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
@@ -178,11 +177,12 @@ struct FeedUpdateView: View {
                             Label("", systemImage: "plus")
                         }
                         .sheet(isPresented: $isImagePickerPresented) {
-                            ImagePickerView(selectedImages: $selectedImage)
+                            FeedUpdateImagePickerView(selectedToUpdateImages: $selectedToUpdateImages)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .background(Color.white)
                                 .transition(.move(edge: .leading))
                         }
+                               
                     }
                     
                     ScrollView(.horizontal) {
@@ -220,22 +220,22 @@ struct FeedUpdateView: View {
                     }
                     Divider()
                         .padding(.vertical, 10)
-
+                    
                     //MARK: 카테고리
-                        
+                    
                     HStack {
-                        Text("이전 카테고리:")
+                        //Text("이전 카테고리:")
                         Text("카테고리")
                             .font(.pretendardMedium20)
                         Text("(최대 3개)")
                             .font(.pretendardRegular12)
                             .foregroundColor(.secondary)
                     }
-                    
-                    LazyVGrid(columns: createGridColumns(), spacing: 20) {
+                    FeedUpdateCateroryView(updatedCategory: [String])
+                    LazyVGrid(columns:  createGridUpdateColumns(), spacing: 20) {
                         ForEach (Category.allCases.indices, id: \.self) { index in
                             VStack {
-                                if selectedToggle[index] {
+                                if selectedUpdateToggle[index] {
                                     Text(Category.allCases[index].categoryName)
                                         .font(.pretendardMedium16)
                                         .foregroundColor(.black)
@@ -257,11 +257,11 @@ struct FeedUpdateView: View {
                                 }
                             }
                             .onTapGesture {
-                                if myselectedCategory.count < maxSelectedCategories || selectedToggle[index] {
-                                    toggleCategorySelection(at: index)
-                                    print(myselectedCategory)
+                                if myselectedtoupdateCategory.count < maxSelectedToUpdateCategories || selectedUpdateToggle[index] {
+                                    FeedUpdateCateroryView.toggleCategorySelection(at: index)
+                                    print(myselectedtoupdateCategory)
                                 } else {
-                                    categoryAlert = true
+                                    categoryUpdateAlert = true
                                     print("3개 초과 선택")
                                 }
                             }
@@ -270,25 +270,25 @@ struct FeedUpdateView: View {
                     }
                     .padding(.trailing, 8)
                     
-                    //MARK: 업로드
-                    Text("업로드")
+                    //MARK: 수정하기
+                    Text("수정하기")
                         .font(.pretendardBold18)
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .foregroundColor(.white)
-                        .background(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty ? Color.gray : Color.accentColor)
+                        .background(text == "" || selectedImage == [] || myselectedtoupdateCategory == [] || searchResult.title.isEmpty ? Color.gray : Color.accentColor)
                         .cornerRadius(7)
                         .padding(EdgeInsets(top: 25, leading: 0, bottom: 0, trailing: 13))
                         .onTapGesture {
-                                isshowAlert = true
+                            isshowAlert = true
                         }
-                        
-                        .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || searchResult.title.isEmpty)
+                    
+                        .disabled(text == "" || selectedImage == [] || myselectedtoupdateCategory == [] || searchResult.title.isEmpty)
                 } // leading VStack
-               
+                
             }
-//            .sheet(isPresented: $ImageViewPresented) {
-//                ImagePickerView(selectedImages: $selectedImage)
-//            }
+            //            .sheet(isPresented: $ImageViewPresented) {
+            //                ImagePickerView(selectedImages: $selectedImage)
+            //            }
             // toolbar 자리
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -313,7 +313,7 @@ struct FeedUpdateView: View {
                  */
                 let secondButton = Alert.Button.default(Text("수정 완료")) {
                     
-                    updateFeed(feed)
+                    feedStore.updateFeed(feed)
                     isFeedUpdateViewPresented = false
                     selection = 1
                     print("수정 완료 버튼 클릭")
@@ -328,205 +328,31 @@ struct FeedUpdateView: View {
             .navigationTitle("피드 수정하기")
             .navigationBarTitleDisplayMode(.inline)
         } // navigationStack
-        .alert(isPresented: $categoryAlert) {
+        .alert(isPresented: $categoryUpdateAlert) {
             Alert(
                 title: Text("선택 초과"),
                 message: Text("최대 3개까지 선택 가능합니다."),
                 dismissButton: .default(Text("확인"))
             )
         }
-    } // body
-    
-    //MARK: 파베함수
-    func modifyFeed(with images: [String]) {
-        feed.images = images
+        
+        func toggleCategorySelection(at index: Int) {
+            selectedUpdateToggle[index].toggle()
+            toUpdateCategories = Set(Category.allCases.indices
+                .filter { selectedUpdateToggle[$0] }
+                .map { Category.allCases[$0] }
+            )
+        }
+        
+        func createGridColumns() -> [GridItem] {
+            let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
+            return columns
+        }
     }
-    func updateFeed(_ inputFeed: MyFeed) {
-        if let selectedImages = selectedImage {
-            var imageUrls: [String] = []
+} // body
 
-            for image in selectedImages {
-                guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
-                
-                let storageRef = storage.reference().child(UUID().uuidString)
-                storageRef.putData(imageData) { _, error in
-                    if let error = error {
-                        print("Error uploading image: \(error)")
-                        return
-                    }
-                    
-                    /*
-                     do {
-                    //                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
-                    //                            } catch {
-                    //                                print("Error saving feed: \(error)")
-                    //                            }
-                    //                            do {
-                    //                                try db.collection("Feed").document(feed.id).setData(from: feed)
-                    //                            } catch {
-                    //                                print("Error saving feed: \(error)")
-                    //                            }
-                    //                        }
-                    //                    }
-                     */
-                    storageRef.downloadURL { url, error in
-                        guard let imageUrl = url?.absoluteString else { return }
-                        imageUrls.append(imageUrl)
-                        
-                        if imageUrls.count == selectedImages.count {
-                            DispatchQueue.main.async {
-                                self.modifyFeed(with: imageUrls)
-                            }
-                            
-                            Firestore.firestore().collection("Feed").document(feed.id).updateData([
-                                "writerNickname": inputFeed.writerNickname,
-                                "writerName": inputFeed.writerName,
-                                "writerProfileImage": inputFeed.writerProfileImage,
-                                "images": inputFeed.images,
-                                "contents": inputFeed.contents,
-                                "createdAt": inputFeed.createdAt,
-                                "title": inputFeed.title,
-                                "category": inputFeed.category,
-                                "address": inputFeed.address,
-                                "roadAddress": inputFeed.roadAddress,
-                                "mapx": inputFeed.mapx,
-                                "mapy": inputFeed.mapy
-                            ]) { error in
-                                if let error = error {
-                                    print("Error updating feed: \(error.localizedDescription)")
-                                } else {
-                                    print("Feed updated successfully")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-//    func updateFeed(_ inputFeed: MyFeed) {
-//        //var feed = inputFeed // feed를 var로 복사
-//        if let selectedImages = selectedImage {
-//            var imageUrls: [String] = []
-//
-//            for image in selectedImages {
-//                guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
-//                
-//                let storageRef = storage.reference().child(UUID().uuidString) //
-//                
-//                storageRef.putData(imageData) { _, error in
-//                    if let error = error {
-//                        print("Error uploading image: \(error)")
-//                        return
-//                    }
-//                    
-//                    storageRef.downloadURL { url, error in
-//                        guard let imageUrl = url?.absoluteString else { return }
-//                        imageUrls.append(imageUrl)
-//                        
-//                        if imageUrls.count == selectedImages.count {
-//                            feed.images = imageUrls
-//                            
-//                            Firestore.firestore().collection("Feed").document(feed.id).updateData([
-//                                "writerNickname": feed.writerNickname,
-//                                "writerName": feed.writerName,
-//                                "writerProfileImage": feed.writerProfileImage,
-//                                "images": feed.images,
-//                                "contents": feed.contents,
-//                                "createdAt": feed.createdAt,
-//                                "title": feed.title,
-//                                "category": feed.category,
-//                                "address": feed.address,
-//                                "roadAddress": feed.roadAddress,
-//                                "mapx": feed.mapx,
-//                                "mapy": feed.mapy
-//                            ]) { error in
-//                                if let error = error {
-//                                    print("Error updating feed: \(error.localizedDescription)")
-//                                } else {
-//                                    print("Feed updated successfully")
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    func creatFeed() {
-//        //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
-//        
-//        var feed = MyFeed(writerNickname: userStore.user.nickname,
-//                          writerName: userStore.user.name,
-//                          writerProfileImage: userStore.user.profileImageURL,
-//                          images: images,
-//                          contents: text,
-//                          createdAt: createdAt,
-//                          title: searchResult.title.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""),
-//                          category: myselectedCategory,
-//                          address: searchResult.address,
-//                          roadAddress: searchResult.roadAddress,
-//                          mapx: searchResult.mapx,
-//                          mapy: searchResult.mapy
-//        )
-//        
-//        if let selectedImages = selectedImage {
-//            var imageUrls: [String] = []
-//
-//            for image in selectedImages {
-//                guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
-//
-//                let storageRef = storage.reference().child(UUID().uuidString) //
-//
-//                storageRef.putData(imageData) { _, error in
-//                    if let error = error {
-//                        print("Error uploading image: \(error)")
-//                        return
-//                    }
-//
-//                    storageRef.downloadURL { url, error in
-//                        guard let imageUrl = url?.absoluteString else { return }
-//                        imageUrls.append(imageUrl)
-//
-//                        if imageUrls.count == selectedImages.count {
-//  
-//                            feed.images = imageUrls
-//
-//                            do {
-//                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
-//                            } catch {
-//                                print("Error saving feed: \(error)")
-//                            }
-//                            do {
-//                                try db.collection("Feed").document(feed.id).setData(from: feed)
-//                            } catch {
-//                                print("Error saving feed: \(error)")
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-    func toggleCategorySelection(at index: Int) {
-        selectedToggle[index].toggle()
-        if selectedToggle[index] {
-            
-            myselectedCategory.append(MyCategory.allCases[index].rawValue)
-        } else {
-            
-            if let selectedIndex = myselectedCategory.firstIndex(of: MyCategory.allCases[index].rawValue) {
-                myselectedCategory.remove(at: selectedIndex)
-            }
-        }
-    }
-    
-    func createGridColumns() -> [GridItem] {
-        let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
-        return columns
-    }
-    
-}
+
+
 
 struct FeedUpdateView_Previews: PreviewProvider {
     static var previews: some View {
@@ -536,5 +362,3 @@ struct FeedUpdateView_Previews: PreviewProvider {
         
     }
 }
-
-

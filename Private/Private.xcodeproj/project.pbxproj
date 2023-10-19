@@ -118,6 +118,8 @@
 		3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F32AB82FF3003689A6 /* MainTabView.swift */; };
 		3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F52AB83200003689A6 /* MainLoginView.swift */; };
 		63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB09992ABD87BD002CCE4E /* NaverMap.swift */; };
+		A6911A352AE1055F006A602E /* FeedUpdateImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6911A342AE1055F006A602E /* FeedUpdateImagePickerView.swift */; };
+		A6911A372AE108F8006A602E /* FeedUpdateCateroryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6911A362AE108F8006A602E /* FeedUpdateCateroryView.swift */; };
 		A6D3A1A22ADF94D5008812FF /* FeedUpdateSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D3A1A12ADF94D5008812FF /* FeedUpdateSheetView.swift */; };
 		A6D3A1A42ADFC6B3008812FF /* FeedUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D3A1A32ADFC6B2008812FF /* FeedUpdateView.swift */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
@@ -270,6 +272,8 @@
 		5A395D3AA2009366C31BCDB6 /* Pods_PrivateTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PrivateTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63BB09992ABD87BD002CCE4E /* NaverMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverMap.swift; sourceTree = "<group>"; };
 		87739F481181992B30A0E64A /* Pods_Private.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6911A342AE1055F006A602E /* FeedUpdateImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUpdateImagePickerView.swift; sourceTree = "<group>"; };
+		A6911A362AE108F8006A602E /* FeedUpdateCateroryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUpdateCateroryView.swift; sourceTree = "<group>"; };
 		A6D3A1A12ADF94D5008812FF /* FeedUpdateSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUpdateSheetView.swift; sourceTree = "<group>"; };
 		A6D3A1A32ADFC6B2008812FF /* FeedUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUpdateView.swift; sourceTree = "<group>"; };
 		B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
@@ -400,6 +404,7 @@
 		26357CE02AD532A00098C8F5 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				A6911A332AE1053B006A602E /* FeedModifier */,
 				26357CE32AD532D50098C8F5 /* FeedListView.swift */,
 				26357CE52AD532E70098C8F5 /* FeedCellView.swift */,
 				26357CE72AD533010098C8F5 /* EmptyFeed.swift */,
@@ -701,6 +706,15 @@
 				3C2FC8D52ACE9AFA0034F561 /* MapMarker */,
 			);
 			path = Map;
+			sourceTree = "<group>";
+		};
+		A6911A332AE1053B006A602E /* FeedModifier */ = {
+			isa = PBXGroup;
+			children = (
+				A6911A342AE1055F006A602E /* FeedUpdateImagePickerView.swift */,
+				A6911A362AE108F8006A602E /* FeedUpdateCateroryView.swift */,
+			);
+			path = FeedModifier;
 			sourceTree = "<group>";
 		};
 		B591C7232ACC608B00602727 /* Reservation */ = {
@@ -1161,10 +1175,12 @@
 				3C2FC8FB2ACE9B950034F561 /* MapToChatRoomView.swift in Sources */,
 				3C3716282ABD1762004E8419 /* FeedStore.swift in Sources */,
 				D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */,
+				A6911A352AE1055F006A602E /* FeedUpdateImagePickerView.swift in Sources */,
 				3C91AEA32AC40F6100E60D9B /* ShopInfoCardView.swift in Sources */,
 				3CCD2DF62ABC3572005709F4 /* PostView.swift in Sources */,
 				3C94275B2ACF9C1800EECCD8 /* MapMarkerFeedView.swift in Sources */,
 				3C97476E2AD4DC4E007AE3CB /* Bundle+.swift in Sources */,
+				A6911A372AE108F8006A602E /* FeedUpdateCateroryView.swift in Sources */,
 				3C2FC8F52ACE9B750034F561 /* MapReviewEmptyView.swift in Sources */,
 				E47089A22AD8E5A500D168BA /* MyPageFeedView.swift in Sources */,
 				E3A782542ADD601C0042AAB9 /* LocationView.swift in Sources */,

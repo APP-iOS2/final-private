@@ -12,6 +12,7 @@ import NMapsMap
 
 struct FeedListView: View {
     @EnvironmentObject var feedStore : FeedStore
+    @State private var selectedCategory: String = ""
     
     var body: some View {
         NavigationView {

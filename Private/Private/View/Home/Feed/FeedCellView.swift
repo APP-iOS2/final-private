@@ -24,7 +24,7 @@ struct FeedCellView: View {
     @State private var coord: NMGLatLng = NMGLatLng(lat: 0, lng: 0) // 적절한 초기값으로 설정하세요.
     @State private var searchResult: SearchResult? = nil
     
-    
+    @State private var selectedCategory: [String] = []
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
     
 //    var db = Firestore.firestore()
@@ -88,11 +88,24 @@ struct FeedCellView: View {
                             )
                         }
                         .sheet(isPresented: $isUpdateSheetPresented) {
-                            FeedUpdateView(root: .constant(true), selection: .constant(0), isFeedUpdateViewPresented: .constant(true), coord: $coord, searchResult: .constant(SearchResult(title: feed.title, category: feed.category[0], address: feed.address, roadAddress: feed.roadAddress, mapx: feed.mapx, mapy: feed.mapy)), feed: feed) // feed를 전달합니다.
-                        
-//                        .sheet(isPresented: $isUpdateSheetPresented) {
-//                    
-//                            FeedUpdateView(root: .constant(true), selection: .constant(0), isFeedUpdateViewPresented: .constant(true), coord: $coord, searchResult: .constant(SearchResult(title: feed.title, category: feed.category[0], address: feed.address, roadAddress: feed.roadAddress, mapx: feed.mapx, mapy: feed.mapy)), feed: feed)
+                            FeedUpdateView(
+                                root: .constant(true),
+                                selection: .constant(0),
+                                isFeedUpdateViewPresented: .constant(true),
+                                coord: $coord,
+                                searchResult: .constant(
+                                    SearchResult(
+                                        title: feed.title,
+                                        category: feed.category[0],
+                                        address: feed.address,
+                                        roadAddress: feed.roadAddress,
+                                        mapx: feed.mapx,
+                                        mapy: feed.mapy
+                                    )
+                                ),
+                                feed: feed,
+                                selectedCategory: $selectedCategory  // Binding<String>을 제공합니다.
+                            )
                         }
                     }
                 } // HStack (수정, 삭제)
@@ -219,3 +232,7 @@ struct FeedCellView: View {
 
 //https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/81789D33-A401-4701-AB9F-ABBBE6DEC156?alt=media&token=a9b1fcdc-c1f9-48ec-87af-d7b617376365
 // https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/39968E65-7EB6-4D5D-AC00-8C8578AABFFF?alt=media&token=149585b7-ad7a-445a-a770-2e13af631ba0
+
+
+
+
