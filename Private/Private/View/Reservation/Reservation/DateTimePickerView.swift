@@ -10,7 +10,7 @@ import SwiftUI
 struct DateTimePickerView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var holidayManager: HolidayManager
-    @ObservedObject private var calendarData = CalendarData()  // 이렇게 받으면 공유가 안됨
+    @EnvironmentObject var calendarData: CalendarData
 
     @State private var showingDate: Bool = true
     @State private var showingTime: Bool = false
@@ -26,53 +26,8 @@ struct DateTimePickerView: View {
     
     let shopData: Shop
     let colums = [GridItem(.adaptive(minimum: 80))] // 레이아웃 최소 사이즈
-    let sortedWeekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
     
-    var strMonthTitle: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy년 MM월"
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        return dateFormatter.string(from: calendarData.titleOfMonth)
-    }
-    
-    var disablePrevButton: Bool {
-        let currentDate = Date()
-        let calendar = Calendar.current  // 캘린더 인스턴스 생성
-        
-        // 현재 날짜에서 연도/월 추출
-        let currentYear = calendar.component(.year, from: currentDate)
-        let currentMonth = calendar.component(.month, from: currentDate)
-        
-        // 현재 페이지에서 연도/월 추출
-        let pageYear = calendar.component(.year, from: calendarData.currentPage)
-        let pageMonth = calendar.component(.month, from: calendarData.currentPage)
-        
-        if currentYear == pageYear && currentMonth == pageMonth {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    var disableNextButton: Bool {
-        let oneYearLater = Date().addingTimeInterval((60 * 60 * 24) * 365)  // 1년 후
-        let calendar = Calendar.current  // 캘린더 인스턴스 생성
-        
-        // 현재 날짜에서 연도/월 추출
-        let year = calendar.component(.year, from: oneYearLater)
-        let month = calendar.component(.month, from: oneYearLater)
-        
-        // 현재 페이지에서 연도/월 추출
-        let pageYear = calendar.component(.year, from: calendarData.currentPage)
-        let pageMonth = calendar.component(.month, from: calendarData.currentPage)
-        
-        if year == pageYear && month == pageMonth {
-            return true
-        } else {
-            return false
-        }
-    }
-    
+    // 얘는 어따 옮기지
     var regualrHoloday: [Int] {
         var regularHoliday: [Int] = []
         
@@ -103,6 +58,9 @@ struct DateTimePickerView: View {
         ScrollView {
             Button {
                 showingDate.toggle()
+//                withAnimation(.easeIn(duration: 0.5)) {
+//                    showingDate.toggle()
+//                }
             } label: {
                 HStack {
                     Image(systemName: "calendar")
@@ -119,7 +77,7 @@ struct DateTimePickerView: View {
             // 날짜 선택 화면 표시 여부
             if showingDate {
                 HStack {
-                    Text(strMonthTitle)  // selecteDate가 된 뒤로 안바뀜
+                    Text(calendarData.strMonthTitle)  // selecteDate가 된 뒤로 안바뀜
                     Spacer()
                     Button {
                         self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: -1, to: self.calendarData.currentPage)!
@@ -127,7 +85,7 @@ struct DateTimePickerView: View {
                         Image(systemName: "chevron.left")
                             .frame(width: 35, height: 35, alignment: .leading)
                     }
-                    .disabled(disablePrevButton)
+                    .disabled(calendarData.disablePrevButton)
                     
                     // nextButton
                     Button {
@@ -136,13 +94,13 @@ struct DateTimePickerView: View {
                         Image(systemName: "chevron.right")
                             .frame(width: 35, height: 35, alignment: .trailing)
                     }
-                    .disabled(disableNextButton)
+                    .disabled(calendarData.disableNextButton)
                     
                 }
                 .padding(.horizontal)
                 
                 // 여기 바꿈 selectedDate
-                FSCalendarView(currentPage: $calendarData.currentPage, selectedDate: $calendarData.selectedDate, calendarTitle: $calendarData.titleOfMonth, regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
+                FSCalendarView(regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
                     .frame(height: 300)
                 .padding(.bottom)
                 .onChange(of: calendarData.selectedDate) { newValue in
@@ -154,7 +112,10 @@ struct DateTimePickerView: View {
             }
             
             Button {
-                showingTime.toggle()
+                showingTime.toggle()  // 여기서 애니메이션 주면 애니메이션이 살짝 되다 중간에 멈춤
+//                withAnimation(.easeIn(duration: 0.5)) {
+//                    showingTime.toggle()
+//                }
             } label: {
                 HStack {
                     Image(systemName: "clock")
@@ -264,10 +225,10 @@ struct DateTimePickerView: View {
             // 날짜의 기본값이 오늘일 때를 위함
             separateReservationTime(timeSlots: availableTimeSlots)
         }
-        .refreshable {
-            self.today = Calendar.current.startOfDay(for: Date())
-            self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: temporaryReservation.date)
-        }
+//        .refreshable {
+//            self.today = Calendar.current.startOfDay(for: Date())
+//            self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: temporaryReservation.date)
+//        }
         
     }
     
@@ -296,5 +257,6 @@ struct DateTimePickerView_Previews: PreviewProvider {
         DateTimePickerView(temporaryReservation: .constant(ReservationStore.tempReservation), isSelectedTime: .constant(true), shopData: ShopStore.shop)
             .environmentObject(ReservationStore())
             .environmentObject(HolidayManager())
+            .environmentObject(CalendarData())
     }
 }

@@ -16,7 +16,7 @@ struct ReservationDetailView: View {
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
     
-    @Binding var isShwoingConfirmView: Bool  // 해당 뷰를 내리기 위함
+    @Binding var isShwoingDetailView: Bool  // 해당 뷰를 내리기 위함
     @Binding var isReservationPresented: Bool  // ReservationView를 내리기 위함
     
     @Binding var reservationData: Reservation  // 예약 데이터
@@ -100,8 +100,10 @@ struct ReservationDetailView: View {
                     print(#fileID, #function, #line, "- 예약 확정")
                     reservationData.requirement = requirementText
                     reservationStore.addReservationToFirestore(reservationData: reservationData)
-                    isShwoingConfirmView.toggle()
-                    isReservationPresented.toggle()
+                    
+                    isShwoingDetailView = false
+                    isReservationPresented = false
+
                 } label: {
                     Text("예약하기")
                 }
@@ -121,7 +123,7 @@ struct ReservationDetailView: View {
 
 struct ReservationDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationDetailView(isShwoingConfirmView: .constant(true), isReservationPresented: .constant(true), reservationData: .constant(ReservationStore.tempReservation), shopData: ShopStore.shop)
+        ReservationDetailView(isShwoingDetailView: .constant(true), isReservationPresented: .constant(true), reservationData: .constant(ReservationStore.tempReservation), shopData: ShopStore.shop)
             .environmentObject(ReservationStore())
             .environmentObject(UserStore())
     }
