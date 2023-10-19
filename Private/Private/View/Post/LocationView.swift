@@ -22,6 +22,9 @@ struct LocationView: View {
     
     @Binding var coord: NMGLatLng
     @Binding var searchResult: SearchResult
+    @Binding var registrationAlert: Bool
+    @Binding var newMarkerlat: String
+    @Binding var newMarkerlng: String
     @Binding var isSearchedLocation: Bool
 
     @State private var createdAt: Double = Date().timeIntervalSince1970
@@ -29,8 +32,7 @@ struct LocationView: View {
     @State private var text: String = ""
     @State private var images: [String] = []
     @State private var selectedImage: [UIImage]?
-    @State private var lat: String = ""
-    @State private var lng: String = ""
+    
     
     var db = Firestore.firestore()
     var storage = Storage.storage()
@@ -50,9 +52,7 @@ struct LocationView: View {
             .zIndex(1)
             .padding(.top, 20)
             
-            PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView,
-                         markerTitle: $postCoordinator.newMarkerTitle,
-                         markerTitleEdit: $postCoordinator.newMarkerAlert, coord: $postCoordinator.coord)
+            PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView, coord: $postCoordinator.coord, tappedLatLng: $postCoordinator.tappedLatLng)
             
         }
         .onAppear {
@@ -74,14 +74,14 @@ struct LocationView: View {
             Button("등록") {
                 postCoordinator.newMarkerAlert = false
 //                postCoordinator.makeMarkers()
-                lat = locationSearchStore.changeCoordinates(postCoordinator.coord.lat, 2) ?? ""
-                lng = locationSearchStore.changeCoordinates(postCoordinator.coord.lng, 3) ?? ""
+                newMarkerlat = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lat,  3) ?? ""
+                newMarkerlng = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lng , 4) ?? ""
                 
                 postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0.0, lng: Double(lng) ?? 0.0)
                 searchResult.title = text
                 isSearchedLocation = false
 //                creatMarkerFeed()
-                print("신규등록 시 \(lat), \(lng)")
+                print("신규등록 시 \(newMarkerlat), \(newMarkerlng)")
 //                registrationAlert = true
             }
             //            .task {
@@ -89,7 +89,7 @@ struct LocationView: View {
             //            }
         }
 //        .overlay(
-//            TextField("", text: $text)
+//            TextField("", text: $postCoordinator.newMarkerTitle)
 //                .opacity(0)
 //                .frame(width: 0, height: 0)
 //        )
@@ -103,67 +103,11 @@ struct LocationView: View {
 //            }
 //        }
     }
-    func creatMarkerFeed() {
-        //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
-        
-        var feed = MyFeed(writerNickname: userStore.user.nickname,
-                          writerName: userStore.user.name,
-                          writerProfileImage: userStore.user.profileImageURL,
-                          images: images,
-                          contents: text,
-                          createdAt: createdAt,
-                          title: postCoordinator.newMarkerTitle,
-                          category: myselectedCategory,
-                          address: searchResult.address,
-                          roadAddress: searchResult.roadAddress,
-                          mapx: lng,
-                          mapy: lat
-        )
-        
-        if let selectedImages = selectedImage {
-            var imageUrls: [String] = []
-            
-            for image in selectedImages {
-                guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
-                
-                let storageRef = storage.reference().child(UUID().uuidString) //
-                
-                storageRef.putData(imageData) { _, error in
-                    if let error = error {
-                        print("Error uploading image: \(error)")
-                        return
-                    }
-                    
-                    storageRef.downloadURL { url, error in
-                        guard let imageUrl = url?.absoluteString else { return }
-                        imageUrls.append(imageUrl)
-                        
-                        if imageUrls.count == selectedImages.count {
-                            
-                            feed.images = imageUrls
-                            
-                            do {
-                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
-                            } catch {
-                                print("Error saving feed: \(error)")
-                            }
-                            do {
-                                try db.collection("Feed").document(feed.id).setData(from: feed)
-                            } catch {
-                                print("Error saving feed: \(error)")
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 }
 
 struct LocationView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationView(coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), isSearchedLocation: .constant(false))
+        LocationView(coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), registrationAlert: .constant(false), newMarkerlat: .constant(""), newMarkerlng: .constant(""))
             .environmentObject(UserStore())
             .environmentObject(FeedStore())
             .environmentObject(ShopStore())

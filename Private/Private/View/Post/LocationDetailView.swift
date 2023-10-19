@@ -12,7 +12,7 @@ import FirebaseFirestore
 struct LocationDetailView: View {
     @EnvironmentObject var feedStore: FeedStore
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
-    
+
     var body: some View {
         ZStack {
             VStack {
@@ -28,9 +28,7 @@ struct LocationDetailView: View {
             .zIndex(1)
             .padding(.top, 20)
             
-            PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView,
-                     markerTitle: $postCoordinator.newMarkerTitle,
-                     markerTitleEdit: $postCoordinator.newMarkerAlert, coord: $postCoordinator.coord)
+            PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView, coord: $postCoordinator.coord, tappedLatLng: $postCoordinator.tappedLatLng)
             
         }
         .onAppear {

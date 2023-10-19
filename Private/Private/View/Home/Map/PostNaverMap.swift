@@ -18,9 +18,11 @@ struct PostNaverMap: UIViewRepresentable {
     @EnvironmentObject var userDataStore: UserStore
     @Binding var currentFeedId: String
     @Binding var showMarkerDetailView: Bool
-    @Binding var markerTitle: String
-    @Binding var markerTitleEdit: Bool
+//    @Binding var markerTitle: String
+//    @Binding var markerTitleEdit: Bool
     @Binding var coord: NMGLatLng
+    @Binding var tappedLatLng: NMGLatLng
+
     @ObservedObject var postCoordinator = PostCoordinator.shared
 
     func makeCoordinator() -> PostCoordinator {
@@ -57,7 +59,7 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
     @Published var coord: NMGLatLng = NMGLatLng(lat: 36.444, lng: 127.332)
     
     @Published var userLocation: (Double, Double) = (0.0, 0.0)
-    @Published var tappedLatLng: NMGLatLng?
+    @Published var tappedLatLng: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
 
 //    let constantCenter = NMGLatLng(lat: 37.572389, lng: 126.9769117)
     
@@ -153,37 +155,32 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
         view
     }
     //MARK: 마커 생성
-//    func makeMarkers() {
-//        
-//        var tempMarkers: [NMFMarker] = []
-//        
-//        let marker = NMFMarker()
-//        //            let lat = locationSearchStore.formatCoordinates(shopMarker.mapy, 2) ?? ""
-//        //            let lng = locationSearchStore.formatCoordinates(shopMarker.mapx, 3) ?? ""
-//        //            coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+    func makeMarkers() {
+
+        var tempMarkers: [NMFMarker] = []
+        
+        let marker = NMFMarker()
+        //            let lat = locationSearchStore.formatCoordinates(shopMarker.mapy, 2) ?? ""
+        //            let lng = locationSearchStore.formatCoordinates(shopMarker.mapx, 3) ?? ""
+        //            coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
 //        coord = NMGLatLng(lat: tappedLatLng?.lat ?? 0, lng: tappedLatLng?.lng ?? 0)
-//        marker.position = NMGLatLng(lat: coord.lat, lng: coord.lng)
-//        //            marker.position = shopMarker.visitedShop.coord
-//        marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
-//        marker.captionText = newMarkerTitle
-//        marker.captionMinZoom = 10
-//        marker.captionMaxZoom = 17
-//        marker.iconImage = NMFOverlayImage(name: "placeholder")
-//        marker.width = CGFloat(40)
-//        marker.height = CGFloat(40)
-//        
-//        tempMarkers.append(marker)
-//        print("신규장소: \(marker.captionText)")
-//        print("마커 생성위치: \(coord.lat), \(coord.lng)")
-//        
-//        markers = tempMarkers
-//        
-//        for marker in markers {
-//            marker.mapView = view.mapView
-//        }
-//        markerTapped()
-//        //        userStore.saveFeed(MyFeed())
-//    }
+        marker.position = tappedLatLng
+        //            marker.position = shopMarker.visitedShop.coord
+        marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
+        marker.captionText = newMarkerTitle
+        marker.captionMinZoom = 10
+        marker.captionMaxZoom = 17
+        marker.iconImage = NMFOverlayImage(name: "placeholder")
+        marker.width = CGFloat(40)
+        marker.height = CGFloat(40)
+        
+        tempMarkers.append(marker)
+        print("신규장소: \(marker.captionText)")
+        print("마커 생성위치: \(coord.lat), \(coord.lng)")
+        
+        markers = tempMarkers
+        
+    }
     
     func removeAllMarkers() {
         for marker in markers {
@@ -294,7 +291,14 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
         cameraUpdate.animationDuration = 1
         view.mapView.moveCamera(cameraUpdate)
     }
-    
+    // MARK: - 신규 저장 된 장소로 카메라 이동
+
+    func newLocalmoveCameraPosition() {
+        let cameraUpdate = NMFCameraUpdate(scrollTo: tappedLatLng)
+        cameraUpdate.animation = .fly
+        cameraUpdate.animationDuration = 1
+        view.mapView.moveCamera(cameraUpdate)
+    }
     // MARK: - 지도 터치에 이용되는 Delegate
     /// 지도에서 터치하면 그 위치에 마커 표시
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
@@ -341,16 +345,16 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
             print("길게 눌러 마커에 접근 (\(marker.position.lat), \(marker.position.lng))")
         }
     }
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last {
-            let lat = location.coordinate.latitude
-            let lng = location.coordinate.longitude
-            coord = NMGLatLng(lat: lat, lng: lng)
-            userLocation = (lat, lng)
-            fetchUserLocation()
-            moveCameraPosition()
-        }
-    }
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        if let location = locations.last {
+//            let lat = location.coordinate.latitude
+//            let lng = location.coordinate.longitude
+//            coord = NMGLatLng(lat: lat, lng: lng)
+//            userLocation = (lat, lng)
+//            fetchUserLocation()
+//            moveCameraPosition()
+//        }
+//    }
 
 }
 
