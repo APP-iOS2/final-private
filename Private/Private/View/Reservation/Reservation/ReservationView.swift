@@ -135,44 +135,13 @@ struct ReservationView: View {
                             .foregroundColor(Color.privateColor)
                             .padding(.bottom, 6)
                             
-                            Text("Break Time")
-                                .font(.pretendardMedium18)
-                                .foregroundStyle(.white)
-                            
-                            VStack(alignment: .leading) {
-                                ForEach(calendarData.sortedWeekdays, id: \.self) { day in
-                                    if let hours = shopData.breakTimeHours[day] {
-                                        HStack {
-                                            Text("\(day)")
-                                            
-                                            Spacer()
-                                            
-                                            if shopData.regularHoliday.contains(where: { holidayString in
-                                                return holidayString == day
-                                            }) {
-                                                Text("정기 휴무")
-                                            } else {
-                                                ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
-                                            }
-                                        }
-                                        .font(.pretendardRegular16)
-                                        .foregroundStyle(.white)
-                                        .padding(.bottom, 1)
-                                    }
-                                }
-                                if shopData.breakTimeHours.isEmpty {
-                                    Text("브레이크 타임이 없습니다.")
-                                }
-                            }
-                            .padding(10)
-                            
                             Group {
+                                Text("노쇼 방지를 위해 인원당 10,000원의 보증금을 받습니다.")
+                                    .padding(.bottom)
                                 Text("당일 예약은 예약시간 1시간 전까지 가능합니다.")
-                                    .padding(.bottom, 1)
-                                Text("예약시간은 10분 경과시, 자동 취소됩니다.\n양해부탁드립니다.")
                             }
-                            .font(.pretendardRegular14)
-                            .foregroundStyle(.white)
+                                .font(.pretendardRegular16)
+                                .foregroundStyle(Color.primary)
                         }
                         .padding()
                         .background(Color.subGrayColor)
@@ -182,6 +151,7 @@ struct ReservationView: View {
                         HStack {
                             ReservationButton(text: "다음단계") {
                                 temporaryReservation.date = calendarData.selectedDate
+                                temporaryReservation.totalPrice = (temporaryReservation.numberOfPeople * 10000)
                                 isShwoingDetailView.toggle()
                             }
                             .font(.pretendardBold20)
