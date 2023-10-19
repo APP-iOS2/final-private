@@ -18,7 +18,7 @@ struct SettingView: View {
             self.presentationMode.wrappedValue.dismiss()
         } label: {
             Image(systemName: "chevron.left")
-                .foregroundColor(.primary)
+                .foregroundColor(.white)
         }
     } // custom backbutton
     var body: some View {
@@ -27,26 +27,31 @@ struct SettingView: View {
                 Section (content: {
                     Toggle(isOn: .constant(true), label: {
                         Text("모든알림")
-                            .font(.pretendardBold18)
+                            .font(.pretendardRegular16)
+                            .foregroundColor(.white)
                     })
                 }, header: {
                     Text("알림")
                         .font(.pretendardRegular12)
+                        .foregroundColor(.white)
                 })
                 Section (content: {
                     HStack {
                         VStack {
                             Text("v1.0.0")
-                                .font(.pretendardBold18)
+                                .font(.pretendardRegular16)
+                                .foregroundColor(.white)
                         }
                         Spacer()
                         Text("최신 버전입니다.")
                             .font(.pretendardRegular12)
+                            .foregroundColor(.white)
                     }
                     
                 }, header: {
                     Text("현재버전")
                         .font(.pretendardRegular12)
+                        .foregroundColor(.white)
                 })
                 Section (content: {
                     Button{
@@ -56,17 +61,27 @@ struct SettingView: View {
                     } label: {
                         HStack {
                             Text("로그아웃")
+                                .font(.pretendardRegular16)
+                                .foregroundColor(.white)
                             Spacer()
                             Image(systemName: "chevron.right")
                         }
                     }
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
                     .alert(isPresented: $logoutAlert) {
                         Alert(
-                            title: Text("로그아웃"),
-                            message: Text("로그아웃하시겠습니까?"),
-                            primaryButton:.destructive(Text("로그아웃"), action: { authStore.signOutGoogle() }),
-                            secondaryButton: .cancel(Text("취소"))
+                            title: Text("로그아웃")
+                                .font(.pretendardRegular16)
+                                .foregroundColor(.white),
+                            message: Text("로그아웃하시겠습니까?")
+                                .font(.pretendardRegular12)
+                                .foregroundColor(.white),
+                            primaryButton:.destructive(Text("로그아웃")
+                                .font(.pretendardRegular12)
+                                .foregroundColor(.white), action: { authStore.signOutGoogle() }),
+                            secondaryButton: .cancel(Text("취소")
+                                .font(.pretendardRegular12)
+                                .foregroundColor(.white))
                         )
                     }
                     
@@ -75,6 +90,7 @@ struct SettingView: View {
                     } label: {
                         HStack {
                             Text("계정삭제")
+                                .font(.pretendardRegular16)
                             Spacer()
                             Image(systemName: "chevron.right")
                         }
@@ -94,7 +110,7 @@ struct SettingView: View {
                         .font(.pretendardRegular12)
                 })
             }
-            .navigationTitle("설정")
+            .navigationTitle("설정").font(.pretendardRegular16).foregroundColor(.primary)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: backButton)

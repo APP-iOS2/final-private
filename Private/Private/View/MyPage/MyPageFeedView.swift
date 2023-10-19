@@ -26,7 +26,8 @@ struct MyPageFeedView: View {
                 }
             }
             .padding()
-            
+            Divider()
+                .background(Color.primary)
             ScrollView {
                 ScrollViewReader { ScrollViewProxy in
                     ForEach(feedList, id: \.self) { feedListFeed in
@@ -46,9 +47,10 @@ struct MyPageFeedView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text("\(feedListFeed.writerNickname)")
                                             .font(.pretendardSemiBold16)
+                                            .foregroundColor(.white)
                                         Text("\(feedListFeed.createdDate)")
                                             .font(.pretendardRegular12)
-                                            .foregroundColor(.primary.opacity(0.8))
+                                            .foregroundColor(.white.opacity(0.8))
                                     }
                                     Spacer()
                                 }
@@ -79,7 +81,7 @@ struct MyPageFeedView: View {
                             HStack(alignment: .top) {
                                 Text("\(feedListFeed.contents)")
                                     .font(.pretendardRegular16)
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(.white)
                                 Spacer()
                             }
                             .padding(.top,20)
@@ -87,6 +89,7 @@ struct MyPageFeedView: View {
                         }
                         .id(feedList.firstIndex(of: feedListFeed))
                         .padding(.bottom, 60)
+                        Divider()
                         Spacer ()
                     }
                     .onAppear{
@@ -94,7 +97,6 @@ struct MyPageFeedView: View {
                             ScrollViewProxy.scrollTo(feedList.firstIndex(of:feed) ,anchor: .top)
                         }
                     }
-                    
                 }
             }
         }
