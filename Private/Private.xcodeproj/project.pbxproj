@@ -54,7 +54,6 @@
 		3C69C8C12ADF6B1A004476D1 /* MapFeedCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */; };
 		3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */; };
 		3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */; };
-		3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */; };
 		3C91AEA22AC40F6100E60D9B /* UserInfoModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */; };
 		3C91AEA32AC40F6100E60D9B /* ShopInfoCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C91AEA02AC40F6100E60D9B /* ShopInfoCardView.swift */; };
 		3C91AEA42AC40F6100E60D9B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C91AEA12AC40F6100E60D9B /* SettingView.swift */; };
@@ -145,6 +144,7 @@
 		D1A025852AE0B234004250E1 /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A025842AE0B234004250E1 /* UserListView.swift */; };
 		D1A6CA012ABD698C00AE59D0 /* SearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */; };
 		D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */; };
+		D1D2F7FD2AE0CAAC00C89FB7 /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */; };
 		D1DC8D512ACEAE2C0087CBD7 /* OtherPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D502ACEAE2C0087CBD7 /* OtherPageView.swift */; };
 		D1DC8D532ACEAE690087CBD7 /* OtherInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D522ACEAE690087CBD7 /* OtherInfoView.swift */; };
 		D1DC8D552ACEAE910087CBD7 /* OtherHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D542ACEAE910087CBD7 /* OtherHistoryView.swift */; };
@@ -223,7 +223,6 @@
 		3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFeedCellView.swift; sourceTree = "<group>"; };
 		3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		3C79CE1F2AC1101800CEA98D /* ChatRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
-		3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
 		3C91AE9F2AC40F6100E60D9B /* UserInfoModifyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoModifyView.swift; sourceTree = "<group>"; };
 		3C91AEA02AC40F6100E60D9B /* ShopInfoCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopInfoCardView.swift; sourceTree = "<group>"; };
 		3C91AEA12AC40F6100E60D9B /* SettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -298,6 +297,7 @@
 		D1A025842AE0B234004250E1 /* UserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListView.swift; sourceTree = "<group>"; };
 		D1A6CA002ABD698C00AE59D0 /* SearchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStore.swift; sourceTree = "<group>"; };
 		D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCellView.swift; sourceTree = "<group>"; };
+		D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
 		D1DC8D502ACEAE2C0087CBD7 /* OtherPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherPageView.swift; sourceTree = "<group>"; };
 		D1DC8D522ACEAE690087CBD7 /* OtherInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherInfoView.swift; sourceTree = "<group>"; };
 		D1DC8D542ACEAE910087CBD7 /* OtherHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherHistoryView.swift; sourceTree = "<group>"; };
@@ -589,10 +589,10 @@
 				3CB869FB2ADFAB0300DAE655 /* GoogleService-Info.plist */,
 				3C79CE1D2AC10EE900CEA98D /* Modifiers.swift */,
 				3CCD2DFD2ABC37F8005709F4 /* TextMaster.swift */,
-				3C79CE242AC11A7300CEA98D /* SearchBarTextField.swift */,
 				3C93B5072AC1549200788633 /* SendMessageTextField.swift */,
 				B5549FBC2AD59E3000695A8F /* RequirementTextEditor.swift */,
 				06628C1E2ACF8FDE009373DD /* AppDateFormatter.swift */,
+				D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -1133,8 +1133,8 @@
 				3CCD2DE02ABC314A005709F4 /* Shop.swift in Sources */,
 				B5BEAA232AC154430002CC2C /* ReservationDetailView.swift in Sources */,
 				3C9747772AD4E309007AE3CB /* LocationSearchView.swift in Sources */,
+				D1D2F7FD2AE0CAAC00C89FB7 /* SearchBarTextField.swift in Sources */,
 				E47B3F752AC14A22002164A6 /* MySavedView.swift in Sources */,
-				3C79CE252AC11A7300CEA98D /* SearchBarTextField.swift in Sources */,
 				3CB7340A2ABD6F0100D82503 /* FeedMainView.swift in Sources */,
 				D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */,
 				3CCD2DDE2ABC3141005709F4 /* User.swift in Sources */,
