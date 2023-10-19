@@ -77,7 +77,7 @@ struct MainTabView: View {
                     }
                     .padding(.bottom, 5)
                     .tag(2)
-                    UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true), showLocation: $showLocation, searchResult: $searchResult, coord: $coord).tabItem {
+                    UploadView(root: $rootSection3, selection: $selection, isImagePickerPresented: .constant(true), showLocation: $showLocation, searchResult: $searchResult).tabItem {
                         Label("작성", systemImage: "plus")
                     }
                     .padding(.bottom, 5)

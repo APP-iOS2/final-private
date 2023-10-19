@@ -20,7 +20,7 @@ struct UserListView: View {
     
     var body: some View {
         VStack {
-            if users.isEmpty {
+            if searchStore.filteredUsers(searchTerm).isEmpty {
                 Text("해당 사용자가 없습니다.")
                     .font(.pretendardMedium16)
                     .foregroundColor(.gray)
@@ -35,7 +35,8 @@ struct UserListView: View {
         .padding(.horizontal)
         .onDisappear {
             Task {
-                await fetchSearchResults()
+                searchStore.fetchUsers()
+                fetchSearchResults()
             }
         }
     }
@@ -45,7 +46,7 @@ struct UserListView: View {
             LazyVStack {
                 ForEach(users, id: \.self) { user in
                     NavigationLink {
-                        LazyView(OtherPageView(user: user))
+//                        LazyView(OtherPageView(user: user))
                     } label: {
                         SearchUserCellView(user: user)
                             .padding(.leading)
@@ -55,9 +56,8 @@ struct UserListView: View {
         }
     }
     
-    func fetchSearchResults() async {
-        await searchStore.searchUser(searchTerm: searchTerm)
-        searchStore.addRecentSearch(searchTerm)
+    func fetchSearchResults()  {
+         searchStore.addRecentSearch(searchTerm)
     }
     
 }

@@ -20,7 +20,6 @@ struct LocationView: View {
     @EnvironmentObject var feedStore: FeedStore
     @EnvironmentObject var userStore: UserStore
     
-    @Binding var coord: NMGLatLng
     @Binding var searchResult: SearchResult
     @Binding var registrationAlert: Bool
     @Binding var newMarkerlat: String
@@ -65,7 +64,7 @@ struct LocationView: View {
         //            coordinator.fetchUserLocation()
         //        })
         .alert("신규 장소를 저장합니다.", isPresented: $postCoordinator.newMarkerAlert) {
-            TextField("신규 장소 등록", text: $text)
+            TextField("신규 장소 등록", text: $postCoordinator.newMarkerTitle)
                 .autocapitalization(.none)
                 .textInputAutocapitalization(.none)
             Button("취소") {
@@ -73,15 +72,14 @@ struct LocationView: View {
             }
             Button("등록") {
                 postCoordinator.newMarkerAlert = false
-//                postCoordinator.makeMarkers()
                 newMarkerlat = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lat,  3) ?? ""
                 newMarkerlng = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lng , 4) ?? ""
-                
-                postCoordinator.coord = NMGLatLng(lat: Double(newMarkerlat) ?? 0.0, lng: Double(newMarkerlng) ?? 0.0)
-                searchResult.title = text
+                // postCoordinator.coord = NMGLatLng(lat: Double(newMarkerlat) ?? 0.0, lng: Double(newMarkerlng) ?? 0.0)
+                searchResult.title = postCoordinator.newMarkerTitle
                 isSearchedLocation = false
-//                creatMarkerFeed()
                 print("신규등록 시 \(newMarkerlat), \(newMarkerlng)")
+                print("신규등록 시 \(postCoordinator.newMarkerTitle)")
+
 //                registrationAlert = true
             }
             //            .task {
@@ -105,12 +103,12 @@ struct LocationView: View {
     }
 }
 
-//struct LocationView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LocationView(coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), registrationAlert: .constant(false), newMarkerlat: .constant(""), newMarkerlng: .constant(""))
-//            .environmentObject(UserStore())
-//            .environmentObject(FeedStore())
-//            .environmentObject(ShopStore())
-//        
-//    }
-//}
+struct LocationView_Previews: PreviewProvider {
+    static var previews: some View {
+        LocationView(searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), registrationAlert: .constant(false), newMarkerlat: .constant(""), newMarkerlng: .constant(""), isSearchedLocation: .constant(false))
+            .environmentObject(UserStore())
+            .environmentObject(FeedStore())
+            .environmentObject(ShopStore())
+        
+    }
+}

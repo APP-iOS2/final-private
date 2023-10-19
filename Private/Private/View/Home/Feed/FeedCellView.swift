@@ -10,6 +10,8 @@ import Kingfisher
 //import Combine
 struct FeedCellView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var feed: MyFeed
     @State private var currentPicture = 0
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
@@ -120,11 +122,19 @@ struct FeedCellView: View {
                             userStore.updateUser(user: userStore.user)
                         }
                     } label: {
-                        Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20)
-                            .padding(.trailing, 5)
+                        if colorScheme == ColorScheme.dark {
+                            Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark_dark")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20)
+                                .padding(.trailing, 5)
+                        } else {
+                            Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark_light")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20)
+                                .padding(.trailing, 5)
+                        }
                     }
                     Button {
                         withAnimation {

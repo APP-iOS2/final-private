@@ -16,29 +16,28 @@ final class FollowStore: ObservableObject {
     @Published var following = 0
     @Published var followCheck = false
     
-    static var db = Firestore.firestore()
-    static var UserCollection = db.collection("User")
-    static let currentUserRef = UserCollection.document("currentUserID")
+    
+    static let currentUserRef = userCollection.document("currentUserID")
     
     
     static func followingCollection(userid: String) ->  CollectionReference{
         
-        return UserCollection.document(userid).collection("following")
+        return userCollection.document(userid).collection("following")
     }
     
     static func followersCollection(userid: String) ->  CollectionReference{
         
-        return UserCollection.document(userid).collection("follower")
+        return userCollection.document(userid).collection("follower")
     }
     
     static func followingID(nickname: String) -> DocumentReference {
         
-        return UserCollection.document((Auth.auth().currentUser?.email)!).collection("following").document(nickname)
+        return userCollection.document((Auth.auth().currentUser?.email)!).collection("following").document(nickname)
     }
     
     static func followersID(email: String, nickname: String) -> DocumentReference {
         
-        return UserCollection.document(email).collection("follower").document(nickname)
+        return userCollection.document(email).collection("follower").document(nickname)
     }
     
     func followState(userid: String) {

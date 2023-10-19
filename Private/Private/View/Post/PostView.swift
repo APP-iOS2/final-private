@@ -29,10 +29,8 @@ struct PostView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var isPostViewPresented: Bool /// PostView
-    @Binding var coord: NMGLatLng
     @Binding var searchResult: SearchResult
     
-    @State private var selectedWriter: String = "김아무개"
     @State private var text: String = "" /// 텍스트마스터 내용
     @State private var textPlaceHolder: String = "나만의 Private한 장소에 대해 적어주세요!" /// 텍스트마스터 placeholder
     @State private var lat: String = ""
@@ -58,8 +56,7 @@ struct PostView: View {
 
     @State private var selectedImage: [UIImage]? = []
     @FocusState private var isTextMasterFocused: Bool
-    
-    //    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
+
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
@@ -70,6 +67,8 @@ struct PostView: View {
     
     var db = Firestore.firestore()
     var storage = Storage.storage()
+    
+    let filteredCategories = Category.filteredCases
     
     var body: some View {
         NavigationStack {
@@ -120,7 +119,7 @@ struct PostView: View {
                                 .presentationDetents([.fraction(0.75), .large])
                         }
                         .sheet(isPresented: $isSearchedLocation) {
-                            LocationView(coord: $coord, searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng, isSearchedLocation: $isSearchedLocation)
+                            LocationView(searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng, isSearchedLocation: $isSearchedLocation)
                         }
                     }
                     .padding(.vertical, 10)
@@ -134,16 +133,25 @@ struct PostView: View {
                                     .padding(.bottom, 5)
                             } else {
                                 Button {
-                                    lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
-                                    lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
-                                    
-                                    postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                                    postCoordinator.newMarkerTitle = searchResult.title
-                                    print("위도값: \(coord.lat), 경도값: \(coord.lng)")
-                                    print("지정장소 클릭")
-                                    clickLocation.toggle()
-                                    postCoordinator.moveCameraPosition()
-                                    postCoordinator.makeSearchLocationMarker()
+                                    if !postCoordinator.newMarkerTitle.isEmpty {
+                                        clickLocation.toggle()
+                                        postCoordinator.newLocalmoveCameraPosition()
+//                                        postCoordinator.makeNewLocationMarker()
+                                        postCoordinator.makeSearchLocationMarker()
+
+                                        
+                                    } else {
+                                        lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
+                                        lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
+                                        
+                                        postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                                        postCoordinator.newMarkerTitle = searchResult.title
+                                        print("위도값: \(postCoordinator.coord.lat), 경도값: \(postCoordinator.coord.lng)")
+                                        print("지정장소 클릭")
+                                        clickLocation.toggle()
+                                        postCoordinator.moveCameraPosition()
+                                        postCoordinator.makeSearchLocationMarker()
+                                    }
                                 } label: {
                                     Text("\(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                         .font(.pretendardRegular12)
@@ -163,6 +171,7 @@ struct PostView: View {
                         Spacer()
                         Button {
                             searchResult.title = ""
+                            searchResult.address = ""
                             searchResult.roadAddress = ""
                             postCoordinator.newMarkerTitle = ""
                         } label: {
@@ -247,10 +256,10 @@ struct PostView: View {
                     }
                     
                     LazyVGrid(columns: createGridColumns(), spacing: 20) {
-                        ForEach (MyCategory.allCases.indices, id: \.self) { index in
+                        ForEach (filteredCategories.indices, id: \.self) { index in
                             VStack {
                                 if selectedToggle[index] {
-                                    Text(Category.allCases[index].categoryName)
+                                    Text(MyCategory.allCases[index].categoryName)
                                         .font(.pretendardMedium16)
                                         .foregroundColor(.black)
                                         .frame(width: 70, height: 30)
@@ -259,7 +268,7 @@ struct PostView: View {
                                         .background(Color.privateColor)
                                         .cornerRadius(7)
                                 } else {
-                                    Text(Category.allCases[index].categoryName)
+                                    Text(MyCategory.allCases[index].categoryName)
                                         .font(.pretendardMedium16)
                                         .foregroundColor(.white)
                                         .frame(width: 70, height: 30)
@@ -273,15 +282,9 @@ struct PostView: View {
                                 }
                             }
                             .onTapGesture {
-                                if myselectedCategory.count < maxSelectedCategories || selectedToggle[index] {
-                                    toggleCategorySelection(at: index)
-                                    print(myselectedCategory)
-                                } else {
-                                    categoryAlert = true
-                                    print("3개 초과 선택")
-                                }
+                                toggleCategorySelection(at: index)
+                                print("선택한 카테고리: \(myselectedCategory), 선택 된 Index토글: \(selectedToggle)")
                             }
-                            
                         }
                     }
                     .padding(.trailing, 8)
@@ -334,6 +337,10 @@ struct PostView: View {
                     } else {
                         creatMarkerFeed()
                     }
+                    searchResult.title = ""
+                    searchResult.address = ""
+                    searchResult.roadAddress = ""
+                    postCoordinator.newMarkerTitle = ""
                     registrationAlert = false
                     isPostViewPresented = false
                     selection = 1
@@ -475,16 +482,22 @@ struct PostView: View {
 
     func toggleCategorySelection(at index: Int) {
         selectedToggle[index].toggle()
+        let categoryName = MyCategory.allCases[index].categoryName
+
         if selectedToggle[index] {
-            
-            myselectedCategory.append(MyCategory.allCases[index].rawValue)
-        } else {
-            
-            if let selectedIndex = myselectedCategory.firstIndex(of: MyCategory.allCases[index].rawValue) {
-                myselectedCategory.remove(at: selectedIndex)
+            if myselectedCategory.count < maxSelectedCategories {
+                myselectedCategory.append(categoryName)
+            } else {
+                categoryAlert = true
+                myselectedCategory = []
+                selectedToggle = Array(repeating: false, count: MyCategory.allCases.count)
             }
+        } else if let selectedIndex = myselectedCategory.firstIndex(of: categoryName) {
+            myselectedCategory.remove(at: selectedIndex)
         }
     }
+
+
     
     func createGridColumns() -> [GridItem] {
         let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
@@ -495,7 +508,7 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
+        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
         

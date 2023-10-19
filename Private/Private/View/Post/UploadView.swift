@@ -15,7 +15,6 @@ struct UploadView: View {
     @Binding var isImagePickerPresented: Bool
     @Binding var showLocation: Bool
     @Binding var searchResult: SearchResult
-    @Binding var coord: NMGLatLng
 
     @Environment(\.dismiss) private var dismiss
     
@@ -35,7 +34,7 @@ struct UploadView: View {
             print("업로드 뷰 올라옴")
         }
         .fullScreenCover(isPresented: $isPostViewPresented) {
-            PostView(root: $root, selection: $selection, isPostViewPresented: $isPostViewPresented, coord: $coord, searchResult: $searchResult)
+            PostView(root: $root, selection: $selection, isPostViewPresented: $isPostViewPresented, searchResult: $searchResult)
 //                .onDisappear {
 //                    selection = 1
 //                    print("홈뷰로 이동")
@@ -45,7 +44,7 @@ struct UploadView: View {
 }
 struct UploadView_Previews: PreviewProvider {
     static var previews: some View {
-        UploadView(root: .constant(true), selection: .constant(3), isImagePickerPresented: .constant(true), showLocation: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)))
+        UploadView(root: .constant(true), selection: .constant(3), isImagePickerPresented: .constant(true), showLocation: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
 

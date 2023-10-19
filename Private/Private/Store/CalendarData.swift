@@ -13,7 +13,8 @@ class CalendarData: ObservableObject {
     @Published var selectedDate: Date = Date()  // ReservationStore에 있는걸로 사용하면 FSCalendar에서 따로 동작
     
     let sortedWeekdays = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
-
+    private let today: Date = Date()
+    
     var strMonthTitle: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월"
@@ -57,5 +58,18 @@ class CalendarData: ObservableObject {
         } else {
             return false
         }
+    }
+    
+    // 오늘이 가게 휴일이면 선택한 날이 내일이 되도록 만듦
+    func getSelectedDate(shopData: Shop) -> Date {
+        var selectDate: Date = today
+        
+        if shopData.regularHoliday.contains(AppDateFormatter.shared.dayString(from: today)) || shopData.temporaryHoliday.contains(where: { date in
+            return Calendar.current.isDate(date, inSameDayAs: today)
+        }){
+            selectDate = Date().addingTimeInterval(60 * 60 * 24)
+            return selectDate
+        }
+        return selectDate
     }
 }
