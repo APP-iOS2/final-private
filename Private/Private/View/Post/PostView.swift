@@ -120,7 +120,7 @@ struct PostView: View {
                                 .presentationDetents([.fraction(0.75), .large])
                         }
                         .sheet(isPresented: $isSearchedLocation) {
-                            LocationView(coord: $coord, searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng)
+                            LocationView(coord: $coord, searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng, isSearchedLocation: $isSearchedLocation)
                         }
                     }
                     .padding(.vertical, 10)

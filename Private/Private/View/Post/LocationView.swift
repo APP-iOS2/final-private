@@ -77,7 +77,7 @@ struct LocationView: View {
                 newMarkerlat = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lat,  3) ?? ""
                 newMarkerlng = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lng , 4) ?? ""
                 
-                postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0.0, lng: Double(lng) ?? 0.0)
+                postCoordinator.coord = NMGLatLng(lat: Double(newMarkerlat) ?? 0.0, lng: Double(newMarkerlng) ?? 0.0)
                 searchResult.title = text
                 isSearchedLocation = false
 //                creatMarkerFeed()
@@ -105,12 +105,12 @@ struct LocationView: View {
     }
 }
 
-struct LocationView_Previews: PreviewProvider {
-    static var previews: some View {
-        LocationView(coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), registrationAlert: .constant(false), newMarkerlat: .constant(""), newMarkerlng: .constant(""))
-            .environmentObject(UserStore())
-            .environmentObject(FeedStore())
-            .environmentObject(ShopStore())
-        
-    }
-}
+//struct LocationView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LocationView(coord: .constant(NMGLatLng(lat: 36.444, lng: 127.332)), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), registrationAlert: .constant(false), newMarkerlat: .constant(""), newMarkerlng: .constant(""))
+//            .environmentObject(UserStore())
+//            .environmentObject(FeedStore())
+//            .environmentObject(ShopStore())
+//        
+//    }
+//}
