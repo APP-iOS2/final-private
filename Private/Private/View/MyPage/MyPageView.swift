@@ -12,6 +12,7 @@ struct MyPageView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var followStore: FollowStore
     @Binding var root: Bool
     @Binding var selection: Int
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
@@ -41,7 +42,7 @@ struct MyPageView: View {
                         .foregroundColor(.primary)
                 }
             }
-            UserInfoView()
+            UserInfoView(followerList: followStore.followerList, followingList: followStore.followingList)
                 .padding(.top,-20.0)
                 .padding(.bottom, 20)
             HStack {
@@ -136,6 +137,10 @@ struct MyPageView: View {
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             Spacer()
+               
+        }
+        .onAppear{
+            followStore.fetchFollowerFollowingList(userStore.user.email)
         }
     }
 }

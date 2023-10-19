@@ -11,15 +11,16 @@ import FirebaseFirestoreSwift
 import Kingfisher
 
 struct MyFollowerView: View {
-    @EnvironmentObject var userStore: UserStore
-    @EnvironmentObject var followStore: FollowStore
+    //@EnvironmentObject var userStore: UserStore
+    let user: User
+    var followerList: [String]
     @State private var followerUserList: [User] = []
     var body: some View {
         ScrollView {
             ForEach(followerUserList, id: \.self) { follower in
                 HStack {
                     NavigationLink() {
-                        OtherPageView(user:follower)
+                        //OtherPageView(user:follower)
                     } label: {
                         if follower.profileImageURL.isEmpty {
                             ZStack {
@@ -40,7 +41,7 @@ struct MyFollowerView: View {
                         }
                         Text("\(follower.nickname)")
                             .font(.pretendardMedium18)
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .padding(.leading, 15)
                     }
                     Spacer()
@@ -63,13 +64,14 @@ struct MyFollowerView: View {
             }
         }
         .onAppear {
-            if followerUserList.count != userStore.user.follower.count {
-                searchFollowerUser(searchNickname: userStore.user.follower)
+            //followStore.fetchFollowerFollowingList(user.email)
+            if followerUserList.count != followerList.count {
+                searchFollowerUser(searchNickname: followerList)
             }
         }
         .refreshable {
             followerUserList = []
-            searchFollowerUser(searchNickname: userStore.user.follower)
+            searchFollowerUser(searchNickname: user.follower)
         }
     }
     
@@ -97,6 +99,6 @@ struct MyFollowerView: View {
 }
 struct MyFollowerView_Previews: PreviewProvider {
     static var previews: some View {
-        MyFollowerView().environmentObject(UserStore())
+        MyFollowerView(user:User(), followerList: ["a"]).environmentObject(UserStore())
     }
 }
