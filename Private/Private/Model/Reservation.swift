@@ -16,4 +16,12 @@ struct Reservation: Hashable {
     var numberOfPeople: Int = 1  // 예약인원
     var totalPrice: Int   // 총 가격
     var requirement: String? // 요구사항
+    
+    var priceStr: String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
+        let result = numberFormatter.string(from: NSNumber(value: totalPrice))
+        return(result! + "원")
+    }
 }
