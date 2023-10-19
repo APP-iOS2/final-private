@@ -15,7 +15,9 @@ struct OtherInfoView: View {
     @State var isModify: Bool = false
     
     let user:User
-    
+    var followerList: [String]
+    var followingList: [String]
+
     var body: some View {
         HStack {
             VStack() {
@@ -54,10 +56,10 @@ struct OtherInfoView: View {
                     }
                     .padding(.trailing,19.0 )
                     NavigationLink {
-                        MyFollowerFollowingView(viewNumber: 0)
+                        MyFollowerFollowingView(user: user, followerList: followerList, followingList: followingList,viewNumber: 0)
                     } label: {
                         VStack {
-                            Text("\(user.follower.count)")
+                            Text("\(followerList.count)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)
@@ -68,10 +70,10 @@ struct OtherInfoView: View {
                         .padding(.trailing,19.0)
                     }
                     NavigationLink {
-                        MyFollowerFollowingView(viewNumber: 1)
+                        MyFollowerFollowingView(user: user, followerList: followerList, followingList: followingList,viewNumber: 1)
                     } label: {
                         VStack {
-                            Text("\(user.following.count)")
+                            Text("\(followingList.count)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)
@@ -96,5 +98,14 @@ struct OtherInfoView: View {
             }
             .padding(.top, 40.0)
         }
+        .onAppear {
+            //userStore.fetchotherUser(userEmail: user.email)
+        }
+    }
+}
+
+struct OtherInfoView_Previews: PreviewProvider {
+    static var previews: some View {
+        OtherInfoView(user: User(), followerList: [""], followingList: [""])
     }
 }

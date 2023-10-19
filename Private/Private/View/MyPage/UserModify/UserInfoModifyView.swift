@@ -72,13 +72,13 @@ struct UserInfoModifyView: View {
                     UserImagePickerView(selectedImage: $selectedImage)
                 }
                 Divider()
-                    .background(Color.white)
+                    .background(Color.primary)
                     .frame(width: .screenWidth*0.9)
                     .padding([.top,.bottom],15)
                 HStack {
                     Text("닉네임")
                         .font(.pretendardMedium18)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                     TextField("\(userStore.user.nickname)", text: $mypageNickname)
                         .padding(.leading, 5)
                 }
@@ -92,7 +92,7 @@ struct UserInfoModifyView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(Text(userStore.user.nickname).font(.pretendardRegular16).foregroundColor(.white))
+        .navigationTitle(Text(userStore.user.nickname))
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -100,7 +100,7 @@ struct UserInfoModifyView: View {
                 } label: {
                     Text("취소")
                         .font(.pretendardSemiBold16)
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -116,7 +116,7 @@ struct UserInfoModifyView: View {
                 } label: {
                     Text("수정")
                         .font(.pretendardSemiBold16)
-                        .foregroundColor(.accentColor)
+                        .foregroundColor(.privateColor)
                 }
             }
         }

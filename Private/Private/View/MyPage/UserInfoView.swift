@@ -11,6 +11,9 @@ import Kingfisher
 struct UserInfoView: View {
     
     @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var followStore: FollowStore
+    var followerList: [String]
+    var followingList: [String]
     @State var isModify: Bool = false
     var body: some View {
         HStack {
@@ -50,10 +53,10 @@ struct UserInfoView: View {
                     }
                     .padding(.trailing,19.0 )
                     NavigationLink {
-                        MyFollowerFollowingView(viewNumber: 0)
+                        MyFollowerFollowingView(user: userStore.user, followerList: followerList, followingList: followingList, viewNumber: 0)
                     } label: {
                         VStack {
-                            Text("\(userStore.user.follower.count)")
+                            Text("\(followerList.count)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)
@@ -64,10 +67,10 @@ struct UserInfoView: View {
                         .padding(.trailing,19.0)
                     }
                     NavigationLink {
-                        MyFollowerFollowingView(viewNumber: 1)
+                        MyFollowerFollowingView(user: userStore.user, followerList: followerList, followingList: followingList,viewNumber: 1)
                     } label: {
                         VStack {
-                            Text("\(userStore.user.following.count)")
+                            Text("\(followingList.count)")
                                 .font(.pretendardBold18)
                                 .padding(.bottom, 5.0)
                                 .foregroundColor(.primary)
@@ -101,6 +104,6 @@ struct UserInfoView: View {
 
 struct UserInfoView_Previews: PreviewProvider {
     static var previews: some View {
-        UserInfoView().environmentObject(UserStore())
+        UserInfoView(followerList: ["a"], followingList: ["a"]).environmentObject(UserStore())
     }
 }

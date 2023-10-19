@@ -11,15 +11,17 @@ import FirebaseFirestoreSwift
 import Kingfisher
 
 struct MyFollowingView: View {
-    @EnvironmentObject var userStore: UserStore
+    //@EnvironmentObject var userStore: UserStore
     @EnvironmentObject var followStore: FollowStore
+    let user: User
+    var followingList: [String]
     @State private var followingUserList: [User] = []
     var body: some View {
         ScrollView {
             ForEach(followingUserList, id:\.self) { following in
                 HStack {
                     NavigationLink() {
-                        OtherProfileView(user:following)
+                        //OtherPageView(user:following)
                     } label: {
                         if following.profileImageURL.isEmpty {
                             ZStack {
@@ -40,12 +42,13 @@ struct MyFollowingView: View {
                         }
                         Text("\(following.nickname)")
                             .font(.pretendardMedium18)
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .padding(.leading, 15)
                     }
                     Spacer()
                     Button {
-                        
+                        followStore.unfollow(userId: following.nickname, myNickName: user.nickname, userEmail: user.email)
+                        followingUserList.removeAll { $0 == following }
                     } label: {
                         Text("언팔로우")
                             .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
@@ -63,14 +66,15 @@ struct MyFollowingView: View {
             }
         }
         .onAppear {
-            if followingUserList.count != userStore.user.following.count {
-                searchFollowingUser(searchNickname: userStore.user.following)
+            
+            if followingUserList.count != followingList.count {
+                searchFollowingUser(searchNickname: followingList)
             }
         }
         .refreshable {
-            followingUserList = []
-            searchFollowingUser(searchNickname: userStore.user.following)
+            followStore.fetchFollowerFollowingList(user.email)
         }
+        
     }
     func searchFollowingUser(searchNickname: [String]) {
         let db = Firestore.firestore()
@@ -97,6 +101,6 @@ struct MyFollowingView: View {
 
 struct MyFollowingView_Previews: PreviewProvider {
     static var previews: some View {
-        MyFollowingView().environmentObject(UserStore())
+        MyFollowingView(user: User(),followingList: [""]).environmentObject(UserStore())
     }
 }

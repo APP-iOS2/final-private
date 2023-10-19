@@ -101,12 +101,12 @@ final class FollowStore: ObservableObject {
     //언팔로우
     func unfollow(userId: String, myNickName: String, userEmail: String) {
         
-            FollowStore.followingID(nickname: userId).getDocument { (document, err) in
+        FollowStore.followingID(nickname: userId).getDocument { (document, err) in
             if let doc = document, doc.exists {
                 doc.reference.delete()
                 if let index = self.followingList.firstIndex(of: userId) {
-                                self.followingList.remove(at: index)
-                            }
+                    self.followingList.remove(at: index)
+                }
             }
         }
         
@@ -120,4 +120,28 @@ final class FollowStore: ObservableObject {
         }
     }
     
-} //
+    func fetchFollowerFollowingList (_ useremail: String) {
+        userCollection.document(useremail)
+            .collection("follower")
+            .addSnapshotListener { querySnapshot, error in
+                if let error = error {
+                    print("Error fetching user: \(error.localizedDescription)")
+                } else {
+                    if let documents = querySnapshot?.documents {
+                        self.followerList = documents.compactMap { $0.documentID } // documentID를 사용하여 배열 생성
+                    }
+                }
+            }
+        userCollection.document(useremail)
+            .collection("following")
+            .addSnapshotListener { querySnapshot, error in
+                if let error = error {
+                    print("Error fetching user: \(error.localizedDescription)")
+                } else {
+                    if let documents = querySnapshot?.documents {
+                        self.followingList = documents.compactMap { $0.documentID } // documentID를 사용하여 배열 생성
+                    }
+                }
+            }
+    }
+}     //
