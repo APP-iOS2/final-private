@@ -39,4 +39,3 @@ struct SearchUserCellView_Previews: PreviewProvider {
         SearchUserCellView(user: User())
     }
 }
-
