@@ -32,7 +32,7 @@ struct SearchPageView: View {
             VStack(spacing: 10) {
                 VStack(alignment: .leading) {
                     Text("최근 검색어")
-                        .font(.pretendardMedium18)
+                        .font(.pretendardMedium24)
                         .padding()
                     
                     Divider().padding()
@@ -43,7 +43,7 @@ struct SearchPageView: View {
                         }
                 } else {
                     Text("최근 검색 기록이 없습니다")
-                        .font(.pretendardRegular12)
+                        .font(.pretendardRegular16)
                         .foregroundColor(.secondary)
                 }
                 
@@ -83,7 +83,7 @@ struct SearchPageView: View {
             VStack(spacing: 10) {
                 VStack(alignment: .leading) {
                     Text("최근 찾은 사용자")
-                        .font(.pretendardMedium18)
+                        .font(.pretendardMedium24)
                         .padding()
                     
                     Divider().padding()
@@ -95,7 +95,7 @@ struct SearchPageView: View {
                     }
                 } else {
                     Text("최근 검색 기록이 없습니다")
-                        .font(.pretendardRegular12)
+                        .font(.pretendardRegular16)
                         .foregroundColor(.gray)
                 }
             }

@@ -21,7 +21,8 @@ struct SearchView: View {
         NavigationView {
             VStack(spacing: 0) {
                 SearchBarTextField(text: $searchTerm, isEditing: $inSearchMode, placeholder: "사용자 검색")
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.vertical, 12)
                 
                 ScrollView(showsIndicators: false) {
                     ZStack {
@@ -43,3 +44,7 @@ struct SearchView: View {
         }
     }
 }
+#Preview {
+    SearchView(root: .constant(true), selection: .constant(2))
+}
+
