@@ -324,13 +324,6 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
             newMarkerAlert = true
         }
     }
-
-    //     func markerTitle(_ mapView: NMFMapView, didTap marker: NMFMarker) -> Bool {
-    //
-    //         let markerTitleView = MapMarkerDetailView(markerTitle: Binding<String>, isEditing: Binding<Bool>)
-    //         view.addSubview(markerTitleView)
-    //        return true
-    //    }
     
     /// 지도에서 마커를 길게 터치하면 어떠한 행동을 함
     func markerLongPress(_ mapView: NMFMapView, didLongPressOverlay overlay: NMFOverlay) {
