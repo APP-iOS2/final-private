@@ -44,7 +44,7 @@ struct PostView: View {
     @State private var feedId: String = ""
     @State private var myselectedCategory: [String] = []
     
-    @State private var clickLocation: Bool = false
+    @State private var clickLocation: Bool = false /// 업로드에서 장소선택하면 해당 장소 나오는 뷰
     @State private var isImagePickerPresented: Bool = false /// 업로드뷰에서 이미지 선택 뷰
     @State private var ImageViewPresented: Bool = true /// 처음 이미지 뷰
     @State private var showLocation: Bool = false
@@ -357,20 +357,6 @@ struct PostView: View {
                 dismissButton: .default(Text("확인"))
             )
         }
-//        .popup(isPresented: $feedStore.uploadToast) {
-//            ToastMessageView(message: "업로드가 완료되었습니다!")
-//                .onDisappear {
-//                    feedStore.uploadToast = false
-//                }
-//        } customize: {
-//            $0
-//                .autohideIn(1)
-//                .type(.floater(verticalPadding: 20))
-//                .position(.bottom)
-//                .animation(.spring())
-//                .closeOnTapOutside(true)
-//                .backgroundColor(.clear)
-//        }
     } // body
     
     //MARK: 파베함수
