@@ -29,20 +29,15 @@ struct SearchBarView: View {
                     }
                 
                 if !searchTerm.isEmpty {
-                    NavigationLink(destination: UserListView(searchTerm: searchTerm.trimmingCharacters(in: .whitespaces))) {
-                        Image(systemName: "arrowshape.right.fill")
-                            .foregroundColor(Color("AccentColor"))
-                            .onTapGesture {
-                                Task {
-                                    await searchStore.searchUser(searchTerm: searchTerm)
-                                    searchStore.addRecentSearch(searchTerm)
-                                }
-                            }
+                        NavigationLink {
+                            UserListView(searchTerm: searchTerm.trimmingCharacters(in: .whitespaces))
+                        } label: {
+                            Image(systemName: "arrowshape.right.fill")
+                                .foregroundColor(Color("AccentColor"))
+                        }
+                        .disabled(isSearchTextEmpty)
                     }
-                    .disabled(isSearchTextEmpty)
-                    
                 }
-            }
             .padding(.horizontal)
             .padding(.vertical, 12)
         }

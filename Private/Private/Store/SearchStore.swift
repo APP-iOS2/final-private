@@ -68,7 +68,7 @@ final class SearchStore: ObservableObject {
     
     
     func addRecentSearch(_ searchText: String) {
-            if self.recentSearchResult.contains(searchText) {
+            if self.recentSearchResult.contains(searchText) || searchText == ""{
                 self.removeRecentSearchResult(searchText)
             }
             self.recentSearchResult.insert(searchText, at: 0)
@@ -86,11 +86,14 @@ final class SearchStore: ObservableObject {
     }
     
     func addUserLists(_ users: [User]) {
-            if !self.searchUserLists.contains(users) {
-                self.searchUserLists.insert(contentsOf: users, at: 0)
+        for user in users {
+            if !self.searchUserLists.contains(user) {
+                self.searchUserLists.insert(user, at: 0)
             }
-            self.setUserDefaults()
+        }
+        self.setUserDefaults()
     }
+
     
     func removeUserList(_ user: User) {
         if let index = self.searchUserLists.firstIndex(of: user) {

@@ -9,11 +9,10 @@ import SwiftUI
 
 struct SearchPageView: View {
     @EnvironmentObject var searchStore: SearchStore
-    @Binding var searchTerm: String
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            RecentSearchListView(searchTerm: $searchTerm)
+            RecentSearchListView()
             Spacer()
             Divider()
             RecentUserListView()
@@ -26,7 +25,6 @@ struct SearchPageView: View {
     
     struct RecentSearchListView: View {
         @EnvironmentObject var searchStore: SearchStore
-        @Binding var searchTerm: String
         
         var body: some View {
             VStack(spacing: 10) {
@@ -39,7 +37,7 @@ struct SearchPageView: View {
                 }
                     if !searchStore.recentSearchResult.isEmpty {
                         ForEach(searchStore.recentSearchResult.prefix(5), id: \.self) { resultText in
-                            RecentSearchRowView(searchTerm: $searchTerm, resultText: resultText)
+                            RecentSearchRowView(resultText: resultText)
                         }
                 } else {
                     Text("검색 기록이 없습니다")
@@ -53,13 +51,12 @@ struct SearchPageView: View {
     
     struct RecentSearchRowView: View {
         @EnvironmentObject var searchStore: SearchStore
-        @Binding var searchTerm: String
         let resultText: String
         
         var body: some View {
             HStack {
                 NavigationLink {
-                    UserListView(searchTerm: searchTerm)
+                    UserListView(searchTerm: resultText)
                 } label: {
                     Text(resultText)
                         .foregroundColor(.gray)
