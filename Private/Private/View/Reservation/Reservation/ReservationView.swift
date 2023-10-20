@@ -174,13 +174,12 @@ struct ReservationView: View {
                 .navigationBarBackButtonHidden(true)
                 .backButtonX()
                 
-                .fullScreenCover(isPresented: $isShowingConfirmView) {
+                .navigationDestination(isPresented: $isShowingConfirmView) {
                     ReservationConfirmView(reservationData: reservationStore.myReservation, shopData: shopData)
                 }
                 
                 .onAppear {
                     self.temporaryReservation.shopId = self.shopData.id
-                    // calendarData의 데이타를 모두 바꿔줘야 함
                     calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)
                     calendarData.currentPage = calendarData.getSelectedDate(shopData: shopData)
                     calendarData.titleOfMonth = calendarData.getSelectedDate(shopData: shopData)

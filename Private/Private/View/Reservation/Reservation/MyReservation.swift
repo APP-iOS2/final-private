@@ -15,24 +15,34 @@ struct MyReservation: View {
         
     var body: some View {
         NavigationStack {
-            ScrollView(.vertical, showsIndicators: false) {
+            if reservationStore.reservationList.isEmpty {
                 VStack {
-                    ForEach(reservationStore.reservationList, id: \.self) { reservation in
-                        ReservationCardView(reservation: reservation)
+                    Spacer()
+                    Text("예약 내역이 없습니다.")
+                        .font(.pretendardMedium20)
+                        .foregroundStyle(.primary)
+                    Spacer()
+                }
+            } else {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack {
+                        ForEach(reservationStore.reservationList, id: \.self) { reservation in
+                            ReservationCardView(reservation: reservation)
+                        }
+                        .padding()
                     }
                     .padding()
-                }
-                .padding()
-                .onAppear {
-                    reservationStore.fetchReservation()
-                }
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button {
-                            isShowingMyReservation.toggle()
-                        } label: {
-                            Text("확인")
-                                .font(.pretendardMedium20)
+                    //                .onAppear {
+                    //                    reservationStore.fetchReservation()
+                    //                }
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button {
+                                isShowingMyReservation.toggle()
+                            } label: {
+                                Text("확인")
+                                    .font(.pretendardMedium20)
+                            }
                         }
                     }
                 }

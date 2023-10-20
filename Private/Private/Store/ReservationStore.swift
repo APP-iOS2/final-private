@@ -19,7 +19,7 @@ final class ReservationStore: ObservableObject {
     static let user = Auth.auth().currentUser
     
     init() {
-        
+        self.fetchReservation()
     }
     
     static let tempReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
@@ -158,6 +158,7 @@ final class ReservationStore: ObservableObject {
                 print("Reservation added to Firestore")
             }
         }
+        self.fetchReservation()
     }
     
     
@@ -213,6 +214,7 @@ final class ReservationStore: ObservableObject {
                 self.fetchReservation()
             }
         }
+        self.fetchReservation()
     }
     
     
@@ -242,8 +244,7 @@ final class ReservationStore: ObservableObject {
                 print("문서 삭제 성공")
             }
         }
-        
-        fetchReservation()
+        self.fetchReservation()
     }
     
     
@@ -264,8 +265,7 @@ final class ReservationStore: ObservableObject {
                 print("문서 삭제 성공")
             }
         }
-        
-        fetchReservation()
+        self.fetchReservation()
     }
     
     

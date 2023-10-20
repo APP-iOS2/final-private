@@ -21,6 +21,7 @@ import TossPayments
 struct TossPaymentsContentView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var reservationStore: ReservationStore
     
     @State private var showingSuccess: Bool = false
     @State private var showingFail: Bool = false
@@ -48,6 +49,9 @@ struct TossPaymentsContentView: View {
                 // 네비게이션 다 나가고, 새로운 뷰를 하나 띄워줌
                 // 새로운 뷰 위에 토스트 메세지도 뛰워주자
                 // 네비게이션 없애기
+                reservationStore.myReservation = reservationData
+                reservationStore.addReservationToFirestore(reservationData: reservationStore.myReservation)
+                
                 dismiss()
                 isShwoingDetailView = false
                 isReservationPresented = false
@@ -82,5 +86,6 @@ struct TossPaymentsContentView_Previews: PreviewProvider {
     static var previews: some View {
         TossPaymentsContentView(isShowingConfirmView: .constant(false), isShwoingDetailView: .constant(true), isReservationPresented: .constant(true), reservationData: ReservationStore.tempReservation, shopData: ShopStore.shop)
             .environmentObject(UserStore())
+            .environmentObject(ReservationStore())
     }
 }

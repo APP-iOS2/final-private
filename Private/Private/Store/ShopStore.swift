@@ -16,7 +16,6 @@ final class ShopStore: ObservableObject {
     @Published var visitedShop: Shop = shop
     
     init() {
-        
     }
     
     static let shop = Shop(
