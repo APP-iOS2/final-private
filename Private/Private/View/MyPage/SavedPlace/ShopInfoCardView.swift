@@ -48,40 +48,23 @@ struct ShopInfoCardView: View {
                     .cornerRadius(10)
                     .padding(.leading,7)
                     VStack(alignment: .leading) {
-                        Text(place.title)
-                            .font(.pretendardSemiBold16)
-                            .foregroundColor(.primary)
-                            .padding(.bottom, 2)
+                        HStack {
+                            Text(place.title)
+                                .font(.pretendardSemiBold16)
+                                .foregroundColor(.primary)
+                                .padding(.bottom, 2)
+                            Divider()
+                                .frame(height: .screenHeight * 0.01)
+                                .background(Color.primary)
+                            Label(
+                                title: { Text(place.category[0])
+                                        .font(.pretendardRegular12)
+                                        .foregroundColor(.primary)
+                                },
+                                icon: { Image(systemName: "fork.knife").frame(width: 1).padding(.leading, 6).padding(.trailing, 4) }
+                            )
+                        }
                         VStack(alignment: .leading) {
-                            HStack {
-                                Label(
-                                    title: { Text(place.category[0])
-                                            .font(.pretendardRegular14)
-                                            .foregroundColor(.primary)
-                                    },
-                                    icon: { Image(systemName: "fork.knife").frame(width: 1).padding(.leading, 6).padding(.trailing, 4) }
-                                )
-                                Text("|")
-                                    .font(.pretendardRegular14)
-                                    .foregroundColor(.primary)
-                                Label(
-                                    title: { Text("0") // 가게 좋아요 수 필요
-                                            .font(.pretendardRegular14)
-                                            .foregroundColor(.primary)
-                                    },
-                                    icon: { Image(systemName: "heart.fill").frame(width: 1).padding([.leading,.trailing], 4) }
-                                )
-                                .font(.pretendardRegular14)
-                                Text("|")
-                                    .font(.pretendardRegular14)
-                                    .foregroundColor(.primary)
-                                HStack {
-                                    Image(systemName: "bookmark.fill").frame(width: 0.5).padding([.leading,.trailing], 4)
-                                    Text("0") // 가게 북마크 수 필요
-                                            .font(.pretendardRegular14)
-                                    }.foregroundColor(.primary)
-                            }
-                            .padding(.top, 3)
                             HStack{
                                 Image(systemName: "mappin")
                                     .frame(width: .screenWidth * 0.001)
