@@ -19,8 +19,6 @@ struct ReservationView: View {
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var isSelectedTime: Bool = false
     @State private var isShwoingDetailView: Bool = false
-    @State private var isShowingConfirmView: Bool = false
-
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
@@ -64,7 +62,6 @@ struct ReservationView: View {
                             Spacer()
                             
                             Button {
-                                //                                showingDate.toggle()
                                 withAnimation {
                                     showingDate.toggle()
                                 }
@@ -96,7 +93,6 @@ struct ReservationView: View {
                             Text(isSelectedTime ? String(temporaryReservation.numberOfPeople) + "명" : "인원 선택")
                             Spacer()
                             Button {
-                                //                                showingNumbers.toggle()
                                 withAnimation {
                                     showingNumbers.toggle()
                                 }
@@ -113,7 +109,6 @@ struct ReservationView: View {
                         .cornerRadius(12)
                         .padding(.bottom, 20)
                         
-                        // 가게 예약 가능인원 정보를 받을지 말지 정해야함
                         if showingNumbers {
                             HStack {
                                 Image(systemName: "info.circle")
@@ -151,10 +146,6 @@ struct ReservationView: View {
                         .padding()
                         .background(Color.subGrayColor)
                         .cornerRadius(12)
-                        //                        .padding(.bottom, 30)
-                        
-                        
-                        
                     }// VStack
                 }// ScrollView
                 
@@ -168,16 +159,11 @@ struct ReservationView: View {
                 .disabled(!isSelectedTime)
                 
                 .navigationDestination(isPresented: $isShwoingDetailView) {
-                    ReservationDetailView(isShwoingDetailView: $isShwoingDetailView, isReservationPresented: $isReservationPresented, isShowingConfirmView: $isShowingConfirmView, reservationData: $temporaryReservation, shopData: shopData)
+                    ReservationDetailView(isShwoingDetailView: $isShwoingDetailView, isReservationPresented: $isReservationPresented, reservationData: $temporaryReservation, shopData: shopData)
                 }
                 .padding()
                 .navigationBarBackButtonHidden(true)
-                .backButtonX()
-                
-                .navigationDestination(isPresented: $isShowingConfirmView) {
-                    ReservationConfirmView(reservationData: reservationStore.myReservation, shopData: shopData)
-                }
-                
+                .backButtonArrow()
                 .onAppear {
                     self.temporaryReservation.shopId = self.shopData.id
                     calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)

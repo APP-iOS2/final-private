@@ -125,10 +125,6 @@ struct ModifyReservationView: View {
                 }
             }
         }
-//        .onTapGesture {
-//            hideKeyboard()
-//            print(#fileID, #function, #line, "- OnTabGesture")
-//        }
         .padding()
         .onAppear {
             calendarData.selectedDate = temporaryReservation.date

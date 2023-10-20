@@ -8,17 +8,6 @@
 import SwiftUI
 import TossPayments
 
-//private enum Constants {
-//    static let clientKey: String = Bundle.main.payment_Client_KEY
-//    static let 테스트결제정보: PaymentInfo = DefaultPaymentInfo(
-//        amount: 1000,
-//        orderId: "9lD0azJWxjBY0KOIumGzH",
-//        orderName: "토스 티셔츠 외 2건",
-//        customerName: "박토스"
-//    )
-//}
-
-
 class TossPaymentsContentViewModel: ObservableObject {
     @EnvironmentObject var userStore: UserStore
 
