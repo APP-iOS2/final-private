@@ -24,7 +24,7 @@ struct MyHistoryView: View {
     var body: some View {
         VStack{
             if (isFeed == true) {
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     if userStore.myFeedList.isEmpty {
                         Text("게시물이 존재 하지 않습니다.")
                             .font(.pretendardBold24)

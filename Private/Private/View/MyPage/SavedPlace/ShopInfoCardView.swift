@@ -37,7 +37,7 @@ struct ShopInfoCardView: View {
                     
                     postCoordinator.moveCameraPosition()
                     postCoordinator.makeSearchLocationMarker()
-                    
+                    print("\(place.id)")
                 } label: {
                     KFImage(URL(string:place.images[0])) .placeholder {
                         Image(systemName: "photo")

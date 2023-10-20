@@ -17,7 +17,7 @@ struct MyFollowingView: View {
     var followingList: [String]
     @State private var followingUserList: [User] = []
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             ForEach(followingUserList, id:\.self) { following in
                 HStack {
                     NavigationLink() {
