@@ -1071,7 +1071,6 @@
 				3CCD2DFE2ABC37F8005709F4 /* TextMaster.swift in Sources */,
 				D1D2F8012AE10EC300C89FB7 /* Constants.swift in Sources */,
 				D1D2F8072AE23EBE00C89FB7 /* SearchBarView.swift in Sources */,
-				3C2FC8F12ACE9B750034F561 /* MapMarkerDetailStore.swift in Sources */,
 				B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */,
 				3CCD2DE22ABC3177005709F4 /* Feed.swift in Sources */,
 				E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */,
