@@ -27,6 +27,7 @@ struct FeedCellView: View {
     @State private var isShowingLocation: Bool = false
     @State private var lat: String = ""
     @State private var lng: String = ""
+    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     
     var body: some View {
         VStack {
@@ -206,6 +207,7 @@ struct FeedCellView: View {
                 
                 postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
                 postCoordinator.newMarkerTitle = feed.title
+                searchResult.title = feed.title
                 
                 postCoordinator.moveCameraPosition()
                 postCoordinator.makeSearchLocationMarker()
@@ -229,7 +231,7 @@ struct FeedCellView: View {
         .background(Color.darkGraySubColor)
         
         .sheet(isPresented: $isShowingLocation) {
-            LocationDetailView()
+            LocationDetailView(searchResult: $searchResult)
                 .presentationDetents([.height(.screenHeight * 0.6), .large])
         }
         

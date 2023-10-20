@@ -16,6 +16,7 @@ struct ShopInfoCardView: View {
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     
     @Binding var isShowingLocation: Bool
+    @Binding var searchResult: SearchResult
     
     @State private var lat: String = ""
     @State private var lng: String = ""
@@ -32,6 +33,7 @@ struct ShopInfoCardView: View {
                     
                     postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
                     postCoordinator.newMarkerTitle = place.title
+                    searchResult.title = place.title
                     
                     postCoordinator.moveCameraPosition()
                     postCoordinator.makeSearchLocationMarker()

@@ -11,6 +11,7 @@ struct MySavedPlaceView: View {
     @EnvironmentObject private var userStore: UserStore
     
     @State private var isShowingLocation: Bool = false
+    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     
     var body: some View {
         ScrollView {
@@ -20,11 +21,11 @@ struct MySavedPlaceView: View {
                     .foregroundColor(.primary)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
-                ShopInfoCardView(isShowingLocation: $isShowingLocation, mySavedPlaceList: userStore.mySavedPlaceList)
+                ShopInfoCardView(isShowingLocation: $isShowingLocation, searchResult: $searchResult, mySavedPlaceList: userStore.mySavedPlaceList)
             }
         }
         .sheet(isPresented: $isShowingLocation) {
-            LocationDetailView()
+            LocationDetailView(searchResult: $searchResult)
                 .presentationDetents([.height(.screenHeight * 0.6), .large])
         }
     }
