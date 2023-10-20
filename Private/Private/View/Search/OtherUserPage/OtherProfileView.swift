@@ -112,5 +112,7 @@ struct OtherProfileView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             Spacer()
         }
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
     }
 }

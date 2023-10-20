@@ -14,43 +14,23 @@ struct SearchView: View {
     @Binding var selection: Int
     
     @State private var searchTerm: String = ""
+    @State private var trimmedSearchTerm: String = ""
     @State private var inSearchMode = false
     @State private var isSearchTextEmpty: Bool = true
     
     var body: some View {
-        NavigationView {
             VStack(spacing: 0) {
-                SearchBarTextField(text: $searchTerm, isEditing: $inSearchMode, placeholder: "사용자 검색")
-                    .padding(.horizontal)
-                    .padding(.vertical, 12)
-                
+                SearchBarView(searchTerm: $searchTerm, inSearchMode: $inSearchMode, isSearchTextEmpty: $isSearchTextEmpty)
                 ScrollView(showsIndicators: false) {
-                    ZStack {
-                        if inSearchMode {
-                            UserListView(searchTerm: $searchTerm)
-                        } else {
-                            SearchPageView(searchTerm: $searchTerm)
-                        }
-                    }
-                    .onChange(of: searchTerm, perform: { _ in
-                        Task {
-                            searchStore.fetchUsers()
-                             fetchSearchResults()
-                        }
-                    })
+                    SearchPageView(searchTerm: $searchTerm)
                 }
+                Spacer()
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
-            .padding(.horizontal)
             .onAppear {
                 searchStore.fetchrecentSearchResult()
                 searchTerm = ""
             }
-        }
-    }
-    func fetchSearchResults() {
-         searchStore.addRecentSearch(searchTerm)
     }
 }
-

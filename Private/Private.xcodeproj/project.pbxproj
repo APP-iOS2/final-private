@@ -138,6 +138,7 @@
 		D1D2F8012AE10EC300C89FB7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F8002AE10EC300C89FB7 /* Constants.swift */; };
 		D1D2F8032AE1167300C89FB7 /* OtherProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F8022AE1167300C89FB7 /* OtherProfileView.swift */; };
 		D1D2F8052AE116F800C89FB7 /* OtherInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F8042AE116F800C89FB7 /* OtherInfoView.swift */; };
+		D1D2F8072AE23EBE00C89FB7 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F8062AE23EBE00C89FB7 /* SearchBarView.swift */; };
 		D1DC8D5B2ACFC67E0087CBD7 /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */; };
 		D1EC43922AC16E2900B088EA /* FollowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43912AC16E2900B088EA /* FollowStore.swift */; };
 		D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43992AC2D42F00B088EA /* SearchView.swift */; };
@@ -278,6 +279,7 @@
 		D1D2F8002AE10EC300C89FB7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D1D2F8022AE1167300C89FB7 /* OtherProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileView.swift; sourceTree = "<group>"; };
 		D1D2F8042AE116F800C89FB7 /* OtherInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherInfoView.swift; sourceTree = "<group>"; };
+		D1D2F8062AE23EBE00C89FB7 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
 		D1EC43912AC16E2900B088EA /* FollowStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowStore.swift; sourceTree = "<group>"; };
 		D1EC43992AC2D42F00B088EA /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -480,6 +482,7 @@
 			isa = PBXGroup;
 			children = (
 				D1EC43992AC2D42F00B088EA /* SearchView.swift */,
+				D1D2F8062AE23EBE00C89FB7 /* SearchBarView.swift */,
 				D1A025842AE0B234004250E1 /* UserListView.swift */,
 				D1A025802AE0B109004250E1 /* SearchPageView.swift */,
 				D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */,
@@ -1067,6 +1070,8 @@
 				3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */,
 				3CCD2DFE2ABC37F8005709F4 /* TextMaster.swift in Sources */,
 				D1D2F8012AE10EC300C89FB7 /* Constants.swift in Sources */,
+				D1D2F8072AE23EBE00C89FB7 /* SearchBarView.swift in Sources */,
+				3C2FC8F12ACE9B750034F561 /* MapMarkerDetailStore.swift in Sources */,
 				B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */,
 				3CCD2DE22ABC3177005709F4 /* Feed.swift in Sources */,
 				E4778D852ACD3E060099D924 /* MyFollowerView.swift in Sources */,

@@ -13,11 +13,11 @@ struct SearchPageView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            Divider()
             RecentSearchListView(searchTerm: $searchTerm)
             Spacer()
             Divider()
             RecentUserListView()
+            Spacer()
         }
     }
 
@@ -42,11 +42,10 @@ struct SearchPageView: View {
                             RecentSearchRowView(searchTerm: $searchTerm, resultText: resultText)
                         }
                 } else {
-                    Text("최근 검색 기록이 없습니다")
+                    Text("검색 기록이 없습니다")
                         .font(.pretendardRegular16)
                         .foregroundColor(.secondary)
                 }
-                
                 Spacer().padding(.bottom, 10)
             }
         }
@@ -60,7 +59,7 @@ struct SearchPageView: View {
         var body: some View {
             HStack {
                 NavigationLink {
-                    UserListView(searchTerm: $searchTerm)
+                    UserListView(searchTerm: searchTerm)
                 } label: {
                     Text(resultText)
                         .foregroundColor(.gray)
@@ -69,7 +68,8 @@ struct SearchPageView: View {
                 Button {
                     searchStore.removeRecentSearchResult(resultText)
                 } label: {
-                    Image(systemName: "xmark.fill")
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.gray)
                 }
                 .padding(.trailing, 10)
             }
@@ -83,21 +83,23 @@ struct SearchPageView: View {
         var body: some View {
             VStack(spacing: 10) {
                 VStack(alignment: .leading) {
-                    Text("최근 찾은 사용자")
+                    Text("찾은 사용자")
                         .font(.pretendardMedium24)
                         .padding()
                     
+                    Divider().padding()
                 }
                 VStack(alignment: .leading) {
                     if !searchStore.searchUserLists.isEmpty {
-                        ForEach(searchStore.searchUserLists, id: \.self) { user in
+                        ForEach(searchStore.searchUserLists.prefix(5), id: \.self) { user in
                             RecentUserRowView(user: user)
                         }
                     } else {
-                        Text("최근 검색 기록이 없습니다")
+                        Text("검색 기록이 없습니다")
                             .font(.pretendardRegular16)
                             .foregroundColor(.gray)
                     }
+                    Spacer().padding(.bottom, 10)
                 }
             }
         }
@@ -119,9 +121,10 @@ struct SearchPageView: View {
                 Button {
                     searchStore.removeRecentSearchResult(user.nickname)
                 } label: {
-                    Image(systemName: "xmark.fill")
+                    Image(systemName: "xmark.circle.fill")
                         .foregroundColor(.gray)
                 }
+                .padding(.trailing, 10)
             }
             .padding(.bottom, 8)
         }
