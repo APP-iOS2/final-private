@@ -99,22 +99,21 @@ struct ShopDetailBodyView: View {
                             .frame(height: 25)
                         
                         Text(shopData.category.categoryName)
-                            .font(.pretendardMedium18)
+                            .font(.pretendardBold18)
                     }
                     
                     HStack(alignment: .center, spacing: 5) {
                         Text(shopData.address + " " + shopData.addressDetail)
-                            .font(.pretendardMedium16)
+                            .font(.pretendardBold14)
                         
                         Button {
-                            copyToClipboard(shopData.address + " " + shopData.addressDetail)
+                            copyToClipboard(shopData.name + " " + shopData.address + " " + shopData.addressDetail)
                         } label: {
                             Image(systemName: "doc.on.doc")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .foregroundStyle(Color.privateColor)
                                 .frame(width: 15, height: 15)
-
                         }
                         
                         Spacer()
@@ -125,19 +124,6 @@ struct ShopDetailBodyView: View {
                 }
                 
                 Spacer()
-                
-                Menu {
-                    Text("카카오톡으로 공유하기")
-                        .font(.pretendardRegular14)
-                        .foregroundStyle(.white)
-                } label: {
-                    Image(systemName: "square.and.arrow.up")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundStyle(Color.privateColor)
-                        .frame(width: 25, height: 25)
-                }
-                .padding(.vertical, 20)
             }
             .padding(.horizontal, 10)
             
@@ -221,20 +207,6 @@ struct ShopDetailFooterView: View {
                 isReservationPresented.toggle()
             }
             .foregroundStyle(Color.black)
-            
-//            Button {
-//                isReservationPresented.toggle()
-//            } label: {
-//                Text("예약하기")
-//                    .font(.pretendardBold20)
-//                    .foregroundStyle(.black)
-//                    .frame(maxWidth: .infinity)
-//            }
-//            .frame(height: CGFloat.screenHeight * 0.065)
-//            .frame(maxWidth: .infinity)
-//            .tint(.primary)
-//            .background(Color.privateColor)
-//            .cornerRadius(12)
         }
         .padding(10)
         .frame(width: CGFloat.screenWidth, height: CGFloat.screenHeight * 0.1)
