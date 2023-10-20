@@ -119,26 +119,26 @@ struct FeedCellView: View {
             VStack {
                 HStack{
                     Button {
-                        if(userStore.user.myFeed.contains(feed.images[0])) {
+                        if(userStore.user.myFeed.contains("\(feed.id)")) {
                             userStore.deleteFeed(feed)
-                            userStore.user.myFeed.removeAll { $0 == feed.images[0] }
+                            userStore.user.myFeed.removeAll { $0 == "\(feed.id)" }
                             userStore.updateUser(user: userStore.user)
                             userStore.clickSavedCancelFeedToast = true
                         } else {
                             userStore.saveFeed(feed) //장소 저장 로직(사용가능)
-                            userStore.user.myFeed.append(feed.images[0])
+                            userStore.user.myFeed.append("\(feed.id)")
                             userStore.updateUser(user: userStore.user)
                             userStore.clickSavedFeedToast = true
                         }
                     } label: {
                         if colorScheme == ColorScheme.dark {
-                            Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark_dark")
+                            Image(userStore.user.myFeed.contains("\(feed.id)") ? "bookmark_fill" : "bookmark_dark")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20)
                                 .padding(.trailing, 5)
                         } else {
-                            Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark_light")
+                            Image(userStore.user.myFeed.contains( "\(feed.id)" ) ? "bookmark_fill" : "bookmark_light")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20)
@@ -181,19 +181,19 @@ struct FeedCellView: View {
         
         HStack {
             Button {
-                if (userStore.user.bookmark.contains("\(feed.images[0].suffix(32))")) {
+                if (userStore.user.bookmark.contains("\(feed.id)")) {
                     userStore.deletePlace(feed)
-                    userStore.user.bookmark.removeAll { $0 == "\(feed.images[0].suffix(32))" }
+                    userStore.user.bookmark.removeAll { $0 == "\(feed.id)" }
                     userStore.updateUser(user: userStore.user)
                     userStore.clickSavedCancelPlaceToast = true
                 } else {
                     userStore.savePlace(feed) //장소 저장 로직(사용가능)
-                    userStore.user.bookmark.append("\(feed.images[0].suffix(32))")
+                    userStore.user.bookmark.append("\(feed.id)")
                     userStore.updateUser(user: userStore.user)
                     userStore.clickSavedPlaceToast = true
                 }
             } label: {
-                Image(systemName: userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? "pin.fill": "pin")
+                Image(systemName: userStore.user.bookmark.contains("\(feed.id)") ? "pin.fill": "pin")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 15)

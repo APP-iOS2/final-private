@@ -78,30 +78,30 @@ struct MapFeedCellView: View {
                     HStack {
                         Spacer()
                         Button {
-                            if(userStore.user.myFeed.contains(feed.images[0])) {
+                            if(userStore.user.myFeed.contains(feed.id)) {
                                 for userStoreImageId in userStore.user.myFeed {
                                     for myFeed in userStore.mySavedFeedList {
-                                        if userStoreImageId == myFeed.images[0] {
+                                        if userStoreImageId == myFeed.id {
                                             userStore.deleteFeed(myFeed)
                                         }
                                     }
                                 }
-                                userStore.user.myFeed.removeAll { $0 == feed.images[0] }
+                                userStore.user.myFeed.removeAll { $0 == feed.id }
                                 userStore.updateUser(user: userStore.user)
                             } else {
                                 userStore.saveFeed(feed) //장소 저장 로직(사용가능)
-                                userStore.user.myFeed.append(feed.images[0])
+                                userStore.user.myFeed.append(feed.id)
                                 userStore.updateUser(user: userStore.user)
                             }
                         } label: {
                             if colorScheme == ColorScheme.dark {
-                                Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark_dark")
+                                Image(userStore.user.myFeed.contains( feed.id) ? "bookmark_fill" : "bookmark_dark")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 20)
                                     .padding(.trailing, 5)
                             } else {
-                                Image(userStore.user.myFeed.contains( feed.images[0]) ? "bookmark_fill" : "bookmark_light")
+                                Image(userStore.user.myFeed.contains( feed.id) ? "bookmark_fill" : "bookmark_light")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 20)

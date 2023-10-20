@@ -38,8 +38,10 @@ final class FeedStore: ObservableObject {
             }
             
             self?.feedList = querySnapshot?.documents.compactMap { (queryDocumentSnapshot) -> MyFeed? in
+                let documetID = queryDocumentSnapshot.documentID
                 let data = queryDocumentSnapshot.data()
                 var feed = MyFeed(documentData: data)
+                feed?.id = documetID
                 feed?.createdAt = data["createdAt"] as? Double ?? 0.0 // createdAt 값을 Double로 설정
                 return feed
             }
