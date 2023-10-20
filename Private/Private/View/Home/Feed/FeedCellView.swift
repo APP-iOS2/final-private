@@ -20,9 +20,10 @@ struct FeedCellView: View {
     
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @StateObject private var locationSearchStore = LocationSearchStore.shared
-    
+
     @State private var message: String = ""
     @State private var isShowingMessageTextField: Bool = false
+    @State private var isFeedUpdateViewPresented: Bool = false
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
     @State private var isShowingLocation: Bool = false
     @State private var lat: String = ""
@@ -72,6 +73,8 @@ struct FeedCellView: View {
                                 buttons: [
                                     .default(Text("수정")) {
                                         print("수정")
+                                        isFeedUpdateViewPresented = true
+                                        FeedUpdateView(root: .constant(true), selection: .constant(0), isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
                                     },
                                     .destructive(Text("삭제")) {
                                         print("삭제")
