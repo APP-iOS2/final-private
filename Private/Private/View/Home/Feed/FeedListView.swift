@@ -12,11 +12,11 @@ import NMapsMap
 
 struct FeedListView: View {
     @EnvironmentObject var feedStore : FeedStore
-    
+//    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     var body: some View {
         NavigationView {
             List {
-                ForEach(feedStore.feedList) { feed in
+                ForEach(feedStore.feedList, id:\.self) { feed in
                     FeedCellView(feed: feed)
                 }
             }
