@@ -13,29 +13,28 @@ import FirebaseAuth
 final class SearchStore: ObservableObject {
     @Published var recentSearchResult: [String] = []
     @Published var searchUserLists: [User] = []
-    @Published var users: [User] = []
     
     let userDefaults: UserDefaults = UserDefaults.standard
     
-    init() {
-        fetchUsers()
-    }
-    
-    func fetchUsers() {
-        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-        
-        userCollection.getDocuments { snapshot, _ in
-            guard let documents = snapshot?.documents else { return }
-            self.users = documents.compactMap({ document in
-                let userData = document.data()
-                if let user = User(document: userData), user.id != currentUserId {
-                    return user
-                } else {
-                    return nil
-                }
-            })
-        }
-    }
+//    init() {
+//        fetchUsers()
+//    }
+//    
+//    func fetchUsers() {
+//        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+//        
+//        userCollection.getDocuments { snapshot, _ in
+//            guard let documents = snapshot?.documents else { return }
+//            self.users = documents.compactMap({ document in
+//                let userData = document.data()
+//                if let user = User(document: userData), user.id != currentUserId {
+//                    return user
+//                } else {
+//                    return nil
+//                }
+//            })
+//        }
+//    }
     
     @MainActor
     func searchUser(searchTerm: String) async {

@@ -13,10 +13,16 @@ struct UserListView: View {
     @EnvironmentObject var followStore: FollowStore
     var searchTerm: String
     
+    @State private var searchText: String = ""
+    @State private var trimmedSearchTerm: String = ""
+    @State private var inSearchMode = false
+    @State private var isSearchTextEmpty: Bool = true
     
     var body: some View {
         ScrollView {
             LazyVStack {
+                SearchBarView(searchTerm: $searchText, inSearchMode: $inSearchMode, isSearchTextEmpty: $isSearchTextEmpty)
+                    .padding()
                 searchResultView
                 
                 Spacer()
@@ -26,6 +32,7 @@ struct UserListView: View {
         .frame(maxWidth: .infinity)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
         .onAppear {
             Task {
                 await searchStore.searchUser(searchTerm: searchTerm)

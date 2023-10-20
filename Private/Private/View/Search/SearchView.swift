@@ -19,47 +19,18 @@ struct SearchView: View {
     @State private var isSearchTextEmpty: Bool = true
     
     var body: some View {
-        NavigationView {
             VStack(spacing: 0) {
-                searchTextField
+                SearchBarView(searchTerm: $searchTerm, inSearchMode: $inSearchMode, isSearchTextEmpty: $isSearchTextEmpty)
                 ScrollView(showsIndicators: false) {
                     SearchPageView(searchTerm: $searchTerm)
                 }
                 Spacer()
             }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
             .onAppear {
                 searchStore.fetchrecentSearchResult()
                 searchTerm = ""
             }
-        }
-    }
-    
-    var searchTextField: some View{
-        VStack {
-            HStack {
-                SearchBarTextField(text: $searchTerm, isEditing: $inSearchMode, placeholder: "사용자 검색")
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .onChange(of: searchTerm) { newValue in
-                        trimmedSearchTerm = searchTerm.trimmingCharacters(in: .whitespaces)
-                        if trimmedSearchTerm.isEmpty {
-                            isSearchTextEmpty = true
-                        } else {
-                            isSearchTextEmpty = false
-                        }
-                    }
-                if !searchTerm.isEmpty {
-                    NavigationLink {
-                        UserListView(searchTerm: trimmedSearchTerm)
-                    } label: {
-                        Image(systemName: "arrowshape.right.fill")
-                            .foregroundColor(Color("AccentColor"))
-                    }
-                    .disabled(isSearchTextEmpty)
-                }
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 12)
-        }
     }
 }
