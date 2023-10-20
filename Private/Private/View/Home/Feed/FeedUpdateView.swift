@@ -69,7 +69,7 @@ struct FeedUpdateView: View {
     
     var db = Firestore.firestore()
     var storage = Storage.storage()
-    
+    //
     let filteredCategories = Category.filteredCases
     
     var body: some View {
