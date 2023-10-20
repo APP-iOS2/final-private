@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchPageView: View {
-    
+    @EnvironmentObject var searchStore: SearchStore
     @Binding var searchTerm: String
     
     var body: some View {
@@ -68,7 +68,7 @@ struct SearchPageView: View {
                 Button {
                     searchStore.removeRecentSearchResult(resultText)
                 } label: {
-                    Image(systemName: "xmark.circle.fill")
+                    Image(systemName: "minus.circle.fill")
                         .foregroundColor(.gray)
                 }
                 .padding(.trailing, 10)
@@ -91,7 +91,7 @@ struct SearchPageView: View {
                 }
                 VStack(alignment: .leading) {
                     if !searchStore.searchUserLists.isEmpty {
-                        ForEach(searchStore.searchUserLists.prefix(5), id: \.self) { user in
+                        ForEach(searchStore.searchUserLists.prefix(3), id: \.self) { user in
                             RecentUserRowView(user: user)
                         }
                     } else {
@@ -113,16 +113,16 @@ struct SearchPageView: View {
         var body: some View {
             HStack {
                 NavigationLink {
-                    OtherProfileView(user: user)
+                    LazyView(OtherProfileView(user: user))
                 } label: {
                     SearchUserCellView(user: user)
                 }
                 Spacer()
                 Button {
-                    searchStore.removeRecentSearchResult(user.nickname)
+                    searchStore.removeUserList(user)
                 } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.gray)
+                    Image(systemName: "minus.circle.fill")
+                        .foregroundColor(.red)
                 }
                 .padding(.trailing, 10)
             }

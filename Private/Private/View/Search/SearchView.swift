@@ -21,6 +21,7 @@ struct SearchView: View {
     var body: some View {
             VStack(spacing: 0) {
                 SearchBarView(searchTerm: $searchTerm, inSearchMode: $inSearchMode, isSearchTextEmpty: $isSearchTextEmpty)
+                    .padding()
                 ScrollView(showsIndicators: false) {
                     SearchPageView(searchTerm: $searchTerm)
                 }

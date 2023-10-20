@@ -32,12 +32,6 @@ struct UserListView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .backButtonArrow()
-        .onAppear {
-            Task {
-                await searchStore.searchUser(searchTerm: searchTerm)
-                searchStore.addRecentSearch(searchTerm)
-            }
-        }
     }
         
         var searchResultView: some View {

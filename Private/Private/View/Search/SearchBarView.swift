@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct SearchBarView: View {
+    @EnvironmentObject var searchStore: SearchStore
     @Binding var searchTerm: String
     @Binding var inSearchMode: Bool
     @Binding var isSearchTextEmpty: Bool
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -26,14 +27,20 @@ struct SearchBarView: View {
                             isSearchTextEmpty = false
                         }
                     }
+                
                 if !searchTerm.isEmpty {
-                    NavigationLink {
-                        UserListView(searchTerm: searchTerm.trimmingCharacters(in: .whitespaces))
-                    } label: {
+                    NavigationLink(destination: UserListView(searchTerm: searchTerm.trimmingCharacters(in: .whitespaces))) {
                         Image(systemName: "arrowshape.right.fill")
                             .foregroundColor(Color("AccentColor"))
+                            .onTapGesture {
+                                Task {
+                                    await searchStore.searchUser(searchTerm: searchTerm)
+                                    searchStore.addRecentSearch(searchTerm)
+                                }
+                            }
                     }
                     .disabled(isSearchTextEmpty)
+                    
                 }
             }
             .padding(.horizontal)
@@ -41,4 +48,3 @@ struct SearchBarView: View {
         }
     }
 }
-

@@ -528,8 +528,8 @@
 			isa = PBXGroup;
 			children = (
 				D1EC43992AC2D42F00B088EA /* SearchView.swift */,
-				D1D2F8062AE23EBE00C89FB7 /* SearchBarView.swift */,
 				D1A025842AE0B234004250E1 /* UserListView.swift */,
+				D1D2F8062AE23EBE00C89FB7 /* SearchBarView.swift */,
 				D1A025802AE0B109004250E1 /* SearchPageView.swift */,
 				D1A6CA0E2ABD802E00AE59D0 /* SearchUserCellView.swift */,
 				D1DC8D4F2ACEAE180087CBD7 /* OtherUserPage */,
