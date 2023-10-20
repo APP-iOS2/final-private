@@ -40,9 +40,6 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     let view = NMFNaverMapView(frame: .zero)
     
     var locationSearchStore = LocationSearchStore.shared
-//    var feedStore: FeedStore = FeedStore()
-//    var shopStore: ShopStore = ShopStore()
-//    var userStore: UserStore = UserStore()
     var feedList: [MyFeed] = []
     var markers: [NMFMarker] = []
     var locationManager: CLLocationManager?
@@ -68,7 +65,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         view.mapView.isNightModeEnabled = true
         
         view.mapView.zoomLevel = 15 // 기본 카메라 줌 레벨
-        view.mapView.minZoomLevel = 13 // 최소 줌 레벨
+        view.mapView.minZoomLevel = 10 // 최소 줌 레벨
         view.mapView.maxZoomLevel = 17 // 최대 줌 레벨
         
         view.showLocationButton = true
@@ -216,45 +213,6 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
             }
         }
     }
-        
-//        if !isBookMarkTapped {
-//            for marker in markers {
-//                marker.touchHandler = { [self] (overlay) -> Bool in
-//                    
-//                    let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: marker.position.lat, lng: marker.position.lng))
-//                    cameraUpdate.animation = .fly
-//                    cameraUpdate.animationDuration = 1
-//                    
-//                    self.view.mapView.moveCamera(cameraUpdate)
-//                    self.currentFeedId = marker.captionText
-//                    showMarkerDetailView = true
-//                    print("showMarkerDetailView : \(self.showMarkerDetailView)")
-//                    print("if에 해당함")
-//                    
-//                    return true
-//                }
-//                marker.mapView = view.mapView
-//            }
-//        } else {
-//            print(markers)
-//            for marker in markers {
-//                marker.touchHandler = { [self] (overlay) -> Bool in
-//                    let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: marker.position.lat, lng: marker.position.lng))
-//                    cameraUpdate.animation = .fly
-//                    cameraUpdate.animationDuration = 1
-//                    self.view.mapView.moveCamera(cameraUpdate)
-//                    
-//                    self.showMarkerDetailView = true
-//                    self.currentFeedId = marker.captionText
-//                    print("showMarkerDetailView : \(self.showMarkerDetailView)")
-//                    //print(currentShopId)
-//                    
-//                    return true
-//                }
-//                marker.mapView = view.mapView
-//            }
-//        }
-//    }
     
 
     // MARK: - 카메라 이동
@@ -264,53 +222,5 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         cameraUpdate.animationDuration = 1
         view.mapView.moveCamera(cameraUpdate)
     }
-    
-    // MARK: - 지도 터치에 이용되는 Delegate
-    /// 지도에서 터치하면 그 위치에 마커 표시
-//    func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
-//        let marker = NMFMarker()
-//        marker.position = latlng
-//        marker.iconImage = NMFOverlayImage(name: "placeholder")
-//        marker.width = CGFloat(40)
-//        marker.height = CGFloat(40)
-//
-//        // mapView의 이미 선택된 마커 지우기
-//        previousMarker?.mapView = nil
-//
-//        // 새로운 마커 mapView에 추가
-//        marker.mapView = mapView
-//        
-//        // 새로운 마커를 previousMarker 프로퍼티에 다시 저장
-//        previousMarker = marker
-//        
-//        print("MapView 클릭")
-//        print("위도: \(latlng.lat), 경도: \(latlng.lng)")
-//        tappedLatLng = latlng
-//        showMarkerDetailView = false
-//        
-//        if showMarkerDetailView == true {
-//            newMarkerAlert = false
-//        } else {
-//            newMarkerAlert = true
-//        }
-//    }
-    
-    /// 지도에서 마커를 길게 터치하면 어떠한 행동을 함
-//    func markerLongPress(_ mapView: NMFMapView, didLongPressOverlay overlay: NMFOverlay) {
-//        if let marker = overlay as? NMFMarker {
-//            print("길게 눌러 마커에 접근 (\(marker.position.lat), \(marker.position.lng))")
-//        }
-//    }
-    
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        if let location = locations.last {
-//            let lat = location.coordinate.latitude
-//            let lng = location.coordinate.longitude
-//            coord = NMGLatLng(lat: lat, lng: lng)
-//            userLocation = (lat, lng)
-//            fetchUserLocation()
-//            moveCameraPosition()
-//        }
-//    }
 
 }
