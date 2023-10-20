@@ -233,12 +233,13 @@ final class ChatRoomStore: ObservableObject {
     }
     
     func stopFetchMessage() {
+        messageList = []
            timer?.invalidate()
            timer = nil
-        messageList = []
        }
     
     func sendMessage(myNickName: String, otherUserNickname: String, message: Message) {
+        print("myNickName:\(myNickName) /n otherUserNickname:\(otherUserNickname) /n message:\(message)")
         let userCollection = Firestore.firestore().collection("ChatRoom")
         let subCollection1 = userCollection.document("\(myNickName),\(otherUserNickname)")
         let messageCollection1 = subCollection1.collection("Message")
@@ -278,6 +279,7 @@ final class ChatRoomStore: ObservableObject {
                             if let error = error {
                                 print("Error adding chatRoom: \(error.localizedDescription)")
                             } else {
+                                print("messagesData:\(messagesData)")
                                 print("Reservation added to Firestore")
                             }
                         }
@@ -286,6 +288,7 @@ final class ChatRoomStore: ObservableObject {
                             if let error = error {
                                 print("Error adding chatRoom: \(error.localizedDescription)")
                             } else {
+                                print("messagesData:\(messagesData)")
                                 print("Reservation added to Firestore")
                             }
                         }
