@@ -84,7 +84,6 @@ struct ReservationConfirmView: View {
                 guard let email = ReservationStore.user?.email else {
                     return
                 }
-                userStore.fetchCurrentUser(userEmail: email)
                 
                 self.reservedTime = reservationStore.conversionReservedTime(time: reservationData.time).0
                 self.reservedHour = reservationStore.conversionReservedTime(time: reservationData.time).1

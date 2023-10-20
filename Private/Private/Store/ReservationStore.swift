@@ -13,6 +13,7 @@ import FirebaseFirestoreSwift   //GeoPoint 사용을 위한 프레임워크
 
 final class ReservationStore: ObservableObject {
     @Published var reservationList: [Reservation] = []
+    @Published var myReservation: Reservation = tempReservation
     
     private let db = Firestore.firestore()
     static let user = Auth.auth().currentUser
