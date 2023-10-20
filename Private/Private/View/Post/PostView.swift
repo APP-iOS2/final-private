@@ -111,7 +111,7 @@ struct PostView: View {
                             showLocation = true
                         } label: {
                             Label("장소", systemImage: "location")
-                                .font(.pretendardMedium16)
+                                .font(.pretendardMedium18)
                                 .foregroundStyle(Color.privateColor)
                         }
                         .sheet(isPresented: $showLocation) {
@@ -128,7 +128,7 @@ struct PostView: View {
                         VStack(alignment: .leading) {
                             if searchResult.title.isEmpty && postCoordinator.newMarkerTitle.isEmpty {
                                 Text("장소를 선택해주세요")
-                                    .font(.pretendardRegular12)
+                                    .font(.pretendardRegular16)
                                     .foregroundColor(.secondary)
                                     .padding(.bottom, 5)
                             } else {
@@ -145,7 +145,7 @@ struct PostView: View {
                                     }
                                 } label: {
                                     Text("\(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                                        .font(.pretendardRegular12)
+                                        .font(.pretendardRegular16)
                                 }
                                 .sheet(isPresented: $clickLocation) {
                                     LocationDetailView(searchResult: $searchResult)
@@ -168,7 +168,8 @@ struct PostView: View {
                         } label: {
                             Label("", systemImage: "xmark")
                                 .font(.pretendardMedium16)
-                                .foregroundStyle(Color.privateColor)
+                                .foregroundStyle(.primary)
+                                .padding(.trailing, 5)
                         }
 //                            if !postCoordinator.newMarkerTitle.isEmpty {
 //                                Text("신규장소: \(postCoordinator.newMarkerTitle)")
@@ -180,7 +181,7 @@ struct PostView: View {
                     //MARK: 사진
                     HStack {
                         Label("사진", systemImage: "camera")
-                            .font(.pretendardMedium16)
+                            .font(.pretendardMedium18)
                             .foregroundStyle(Color.privateColor)
                         Spacer()
                         Button {
@@ -188,7 +189,8 @@ struct PostView: View {
                         } label: {
                             Label("", systemImage: "plus")
                                 .font(.pretendardMedium16)
-                                .foregroundStyle(Color.privateColor)
+                                .foregroundStyle(.primary)
+                                .padding(.trailing, 5)
                         }
                         .sheet(isPresented: $isImagePickerPresented) {
                             ImagePickerView(selectedImages: $selectedImage)
@@ -239,8 +241,9 @@ struct PostView: View {
                     
                     HStack {
                         Text("카테고리")
-                            .font(.pretendardMedium20)
+                            .font(.pretendardMedium18)
                             .foregroundStyle(Color.privateColor)
+                            .padding(.leading, 5)
                         Text("(최대 3개)")
                             .font(.pretendardRegular12)
                             .foregroundColor(.secondary)
@@ -261,7 +264,7 @@ struct PostView: View {
                                 } else {
                                     Text(MyCategory.allCases[index].categoryName)
                                         .font(.pretendardMedium16)
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.primary)
                                         .frame(width: 70, height: 30)
                                         .padding(.vertical, 4)
                                         .padding(.horizontal, 4)
@@ -317,7 +320,7 @@ struct PostView: View {
                 hideKeyboard()
             }
             .alert(isPresented: $isshowAlert) {
-                let firstButton = Alert.Button.cancel(Text("취소")) {
+                let firstButton = Alert.Button.destructive(Text("취소")) {
                     print("취소 버튼 클릭")
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
