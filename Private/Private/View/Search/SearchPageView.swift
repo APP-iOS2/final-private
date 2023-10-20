@@ -42,7 +42,7 @@ struct SearchPageView: View {
                             RecentSearchRowView(searchTerm: $searchTerm, resultText: resultText)
                         }
                 } else {
-                    Text("최근 검색 기록이 없습니다")
+                    Text("검색 기록이 없습니다")
                         .font(.pretendardRegular16)
                         .foregroundColor(.secondary)
                 }
@@ -83,7 +83,7 @@ struct SearchPageView: View {
         var body: some View {
             VStack(spacing: 10) {
                 VStack(alignment: .leading) {
-                    Text("최근 찾은 사용자")
+                    Text("찾은 사용자")
                         .font(.pretendardMedium24)
                         .padding()
                     
@@ -95,7 +95,7 @@ struct SearchPageView: View {
                             RecentUserRowView(user: user)
                         }
                     } else {
-                        Text("최근 검색 기록이 없습니다")
+                        Text("검색 기록이 없습니다")
                             .font(.pretendardRegular16)
                             .foregroundColor(.gray)
                     }

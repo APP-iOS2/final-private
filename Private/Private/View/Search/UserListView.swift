@@ -22,13 +22,12 @@ struct UserListView: View {
         ScrollView {
             LazyVStack {
                 SearchBarView(searchTerm: $searchText, inSearchMode: $inSearchMode, isSearchTextEmpty: $isSearchTextEmpty)
-                    .padding()
+                    .padding(.bottom, 12)
                 searchResultView
                 
                 Spacer()
             }
         }
-        .padding(.horizontal)
         .frame(maxWidth: .infinity)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
