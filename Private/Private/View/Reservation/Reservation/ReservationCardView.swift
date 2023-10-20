@@ -18,6 +18,8 @@ struct ReservationCardView: View {
     @State private var isShowModifyView: Bool = false
     @State private var disableReservationButton: Bool = false
     @State private var reservationState: String = ""
+    @State private var reservedTime: String = ""
+    @State private var reservedHour: Int = 0
     
     @State private var shopData: Shop = ShopStore.shop
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
@@ -64,7 +66,7 @@ struct ReservationCardView: View {
             
             HStack {
                 Text(reservedDate)
-                Text("\(temporaryReservation.time)시")
+                Text(self.reservedTime + " \(self.reservedHour)시")
             }
             HStack(alignment: .top) {
                 KFImage(URL(string: shopData.shopImageURL)!)
@@ -124,6 +126,9 @@ struct ReservationCardView: View {
             }
             
             self.shopData = shopStore.getReservedShop(reservationData: self.reservation)
+            
+            reservedTime = reservationStore.conversionReservedTime(time: temporaryReservation.time).0
+            reservedHour = reservationStore.conversionReservedTime(time: temporaryReservation.time).1
         }
         .navigationDestination(isPresented: $isShowModifyView, destination: {
             ModifyReservationView(temporaryReservation: $temporaryReservation, isShowModifyView: $isShowModifyView, shopData: shopData)

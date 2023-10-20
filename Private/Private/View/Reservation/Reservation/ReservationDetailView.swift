@@ -18,8 +18,8 @@ struct ReservationDetailView: View {
     
     @Binding var isShwoingDetailView: Bool  // 해당 뷰를 내리기 위함
     @Binding var isReservationPresented: Bool  // ReservationView를 내리기 위함
-    
     @Binding var reservationData: Reservation  // 예약 데이터
+    
     let shopData: Shop  // 가게 데이터
 
     var body: some View {
@@ -89,39 +89,22 @@ struct ReservationDetailView: View {
             }
             .padding()
             .onAppear {
-                guard let email = ReservationStore.user?.email else {
-                    return
-                }
-                userStore.fetchCurrentUser(userEmail: email)
-                
                 self.reservedTime = reservationStore.conversionReservedTime(time: reservationData.time).0
                 self.reservedHour = reservationStore.conversionReservedTime(time: reservationData.time).1
             }
             
-            ReservationButton(text: "예약하기") {
-                isShowingAlert.toggle()
+            NavigationLink {
+                TossPaymentsContentView(isShwoingDetailView: $isShwoingDetailView, isReservationPresented: $isReservationPresented, reservationData: reservationData, shopData: shopData)
+            } label: {
+                Text("결제하러 가기")
+                    .font(.pretendardBold18)
+                    .frame(maxWidth: .infinity)
+                    .padding()
             }
             .foregroundStyle(Color.black)
+            .background(Color.privateColor)
+            .cornerRadius(12)
             .padding()
-            .alert("예약 확정", isPresented: $isShowingAlert) {
-                Button() {
-                    print(#fileID, #function, #line, "- 예약 확정")
-                    reservationData.requirement = requirementText
-                    reservationStore.addReservationToFirestore(reservationData: reservationData)
-                    
-                    isShwoingDetailView = false
-                    isReservationPresented = false
-
-                } label: {
-                    Text("예약하기")
-                }
-                
-                Button(role: .cancel) {
-                    
-                } label: {
-                    Text("돌아가기")
-                }
-            }
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)

@@ -57,7 +57,6 @@ struct DateTimePickerView: View {
     var body: some View {
         ScrollView {
             Button {
-//                showingDate.toggle()
                 withAnimation(.easeIn(duration: 0.5)) {
                     showingDate.toggle()
                 }
@@ -115,10 +114,7 @@ struct DateTimePickerView: View {
             }
             
             Button {
-                showingTime.toggle()  // 여기서 애니메이션 주면 애니메이션이 살짝 되다 중간에 멈춤
-//                withAnimation(.easeIn(duration: 0.5)) {
-//                    showingTime.toggle()
-//                }
+                showingTime.toggle()  // 애니메이션 주면 애니메이션이 살짝 되다 중간에 멈춤
             } label: {
                 HStack {
                     Image(systemName: "clock")
@@ -230,11 +226,6 @@ struct DateTimePickerView: View {
             // 날짜의 기본값이 오늘일 때를 위함
             separateReservationTime(timeSlots: availableTimeSlots)
         }
-//        .refreshable {
-//            self.today = Calendar.current.startOfDay(for: Date())
-//            self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: temporaryReservation.date)
-//        }
-        
     }
     
     // 나중에 수정해야지..

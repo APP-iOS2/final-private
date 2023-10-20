@@ -19,7 +19,6 @@ struct ReservationView: View {
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var isSelectedTime: Bool = false
     @State private var isShwoingDetailView: Bool = false
-    
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
@@ -31,9 +30,13 @@ struct ReservationView: View {
     
     let shopData: Shop
     
+    var myReservation: Reservation {
+        return reservationStore.myReservation
+    }
+    
     var body: some View {
-        VStack {
-            NavigationStack {
+        NavigationStack {
+            VStack {
                 ScrollView {
                     Text(shopData.name)
                         .font(.pretendardBold24)
@@ -59,7 +62,6 @@ struct ReservationView: View {
                             Spacer()
                             
                             Button {
-//                                showingDate.toggle()
                                 withAnimation {
                                     showingDate.toggle()
                                 }
@@ -91,7 +93,6 @@ struct ReservationView: View {
                             Text(isSelectedTime ? String(temporaryReservation.numberOfPeople) + "명" : "인원 선택")
                             Spacer()
                             Button {
-//                                showingNumbers.toggle()
                                 withAnimation {
                                     showingNumbers.toggle()
                                 }
@@ -108,7 +109,6 @@ struct ReservationView: View {
                         .cornerRadius(12)
                         .padding(.bottom, 20)
                         
-                        // 가게 예약 가능인원 정보를 받을지 말지 정해야함
                         if showingNumbers {
                             HStack {
                                 Image(systemName: "info.circle")
@@ -140,36 +140,32 @@ struct ReservationView: View {
                                     .padding(.bottom)
                                 Text("당일 예약은 예약시간 1시간 전까지 가능합니다.")
                             }
-                                .font(.pretendardRegular16)
-                                .foregroundStyle(Color.primary)
+                            .font(.pretendardRegular16)
+                            .foregroundStyle(Color.primary)
                         }
                         .padding()
                         .background(Color.subGrayColor)
                         .cornerRadius(12)
-                        .padding(.bottom, 30)
-                        
-                        HStack {
-                            ReservationButton(text: "다음단계") {
-                                temporaryReservation.date = calendarData.selectedDate
-                                temporaryReservation.totalPrice = (temporaryReservation.numberOfPeople * 10000)
-                                isShwoingDetailView.toggle()
-                            }
-                            .font(.pretendardBold20)
-                            .foregroundStyle(isSelectedTime ? .black : Color.secondary)
-                            .disabled(!isSelectedTime)
-                        }
-                        .navigationDestination(isPresented: $isShwoingDetailView) {
-                            ReservationDetailView(isShwoingDetailView: $isShwoingDetailView, isReservationPresented: $isReservationPresented, reservationData: $temporaryReservation, shopData: shopData)
-                        }
                     }// VStack
                 }// ScrollView
+                
+                ReservationButton(text: "다음단계") {
+                    temporaryReservation.date = calendarData.selectedDate
+                    temporaryReservation.totalPrice = (temporaryReservation.numberOfPeople * 10000)
+                    isShwoingDetailView.toggle()
+                }
+                .font(.pretendardBold20)
+                .foregroundStyle(isSelectedTime ? .black : Color.secondary)
+                .disabled(!isSelectedTime)
+                
+                .navigationDestination(isPresented: $isShwoingDetailView) {
+                    ReservationDetailView(isShwoingDetailView: $isShwoingDetailView, isReservationPresented: $isReservationPresented, reservationData: $temporaryReservation, shopData: shopData)
+                }
                 .padding()
                 .navigationBarBackButtonHidden(true)
-                .backButtonX()
-                
+                .backButtonArrow()
                 .onAppear {
                     self.temporaryReservation.shopId = self.shopData.id
-                    // calendarData의 데이타를 모두 바꿔줘야 함
                     calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)
                     calendarData.currentPage = calendarData.getSelectedDate(shopData: shopData)
                     calendarData.titleOfMonth = calendarData.getSelectedDate(shopData: shopData)

@@ -13,9 +13,9 @@ import NMapsMap
 
 final class ShopStore: ObservableObject {
     @Published var shopList: [Shop] = []
+    @Published var visitedShop: Shop = shop
     
     init() {
-        
     }
     
     static let shop = Shop(

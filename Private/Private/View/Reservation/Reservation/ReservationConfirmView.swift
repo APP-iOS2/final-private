@@ -21,11 +21,10 @@ struct ReservationConfirmView: View {
     @State private var reservedHour: Int = 0
     
     let reservationData: Reservation  // 예약 데이터
-    let shopData: Shop  // 가게 데이터
+    let shopData: Shop
     
     var body: some View {
         VStack {
-            ScrollView {
                 Text(shopData.name)
                     .font(.pretendardBold24)
                     .padding(.bottom, 12)
@@ -47,7 +46,7 @@ struct ReservationConfirmView: View {
                 .cornerRadius(8)
                 .padding(.bottom)
                 
-                ReservationCardCell(title: "최종 결제할 금액", content: reservationData.priceStr)
+                ReservationCardCell(title: "최종 결제한 금액", content: reservationData.priceStr)
                     .padding(.bottom)
                 
                 Divider()
@@ -78,18 +77,12 @@ struct ReservationConfirmView: View {
                     ReservationCardCell(title: "소재지", content: shopData.address)
                     ReservationCardCell(title: "사업자번호", content: shopData.businessNumber)
                 }
-            }
-            .padding()
-            .onAppear {
-                guard let email = ReservationStore.user?.email else {
-                    return
-                }
-                userStore.fetchCurrentUser(userEmail: email)
-                
-                self.reservedTime = reservationStore.conversionReservedTime(time: reservationData.time).0
-                self.reservedHour = reservationStore.conversionReservedTime(time: reservationData.time).1
-            }
-            
+            Spacer()
+        }
+        .padding()
+        .onAppear {
+            self.reservedTime = reservationStore.conversionReservedTime(time: reservationData.time).0
+            self.reservedHour = reservationStore.conversionReservedTime(time: reservationData.time).1
         }
         
     }

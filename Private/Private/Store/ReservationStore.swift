@@ -13,12 +13,13 @@ import FirebaseFirestoreSwift   //GeoPoint 사용을 위한 프레임워크
 
 final class ReservationStore: ObservableObject {
     @Published var reservationList: [Reservation] = []
+    @Published var myReservation: Reservation = tempReservation
     
     private let db = Firestore.firestore()
     static let user = Auth.auth().currentUser
     
     init() {
-        
+        self.fetchReservation()
     }
     
     static let tempReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
@@ -157,6 +158,7 @@ final class ReservationStore: ObservableObject {
                 print("Reservation added to Firestore")
             }
         }
+        self.fetchReservation()
     }
     
     
@@ -212,6 +214,7 @@ final class ReservationStore: ObservableObject {
                 self.fetchReservation()
             }
         }
+        self.fetchReservation()
     }
     
     
@@ -241,8 +244,7 @@ final class ReservationStore: ObservableObject {
                 print("문서 삭제 성공")
             }
         }
-        
-        fetchReservation()
+        self.fetchReservation()
     }
     
     
@@ -263,8 +265,7 @@ final class ReservationStore: ObservableObject {
                 print("문서 삭제 성공")
             }
         }
-        
-        fetchReservation()
+        self.fetchReservation()
     }
     
     
