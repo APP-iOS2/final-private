@@ -31,10 +31,10 @@ struct LocationSearchView: View {
                             VStack(alignment: .leading) {
                                 Text("\(location.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                     .font(.pretendardMedium16)
-                                    .foregroundStyle(Color.privateColor)
+                                    .foregroundStyle(Color.primary)
                                 Text("\(location.roadAddress)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                     .font(.pretendardRegular12)
-                                    .foregroundStyle(Color.privateColor)
+                                    .foregroundStyle(Color.primary)
                             }
                         }
                         .padding()
@@ -48,6 +48,8 @@ struct LocationSearchView: View {
                 showLocation = false
             } label: {
                 Text("원하시는 장소가 없으신가요?")
+                    .font(.pretendardSemiBold16)
+                    .foregroundStyle(Color.primary)
             }
             .onChange(of: searchText, perform: { _ in
                 locationSearchStore.requestSearchLocationResultList(query: searchText)

@@ -18,9 +18,16 @@ struct FeedCellView: View {
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject var chatRoomStore: ChatRoomStore
     
+    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
+    @StateObject private var locationSearchStore = LocationSearchStore.shared
+    
     @State private var message: String = ""
     @State private var isShowingMessageTextField: Bool = false
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
+    @State private var isShowingLocation: Bool = false
+    @State private var lat: String = ""
+    @State private var lng: String = ""
+    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     
     var body: some View {
         VStack {
@@ -116,10 +123,12 @@ struct FeedCellView: View {
                             userStore.deleteFeed(feed)
                             userStore.user.myFeed.removeAll { $0 == feed.images[0] }
                             userStore.updateUser(user: userStore.user)
+                            userStore.clickSavedCancelFeedToast = true
                         } else {
                             userStore.saveFeed(feed) //장소 저장 로직(사용가능)
                             userStore.user.myFeed.append(feed.images[0])
                             userStore.updateUser(user: userStore.user)
+                            userStore.clickSavedFeedToast = true
                         }
                     } label: {
                         if colorScheme == ColorScheme.dark {
@@ -176,10 +185,12 @@ struct FeedCellView: View {
                     userStore.deletePlace(feed)
                     userStore.user.bookmark.removeAll { $0 == "\(feed.images[0].suffix(32))" }
                     userStore.updateUser(user: userStore.user)
+                    userStore.clickSavedCancelPlaceToast = true
                 } else {
                     userStore.savePlace(feed) //장소 저장 로직(사용가능)
                     userStore.user.bookmark.append("\(feed.images[0].suffix(32))")
                     userStore.updateUser(user: userStore.user)
+                    userStore.clickSavedPlaceToast = true
                 }
             } label: {
                 Image(systemName: userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? "pin.fill": "pin")
@@ -192,21 +203,41 @@ struct FeedCellView: View {
             }
             .padding(.leading, 15)
             
-            VStack(alignment: .leading, spacing: 5) {
-                Text("\(feed.title)")
-                    .font(.pretendardMedium16)
-                    .foregroundColor(.primary)
-                Text("\(feed.roadAddress)")
-                    .font(.pretendardRegular12)
-                    .foregroundColor(.primary)
+            Button {
+                isShowingLocation = true
+                
+                lat = locationSearchStore.formatCoordinates(feed.mapy, 2) ?? ""
+                lng = locationSearchStore.formatCoordinates(feed.mapx, 3) ?? ""
+                
+                postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                postCoordinator.newMarkerTitle = feed.title
+                searchResult.title = feed.title
+                
+                postCoordinator.moveCameraPosition()
+                postCoordinator.makeSearchLocationMarker()
+                
+            } label: {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("\(feed.title)")
+                        .font(.pretendardMedium16)
+                        .foregroundColor(.primary)
+                    Text("\(feed.roadAddress)")
+                        .font(.pretendardRegular12)
+                        .foregroundColor(.primary)
+                }
+                .padding(.leading, 15)
             }
-            .padding(.leading, 15)
             Spacer()
         }
         .padding(.top, 5)
         .padding(.horizontal, 10)
         .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
         .background(Color.darkGraySubColor)
+        
+        .sheet(isPresented: $isShowingLocation) {
+            LocationDetailView(searchResult: $searchResult)
+                .presentationDetents([.height(.screenHeight * 0.6), .large])
+        }
         
         Divider()
             .padding(.vertical, 10)

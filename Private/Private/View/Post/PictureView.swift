@@ -12,8 +12,6 @@ struct PictureView: View {
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var isImagePickerPresented: Bool
-    @Binding var isPostViewPresented: Bool /// PostView
-
     
     @Environment(\.dismiss) private var dismiss
     
@@ -41,7 +39,7 @@ struct PictureView: View {
 
 struct PictureView_Previews: PreviewProvider {
     static var previews: some View {
-        PictureView(root: .constant(true), selection: .constant(3), isImagePickerPresented: .constant(true), isPostViewPresented: .constant(true))
+        PictureView(root: .constant(true), selection: .constant(3), isImagePickerPresented: .constant(true))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
 

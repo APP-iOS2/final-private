@@ -28,7 +28,6 @@ struct PostView: View {
     
     @Binding var root: Bool
     @Binding var selection: Int
-    @Binding var isPostViewPresented: Bool /// PostView
     @Binding var searchResult: SearchResult
     
     @State private var text: String = "" /// 텍스트마스터 내용
@@ -111,7 +110,7 @@ struct PostView: View {
                             showLocation = true
                         } label: {
                             Label("장소", systemImage: "location")
-                                .font(.pretendardMedium16)
+                                .font(.pretendardMedium18)
                                 .foregroundStyle(Color.privateColor)
                         }
                         .sheet(isPresented: $showLocation) {
@@ -128,36 +127,27 @@ struct PostView: View {
                         VStack(alignment: .leading) {
                             if searchResult.title.isEmpty && postCoordinator.newMarkerTitle.isEmpty {
                                 Text("장소를 선택해주세요")
-                                    .font(.pretendardRegular12)
+                                    .font(.pretendardRegular16)
                                     .foregroundColor(.secondary)
                                     .padding(.bottom, 5)
                             } else {
                                 Button {
                                     if !postCoordinator.newMarkerTitle.isEmpty {
                                         clickLocation.toggle()
-                                        postCoordinator.newLocalmoveCameraPosition()
-//                                        postCoordinator.makeNewLocationMarker()
-                                        postCoordinator.makeSearchLocationMarker()
-
-                                        
                                     } else {
                                         lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
                                         lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
-                                        
                                         postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                                        postCoordinator.newMarkerTitle = searchResult.title
                                         print("위도값: \(postCoordinator.coord.lat), 경도값: \(postCoordinator.coord.lng)")
                                         print("지정장소 클릭")
                                         clickLocation.toggle()
-                                        postCoordinator.moveCameraPosition()
-                                        postCoordinator.makeSearchLocationMarker()
                                     }
                                 } label: {
                                     Text("\(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
-                                        .font(.pretendardRegular12)
+                                        .font(.pretendardRegular16)
                                 }
                                 .sheet(isPresented: $clickLocation) {
-                                    LocationDetailView()
+                                    LocationDetailView(searchResult: $searchResult)
                                         .presentationDetents([.height(.screenHeight * 0.6), .large])
                                 }
                                 if (!searchResult.address.isEmpty) {
@@ -177,7 +167,8 @@ struct PostView: View {
                         } label: {
                             Label("", systemImage: "xmark")
                                 .font(.pretendardMedium16)
-                                .foregroundStyle(Color.privateColor)
+                                .foregroundStyle(.primary)
+                                .padding(.trailing, 5)
                         }
 //                            if !postCoordinator.newMarkerTitle.isEmpty {
 //                                Text("신규장소: \(postCoordinator.newMarkerTitle)")
@@ -189,7 +180,7 @@ struct PostView: View {
                     //MARK: 사진
                     HStack {
                         Label("사진", systemImage: "camera")
-                            .font(.pretendardMedium16)
+                            .font(.pretendardMedium18)
                             .foregroundStyle(Color.privateColor)
                         Spacer()
                         Button {
@@ -197,7 +188,8 @@ struct PostView: View {
                         } label: {
                             Label("", systemImage: "plus")
                                 .font(.pretendardMedium16)
-                                .foregroundStyle(Color.privateColor)
+                                .foregroundStyle(.primary)
+                                .padding(.trailing, 5)
                         }
                         .sheet(isPresented: $isImagePickerPresented) {
                             ImagePickerView(selectedImages: $selectedImage)
@@ -248,8 +240,9 @@ struct PostView: View {
                     
                     HStack {
                         Text("카테고리")
-                            .font(.pretendardMedium20)
+                            .font(.pretendardMedium18)
                             .foregroundStyle(Color.privateColor)
+                            .padding(.leading, 5)
                         Text("(최대 3개)")
                             .font(.pretendardRegular12)
                             .foregroundColor(.secondary)
@@ -270,7 +263,7 @@ struct PostView: View {
                                 } else {
                                     Text(MyCategory.allCases[index].categoryName)
                                         .font(.pretendardMedium16)
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.primary)
                                         .frame(width: 70, height: 30)
                                         .padding(.vertical, 4)
                                         .padding(.horizontal, 4)
@@ -314,7 +307,7 @@ struct PostView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        isPostViewPresented = false
+                        feedStore.isPostViewPresented = false
                         selection = 1
                         print("뷰 닫기")
                     } label: {
@@ -326,7 +319,7 @@ struct PostView: View {
                 hideKeyboard()
             }
             .alert(isPresented: $isshowAlert) {
-                let firstButton = Alert.Button.cancel(Text("취소")) {
+                let firstButton = Alert.Button.destructive(Text("취소")) {
                     print("취소 버튼 클릭")
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
@@ -337,12 +330,13 @@ struct PostView: View {
                     } else {
                         creatMarkerFeed()
                     }
+                    feedStore.uploadToast = true
                     searchResult.title = ""
                     searchResult.address = ""
                     searchResult.roadAddress = ""
                     postCoordinator.newMarkerTitle = ""
                     registrationAlert = false
-                    isPostViewPresented = false
+                    feedStore.isPostViewPresented = false
                     selection = 1
                     print("완료 버튼 클릭")
                     print("registrationAlert 마지막상태: \(registrationAlert)")
@@ -363,6 +357,20 @@ struct PostView: View {
                 dismissButton: .default(Text("확인"))
             )
         }
+//        .popup(isPresented: $feedStore.uploadToast) {
+//            ToastMessageView(message: "업로드가 완료되었습니다!")
+//                .onDisappear {
+//                    feedStore.uploadToast = false
+//                }
+//        } customize: {
+//            $0
+//                .autohideIn(1)
+//                .type(.floater(verticalPadding: 20))
+//                .position(.bottom)
+//                .animation(.spring())
+//                .closeOnTapOutside(true)
+//                .backgroundColor(.clear)
+//        }
     } // body
     
     //MARK: 파베함수
@@ -496,8 +504,6 @@ struct PostView: View {
             myselectedCategory.remove(at: selectedIndex)
         }
     }
-
-
     
     func createGridColumns() -> [GridItem] {
         let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
@@ -508,10 +514,9 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
+        PostView(root: .constant(true), selection: .constant(3), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
-        
     }
 }
 

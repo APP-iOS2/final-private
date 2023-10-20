@@ -9,6 +9,8 @@ import SwiftUI
 import NMapsMap
 
 struct MainHomeView: View {
+    @EnvironmentObject var feedStore: FeedStore
+
     @ObservedObject var coordinator: Coordinator = Coordinator.shared
     @ObservedObject var locationSearchStore = LocationSearchStore.shared
     
@@ -95,6 +97,20 @@ struct MainHomeView: View {
             } else if selectedNumber == 1 {
                 FeedMainView()
             }
+        }
+        .popup(isPresented: $feedStore.uploadToast) {
+            ToastMessageView(message: "업로드가 완료되었습니다!")
+                .onDisappear {
+                    feedStore.uploadToast = false
+                }
+        } customize: {
+            $0
+                .autohideIn(1)
+                .type(.floater(verticalPadding: 20))
+                .position(.bottom)
+                .animation(.spring())
+                .closeOnTapOutside(true)
+                .backgroundColor(.clear)
         }
     }
 }

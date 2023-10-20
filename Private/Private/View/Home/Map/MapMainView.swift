@@ -21,7 +21,7 @@ struct MapMainView: View {
     @State private var coord: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
     var body: some View {
         VStack {
-            NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView,
+            NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
                      markerTitle: $coordinator.newMarkerTitle,
                      markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
 
@@ -40,7 +40,7 @@ struct MapMainView: View {
         .popup(isPresented: $authStore.welcomeToast) {
             ToastMessageView(message: "Private에 오신걸 환영합니다!")
                 .onDisappear {
-                    authStore.welcomeToast = true
+                    authStore.welcomeToast = false
                 }
         } customize: {
             $0

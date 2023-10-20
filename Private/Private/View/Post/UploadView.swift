@@ -19,7 +19,6 @@ struct UploadView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var selectedImage: [UIImage]? = []
-    @State private var isPostViewPresented: Bool = false /// PostView
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var userStore: UserStore
@@ -29,12 +28,26 @@ struct UploadView: View {
         NavigationStack {
             
         }
+//        .popup(isPresented: $feedStore.uploadToast) {
+//            ToastMessageView(message: "업로드가 완료되었습니다!")
+//                .onDisappear {
+//                    feedStore.uploadToast = false
+//                }
+//        } customize: {
+//            $0
+//                .autohideIn(1)
+//                .type(.floater(verticalPadding: 20))
+//                .position(.bottom)
+//                .animation(.spring())
+//                .closeOnTapOutside(true)
+//                .backgroundColor(.clear)
+//        }
         .onAppear {
-            isPostViewPresented = true
+            feedStore.isPostViewPresented = true
             print("업로드 뷰 올라옴")
         }
-        .fullScreenCover(isPresented: $isPostViewPresented) {
-            PostView(root: $root, selection: $selection, isPostViewPresented: $isPostViewPresented, searchResult: $searchResult)
+        .fullScreenCover(isPresented: $feedStore.isPostViewPresented) {
+            PostView(root: $root, selection: $selection, searchResult: $searchResult)
 //                .onDisappear {
 //                    selection = 1
 //                    print("홈뷰로 이동")

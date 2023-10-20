@@ -124,13 +124,6 @@ struct MapFeedCellView: View {
                                 .background(isShowingMessageTextField ? Color.privateColor : Color.darkGrayColor)
                                 .cornerRadius(30)
                         }
-                        .sheet(isPresented: $isShowingChatSendView) {
-                            ChatSendView(message: $messageToSend, onSend: { sentMessage in
-                                chatRoomStore.messageList.append(Message(sender: "나", content: sentMessage, timestamp: Date().timeIntervalSince1970))
-                            
-                                isShowingChatSendView = false
-                            })
-                        }
                     }
                     .font(.pretendardMedium24)
                     .foregroundColor(.primary)
