@@ -24,6 +24,11 @@ final class UserStore: ObservableObject {
     @Published var otherSavedFeedList: [MyFeed] = []
     @Published var otherSavedPlaceList: [MyFeed] = []
     
+    @Published var clickSavedFeedToast: Bool = false
+    @Published var clickSavedPlaceToast: Bool = false
+    @Published var clickSavedCancelFeedToast: Bool = false
+    @Published var clickSavedCancelPlaceToast: Bool = false
+    
     func fetchMyInfo(userEmail: String, completion: @escaping (Bool) -> Void) {
         Firestore.firestore().collection("User").document(userEmail).getDocument { snapshot, error in
             if let error = error {
