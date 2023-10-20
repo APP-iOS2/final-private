@@ -17,7 +17,6 @@ final class SearchStore: ObservableObject {
     
     let userDefaults: UserDefaults = UserDefaults.standard
     
-    
     init() {
         fetchUsers()
     }
@@ -37,29 +36,52 @@ final class SearchStore: ObservableObject {
             })
         }
     }
-
     
-    func filteredUsers(_ query: String) -> [User] {
-        let lowercasedQuery = query.lowercased() // to prevent case sensitive
-        let user = users.filter({ $0.nickname.lowercased().contains(lowercasedQuery) || $0.name.lowercased().contains(lowercasedQuery) })
-        self.searchUserLists = user
-        return user
-    }
+    @MainActor
+    func searchUser(searchTerm: String) async {
+            let query = userCollection
+                         .whereField("nickname", isEqualTo: searchTerm)
+                         .limit(to: 10)
+            
+            do {
+                let querySnapshot = try await query.getDocuments()
+                
+                // 현재 사용자의 ID 가져오기
+                guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+                
+                // 사용자 정의 초기화 메서드를 사용하여 User 객체 생성 및 추가
+                let users: [User] = querySnapshot.documents.compactMap { document in
+                    let userData = document.data()
+                    if let user = User(document: userData), user.id != currentUserId {
+                        return user
+                    } else {
+                        return nil
+                    }
+                }
+
+                // searchUserLists 배열에 사용자 추가
+                DispatchQueue.main.async {
+                    self.searchUserLists = users
+                }
+            } catch {
+                print("Error fetching users: \(error.localizedDescription)")
+            }
+        }
     
     func fetchrecentSearchResult() {
         DispatchQueue.main.async {
-            self.recentSearchResult = self.userDefaults.value(forKey: "SearchResults") as? [String] ?? []
-        }
+        self.recentSearchResult = self.userDefaults.value(forKey: "SearchResults") as? [String] ?? []
     }
+}
     
     func addRecentSearch(_ searchText: String) {
         DispatchQueue.main.async {
             if self.recentSearchResult.contains(searchText) {
                 self.removeRecentSearchResult(searchText)
             }
+        }
             self.recentSearchResult.insert(searchText, at: 0)
             self.setUserDefaults()
-        }
     }
     
     func removeRecentSearchResult(_ resultText: String) {
@@ -86,33 +108,3 @@ final class SearchStore: ObservableObject {
         }
     }
 }
-
-//    func searchUser(searchTerm: String) async {
-//        let query = userCollection
-//                     .whereField("nickname", isEqualTo: searchTerm)
-//                     .limit(to: 10)
-//
-//        do {
-//            let querySnapshot = try await query.getDocuments()
-//
-//            // 현재 사용자의 ID 가져오기
-//            guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-//
-//            // 사용자 정의 초기화 메서드를 사용하여 User 객체 생성 및 추가
-//            let users: [User] = querySnapshot.documents.compactMap { document in
-//                let userData = document.data()
-//                if let user = User(document: userData), user.id != currentUserId {
-//                    return user
-//                } else {
-//                    return nil
-//                }
-//            }
-//
-//            // searchUserLists 배열에 사용자 추가
-//            DispatchQueue.main.async {
-//                self.searchUserLists = users
-//            }
-//        } catch {
-//            print("Error fetching users: \(error.localizedDescription)")
-//        }
-//    }

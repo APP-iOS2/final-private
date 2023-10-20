@@ -11,53 +11,45 @@ struct UserListView: View {
     
     @EnvironmentObject var searchStore: SearchStore
     @EnvironmentObject var followStore: FollowStore
-    // searchStore: SearchStore() 형태로 초기화하면 두 번 호출되니까 이렇게 하면 안됨, SearchView.swift에서 이미 초기화
-    @Binding var searchTerm: String
+    var searchTerm: String
     
-    var users: [User] {
-            return searchTerm.isEmpty ? searchStore.users : searchStore.filteredUsers(searchTerm)
-        }
     
     var body: some View {
-        VStack {
-            if searchStore.filteredUsers(searchTerm).isEmpty {
-                Text("해당 사용자가 없습니다.")
-                    .font(.pretendardMedium16)
-                    .foregroundColor(.gray)
-                    .padding(.top)
-            } else {
-                searchUserResult
+        ScrollView {
+            LazyVStack {
+                searchResultView
+                
+                Spacer()
             }
-            
-            Spacer()
         }
-        .frame(maxWidth: .infinity)
         .padding(.horizontal)
-        .onDisappear {
+        .frame(maxWidth: .infinity)
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
             Task {
-                searchStore.fetchUsers()
-                fetchSearchResults()
+                await searchStore.searchUser(searchTerm: searchTerm)
+                searchStore.addRecentSearch(searchTerm)
             }
         }
     }
-    
-    var searchUserResult: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(users, id: \.self) { user in
-                    NavigationLink {
-//                        LazyView(OtherPageView(user: user))
-                    } label: {
-                        SearchUserCellView(user: user)
-                            .padding(.leading)
+        
+        var searchResultView: some View {
+            ScrollView {
+                if searchStore.searchUserLists.isEmpty {
+                    Text("검색 결과가 없습니다.")
+                        .foregroundColor(.gray)
+                        .padding(.top)
+                } else {
+                    ForEach(searchStore.searchUserLists, id: \.self) { user in
+                        NavigationLink {
+                            LazyView(OtherProfileView(user: user))
+                        } label: {
+                            SearchUserCellView(user: user)
+                                .padding(.leading)
+                        }
                     }
                 }
             }
         }
     }
-    
-    func fetchSearchResults()  {
-         searchStore.addRecentSearch(searchTerm)
-    }
-    
-}

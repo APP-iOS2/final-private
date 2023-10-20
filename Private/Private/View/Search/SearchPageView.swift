@@ -60,7 +60,7 @@ struct SearchPageView: View {
         var body: some View {
             HStack {
                 NavigationLink {
-                    UserListView(searchTerm: $searchTerm)
+                    UserListView(searchTerm: searchTerm)
                 } label: {
                     Text(resultText)
                         .foregroundColor(.gray)
@@ -69,7 +69,7 @@ struct SearchPageView: View {
                 Button {
                     searchStore.removeRecentSearchResult(resultText)
                 } label: {
-                    Image(systemName: "xmark.fill")
+                    Image(systemName: "xmark.circle")
                 }
                 .padding(.trailing, 10)
             }
@@ -119,7 +119,7 @@ struct SearchPageView: View {
                 Button {
                     searchStore.removeRecentSearchResult(user.nickname)
                 } label: {
-                    Image(systemName: "xmark.fill")
+                    Image(systemName: "xmark.circle")
                         .foregroundColor(.gray)
                 }
             }
