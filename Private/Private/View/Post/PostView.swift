@@ -28,7 +28,6 @@ struct PostView: View {
     
     @Binding var root: Bool
     @Binding var selection: Int
-    @Binding var isPostViewPresented: Bool /// PostView
     @Binding var searchResult: SearchResult
     
     @State private var text: String = "" /// 텍스트마스터 내용
@@ -308,7 +307,7 @@ struct PostView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        isPostViewPresented = false
+                        feedStore.isPostViewPresented = false
                         selection = 1
                         print("뷰 닫기")
                     } label: {
@@ -331,12 +330,13 @@ struct PostView: View {
                     } else {
                         creatMarkerFeed()
                     }
+                    feedStore.uploadToast = true
                     searchResult.title = ""
                     searchResult.address = ""
                     searchResult.roadAddress = ""
                     postCoordinator.newMarkerTitle = ""
                     registrationAlert = false
-                    isPostViewPresented = false
+                    feedStore.isPostViewPresented = false
                     selection = 1
                     print("완료 버튼 클릭")
                     print("registrationAlert 마지막상태: \(registrationAlert)")
@@ -357,6 +357,20 @@ struct PostView: View {
                 dismissButton: .default(Text("확인"))
             )
         }
+//        .popup(isPresented: $feedStore.uploadToast) {
+//            ToastMessageView(message: "업로드가 완료되었습니다!")
+//                .onDisappear {
+//                    feedStore.uploadToast = false
+//                }
+//        } customize: {
+//            $0
+//                .autohideIn(1)
+//                .type(.floater(verticalPadding: 20))
+//                .position(.bottom)
+//                .animation(.spring())
+//                .closeOnTapOutside(true)
+//                .backgroundColor(.clear)
+//        }
     } // body
     
     //MARK: 파베함수
@@ -500,7 +514,7 @@ struct PostView: View {
 
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
-        PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
+        PostView(root: .constant(true), selection: .constant(3), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
     }

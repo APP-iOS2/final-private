@@ -22,7 +22,7 @@ struct TextMaster: View {
     init(
         text: Binding<String>,
         isFocused: FocusState<Bool>.Binding,
-        minLine: Int = 1,
+        minLine: Int = 3,
         maxLine: Int,
         fontSize: CGFloat,
         becomeFirstResponder: Bool = false,
