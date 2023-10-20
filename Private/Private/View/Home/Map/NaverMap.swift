@@ -2,8 +2,6 @@
 //  NaverMap.swift
 //  Private
 //
-//  Created by Lyla on 2023/09/22.
-//
 
 import SwiftUI
 import NMapsMap
