@@ -326,7 +326,7 @@ final class ChatRoomStore: ObservableObject {
 //            }
 //        }
         print("::chatRoomList is empty.")
-        return nil
+        return newChatRoom
     }
     
 //    func searchChatRoom(firstNickname:String, secondNickname:String) -> ChatRoom {
