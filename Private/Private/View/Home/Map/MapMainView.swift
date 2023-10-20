@@ -40,7 +40,7 @@ struct MapMainView: View {
         .popup(isPresented: $authStore.welcomeToast) {
             ToastMessageView(message: "Private에 오신걸 환영합니다!")
                 .onDisappear {
-                    authStore.welcomeToast = true
+                    authStore.welcomeToast = false
                 }
         } customize: {
             $0
