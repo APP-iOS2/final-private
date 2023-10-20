@@ -77,12 +77,15 @@ struct ChatRoomView: View {
         .backButtonArrow()
         
         .onAppear {
+//            chatRoomStore.checkFetchMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname)
             chatRoomStore.fetchMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname)
             print("\(chatRoomStore.messageList)")
             print("\(userStore.user)")
             print("\(chatRoom)")
         }
-        
+        .onDisappear {
+            chatRoomStore.stopFetchMessage()
+        }
         SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
             print("chatRoom-sendMessage\(chatRoom)")
             chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
