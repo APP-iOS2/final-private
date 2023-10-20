@@ -16,6 +16,7 @@ struct NaverMap: UIViewRepresentable {
     
     @Binding var currentFeedId: String
     @Binding var showMarkerDetailView: Bool
+    @Binding var showMyMarkerDetailView: Bool
     @Binding var markerTitle: String
     @Binding var markerTitleEdit: Bool
     @Binding var coord: NMGLatLng
@@ -41,13 +42,14 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     
     var locationSearchStore = LocationSearchStore.shared
     var feedList: [MyFeed] = []
+    var myFeedList: [MyFeed] = []
     var markers: [NMFMarker] = []
     var locationManager: CLLocationManager?
-    var previousMarker: NMFMarker?
 
     @Published var currentFeedId: String = "보리마루"
     @Published var isBookMarkTapped: Bool = false
     @Published var showMarkerDetailView: Bool = false
+    @Published var showMyMarkerDetailView: Bool = false
     @Published var newMarkerTitle: String = ""
     @Published var newMarkerAlert: Bool = false
     @Published var coord: NMGLatLng = NMGLatLng(lat: 36.444, lng: 127.332)
@@ -64,7 +66,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         view.mapView.positionMode = .direction
         view.mapView.isNightModeEnabled = true
         
-        view.mapView.zoomLevel = 15 // 기본 카메라 줌 레벨
+        view.mapView.zoomLevel = 13 // 기본 카메라 줌 레벨
         view.mapView.minZoomLevel = 10 // 최소 줌 레벨
         view.mapView.maxZoomLevel = 17 // 최대 줌 레벨
         
@@ -76,7 +78,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         view.mapView.addCameraDelegate(delegate: self)
         view.mapView.touchDelegate = self
         
-        let cameraUpdate = NMFCameraUpdate(scrollTo: coord, zoomTo: 15)
+        let cameraUpdate = NMFCameraUpdate(scrollTo: coord, zoomTo: 12)
         
         view.mapView.moveCamera(cameraUpdate)
     }
@@ -148,8 +150,19 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     func getNaverMapView() -> NMFNaverMapView {
         view
     }
+    
+    func removeAllMarkers() {
+        for marker in markers {
+            marker.mapView = nil // 각 마커를 지도에서 제거
+        }
+        markers.removeAll() // 배열에서 모든 마커를 제거
+    }
+    
     //MARK: 마커 생성
     func makeMarkers() {
+        
+        removeAllMarkers()
+        
         var tempMarkers: [NMFMarker] = []
         
         for feedMarker in feedList {
@@ -180,6 +193,40 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         markerTapped()
     }
     
+    func makeOnlyMyFeedMarkers() {
+        
+        removeAllMarkers()
+        
+        var tempMarkers: [NMFMarker] = []
+        
+        for feedMarker in myFeedList {
+            let marker = NMFMarker()
+            let lat = locationSearchStore.formatCoordinates(feedMarker.mapy, 2) ?? ""
+            let lng = locationSearchStore.formatCoordinates(feedMarker.mapx, 3) ?? ""
+            coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+            
+            marker.position = NMGLatLng(lat: coord.lat, lng: coord.lng )
+            marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
+            marker.captionText = feedMarker.id
+            
+            marker.captionTextSize = 0.1
+            marker.captionMinZoom = 10
+            marker.captionMaxZoom = 17
+            marker.iconImage = NMFOverlayImage(name: "placeholder")
+            marker.width = CGFloat(40)
+            marker.height = CGFloat(40)
+            
+            tempMarkers.append(marker)
+        }
+        
+        markers = tempMarkers
+        
+        for marker in markers {
+            marker.mapView = view.mapView
+        }
+        myMarkerTapped()
+    }
+    
     // MARK: 해당 장소 이동 시 위치 좌표에 마커
     func makeSearchLocationMarker() {
         let marker = NMFMarker()
@@ -206,6 +253,24 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
                 self.view.mapView.moveCamera(cameraUpdate)
                 
                 self.showMarkerDetailView = true
+                self.currentFeedId = marker.captionText
+                print("markerTapped: \(currentFeedId)")
+                
+                return true
+            }
+        }
+    }
+    
+    func myMarkerTapped() {
+        for marker in markers {
+            marker.touchHandler = { [self] (overlay) -> Bool in
+                print("markerTapped: \(marker.captionText)")
+                let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: marker.position.lat, lng: marker.position.lng), zoomTo: 17)
+                cameraUpdate.animation = .fly
+                cameraUpdate.animationDuration = 1
+                self.view.mapView.moveCamera(cameraUpdate)
+                
+                self.showMyMarkerDetailView = true
                 self.currentFeedId = marker.captionText
                 print("markerTapped: \(currentFeedId)")
                 
