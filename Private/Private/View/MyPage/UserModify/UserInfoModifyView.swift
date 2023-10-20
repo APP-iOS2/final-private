@@ -11,8 +11,14 @@ import FirebaseStorage
 
 struct UserInfoModifyView: View {
     @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject var authStore: AuthStore
+    @State private var checkNicknameColor: Color = Color.red
+    @State private var cautionNickname: String = ""
+    @State private var checkNickname: Bool = false
+    @State private var isHiddenCheckButton: Bool = false
+    @State private var isNicknameValid: Bool = true
     @Binding var isModify: Bool
-    @State var mypageNickname: String
+    @State var mypageNickname: String = ""
     @State var isImagePickerPresented: Bool = false
     @State private var selectedImage: UIImage?
     var storage = Storage.storage()
@@ -75,17 +81,56 @@ struct UserInfoModifyView: View {
                     .background(Color.primary)
                     .frame(width: .screenWidth*0.9)
                     .padding([.top,.bottom],15)
-                HStack {
-                    Text("닉네임")
-                        .font(.pretendardMedium18)
-                        .foregroundColor(.primary)
-                    TextField("\(userStore.user.nickname)", text: $mypageNickname)
-                        .padding(.leading, 5)
+                VStack {
+                    HStack {
+                        Text("닉네임")
+                            .font(.pretendardBold14)
+                            .foregroundColor(.primary)
+                        TextField("\(userStore.user.nickname)", text: $mypageNickname)
+                            .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
+                            .disableAutocorrection(true) // 자동수정 비활성화
+                            .border(isNicknameValid ? Color.clear : Color.accentColor)
+                        //.focused($focusField, equals: .mypageNickname)
+                            .frame(width: .screenWidth*0.70, height: .screenHeight*0.05)
+                            .padding(.leading, 5)
+                            .onChange(of: mypageNickname) { newValue in
+                                ischeckNickname()
+                                checkNickname = false
+                                mypageNickname = newValue.trimmingCharacters(in: .whitespaces)
+                            }
+                    }
+                    if isHiddenCheckButton {
+                        Button {
+                            Task {
+                                checkNickname = await authStore.doubleCheckNickname(nickname: mypageNickname)
+                                if checkNickname == false && mypageNickname.count > 0 {
+                                    cautionNickname = "이미 사용 중인 닉네임"
+                                    checkNicknameColor = .red
+                                } else {
+                                    cautionNickname = "사용 가능"
+                                    checkNicknameColor = .green
+                                }
+                            }
+                        } label: {
+                            if checkNickname == false && true {
+                                Text("중복확인")
+                                    .font(.pretendardBold18)
+                                    .foregroundStyle(mypageNickname.count >= 0 ? .blue : .secondary)
+                            } else {
+                                Text(cautionNickname)
+                                    .font(.pretendardBold18)
+                                    .foregroundStyle(checkNicknameColor)
+                            }
+                        }
+                        .padding(.trailing, 7)
+                    }
+                    if !isValidNickname(mypageNickname) && mypageNickname.count > 0 {
+                        Text(cautionNickname)
+                            .font(.pretendardMedium16)
+                            .foregroundStyle(checkNicknameColor)
+                    }
                 }
                 .padding([.leading,.trailing], 28)
-                HStack {}
-                HStack {}
-                HStack {}
             }
             .onTapGesture {
                 hideKeyboard()
@@ -116,8 +161,9 @@ struct UserInfoModifyView: View {
                 } label: {
                     Text("수정")
                         .font(.pretendardSemiBold16)
-                        .foregroundColor(.privateColor)
+                        .foregroundColor(checkNicknameColor == .green ? .privateColor : .primary.opacity(0.5))
                 }
+                .disabled(checkNicknameColor != .green)
             }
         }
     }
@@ -143,6 +189,24 @@ struct UserInfoModifyView: View {
                 }
             }
         }
+    }
+    func ischeckNickname() {
+        if isValidNickname(mypageNickname) {
+            cautionNickname = ""
+            isHiddenCheckButton = true
+            checkNicknameColor = .red
+        }
+        else if !isValidNickname(mypageNickname) && mypageNickname.count > 0 {
+            cautionNickname = "닉네임 형식이 맞지 않습니다."
+            isHiddenCheckButton = false
+            checkNicknameColor = .red
+        }
+    }
+    func isValidNickname(_ nickName: String) -> Bool {
+        let nicknameExpression = "^[a-zA-Z0-9]+$"
+        
+        let nickNamePredicate = NSPredicate(format:"SELF MATCHES %@", nicknameExpression)
+        return nickNamePredicate.evaluate(with: nickName)
     }
 }
 
