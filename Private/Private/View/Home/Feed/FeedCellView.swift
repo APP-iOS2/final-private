@@ -18,9 +18,15 @@ struct FeedCellView: View {
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject var chatRoomStore: ChatRoomStore
     
+    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
+    @StateObject private var locationSearchStore = LocationSearchStore.shared
+    
     @State private var message: String = ""
     @State private var isShowingMessageTextField: Bool = false
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
+    @State private var isShowingLocation: Bool = false
+    @State private var lat: String = ""
+    @State private var lng: String = ""
     
     var body: some View {
         VStack {
@@ -192,21 +198,40 @@ struct FeedCellView: View {
             }
             .padding(.leading, 15)
             
-            VStack(alignment: .leading, spacing: 5) {
-                Text("\(feed.title)")
-                    .font(.pretendardMedium16)
-                    .foregroundColor(.primary)
-                Text("\(feed.roadAddress)")
-                    .font(.pretendardRegular12)
-                    .foregroundColor(.primary)
+            Button {
+                isShowingLocation = true
+                
+                lat = locationSearchStore.formatCoordinates(feed.mapy, 2) ?? ""
+                lng = locationSearchStore.formatCoordinates(feed.mapx, 3) ?? ""
+                
+                postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                postCoordinator.newMarkerTitle = feed.title
+                
+                postCoordinator.moveCameraPosition()
+                postCoordinator.makeSearchLocationMarker()
+                
+            } label: {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("\(feed.title)")
+                        .font(.pretendardMedium16)
+                        .foregroundColor(.primary)
+                    Text("\(feed.roadAddress)")
+                        .font(.pretendardRegular12)
+                        .foregroundColor(.primary)
+                }
+                .padding(.leading, 15)
             }
-            .padding(.leading, 15)
             Spacer()
         }
         .padding(.top, 5)
         .padding(.horizontal, 10)
         .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
         .background(Color.darkGraySubColor)
+        
+        .sheet(isPresented: $isShowingLocation) {
+            LocationDetailView()
+                .presentationDetents([.height(.screenHeight * 0.6), .large])
+        }
         
         Divider()
             .padding(.vertical, 10)
