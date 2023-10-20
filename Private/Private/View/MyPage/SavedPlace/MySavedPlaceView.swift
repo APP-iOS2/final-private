@@ -9,6 +9,9 @@ import SwiftUI
 
 struct MySavedPlaceView: View {
     @EnvironmentObject private var userStore: UserStore
+    
+    @State private var isShowingLocation: Bool = false
+    
     var body: some View {
         ScrollView {
             if userStore.mySavedPlaceList.isEmpty {
@@ -17,9 +20,12 @@ struct MySavedPlaceView: View {
                     .foregroundColor(.primary)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
-                ShopInfoCardView(mySavedPlaceList: userStore.mySavedPlaceList)
-                
+                ShopInfoCardView(isShowingLocation: $isShowingLocation, mySavedPlaceList: userStore.mySavedPlaceList)
             }
+        }
+        .sheet(isPresented: $isShowingLocation) {
+            LocationDetailView()
+                .presentationDetents([.height(.screenHeight * 0.6), .large])
         }
     }
 }
