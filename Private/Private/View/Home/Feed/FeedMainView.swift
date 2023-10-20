@@ -20,6 +20,62 @@ struct FeedMainView: View {
                         .padding(.bottom,15)
                 }
             }
+            .popup(isPresented: $userStore.clickSavedFeedToast) {
+                ToastMessageView(message: "피드가 저장 되었습니다!")
+                    .onDisappear {
+                        userStore.clickSavedFeedToast = false
+                    }
+            } customize: { 
+                $0
+                    .autohideIn(1)
+                    .type(.floater(verticalPadding: 20))
+                    .position(.bottom)
+                    .animation(.spring())
+                    .closeOnTapOutside(true)
+                    .backgroundColor(.clear)
+            }
+            .popup(isPresented: $userStore.clickSavedPlaceToast) {
+                ToastMessageView(message: "장소가 저장 되었습니다!")
+                    .onDisappear {
+                        userStore.clickSavedPlaceToast = false
+                    }
+            } customize: {
+                $0
+                    .autohideIn(1)
+                    .type(.floater(verticalPadding: 20))
+                    .position(.bottom)
+                    .animation(.spring())
+                    .closeOnTapOutside(true)
+                    .backgroundColor(.clear)
+            }
+            .popup(isPresented: $userStore.clickSavedCancelFeedToast) {
+                ToastMessageView(message: "피드 저장이 취소 되었습니다!")
+                    .onDisappear {
+                        userStore.clickSavedPlaceToast = false
+                    }
+            } customize: {
+                $0
+                    .autohideIn(1)
+                    .type(.floater(verticalPadding: 20))
+                    .position(.bottom)
+                    .animation(.spring())
+                    .closeOnTapOutside(true)
+                    .backgroundColor(.clear)
+            }
+            .popup(isPresented: $userStore.clickSavedCancelPlaceToast) {
+                ToastMessageView(message: "장소 저장이 취소 되었습니다!")
+                    .onDisappear {
+                        userStore.clickSavedPlaceToast = false
+                    }
+            } customize: {
+                $0
+                    .autohideIn(1)
+                    .type(.floater(verticalPadding: 20))
+                    .position(.bottom)
+                    .animation(.spring())
+                    .closeOnTapOutside(true)
+                    .backgroundColor(.clear)
+            }
         
     }
 }

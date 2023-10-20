@@ -12,7 +12,11 @@ struct MyPageView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var followStore: FollowStore
+    
+    @StateObject var coordinator: Coordinator = Coordinator.shared
+    
     @Binding var root: Bool
     @Binding var selection: Int
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
@@ -47,7 +51,13 @@ struct MyPageView: View {
                 .padding(.bottom, 20)
             HStack {
                 NavigationLink {
-                    MapMainView()
+                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
+                             markerTitle: $coordinator.newMarkerTitle,
+                             markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
+                    .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
+                        MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == coordinator.currentFeedId }[0])
+                            .presentationDetents([.height(.screenHeight * 0.55)])
+                    }
                 } label: {
                     HStack {
                         Image(systemName: "map")
@@ -57,6 +67,7 @@ struct MyPageView: View {
                     .foregroundColor(.primary)
                 }
                 .frame(width: .screenWidth*0.5)
+                
                 Divider()
                     .background(Color.primary)
                     .frame(height: .screenHeight*0.02)
@@ -148,6 +159,10 @@ struct MyPageView: View {
         }
         .onAppear{
             followStore.fetchFollowerFollowingList(userStore.user.email)
+            coordinator.checkIfLocationServicesIsEnabled()
+            Coordinator.shared.myFeedList = userStore.myFeedList
+            print("myFeedList: \(Coordinator.shared.myFeedList)")
+            coordinator.makeOnlyMyFeedMarkers()
         }
     }
 }

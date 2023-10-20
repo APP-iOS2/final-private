@@ -18,8 +18,6 @@ struct PostNaverMap: UIViewRepresentable {
     @EnvironmentObject var userDataStore: UserStore
     @Binding var currentFeedId: String
     @Binding var showMarkerDetailView: Bool
-//    @Binding var markerTitle: String
-//    @Binding var markerTitleEdit: Bool
     @Binding var coord: NMGLatLng
     @Binding var tappedLatLng: NMGLatLng
 
@@ -173,7 +171,7 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
         marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
         marker.captionMinZoom = 10
         marker.captionMaxZoom = 17
-        marker.captionText = newMarkerTitle.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: "")
+//        marker.captionText = newMarkerTitle.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: "")
         marker.iconImage = NMFOverlayImage(name: "placeholder")
         marker.width = CGFloat(40)
         marker.height = CGFloat(40)
@@ -324,13 +322,6 @@ final class PostCoordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate
             newMarkerAlert = true
         }
     }
-
-    //     func markerTitle(_ mapView: NMFMapView, didTap marker: NMFMarker) -> Bool {
-    //
-    //         let markerTitleView = MapMarkerDetailView(markerTitle: Binding<String>, isEditing: Binding<Bool>)
-    //         view.addSubview(markerTitleView)
-    //        return true
-    //    }
     
     /// 지도에서 마커를 길게 터치하면 어떠한 행동을 함
     func markerLongPress(_ mapView: NMFMapView, didLongPressOverlay overlay: NMFOverlay) {
