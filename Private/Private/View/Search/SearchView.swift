@@ -19,18 +19,25 @@ struct SearchView: View {
     @State private var isSearchTextEmpty: Bool = true
     
     var body: some View {
-            VStack(spacing: 0) {
-                SearchBarView(searchTerm: $searchTerm, inSearchMode: $inSearchMode, isSearchTextEmpty: $isSearchTextEmpty)
-                ScrollView(showsIndicators: false) {
-                    SearchPageView(searchTerm: $searchTerm)
-                }
-                Spacer()
+        VStack(spacing: 0) {
+            SearchBarView(searchTerm: $searchTerm, inSearchMode: $inSearchMode, isSearchTextEmpty: $isSearchTextEmpty)
+                .padding(.bottom, 30)
+            ScrollView(showsIndicators: false) {
+                SearchPageView()
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .onAppear {
-                searchStore.fetchrecentSearchResult()
+            Spacer()
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .onAppear {
+            searchStore.fetchrecentSearchResult()
+        }
+        .onDisappear {
+            Task {
+                await searchStore.searchUser(searchTerm: searchTerm)
+                searchStore.addRecentSearch(searchTerm)
                 searchTerm = ""
             }
+        }
     }
 }

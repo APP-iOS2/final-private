@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct SearchBarView: View {
+    @EnvironmentObject var searchStore: SearchStore
     @Binding var searchTerm: String
     @Binding var inSearchMode: Bool
     @Binding var isSearchTextEmpty: Bool
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -26,19 +27,19 @@ struct SearchBarView: View {
                             isSearchTextEmpty = false
                         }
                     }
+                
                 if !searchTerm.isEmpty {
-                    NavigationLink {
-                        UserListView(searchTerm: searchTerm.trimmingCharacters(in: .whitespaces))
-                    } label: {
-                        Image(systemName: "arrowshape.right.fill")
-                            .foregroundColor(Color("AccentColor"))
+                        NavigationLink {
+                            UserListView(searchTerm: searchTerm.trimmingCharacters(in: .whitespaces))
+                        } label: {
+                            Image(systemName: "arrowshape.right.fill")
+                                .foregroundColor(Color("AccentColor"))
+                        }
+                        .disabled(isSearchTextEmpty)
                     }
-                    .disabled(isSearchTextEmpty)
                 }
-            }
             .padding(.horizontal)
             .padding(.vertical, 12)
         }
     }
 }
-

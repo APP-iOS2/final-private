@@ -52,7 +52,7 @@ struct OtherProfileView: View {
                 }label: {
                     HStack {
                         viewNumber == 0 ? Image( systemName: "location.fill") : Image (systemName: "location")
-                        Text("내 피드")
+                        Text("피드")
                     }
                     .font(.pretendardRegular12)
                     .foregroundColor(viewNumber == 0 ? .privateColor : .white)

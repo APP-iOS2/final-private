@@ -6,9 +6,7 @@
 //
 
 import Foundation
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-import FirebaseAuth
+import Firebase
 
 final class SearchStore: ObservableObject {
     @Published var recentSearchResult: [String] = []
@@ -57,53 +55,60 @@ final class SearchStore: ObservableObject {
                         return nil
                     }
                 }
-
-                // searchUserLists 배열에 사용자 추가
-                DispatchQueue.main.async {
-                    self.searchUserLists = users
-                }
+//                self.searchUserLists = users
+                addUserLists(users)
             } catch {
                 print("Error fetching users: \(error.localizedDescription)")
             }
         }
     
     func fetchrecentSearchResult() {
-        DispatchQueue.main.async {
         self.recentSearchResult = self.userDefaults.value(forKey: "SearchResults") as? [String] ?? []
-    }
 }
     
+    
     func addRecentSearch(_ searchText: String) {
-        DispatchQueue.main.async {
-            if self.recentSearchResult.contains(searchText) {
+            if self.recentSearchResult.contains(searchText) || searchText == ""{
                 self.removeRecentSearchResult(searchText)
             }
-        }
             self.recentSearchResult.insert(searchText, at: 0)
             self.setUserDefaults()
     }
     
     func removeRecentSearchResult(_ resultText: String) {
-        DispatchQueue.main.async {
             for index in 0..<self.recentSearchResult.count {
                 if self.recentSearchResult[index] == resultText {
                     self.recentSearchResult.remove(at: index)
                     break
                 }
-            }
             self.setUserDefaults()
         }
     }
     
-    func setUserDefaults() {
-        DispatchQueue.main.async {
-            self.userDefaults.set(self.recentSearchResult, forKey: "SearchResults")
+    func addUserLists(_ users: [User]) {
+        for user in users {
+            if !self.searchUserLists.contains(user) {
+                self.searchUserLists.insert(user, at: 0)
+            }
         }
+        self.setUserDefaults()
     }
+
     
-    func resetUserDefaults() {
-        DispatchQueue.main.async {
-            UserDefaults.resetStandardUserDefaults()
+    func removeUserList(_ user: User) {
+        if let index = self.searchUserLists.firstIndex(of: user) {
+            self.searchUserLists.remove(at: index)
         }
     }
+
+    
+    func setUserDefaults() {
+            self.userDefaults.set(self.recentSearchResult, forKey: "SearchResults")
+    }
+    // 초기화 버튼용
+//    func resetUserDefaults() {
+//        DispatchQueue.main.async {
+//            UserDefaults.resetStandardUserDefaults()
+//        }
+//    }
 }
