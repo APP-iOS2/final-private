@@ -135,29 +135,20 @@ struct PostView: View {
                                 Button {
                                     if !postCoordinator.newMarkerTitle.isEmpty {
                                         clickLocation.toggle()
-                                        postCoordinator.newLocalmoveCameraPosition()
-//                                        postCoordinator.makeNewLocationMarker()
-                                        postCoordinator.makeSearchLocationMarker()
-
-                                        
                                     } else {
                                         lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
                                         lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
-                                        
                                         postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                                        postCoordinator.newMarkerTitle = searchResult.title
                                         print("위도값: \(postCoordinator.coord.lat), 경도값: \(postCoordinator.coord.lng)")
                                         print("지정장소 클릭")
                                         clickLocation.toggle()
-                                        postCoordinator.moveCameraPosition()
-                                        postCoordinator.makeSearchLocationMarker()
                                     }
                                 } label: {
                                     Text("\(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                                         .font(.pretendardRegular12)
                                 }
                                 .sheet(isPresented: $clickLocation) {
-                                    LocationDetailView()
+                                    LocationDetailView(searchResult: $searchResult)
                                         .presentationDetents([.height(.screenHeight * 0.6), .large])
                                 }
                                 if (!searchResult.address.isEmpty) {
@@ -496,8 +487,6 @@ struct PostView: View {
             myselectedCategory.remove(at: selectedIndex)
         }
     }
-
-
     
     func createGridColumns() -> [GridItem] {
         let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
@@ -511,7 +500,6 @@ struct PostView_Previews: PreviewProvider {
         PostView(root: .constant(true), selection: .constant(3), isPostViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
-        
     }
 }
 

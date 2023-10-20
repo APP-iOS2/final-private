@@ -12,11 +12,12 @@ import FirebaseFirestore
 struct LocationDetailView: View {
     @EnvironmentObject var feedStore: FeedStore
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
+    @Binding var searchResult: SearchResult
 
     var body: some View {
         ZStack {
             VStack {
-                Text("\(postCoordinator.newMarkerTitle)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
+                Text("\(searchResult.title)".replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""))
                     .font(.pretendardRegular14)
                     .foregroundColor(.white)
                     .padding(.horizontal, 20)
@@ -33,14 +34,16 @@ struct LocationDetailView: View {
         }
         .onAppear {
             Coordinator.shared.feedList = feedStore.feedList
+            postCoordinator.removeAllMarkers()
             postCoordinator.makeSearchLocationMarker()
+            postCoordinator.moveCameraPosition()
         }
     }
 }
 
 struct LocationDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationDetailView()
+        LocationDetailView(searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")))
             .environmentObject(UserStore())
             .environmentObject(FeedStore())
             .environmentObject(ShopStore())
