@@ -32,7 +32,6 @@ struct LocationView: View {
     @State private var images: [String] = []
     @State private var selectedImage: [UIImage]?
     
-    
     var db = Firestore.firestore()
     var storage = Storage.storage()
 
@@ -52,39 +51,30 @@ struct LocationView: View {
             .padding(.top, 20)
             
             PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView, coord: $postCoordinator.coord, tappedLatLng: $postCoordinator.tappedLatLng)
-            
         }
         .onAppear {
             postCoordinator.checkIfLocationServicesIsEnabled()
             postCoordinator.removeAllMarkers()
-//            Coordinator.shared.feedList = feedStore.feedList
-//            postCoordinator.makeMarkers()
+            postCoordinator.makeNewLocationMarker()
+            postCoordinator.newLocalmoveCameraPosition()
         }
-        //        .onChange(of: coord, perform: { _ in
-        //            coordinator.fetchUserLocation()
-        //        })
         .alert("신규 장소를 저장합니다.", isPresented: $postCoordinator.newMarkerAlert) {
             TextField("신규 장소 등록", text: $postCoordinator.newMarkerTitle)
                 .autocapitalization(.none)
                 .textInputAutocapitalization(.none)
             Button("취소") {
                 postCoordinator.newMarkerAlert = false
-            }
+            } .foregroundStyle(.red)
             Button("등록") {
                 postCoordinator.newMarkerAlert = false
                 newMarkerlat = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lat,  3) ?? ""
                 newMarkerlng = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lng , 4) ?? ""
-                // postCoordinator.coord = NMGLatLng(lat: Double(newMarkerlat) ?? 0.0, lng: Double(newMarkerlng) ?? 0.0)
                 searchResult.title = postCoordinator.newMarkerTitle
                 isSearchedLocation = false
                 print("신규등록 시 \(newMarkerlat), \(newMarkerlng)")
                 print("신규등록 시 \(postCoordinator.newMarkerTitle)")
 
-//                registrationAlert = true
             }
-            //            .task {
-            //                await shopStore.getAllShopData()
-            //            }
         }
 //        .overlay(
 //            TextField("", text: $postCoordinator.newMarkerTitle)
