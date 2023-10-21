@@ -243,11 +243,11 @@ class AuthStore: ObservableObject {
     
     /// 카카오톡 로그아웃
     func handleKakaoLogout() {
-        UserApi.shared.logout {(error) in
+        UserApi.shared.unlink {(error) in
             if let error = error {
-                print(error)
+                print("\(error.localizedDescription)")
             } else {
-                print("logout() success.")
+                print("unlink() success.")
             }
         }
     }
