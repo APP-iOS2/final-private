@@ -18,12 +18,12 @@ import Kingfisher
 struct FeedUpdateView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.presentationMode) var presentationMode
-//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-
+    //    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @EnvironmentObject var feedStore: FeedStore
     @EnvironmentObject var userStore: UserStore
-//    @EnvironmentObject var userDataStore: UserStore
-//    @State var selctedFeed : MyFeed //= MyFeed()
+    //    @EnvironmentObject var userDataStore: UserStore
+    @State var newFeed : MyFeed = MyFeed()
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     @StateObject private var postStore: PostStore = PostStore()
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
@@ -64,7 +64,7 @@ struct FeedUpdateView: View {
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     @State var feed: MyFeed
-//    @State var category : Category
+    //    @State var category : Category
     
     private let minLine: Int = 10
     private let maxLine: Int = 12
@@ -75,7 +75,7 @@ struct FeedUpdateView: View {
     var storage = Storage.storage()
     //@State private var selectedCategories: Set<MyCategory> = []
     let filteredCategories = Category.filteredCases
-  
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -83,11 +83,8 @@ struct FeedUpdateView: View {
                     VStack{
                         Text(feed.id)
                         Text(feed.contents)
-                        
                     }
                     HStack {
-                    
-              
                         ZStack {
                             if userStore.user.profileImageURL.isEmpty {
                                 Circle()
@@ -105,19 +102,15 @@ struct FeedUpdateView: View {
                                     .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                             }
                         }
-                        
                         VStack(alignment: .leading, spacing: 5) {
                             Text(userStore.user.name)
                             Text("@\(userStore.user.nickname)")
                         }
                     }
                     .padding(.vertical, 10)
-                    
                     //MARK: 내용
                     TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize, placeholder: textPlaceHolder)
-                    
                         .padding(.trailing, 10)
-                    
                     //MARK: 장소
                     VStack {
                         Button {
@@ -151,8 +144,6 @@ struct FeedUpdateView: View {
                                         postCoordinator.newLocalmoveCameraPosition()
                                         //                                        postCoordinator.makeNewLocationMarker()
                                         postCoordinator.makeSearchLocationMarker()
-                                        
-                                        
                                     } else {
                                         lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
                                         lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
@@ -180,7 +171,6 @@ struct FeedUpdateView: View {
                                 }
                             }
                         }
-                        
                         Spacer()
                         Button {
                             searchResult.title = ""
@@ -266,6 +256,7 @@ struct FeedUpdateView: View {
                         Text("(최대 3개)")
                             .font(.pretendardRegular12)
                             .foregroundColor(.secondary)
+                        //Text()
                     }
                     
                     LazyVGrid(columns: createGridColumns(), spacing: 20) {
@@ -283,7 +274,7 @@ struct FeedUpdateView: View {
                                 } else {
                                     Text(MyCategory.allCases[index].categoryName)
                                         .font(.pretendardMedium16)
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.black)
                                         .frame(width: 70, height: 30)
                                         .padding(.vertical, 4)
                                         .padding(.horizontal, 4)
@@ -312,7 +303,9 @@ struct FeedUpdateView: View {
                         .padding(EdgeInsets(top: 25, leading: 0, bottom: 0, trailing: 13))
                         .onTapGesture {
                             isshowAlert = true
+                            
                             print("신규마커최종위치: \(newMarkerlat), \(newMarkerlng)")
+                            //
                         }
                     
                         .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == ""))
@@ -341,16 +334,25 @@ struct FeedUpdateView: View {
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
                     print("registrationAlert 마지막상태: \(registrationAlert)")
+                    // 업데이트 피드가 있으면
+                    //                    if postCoordinator.newMarkerTitle.isEmpty {
+                    //                        creatFeed()
+                    //                    } else {
+                    //                        creatMarkerFeed()
+                    //                    }
+                    //MARK: 업데이트 피드 함수를
+                    //                    let newFeed = MyFeed(id: feed.id, writerNickname: feed.writerNickname, writerName: feed.writerName, writerProfileImage: feed.writerNickname, images: $images, contents: $text, createdAt: $createdAt, title: $visitedShop , category: [$myselectedCategory], address: $showLocation, roadAddress: $searchResult, mapx: $newMarkerlat, mapy: $newMarkerlng)
+                    //                    updateFeed(MyFeed: newfeed, feedID: feed.id)
+                    let newFeed = MyFeed(id: feed.id, writerNickname: feed.writerNickname, writerName: feed.writerName, writerProfileImage: feed.writerNickname, images: images, contents: text, createdAt: feed.createdAt, title: searchResult.title, category: myselectedCategory, address: searchResult.address, roadAddress: searchResult.roadAddress, mapx: searchResult.mapx, mapy: searchResult.mapy)
+            
                     
-                    if postCoordinator.newMarkerTitle.isEmpty {
-                        creatFeed()
-                    } else {
-                        creatMarkerFeed()
-                    }
+       
+                    updateFeed(inputFeed: newFeed, feedID: feed.id)
                     searchResult.title = ""
                     searchResult.address = ""
                     searchResult.roadAddress = ""
                     postCoordinator.newMarkerTitle = ""
+                    
                     registrationAlert = false
                     isFeedUpdateViewPresented = false
                     selection = 1
@@ -375,9 +377,7 @@ struct FeedUpdateView: View {
         }
     } // body
     
-    //MARK: 파베함수
-    
-    /// 일반적인 업로드 함수
+    // MARK: 파베함수
     func creatFeed() {
         //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
         
@@ -433,8 +433,8 @@ struct FeedUpdateView: View {
             }
         }
     }
-    /// 새로운 장소와 마커를 함께 저장할 때 쓰여지는 함수
-    ///
+    // 새로운 장소와 마커를 함께 저장할 때 쓰여지는 함수
+    //
     func creatMarkerFeed() {
         //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
         
@@ -514,15 +514,15 @@ struct FeedUpdateView: View {
         let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
         return columns
     }
-
+    
     // MARK: Feed 객체를 수정
     func modifyFeed(with images: [String]) {
-        self.feed.images = images
+        feed.images = images
     }
     // MARK: Feed 객체 업데이트
-    func updateFeed(_ inputFeed: MyFeed, feedID: String) {
+    func updateFeed(inputFeed: MyFeed, feedID: String) {
         print("Function: \(#function) started")
-                print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column),","코드없데이트")
+        print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column),","코드없데이트")
         if let selectedImages = selectedImage {
             var imageUrls: [String] = []
             for image in selectedImages {
@@ -531,17 +531,19 @@ struct FeedUpdateView: View {
                 storageRef.putData(imageData) { _, error in
                     if let error = error {
                         print("Error uploading image: \(error)")
+                        print("이미지 넣는과정에러: \(error)")
                         return
                     }
                     storageRef.downloadURL { url, error in
-                        guard let imageUrl = url?.absoluteString else { return }
+                        guard let imageUrl = url?.absoluteString else { return
+                        }
                         imageUrls.append(imageUrl)
                         if imageUrls.count == selectedImages.count {
                             DispatchQueue.main.async {
                                 modifyFeed(with: imageUrls)
                             }
                             Firestore.firestore().collection("Feed").document(feedID).updateData([
-                                "id": inputFeed.id,
+                                //"id": inputFeed.id,
                                 "writerNickname": inputFeed.writerNickname,
                                 "writerName": inputFeed.writerName,
                                 "writerProfileImage": inputFeed.writerProfileImage,
@@ -568,21 +570,6 @@ struct FeedUpdateView: View {
             }
         }
     }
-}
-//struct FeedUpdateView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FeedUpdateView(selctedFeed: .constant(0), root: Binding<Bool>, selection: Binding<Int>, isselctedFeed: Binding<Bool>, isFeedUpdateViewPresented: Binding<Bool>, searchResult: Binding<SearchResult>, feed: MyFeed
-//           )
-//    }
-//}
-//    struct FeedUpdateView_Previews: PreviewProvider {
-//        static var previews: some View {
-//            FeedUpdateView(isselctedFeed: .constant(true), root: .constant(true), selection: .constant(3), isFeedUpdateViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), feed: MyFeed())
-//                .environmentObject(FeedStore())
-//                .environmentObject(UserStore())
-//            
-//        }
-//    }
-//    
     
+}
 

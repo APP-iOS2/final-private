@@ -92,7 +92,7 @@ struct FeedCellView: View {
                                         
                                         print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column)","\(feed.id)")
                                         isFeedUpdateViewPresented = true
-//                                        FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
+
                                         
                                     
                                     },
@@ -103,8 +103,6 @@ struct FeedCellView: View {
                                     .cancel() // 취소 버튼
                                 ]
                             )
-                       
-
                         }
                         .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
                             FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
@@ -141,10 +139,14 @@ struct FeedCellView: View {
         }
         
         HStack(alignment: .top) {
+            Text("\(feed.id)")
+                .font(.pretendardRegular16)
+                .foregroundColor(.primary)
             HStack(alignment: .top) {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
                     .foregroundColor(.primary)
+                
                 
             }
             .padding(.leading, .screenWidth/2 - .screenWidth*0.45 )
@@ -231,9 +233,14 @@ struct FeedCellView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 15)
-                    .foregroundColor(.primary)
-                    .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
+//                    .foregroundColor(.primary)
+//                    .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
                     .padding(.top, 5)
+                    .foregroundColor(
+                                (feed.images.count > 0 && userStore.user.bookmark.contains("\(feed.images[0].suffix(32))"))
+                                ? .privateColor
+                                : .primary
+                            )
             }
             .padding(.leading, 15)
             

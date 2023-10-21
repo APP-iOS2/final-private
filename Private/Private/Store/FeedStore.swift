@@ -31,8 +31,9 @@ final class FeedStore: ObservableObject {
     init() {
         fetchFeeds()
     }
-    // 피드를 Firestore에서 가져오는 함수입니다.
+    //MARK: 피드 패치
     func fetchFeeds() {
+                print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column),","피드패치중")
         // Firestore에서 실시간으로 데이터를 가져오기 위해 addSnapshotListener를 사용합니다.
         feedRef.addSnapshotListener { [weak self] (querySnapshot, error) in
             // 에러가 있다면 콘솔에 출력하고 반환합니다.
@@ -52,7 +53,7 @@ final class FeedStore: ObservableObject {
             .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
     }
-    
+    //MARK: 피드 추가
     func addFeed(_ feed: MyFeed) {
         feedRef.document(feed.id).collection("Feed")
             .document(feed.id)
@@ -73,6 +74,7 @@ final class FeedStore: ObservableObject {
     }
     
     // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
+    //MARK: 피드 firebase데이터 변환
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
         return [
             "writerNickname": feed.writerNickname,
@@ -102,11 +104,15 @@ final class FeedStore: ObservableObject {
         }
     }
      */
-    func deleteFeed(writerNickname: String) {
+    //MARK: 피드 삭제
+    func deleteFeed(feedId: String) {
         // Firestore.firestore().collection("Feed")
         
         // 특정 writerNickname을 가진 피드를 찾아서 삭제
-        let query = feedRef.whereField("writerNickname", isEqualTo: writerNickname)
+        
+        // 하면 다 지워 지는구나...
+        
+        let query = feedRef.whereField("id", isEqualTo: feed.id)
         
         query.getDocuments { (querySnapshot, error) in
             if let error = error {

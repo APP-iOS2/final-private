@@ -19,7 +19,7 @@ struct FeedListView: View {
         NavigationView {
             List {
                 ForEach(feedStore.feedList, id:\.self) { feed in
-                    FeedCellView(feed: feed, root:$root,selection:$selection)
+                    FeedCellView(feed: feed, root:$root, selection:$selection)
                 }
             }
             .navigationBarTitle("팔로워의 리뷰", displayMode: .inline)
