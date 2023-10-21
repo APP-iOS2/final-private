@@ -104,16 +104,45 @@ final class FeedStore: ObservableObject {
         }
     }
      */
-    //MARK: 피드 삭제
+    /// 일단 주석해두었습니다
+//    //MARK: 해당 닉을 가진 사람의 게시글 전체  삭제
+//    func deleteFeed(writerNickname: String) {
+//        // Firestore.firestore().collection("Feed")
+//        let query = feedRef.whereField("id", isEqualTo: writerNickname)
+//        
+//        query.getDocuments { (querySnapshot, error) in
+//            if let error = error {
+//                print("Error deleting feed from Firebase: \(error.localizedDescription)")
+//                return
+//            }
+//            
+//            guard let documents = querySnapshot?.documents else {
+//                print("No documents found.")
+//                return
+//            }
+//            
+//            for document in documents {
+//                // 해당 문서를 삭제
+//                document.reference.delete { error in
+//                    if let error = error {
+//                        print("Error deleting feed from Firebase: \(error.localizedDescription)")
+//                    } else {
+//                        print("Feed deleted from Firebase successfully")
+//                        self.fetchFeeds()
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+    
+    
+    //MARK: 해당 피드id 값을 읽어 그것만 삭제
     func deleteFeed(feedId: String) {
-        // Firestore.firestore().collection("Feed")
+        print("Function: \(#function) started")
+        print("File: \(#file), Line: \(#line), Function: \(#function)")
         
-        // 특정 writerNickname을 가진 피드를 찾아서 삭제
-        
-        // 하면 다 지워 지는구나...
-        
-        let query = feedRef.whereField("id", isEqualTo: feed.id)
-        
+        let query = feedRef.whereField("id", isEqualTo: feedId)
         query.getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("Error deleting feed from Firebase: \(error.localizedDescription)")
@@ -139,5 +168,3 @@ final class FeedStore: ObservableObject {
         }
     }
 }
-
-

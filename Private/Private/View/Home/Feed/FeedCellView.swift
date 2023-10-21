@@ -13,11 +13,8 @@ struct FeedCellView: View {
     @Environment(\.dismiss) private var dismiss
 //    @Environment(\.presentationMode) var presentationMode
 //    @Binding var presentationMode: PresentationMode
-    
-    
     @Environment(\.presentationMode) var presentationMode//: Binding<PresentationMode>
     @Environment(\.colorScheme) var colorScheme
-    
     var feed: MyFeed
     //var category: Category
     @State private var currentPicture = 0
@@ -65,7 +62,6 @@ struct FeedCellView: View {
                 }
                 Spacer()
                 // 조건부로 FeedUpdateView 표시
-
                 HStack {
                     if feed.writerNickname == userStore.user.nickname {
                         Button(action: {
@@ -89,16 +85,12 @@ struct FeedCellView: View {
                                         print("수정")
                                         //MARK: FeedCellView에서 수정하는 곳
                                         //selectedFeed = MyFeed // 선택된 피드 설정
-                                        
                                         print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column)","\(feed.id)")
                                         isFeedUpdateViewPresented = true
-
-                                        
-                                    
                                     },
                                     .destructive(Text("삭제")) {
                                         print("삭제")
-                                        feedStore.deleteFeed(writerNickname: feed.writerNickname)
+                                        feedStore.deleteFeed(feedId: feed.id)
                                     },
                                     .cancel() // 취소 버튼
                                 ]
@@ -106,17 +98,9 @@ struct FeedCellView: View {
                         }
                         .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
                             FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
-                            
-                        
                         }
-//                        
-//                        .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
-//                            FeedUpdateView(root: $root, selection: $selection, isFeedUpdateViewPresented: <#Binding<Bool>#>, searchResult: $searchResult, feed: feed)
-//                        }
                     }
                 }
-                
-                
             }
             .padding(.leading, 20)
             
@@ -127,10 +111,10 @@ struct FeedCellView: View {
                     }
                     .resizable()
                     .scaledToFill()
-                    .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)  // 너비와 높이를 화면 너비의 90%로 설정
+                    .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)
                     .clipped()
-                    .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
-                    .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
+                    .padding(.bottom, 10)
+                    .padding([.leading, .trailing], 15)
                     .tag(Int(feed.images.firstIndex(of: image) ?? 0))
                 }
             }
@@ -146,11 +130,8 @@ struct FeedCellView: View {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
                     .foregroundColor(.primary)
-                
-                
             }
             .padding(.leading, .screenWidth/2 - .screenWidth*0.45 )
-            
             Spacer()
             VStack {
                 HStack{
@@ -214,7 +195,6 @@ struct FeedCellView: View {
                 message = ""
             }
         }
-        
         HStack {
             Button {
                 if (userStore.user.bookmark.contains("\(feed.id)")) {
@@ -235,6 +215,7 @@ struct FeedCellView: View {
                     .frame(width: 15)
 //                    .foregroundColor(.primary)
 //                    .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
+                //MARK: 인덱스 벗어난대서 이렇게 고치니까 돌?아가지더라고요
                     .padding(.top, 5)
                     .foregroundColor(
                                 (feed.images.count > 0 && userStore.user.bookmark.contains("\(feed.images[0].suffix(32))"))
@@ -283,7 +264,6 @@ struct FeedCellView: View {
         Divider()
             .padding(.vertical, 10)
     }
-    //.padding(.top, 20)
 }
 //https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/81789D33-A401-4701-AB9F-ABBBE6DEC156?alt=media&token=a9b1fcdc-c1f9-48ec-87af-d7b617376365
 // https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/39968E65-7EB6-4D5D-AC00-8C8578AABFFF?alt=media&token=149585b7-ad7a-445a-a770-2e13af631ba0

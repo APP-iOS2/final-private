@@ -19,7 +19,6 @@ struct FeedUpdateView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.presentationMode) var presentationMode
     //    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
     @EnvironmentObject var feedStore: FeedStore
     @EnvironmentObject var userStore: UserStore
     //    @EnvironmentObject var userDataStore: UserStore
@@ -27,28 +26,23 @@ struct FeedUpdateView: View {
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     @StateObject private var postStore: PostStore = PostStore()
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
-    
     @Binding var root: Bool
     @Binding var selection: Int
     //@Binding var isselctedFeed : Bool
     @Binding var isFeedUpdateViewPresented: Bool /// FeedUpdateView
     @Binding var searchResult: SearchResult
-    
-    
     @State private var text: String = "" /// 텍스트마스터 내용
     @State private var textPlaceHolder: String = "수정하실 내용을 적어주세요" /// 텍스트마스터 placeholder
     @State private var lat: String = ""
     @State private var lng: String = ""
     @State private var newMarkerlat: String = ""
     @State private var newMarkerlng: String = ""
-    
     @State private var writer: String = ""
     @State private var images: [String] = []
     @State private var createdAt: Double = Date().timeIntervalSince1970
     @State private var visitedShop: String = ""
     @State private var feedId: String = ""
     @State private var myselectedCategory: [String] = []
-    
     @State private var clickLocation: Bool = false
     @State private var isImagePickerPresented: Bool = false /// 업로드뷰에서 이미지 선택 뷰
     @State private var ImageViewPresented: Bool = true /// 처음 이미지 뷰
@@ -57,15 +51,12 @@ struct FeedUpdateView: View {
     @State private var categoryAlert: Bool = false /// 카테고리 초과 알럿
     @State private var isSearchedLocation: Bool = false /// 장소 검색 시트
     @State private var registrationAlert: Bool = false /// 신규 장소 저장완료 알럿
-    
     @State private var selectedImage: [UIImage]? = []
     @FocusState private var isTextMasterFocused: Bool
-    
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     @State var feed: MyFeed
     //    @State var category : Category
-    
     private let minLine: Int = 10
     private let maxLine: Int = 12
     private let fontSize: Double = 18
@@ -75,7 +66,6 @@ struct FeedUpdateView: View {
     var storage = Storage.storage()
     //@State private var selectedCategories: Set<MyCategory> = []
     let filteredCategories = Category.filteredCases
-    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -335,19 +325,18 @@ struct FeedUpdateView: View {
                 let secondButton = Alert.Button.default(Text("완료")) {
                     print("registrationAlert 마지막상태: \(registrationAlert)")
                     // 업데이트 피드가 있으면
+                    //MARK: 이부분 주석..
                     //                    if postCoordinator.newMarkerTitle.isEmpty {
                     //                        creatFeed()
                     //                    } else {
                     //                        creatMarkerFeed()
                     //                    }
                     //MARK: 업데이트 피드 함수를
-                    //                    let newFeed = MyFeed(id: feed.id, writerNickname: feed.writerNickname, writerName: feed.writerName, writerProfileImage: feed.writerNickname, images: $images, contents: $text, createdAt: $createdAt, title: $visitedShop , category: [$myselectedCategory], address: $showLocation, roadAddress: $searchResult, mapx: $newMarkerlat, mapy: $newMarkerlng)
-                    //                    updateFeed(MyFeed: newfeed, feedID: feed.id)
                     let newFeed = MyFeed(id: feed.id, writerNickname: feed.writerNickname, writerName: feed.writerName, writerProfileImage: feed.writerNickname, images: images, contents: text, createdAt: feed.createdAt, title: searchResult.title, category: myselectedCategory, address: searchResult.address, roadAddress: searchResult.roadAddress, mapx: searchResult.mapx, mapy: searchResult.mapy)
             
                     
        
-                    updateFeed(inputFeed: newFeed, feedID: feed.id)
+                    updateFeed(inputFeed: newFeed, feedId: feed.id)
                     searchResult.title = ""
                     searchResult.address = ""
                     searchResult.roadAddress = ""
@@ -520,30 +509,46 @@ struct FeedUpdateView: View {
         feed.images = images
     }
     // MARK: Feed 객체 업데이트
-    func updateFeed(inputFeed: MyFeed, feedID: String) {
+    func updateFeed(inputFeed: MyFeed, feedId: String) {
         print("Function: \(#function) started")
         print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column),","코드없데이트")
         if let selectedImages = selectedImage {
             var imageUrls: [String] = []
+
             for image in selectedImages {
                 guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
+                
                 let storageRef = storage.reference().child(UUID().uuidString)
                 storageRef.putData(imageData) { _, error in
                     if let error = error {
                         print("Error uploading image: \(error)")
-                        print("이미지 넣는과정에러: \(error)")
                         return
                     }
+                    
+                    /*
+                     do {
+                    //                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
+                    //                            } catch {
+                    //                                print("Error saving feed: \(error)")
+                    //                            }
+                    //                            do {
+                    //                                try db.collection("Feed").document(feed.id).setData(from: feed)
+                    //                            } catch {
+                    //                                print("Error saving feed: \(error)")
+                    //                            }
+                    //                        }
+                    //                    }
+                     */
                     storageRef.downloadURL { url, error in
-                        guard let imageUrl = url?.absoluteString else { return
-                        }
+                        guard let imageUrl = url?.absoluteString else { return }
                         imageUrls.append(imageUrl)
+                        
                         if imageUrls.count == selectedImages.count {
                             DispatchQueue.main.async {
-                                modifyFeed(with: imageUrls)
+                                self.modifyFeed(with: imageUrls)
                             }
-                            Firestore.firestore().collection("Feed").document(feedID).updateData([
-                                //"id": inputFeed.id,
+                            
+                            Firestore.firestore().collection("Feed").document(feedId).updateData([
                                 "writerNickname": inputFeed.writerNickname,
                                 "writerName": inputFeed.writerName,
                                 "writerProfileImage": inputFeed.writerProfileImage,
@@ -570,6 +575,5 @@ struct FeedUpdateView: View {
             }
         }
     }
-    
 }
 
