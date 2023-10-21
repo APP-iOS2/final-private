@@ -80,6 +80,8 @@ struct ReservationConfirmView: View {
             Spacer()
         }
         .padding()
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
         .onAppear {
             self.reservedTime = reservationStore.conversionReservedTime(time: reservationData.time).0
             self.reservedHour = reservationStore.conversionReservedTime(time: reservationData.time).1

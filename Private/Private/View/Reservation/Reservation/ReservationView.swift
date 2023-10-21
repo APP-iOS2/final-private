@@ -38,11 +38,6 @@ struct ReservationView: View {
         NavigationStack {
             VStack {
                 ScrollView {
-                    Text(shopData.name)
-                        .font(.pretendardBold24)
-                        .foregroundStyle(.white)
-                        .padding(.bottom)
-                    
                     VStack(alignment: .leading) {
                         Divider()
                             .opacity(0)
@@ -137,7 +132,7 @@ struct ReservationView: View {
                             
                             Group {
                                 Text("노쇼 방지를 위해 인원당 10,000원의 보증금을 받습니다.")
-                                    .padding(.bottom)
+                                    .padding(.bottom, 8)
                                 Text("당일 예약은 예약시간 1시간 전까지 가능합니다.")
                             }
                             .font(.pretendardRegular16)
@@ -157,11 +152,9 @@ struct ReservationView: View {
                 .font(.pretendardBold20)
                 .foregroundStyle(isSelectedTime ? .black : Color.secondary)
                 .disabled(!isSelectedTime)
-                
                 .navigationDestination(isPresented: $isShwoingDetailView) {
                     ReservationDetailView(isShwoingDetailView: $isShwoingDetailView, isReservationPresented: $isReservationPresented, reservationData: $temporaryReservation, shopData: shopData)
                 }
-                .padding()
                 .navigationBarBackButtonHidden(true)
                 .backButtonArrow()
                 .onAppear {
@@ -172,6 +165,9 @@ struct ReservationView: View {
                     temporaryReservation.date = calendarData.getSelectedDate(shopData: shopData)
                 }
             }
+            .padding()
+            .navigationTitle(shopData.name)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

@@ -15,7 +15,6 @@ struct ReservationCardView: View {
     
     @State private var isShowDeleteMyReservationAlert: Bool = false
     @State private var isShowRemoveReservationAlert: Bool = false
-    @State private var isShowModifyView: Bool = false
     @State private var disableReservationButton: Bool = false
     @State private var reservationState: String = ""
     @State private var reservedTime: String = ""
@@ -25,15 +24,18 @@ struct ReservationCardView: View {
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedDate: String = ""
     
+    @Binding var viewNumber: Int
+    
     private let currentDate = Date()
     var reservation: Reservation
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
-                Text(reservationState)
-                    .font(.pretendardMedium20)
-                
+                Text(reservedDate)
+                    .font(.pretendardMedium16)
+                Text(self.reservedTime + " \(self.reservedHour)시")
+                    .font(.pretendardMedium16)
                 Spacer()
                 Menu {
                     NavigationLink {
@@ -60,14 +62,11 @@ struct ReservationCardView: View {
                     Image(systemName: "ellipsis")
                         .frame(width: 25, height: 20)
                 }
-                
                 .foregroundColor(Color.secondary)
             }
+            .padding(.bottom, 8)
             
-            HStack {
-                Text(reservedDate)
-                Text(self.reservedTime + " \(self.reservedHour)시")
-            }
+     
             HStack(alignment: .top) {
                 KFImage(URL(string: shopData.shopImageURL)!)
                     .placeholder({
@@ -76,43 +75,62 @@ struct ReservationCardView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 100, height: 100)
-                    .clipped()
+                    .clipShape(Circle())
+//                    .clipped()
                     .padding(.trailing, 2)
                 
                 VStack(alignment: .leading) {
                     Text(shopData.name)
-                        .font(.pretendardBold20)
+                        .font(.pretendardMedium20)
                         .padding(.bottom, 6)
                     
                     ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
+                    ReservationCardCell(title: "결제 금액", content: "\(temporaryReservation.priceStr)원")
                 }
             }
             .padding(.bottom)
-            
-            if reservationState == "이용 전" {
-                Text("예약 변경 및 취소는 예약시간 한 시간 전까지 가능합니다")
-                    .font(.pretendardRegular16)
-                    .foregroundStyle(Color.red)
-                    .padding(.bottom)
-            }
-            
-            HStack {
-                ReservationButton(text: "예약 변경") {
-                    isShowModifyView.toggle()
+ 
+            if viewNumber == 0 {
+                HStack {
+                    NavigationLink {
+                        ModifyReservationView(temporaryReservation: $temporaryReservation, shopData: shopData)
+                    } label: {
+                        Text("예약 변경")
+                            .foregroundStyle(disableReservationButton ? Color.secondary : .black)
+                            .font(.pretendardBold18)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .background(Color.privateColor)
+                    .cornerRadius(12)
+                    .disabled(disableReservationButton)
+                    
+                    Button {
+                        isShowRemoveReservationAlert.toggle()
+                    } label: {
+                        Text("예약 취소")
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 40)
+                    }
+                    .font(.pretendardMedium18)
+                    .presentationCornerRadius(12)
+                    .foregroundStyle(Color.primary)
+                    .background(.gray)
+//                    .border(Color.white)
+
+
+                    
+//                    ReservationButton(text: "예약 취소") {
+//                        isShowRemoveReservationAlert.toggle()
+//                    }
+//                    .font(.pretendardMedium18)
+//                    .foregroundStyle(disableReservationButton ? Color.secondary : .black)
+//                    .disabled(disableReservationButton)
                 }
-                .foregroundStyle(disableReservationButton ? Color.secondary : .black)
-                .disabled(disableReservationButton)
-                
-                ReservationButton(text: "예약 취소") {
-                    isShowRemoveReservationAlert.toggle()
-                }
-                .font(.pretendardMedium18)
-                .foregroundStyle(disableReservationButton ? Color.secondary : .black)
-                .disabled(disableReservationButton)
             }
         }
         .padding()
-        .background(Color("SubGrayColor"))
+        .background(Color.darkGrayColor)
         .cornerRadius(12)
         .onAppear {
             self.temporaryReservation = self.reservation
@@ -130,9 +148,6 @@ struct ReservationCardView: View {
             reservedTime = reservationStore.conversionReservedTime(time: temporaryReservation.time).0
             reservedHour = reservationStore.conversionReservedTime(time: temporaryReservation.time).1
         }
-        .navigationDestination(isPresented: $isShowModifyView, destination: {
-            ModifyReservationView(temporaryReservation: $temporaryReservation, isShowModifyView: $isShowModifyView, shopData: shopData)
-        })
         .alert("예약 내역 삭제", isPresented: $isShowDeleteMyReservationAlert) {
             Button(role: .destructive) {
                 reservationStore.deleteMyReservation(reservation: temporaryReservation)
@@ -145,7 +160,10 @@ struct ReservationCardView: View {
                 Text("돌아가기")
             }
             .foregroundStyle(Color.red)
+        } message: {
+            Text("예약 내역을 삭제하시겠습니까?")
         }
+        
         .alert("예약 취소", isPresented: $isShowRemoveReservationAlert) {
             Button(role: .destructive) {
                 reservationStore.removeReservation(reservation: temporaryReservation)
@@ -157,7 +175,8 @@ struct ReservationCardView: View {
             } label: {
                 Text("돌아가기")
             }
-            .foregroundStyle(Color.red)
+        } message: {
+            Text("예약을 취소하시겠습니까?")
         }
     }
     
@@ -172,7 +191,7 @@ struct ReservationCardView: View {
 
 struct ReservationCardView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationCardView(reservation: ReservationStore.tempReservation)
+        ReservationCardView(viewNumber: .constant(1), reservation: ReservationStore.tempReservation)
             .environmentObject(ReservationStore())
             .environmentObject(ShopStore())
     }

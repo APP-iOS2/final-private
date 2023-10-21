@@ -32,6 +32,7 @@ struct RequirementTextEditor: View {
                     }
                 })
                 .border(.secondary)
+                .cornerRadius(12)
             
             if requirementText.isEmpty {
                 Text(placeholder)

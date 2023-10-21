@@ -35,7 +35,7 @@ struct TossPaymentsContentView: View {
                 ReservationConfirmView(reservationData: reservationStore.myReservation, shopData: shopData)
                 
                 Spacer()
-                ReservationButton(text: "확인 완료") {
+                ReservationButton(text: "확인") {
                     dismiss()
                     isShwoingDetailView = false
                     isReservationPresented = false
@@ -54,10 +54,10 @@ struct TossPaymentsContentView: View {
                 }
                 
                 HStack {
-                    ReservationButton(text: "돌아가기") {
-                        dismiss()
-                    }
-                    .foregroundStyle(Color.black)
+//                    ReservationButton(text: "돌아가기") {
+//                        dismiss()
+//                    }
+//                    .foregroundStyle(Color.black)
                     
                     ReservationButton(text: "결제하기") {
                         // 파베에 올리기
@@ -72,6 +72,7 @@ struct TossPaymentsContentView: View {
             }
             .background(Color.white)
             .navigationBarBackButtonHidden(true)
+            .backButtonArrow()
         }
 
     }

@@ -8,13 +8,43 @@
 import SwiftUI
 
 struct MyReservation: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var shopStore: ShopStore
     
+    /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
+    @State var viewNumber: Int = 0
+    
     @Binding var isShowingMyReservation: Bool
-        
+    
     var body: some View {
         NavigationStack {
+            HStack {
+                Button {
+                    viewNumber = 0
+                }label: {
+                    Text("이용예정")
+                        .font(.pretendardRegular16)
+                        .foregroundColor(viewNumber == 0 ? .privateColor : .primary)
+                        .frame(width: .screenWidth*0.5)
+                        .padding(.bottom, 15)
+                        .modifier(YellowBottomBorder(showBorder: viewNumber == 0))
+                }
+                Spacer()
+                Button {
+                    viewNumber = 1
+                }label: {
+                    Text("이용완료")
+                        .font(.pretendardRegular16)
+                        .foregroundColor(viewNumber == 1 ? .privateColor : .primary)
+                        .frame(width: .screenWidth*0.5)
+                        .padding(.bottom, 15)
+                        .modifier(YellowBottomBorder(showBorder: viewNumber == 1))
+                }
+            }
+            .padding()
+            
             if reservationStore.reservationList.isEmpty {
                 VStack {
                     Spacer()
@@ -26,25 +56,51 @@ struct MyReservation: View {
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
-                        ForEach(reservationStore.reservationList, id: \.self) { reservation in
-                            ReservationCardView(reservation: reservation)
+                        if viewNumber == 0 {
+                            VStack(alignment: .leading) {
+                                Divider()
+                                    .opacity(0)
+                                HStack {
+                                    Image(systemName: "info.circle")
+                                    Text("알립니다")
+                                }
+                                .font(.pretendardBold18)
+                                .foregroundColor(Color.privateColor)
+                                .padding(.bottom, 6)
+                                
+                                Text("예약 변경 및 취소는 예약시간 한 시간 전까지 가능합니다")
+                                .font(.pretendardRegular16)
+                                .foregroundStyle(Color.primary)
+                            }
+                            .padding()
+                            .background(Color.subGrayColor)
+                            .cornerRadius(12)
+                            .padding(.bottom)
                         }
-                        .padding()
+                        ForEach(viewNumber == 0 ? reservationStore.reservationList.filter { Date() <= $0.date } : reservationStore.reservationList.filter { Date() > $0.date }, id: \.self) { reservation in
+                            ReservationCardView(viewNumber: $viewNumber, reservation: reservation)
+                                .padding(.bottom, 12)
+                        }
                     }
                     .padding()
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button {
-                                isShowingMyReservation.toggle()
-                            } label: {
-                                Text("확인")
-                                    .font(.pretendardMedium20)
-                            }
-                        }
-                    }
                 }
             }
+//                .navigationTitle(
+//                    if colorScheme == .dark {
+//                        Image("private_dark")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: .screenWidth * 0.35)
+//                    } else {
+//                        Image("private_light")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: .screenWidth * 0.35)
+//                    }
+//                )
         }
+        .navigationBarBackButtonHidden()
+        .backButtonArrow()
     }
 }
 

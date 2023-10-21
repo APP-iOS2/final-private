@@ -25,10 +25,10 @@ struct ReservationDetailView: View {
     var body: some View {
         VStack {
             ScrollView {
-                Text(shopData.name)
-                    .font(.pretendardBold24)
-                    .foregroundStyle(.white)
-                    .padding(.bottom, 12)
+//                Text(shopData.name)
+//                    .font(.pretendardBold24)
+//                    .foregroundStyle(.white)
+//                    .padding(.bottom, 12)
                 
                 Divider()
                     .padding(.bottom)
@@ -60,7 +60,7 @@ struct ReservationDetailView: View {
                 
                 VStack(alignment: .leading) {
                     Text("예약자 정보")
-                        .font(.pretendardMedium20)
+                        .font(.pretendardBold20)
                         .foregroundStyle(Color.privateColor)
                         .padding(.bottom, 2)
                     
@@ -77,7 +77,7 @@ struct ReservationDetailView: View {
                 
                 VStack(alignment: .leading) {
                     Text("판매자 정보")
-                        .font(.pretendardMedium20)
+                        .font(.pretendardBold20)
                         .foregroundStyle(Color.privateColor)
                         .padding(.bottom, 2)
                     
@@ -96,7 +96,7 @@ struct ReservationDetailView: View {
             NavigationLink {
                 TossPaymentsContentView(isShwoingDetailView: $isShwoingDetailView, isReservationPresented: $isReservationPresented, reservationData: reservationData, shopData: shopData)
             } label: {
-                Text("결제하러 가기")
+                Text("다음단계")
                     .font(.pretendardBold18)
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -106,6 +106,7 @@ struct ReservationDetailView: View {
             .cornerRadius(12)
             .padding()
         }
+        .navigationTitle(shopData.name)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .backButtonArrow()
