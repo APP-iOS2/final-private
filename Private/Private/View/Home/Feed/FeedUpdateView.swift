@@ -77,6 +77,8 @@ struct FeedUpdateView: View {
             ScrollView {
                 VStack(alignment: .leading) {
                     HStack {
+                        print(feed.id)
+                        print(feed.content)
                         ZStack {
                             if userStore.user.profileImageURL.isEmpty {
                                 Circle()

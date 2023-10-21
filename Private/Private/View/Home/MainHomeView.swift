@@ -95,7 +95,7 @@ struct MainHomeView: View {
             if selectedNumber == 0 {
                 MapMainView()
             } else if selectedNumber == 1 {
-                FeedMainView()
+                FeedMainView(root: $root, selection: $selection)
             }
         }
         .popup(isPresented: $feedStore.uploadToast) {
