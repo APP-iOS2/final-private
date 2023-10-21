@@ -9,17 +9,19 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
-
+//uploadToast
+//
 
 
 final class FeedStore: ObservableObject {
     
+ 
     var db = Firestore.firestore()
     var storage = Storage.storage()
     // @Published 는 SwiftUI에서 ObservableObject의 프로퍼티가 변경될 때 View를 업데이트하도록 합니다.
     @Published var feedList: [MyFeed] = []
-
-
+    @Published var uploadToast: Bool = false
+    @Published var isPostViewPresented: Bool = false
 
     var selctedFeed = MyFeed()
     // Firestore 데이터베이스의 "Feed" 컬렉션에 대한 참조를 생성합니다.
@@ -67,6 +69,7 @@ final class FeedStore: ObservableObject {
                       "mapx": feed.mapx,
                       "mapy": feed.mapy,
                      ])
+            self.uploadToast = true
     }
     
     // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.

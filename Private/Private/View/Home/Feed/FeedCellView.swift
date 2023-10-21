@@ -3,17 +3,24 @@
 //  Private
 //
 //  Created by yeon on 10/10/23.
-//
+import FirebaseFirestore
 import SwiftUI
 import NMapsMap
 import Kingfisher
+import FirebaseStorage
 //import Combine
 struct FeedCellView: View {
+    @Environment(\.dismiss) private var dismiss
+//    @Environment(\.presentationMode) var presentationMode
+//    @Binding var presentationMode: PresentationMode
     
+    
+    @Environment(\.presentationMode) var presentationMode//: Binding<PresentationMode>
     @Environment(\.colorScheme) var colorScheme
     
     var feed: MyFeed
     @State private var currentPicture = 0
+    @EnvironmentObject var userDataStore: UserStore
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject var chatRoomStore: ChatRoomStore
@@ -26,11 +33,16 @@ struct FeedCellView: View {
     @State private var isFeedUpdateViewPresented: Bool = false
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
     @State private var isShowingLocation: Bool = false
+    
     @State private var lat: String = ""
     @State private var lng: String = ""
     @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
-    
+    @Binding var root: Bool
+    @Binding var selection: Int
+//    @Binding var isselctedFeed : Bool
+//    @State private var selectedFeed: Int? = nil
     var body: some View {
+        //@Binding var isselectedFeed: Bool =  false
         VStack {
             HStack {
                 KFImage(URL(string: feed.writerProfileImage))
@@ -51,7 +63,8 @@ struct FeedCellView: View {
                         .foregroundColor(.primary.opacity(0.8))
                 }
                 Spacer()
-                
+                // 조건부로 FeedUpdateView 표시
+
                 HStack {
                     if feed.writerNickname == userStore.user.nickname {
                         Button(action: {
@@ -65,7 +78,7 @@ struct FeedCellView: View {
                                 .foregroundColor(.primary)
                                 .padding(.top, 5)
                                 .padding(.leading, 15)
-                                .padding(.trailing, 15)
+                                .padding(.trailing, 25)
                         }
                         .actionSheet(isPresented: $isActionSheetPresented) {
                             ActionSheet(
@@ -73,8 +86,14 @@ struct FeedCellView: View {
                                 buttons: [
                                     .default(Text("수정")) {
                                         print("수정")
+                                        //MARK: FeedCellView에서 수정하는 곳
+                                        //selectedFeed = MyFeed // 선택된 피드 설정
+                                        
+                                        print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column)","\(feed.id)")
                                         isFeedUpdateViewPresented = true
-                                        FeedUpdateView(root: .constant(true), selection: .constant(0), isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
+//                                        FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
+                                        
+                                    
                                     },
                                     .destructive(Text("삭제")) {
                                         print("삭제")
@@ -83,7 +102,18 @@ struct FeedCellView: View {
                                     .cancel() // 취소 버튼
                                 ]
                             )
+                       
+
                         }
+                        .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
+                            FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
+                            
+                        
+                        }
+//                        
+//                        .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
+//                            FeedUpdateView(root: $root, selection: $selection, isFeedUpdateViewPresented: <#Binding<Bool>#>, searchResult: $searchResult, feed: feed)
+//                        }
                     }
                 }
                 

@@ -18,19 +18,22 @@ import Kingfisher
 struct FeedUpdateView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.presentationMode) var presentationMode
-    
+//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     @EnvironmentObject var feedStore: FeedStore
     @EnvironmentObject var userStore: UserStore
-    @EnvironmentObject var userDataStore: UserStore
-    @State var selctedFeed : MyFeed = MyFeed()
+//    @EnvironmentObject var userDataStore: UserStore
+//    @State var selctedFeed : MyFeed //= MyFeed()
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     @StateObject private var postStore: PostStore = PostStore()
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     
     @Binding var root: Bool
     @Binding var selection: Int
+    //@Binding var isselctedFeed : Bool
     @Binding var isFeedUpdateViewPresented: Bool /// FeedUpdateView
     @Binding var searchResult: SearchResult
+    
     
     @State private var text: String = "" /// 텍스트마스터 내용
     @State private var textPlaceHolder: String = "수정하실 내용을 적어주세요" /// 텍스트마스터 placeholder
@@ -66,12 +69,12 @@ struct FeedUpdateView: View {
     private let maxLine: Int = 12
     private let fontSize: Double = 18
     private let maxSelectedCategories = 3
-    
+    let userDataStore: UserStore = UserStore()
     var db = Firestore.firestore()
     var storage = Storage.storage()
     //
     let filteredCategories = Category.filteredCases
-    
+  
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -294,7 +297,7 @@ struct FeedUpdateView: View {
                     .padding(.trailing, 8)
                     
                     //MARK: 업로드
-                    Text("업로드")
+                    Text("수정 완료")
                         .font(.pretendardBold18)
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .foregroundColor(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == "") ? .white : .black)
@@ -348,13 +351,13 @@ struct FeedUpdateView: View {
                     print("완료 버튼 클릭")
                     print("registrationAlert 마지막상태: \(registrationAlert)")
                 }
-                return Alert(title: Text("게시물 작성"),
-                             message: Text("작성을 완료하시겠습니까?"),
+                return Alert(title: Text("피드 수정"),
+                             message: Text("수정을 완료하시겠습니까?"),
                              primaryButton: firstButton, secondaryButton: secondButton)
             }
             
             .padding(.leading, 12)
-            .navigationTitle("글쓰기")
+            .navigationTitle("피드 수정")
             .navigationBarTitleDisplayMode(.inline)
         } // navigationStack
         .alert(isPresented: $categoryAlert) {
@@ -510,8 +513,10 @@ struct FeedUpdateView: View {
     func modifyFeed(with images: [String]) {
         self.feed.images = images
     }
-    
+    // MARK: Feed 객체 업데이트
     func updateFeed(_ inputFeed: MyFeed, feedID: String) {
+        print("Function: \(#function) started")
+                print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column),","코드없데이트")
         if let selectedImages = selectedImage {
             var imageUrls: [String] = []
             for image in selectedImages {
@@ -558,15 +563,20 @@ struct FeedUpdateView: View {
         }
     }
 }
-    
-    struct FeedUpdateView_Previews: PreviewProvider {
-        static var previews: some View {
-            FeedUpdateView(root: .constant(true), selection: .constant(3), isFeedUpdateViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), feed: MyFeed())
-                .environmentObject(FeedStore())
-                .environmentObject(UserStore())
-            
-        }
-    }
-    
+//struct FeedUpdateView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        FeedUpdateView(selctedFeed: .constant(0), root: Binding<Bool>, selection: Binding<Int>, isselctedFeed: Binding<Bool>, isFeedUpdateViewPresented: Binding<Bool>, searchResult: Binding<SearchResult>, feed: MyFeed
+//           )
+//    }
+//}
+//    struct FeedUpdateView_Previews: PreviewProvider {
+//        static var previews: some View {
+//            FeedUpdateView(isselctedFeed: .constant(true), root: .constant(true), selection: .constant(3), isFeedUpdateViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), feed: MyFeed())
+//                .environmentObject(FeedStore())
+//                .environmentObject(UserStore())
+//            
+//        }
+//    }
+//    
     
 
