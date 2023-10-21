@@ -64,6 +64,7 @@ struct FeedUpdateView: View {
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     @State var feed: MyFeed
+//    @State var category : Category
     
     private let minLine: Int = 10
     private let maxLine: Int = 12
@@ -72,16 +73,21 @@ struct FeedUpdateView: View {
     let userDataStore: UserStore = UserStore()
     var db = Firestore.firestore()
     var storage = Storage.storage()
-    //
+    //@State private var selectedCategories: Set<MyCategory> = []
     let filteredCategories = Category.filteredCases
   
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
+                    VStack{
+                        Text(feed.id)
+                        Text(feed.contents)
+                        
+                    }
                     HStack {
-                        print(feed.id)
-                        print(feed.content)
+                    
+              
                         ZStack {
                             if userStore.user.profileImageURL.isEmpty {
                                 Circle()

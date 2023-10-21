@@ -19,6 +19,7 @@ struct FeedCellView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var feed: MyFeed
+    //var category: Category
     @State private var currentPicture = 0
     @EnvironmentObject var userDataStore: UserStore
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
