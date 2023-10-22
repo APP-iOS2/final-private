@@ -2,22 +2,20 @@
 //  OtherInfoView.swift
 //  Private
 //
-//  Created by 박범수 on 10/19/23.
+//  Created by 박범수 on 10/20/23.
 //
 
 import SwiftUI
 import Kingfisher
 
 struct OtherInfoView: View {
-    
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var followStore: FollowStore
+    var followerList: [String]
+    var followingList: [String]
     @State var isModify: Bool = false
     
     let user:User
-    var followerList: [String]
-    var followingList: [String]
-
     var body: some View {
         HStack {
             VStack() {
@@ -41,14 +39,14 @@ struct OtherInfoView: View {
                 .padding(.bottom, 1.0)
                 Text(user.nickname)
                     .font(.pretendardBold24)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
             }.padding([.top, .trailing], 14)
             VStack {
                 HStack {
                     VStack {
-                        Text("\(userStore.myFeedList.count)")
+                        Text("\(user.savedFeed.count)")
                             .font(.pretendardBold18)
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .padding(.bottom, 5.0)
                         Text("게시글")
                             .font(.pretendardBold14)
@@ -56,7 +54,7 @@ struct OtherInfoView: View {
                     }
                     .padding(.trailing,19.0 )
                     NavigationLink {
-                        MyFollowerFollowingView(user: user, followerList: followerList, followingList: followingList,viewNumber: 0)
+                        MyFollowerFollowingView(user: user, followerList: followerList, followingList: followingList, viewNumber: 0)
                     } label: {
                         VStack {
                             Text("\(followerList.count)")
@@ -85,6 +83,7 @@ struct OtherInfoView: View {
                     
                 }
                 .padding(.bottom, 10.0)
+                
                 FollowButton(user: user)
                     .font(.pretendardSemiBold14)
                     .frame(width: .screenWidth*0.5, height: 32)
@@ -98,14 +97,5 @@ struct OtherInfoView: View {
             }
             .padding(.top, 40.0)
         }
-        .onAppear {
-            //userStore.fetchotherUser(userEmail: user.email)
-        }
-    }
-}
-
-struct OtherInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        OtherInfoView(user: User(), followerList: [""], followingList: [""])
     }
 }
