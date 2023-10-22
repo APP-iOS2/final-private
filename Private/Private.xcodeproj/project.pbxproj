@@ -113,6 +113,7 @@
 		3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F32AB82FF3003689A6 /* MainTabView.swift */; };
 		3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3D8F52AB83200003689A6 /* MainLoginView.swift */; };
 		63BB099A2ABD87BD002CCE4E /* NaverMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BB09992ABD87BD002CCE4E /* NaverMap.swift */; };
+		A611E2BF2AE36CD100E1EF91 /* FeedUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A611E2BE2AE36CD000E1EF91 /* FeedUpdateView.swift */; };
 		B52AC2092ABD5D0C004A9D51 /* ItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */; };
 		B52AC20B2ABD6EFF004A9D51 /* DateTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */; };
 		B52FCD252ADEB47700E0364D /* HolidayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52FCD242ADEB47700E0364D /* HolidayManager.swift */; };
@@ -258,6 +259,7 @@
 		5A395D3AA2009366C31BCDB6 /* Pods_PrivateTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PrivateTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63BB09992ABD87BD002CCE4E /* NaverMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverMap.swift; sourceTree = "<group>"; };
 		87739F481181992B30A0E64A /* Pods_Private.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Private.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A611E2BE2AE36CD000E1EF91 /* FeedUpdateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedUpdateView.swift; sourceTree = "<group>"; };
 		B52AC2082ABD5D0C004A9D51 /* ItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoView.swift; sourceTree = "<group>"; };
 		B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePickerView.swift; sourceTree = "<group>"; };
 		B52FCD242ADEB47700E0364D /* HolidayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidayManager.swift; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 		26357CE02AD532A00098C8F5 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				A611E2BE2AE36CD000E1EF91 /* FeedUpdateView.swift */,
 				3CB734092ABD6F0100D82503 /* FeedMainView.swift */,
 				26357CE32AD532D50098C8F5 /* FeedListView.swift */,
 				26357CE52AD532E70098C8F5 /* FeedCellView.swift */,
@@ -1152,6 +1155,7 @@
 				3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */,
 				B591C7202ACC59E700602727 /* MyReservation.swift in Sources */,
 				E3EB7BC92AD53BAC00D9DF8B /* UploadView.swift in Sources */,
+				A611E2BF2AE36CD100E1EF91 /* FeedUpdateView.swift in Sources */,
 				B52FCD252ADEB47700E0364D /* HolidayManager.swift in Sources */,
 				3CF3D8F62AB83200003689A6 /* MainLoginView.swift in Sources */,
 				3C2FC8F62ACE9B750034F561 /* MapFeedSheetView.swift in Sources */,
