@@ -192,7 +192,7 @@ struct ShopDetailFooterView: View {
                     shopViewModel.updateShop(shopID: shopViewModel.shop.id)
                     shopViewModel.fetchShop(shopID: shopViewModel.shop.id)
                 } label: {
-                    Image(systemName: shopViewModel.shop.bookmarks.contains(userStore.user.email) ? "bookmark.fill" : "bookmark")
+                    Image(systemName: shopViewModel.shop.bookmarks.contains(userStore.user.email) ? "pin.fill" : "pin")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
