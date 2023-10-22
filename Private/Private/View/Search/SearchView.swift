@@ -31,7 +31,7 @@ struct SearchView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             searchStore.fetchrecentSearchResult()
-        
+        }
         .onDisappear {
             Task {
                 await searchStore.searchUser(searchTerm: searchTerm)
