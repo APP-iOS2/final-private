@@ -15,15 +15,11 @@ struct ReservationView: View {
     @EnvironmentObject var holidayManager: HolidayManager
     @EnvironmentObject var calendarData: CalendarData
     
-    @State private var showingDate: Bool = false    // 예약 일시 선택
-    @State private var showingNumbers: Bool = false // 예약 인원 선택
+    @State private var showingDate: Bool = true    // 예약 일시 선택
     @State private var isSelectedTime: Bool = false
-    @State private var isShwoingDetailView: Bool = false
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
-    
-    @Binding var isReservationPresented: Bool
     
     private let step = 1  // 인원선택 stepper의 step
     private let range = 1...6  // stepper 인원제한
@@ -36,125 +32,108 @@ struct ReservationView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        Divider()
-                            .opacity(0)
+            ScrollView {
+                VStack(alignment: .leading) {
+                    Divider()
+                        .opacity(0)
+                    
+                    Text("예약 일시")
+                        .font(.pretendardBold20)
+                        .foregroundStyle(Color.primary)
+                    
+                    HStack {
+                        Image(systemName: "calendar")
+                        Text(isSelectedTime ? "\(reservationStore.getReservationDate(reservationDate: calendarData.selectedDate)) / \(self.reservedTime) \(self.reservedHour)시" : "날짜와 시간을 선택해주세요" )
+                            .font(.pretendardMedium18)
+                        Spacer()
                         
-                        Text("예약 일시")
-                            .font(.pretendardBold18)
-                            .foregroundStyle(.white)
-                        
-                        HStack {
-                            Image(systemName: "calendar")
-                            HStack {
-                                // 이 때 호출하면 언제 메소드는 언제 호출되는거야?
-                                Text(reservationStore.getReservationDate(reservationDate: calendarData.selectedDate))
-                                Text(" / ")
-                                Text(isSelectedTime ? self.reservedTime + " \(self.reservedHour)시" : "시간")
+                        Button {
+                            withAnimation {
+                                showingDate.toggle()
                             }
-                            Spacer()
+                        } label: {
+                            Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
+                                .foregroundStyle(Color.privateColor)
+                                .imageScale(.large)
                             
-                            Button {
-                                withAnimation {
-                                    showingDate.toggle()
-                                }
-                            } label: {
-                                Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
-                                    .foregroundStyle(Color.privateColor)
-                            }
                         }
-                        .font(.pretendardMedium18)
-                        .foregroundStyle(.white)
-                        .padding()
-                        .background(Color.subGrayColor)
-                        .cornerRadius(12)
-                        .padding(.bottom)
-                        
-                        if showingDate {
-                            DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: $isSelectedTime, shopData: shopData)
-                                .onChange(of: temporaryReservation.time) { newValue in
-                                    self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
-                                    self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1
-                                }
+                    }
+                    .foregroundStyle(.white)
+                    .padding()
+                    .background(Color.subGrayColor)
+                    .cornerRadius(12)
+                    .padding(.bottom)
+                    
+                    if showingDate {
+                        DateTimePickerView(temporaryReservation: $temporaryReservation, isSelectedTime: $isSelectedTime, shopData: shopData)
+                            .onChange(of: temporaryReservation.time) { newValue in
+                                self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
+                                self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1
+                            }
+                    }
+                    PrivateDivder()
+                    Text("인원")
+                        .font(.pretendardBold20)
+                        .foregroundStyle(Color.primary)
+                    
+                    HStack {
+                        Stepper(value: $temporaryReservation.numberOfPeople, in: range, step: step) {
+                            Label("\(temporaryReservation.numberOfPeople)명", systemImage: "person")
                         }
-                        
-                        Text("인원")
-                            .font(.pretendardBold18)
-                        
-                        HStack {
-                            Image(systemName: "person")
-                            Text(isSelectedTime ? String(temporaryReservation.numberOfPeople) + "명" : "인원 선택")
-                            Spacer()
-                            Button {
-                                withAnimation {
-                                    showingNumbers.toggle()
-                                }
-                            } label: {
-                                Image(systemName: showingNumbers ? "chevron.up.circle": "chevron.down.circle")
-                                    .foregroundStyle(isSelectedTime ? Color.privateColor : Color.secondary)
-                            }
-                            .disabled(!isSelectedTime)
-                        }
-                        .font(.pretendardMedium18)
-                        .foregroundStyle(.white)
-                        .padding()
-                        .background(Color.subGrayColor)
-                        .cornerRadius(12)
-                        .padding(.bottom, 20)
-                        
-                        if showingNumbers {
-                            HStack {
-                                Image(systemName: "info.circle")
-                                Text("1~6명 까지 선택 가능합니다.")
-                                    .font(.pretendardRegular16)
-                            }
-                            
-                            Divider()
-                            
-                            Stepper(value: $temporaryReservation.numberOfPeople, in: range, step: step) {
-                                Text("\(temporaryReservation.numberOfPeople)")
-                            }
-                            .padding(10)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Divider()
-                                .opacity(0)
-                            HStack {
-                                Image(systemName: "info.circle")
-                                Text("알립니다")
-                            }
-                            .font(.pretendardBold18)
-                            .foregroundColor(Color.privateColor)
-                            .padding(.bottom, 6)
-                            
-                            Group {
-                                Text("노쇼 방지를 위해 인원당 10,000원의 보증금을 받습니다.")
-                                    .padding(.bottom, 8)
-                                Text("당일 예약은 예약시간 1시간 전까지 가능합니다.")
-                            }
+                    }
+                    .font(.pretendardMedium18)
+                    .foregroundStyle(.primary)
+                    .padding(.bottom, 8)
+                    
+                    HStack {
+                        Image(systemName: "info.circle")
+                        Text("1~6명 까지 선택 가능합니다.")
                             .font(.pretendardRegular16)
-                            .foregroundStyle(Color.primary)
+                    }
+                    .padding(.bottom)
+                    
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Image(systemName: "info.circle")
+                            Text("알립니다")
+                            Spacer()
                         }
-                        .padding()
-                        .background(Color.subGrayColor)
-                        .cornerRadius(12)
-                    }// VStack
-                }// ScrollView
+                        .font(.pretendardBold18)
+                        .foregroundColor(Color.privateColor)
+                        .padding(.bottom, 6)
+                        
+                        Group {
+                            Text("노쇼 방지를 위해 인원당 10,000원의 보증금을 받습니다.")
+                                .padding(.bottom, 8)
+                            Text("당일 예약은 예약시간 1시간 전까지 가능합니다.")
+                        }
+                        .font(.pretendardRegular16)
+                        .foregroundStyle(Color.primary)
+                    }
+                    .padding()
+                    .background(Color.subGrayColor)
+                    .cornerRadius(12)
+                }// VStack
+                .padding(.bottom)
                 
-                ReservationButton(text: "다음단계") {
+                Spacer() // 가장 밑으로 가도록 해야 함
+                
+                NavigationLink {
+                    ReservationDetailView(reservationData: $temporaryReservation, shopData: shopData)
+                } label: {
+                    Text("다음단계")
+                        .font(.pretendardBold18)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .simultaneousGesture(TapGesture().onEnded{
                     temporaryReservation.date = calendarData.selectedDate
                     temporaryReservation.totalPrice = (temporaryReservation.numberOfPeople * 10000)
-                    isShwoingDetailView.toggle()
-                }
-                .font(.pretendardBold20)
+                })
                 .foregroundStyle(isSelectedTime ? .black : Color.secondary)
+                .background(Color.privateColor)
+                .cornerRadius(12)
                 .disabled(!isSelectedTime)
-                .navigationDestination(isPresented: $isShwoingDetailView) {
-                    ReservationDetailView(isShwoingDetailView: $isShwoingDetailView, isReservationPresented: $isReservationPresented, reservationData: $temporaryReservation, shopData: shopData)
-                }
                 .navigationBarBackButtonHidden(true)
                 .backButtonArrow()
                 .onAppear {
@@ -174,7 +153,7 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(isReservationPresented: .constant(true), shopData: ShopStore.shop)
+        ReservationView(shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
             .environmentObject(HolidayManager())

@@ -14,7 +14,7 @@ struct MyReservation: View {
     @EnvironmentObject var shopStore: ShopStore
     
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
-    @State var viewNumber: Int = 0
+    @State var useCompleted: Bool = false
     
     @Binding var isShowingMyReservation: Bool
     
@@ -22,25 +22,25 @@ struct MyReservation: View {
         NavigationStack {
             HStack {
                 Button {
-                    viewNumber = 0
+                    useCompleted.toggle()
                 }label: {
                     Text("이용예정")
                         .font(.pretendardRegular16)
-                        .foregroundColor(viewNumber == 0 ? .privateColor : .primary)
+                        .foregroundColor(!useCompleted ? .privateColor : .primary)
                         .frame(width: .screenWidth*0.5)
                         .padding(.bottom, 15)
-                        .modifier(YellowBottomBorder(showBorder: viewNumber == 0))
+                        .modifier(YellowBottomBorder(showBorder: !useCompleted))
                 }
                 Spacer()
                 Button {
-                    viewNumber = 1
+                    useCompleted.toggle()
                 }label: {
                     Text("이용완료")
                         .font(.pretendardRegular16)
-                        .foregroundColor(viewNumber == 1 ? .privateColor : .primary)
+                        .foregroundColor(useCompleted ? .privateColor : .primary)
                         .frame(width: .screenWidth*0.5)
                         .padding(.bottom, 15)
-                        .modifier(YellowBottomBorder(showBorder: viewNumber == 1))
+                        .modifier(YellowBottomBorder(showBorder: useCompleted))
                 }
             }
             .padding()
@@ -56,31 +56,35 @@ struct MyReservation: View {
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
-                        if viewNumber == 0 {
-                            VStack(alignment: .leading) {
-                                Divider()
-                                    .opacity(0)
-                                HStack {
-                                    Image(systemName: "info.circle")
-                                    Text("알립니다")
-                                }
-                                .font(.pretendardBold18)
-                                .foregroundColor(Color.privateColor)
-                                .padding(.bottom, 6)
-                                
-                                Text("예약 변경 및 취소는 예약시간 한 시간 전까지 가능합니다")
-                                .font(.pretendardRegular16)
-                                .foregroundStyle(Color.primary)
+//                        if viewNumber == 0 {
+//                            VStack(alignment: .leading) {
+//                                Divider()
+//                                    .opacity(0)
+//                                HStack {
+//                                    Image(systemName: "info.circle")
+//                                    Text("알립니다")
+//                                }
+//                                .font(.pretendardBold18)
+//                                .foregroundColor(Color.privateColor)
+//                                .padding(.bottom, 6)
+//                                
+//                                Text("예약 변경 및 취소는 예약시간 한 시간 전까지 가능합니다")
+//                                .font(.pretendardRegular16)
+//                                .foregroundStyle(Color.primary)
+//                            }
+//                            .padding()
+//                            .background(Color.subGrayColor)
+//                            .cornerRadius(12)
+//                            .padding(.bottom)
+//                        }
+//                        List {
+                            ForEach(!useCompleted ? reservationStore.reservationList.filter { Date() <= $0.date } : reservationStore.reservationList.filter { Date() > $0.date }, id: \.self) { reservation in
+                                ReservationCardView(useCompleted: $useCompleted, reservation: reservation)
+                                    .padding(.bottom, 12)
+                                PrivateDivder()
                             }
-                            .padding()
-                            .background(Color.subGrayColor)
-                            .cornerRadius(12)
-                            .padding(.bottom)
-                        }
-                        ForEach(viewNumber == 0 ? reservationStore.reservationList.filter { Date() <= $0.date } : reservationStore.reservationList.filter { Date() > $0.date }, id: \.self) { reservation in
-                            ReservationCardView(viewNumber: $viewNumber, reservation: reservation)
-                                .padding(.bottom, 12)
-                        }
+//                        }
+                        
                     }
                     .padding()
                 }
@@ -99,6 +103,7 @@ struct MyReservation: View {
 //                    }
 //                )
         }
+        .navigationTitle("예약내역")
         .navigationBarBackButtonHidden()
         .backButtonArrow()
     }
