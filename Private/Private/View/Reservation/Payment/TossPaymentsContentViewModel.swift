@@ -11,8 +11,7 @@ import TossPayments
 class TossPaymentsContentViewModel: ObservableObject {
     @EnvironmentObject var userStore: UserStore
 
-    let widget = PaymentWidget(clientKey: Bundle.main.payment_Client_KEY, customerKey: UUID().uuidString)
-    static var orderId: Int = 1
+    let widget = PaymentWidget(clientKey: Bundle.main.payment_Client_KEY, customerKey: "Test")
     
     @Published
     var isShowing: Bool = false
@@ -23,7 +22,6 @@ class TossPaymentsContentViewModel: ObservableObject {
     var onFail: TossPaymentsResult.Fail?
     
     init() {
-        Self.orderId += 1
         widget.delegate = self
     }
     func requestPayment(info: WidgetPaymentInfo) {

@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct ModifyReservationView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var calendarData: CalendarData
-
+    
     @State private var showingDate: Bool = false    // 예약 일시 선택
     @State private var showingNumbers: Bool = false // 예약 인원 선택
     @State private var reservedTime: String = ""
@@ -20,8 +22,6 @@ struct ModifyReservationView: View {
     @State private var requirementText: String = ""
     
     @Binding var temporaryReservation: Reservation
-    @Binding var isShowModifyView: Bool
-    
     private let step = 1  // 인원선택 stepper의 step
     private let range = 1...6  // stepper 인원제한
     
@@ -105,14 +105,14 @@ struct ModifyReservationView: View {
                 ReservationButton(text: "예약 변경하기") {
                     isShowingAlert.toggle()
                 }
-                .tint(.primary)
+                .tint(.black)
                 .alert("예약 변경", isPresented: $isShowingAlert) {
                     Button() {
                         print(#fileID, #function, #line, "- 예약 확정")
                         temporaryReservation.date = calendarData.selectedDate
                         temporaryReservation.requirement = requirementText
                         reservationStore.updateReservation(reservation: temporaryReservation)
-                        isShowModifyView.toggle()
+                        dismiss()
                     } label: {
                         Text("변경하기")
                     }
@@ -126,6 +126,8 @@ struct ModifyReservationView: View {
             }
         }
         .padding()
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
         .onAppear {
             calendarData.selectedDate = temporaryReservation.date
             calendarData.currentPage = temporaryReservation.date
@@ -142,7 +144,7 @@ struct ModifyReservationView: View {
 
 struct ModifyReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ModifyReservationView(temporaryReservation: .constant(ReservationStore.tempReservation), isShowModifyView: .constant(true), shopData: ShopStore.shop)
+        ModifyReservationView(temporaryReservation: .constant(ReservationStore.tempReservation), shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
     }
