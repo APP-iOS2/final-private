@@ -22,6 +22,9 @@ struct FeedMainView: View {
                         .padding(.bottom,15)
                 }
             }
+            .refreshable {
+                await feedStore.fetchFeeds()
+            }
             .popup(isPresented: $userStore.clickSavedFeedToast) {
                 ToastMessageView(message: "피드가 저장 되었습니다!")
                     .onDisappear {
