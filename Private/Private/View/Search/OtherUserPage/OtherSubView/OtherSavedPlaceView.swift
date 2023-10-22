@@ -14,6 +14,7 @@ struct OtherSavedPlaceView: View {
     @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     
     let user:User
+    
     var body: some View {
         ScrollView {
             if userStore.mySavedPlaceList.isEmpty {

@@ -16,7 +16,6 @@ struct UserInfoView: View {
     var followingList: [String]
     @State var isModify: Bool = false
     
-    let user:User
     var body: some View {
         HStack {
             VStack() {
