@@ -29,7 +29,8 @@ struct SearchBarTextField: View {
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color(.systemFill), lineWidth: 1)
+//                    .stroke(Color(.systemFill), lineWidth: 1)
+                    .stroke(Color.subGrayColor, lineWidth: 1)
             )
                 .onTapGesture {
                     isEditing = true
