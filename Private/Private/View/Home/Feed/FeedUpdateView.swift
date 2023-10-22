@@ -70,10 +70,6 @@ struct FeedUpdateView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
-                    VStack{
-                        Text(feed.id)
-                        Text(feed.contents)
-                    }
                     HStack {
                         ZStack {
                             if userStore.user.profileImageURL.isEmpty {
@@ -365,121 +361,7 @@ struct FeedUpdateView: View {
             )
         }
     } // body
-    
-    // MARK: 파베함수
-//    func creatFeed() {
-//        //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
-//        
-//        var feed = MyFeed(writerNickname: userStore.user.nickname,
-//                          writerName: userStore.user.name,
-//                          writerProfileImage: userStore.user.profileImageURL,
-//                          images: images,
-//                          contents: text,
-//                          createdAt: createdAt,
-//                          title: searchResult.title.replacingOccurrences(of: "</b>", with: "").replacingOccurrences(of: "<b>", with: ""),
-//                          category: myselectedCategory,
-//                          address: searchResult.address,
-//                          roadAddress: searchResult.roadAddress,
-//                          mapx: searchResult.mapx,
-//                          mapy: searchResult.mapy
-//        )
-//        
-//        if let selectedImages = selectedImage {
-//            var imageUrls: [String] = []
-//            
-//            for image in selectedImages {
-//                guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
-//                
-//                let storageRef = storage.reference().child(UUID().uuidString) //
-//                
-//                storageRef.putData(imageData) { _, error in
-//                    if let error = error {
-//                        print("Error uploading image: \(error)")
-//                        return
-//                    }
-//                    
-//                    storageRef.downloadURL { url, error in
-//                        guard let imageUrl = url?.absoluteString else { return }
-//                        imageUrls.append(imageUrl)
-//                        
-//                        if imageUrls.count == selectedImages.count {
-//                            
-//                            feed.images = imageUrls
-//                            
-//                            do {
-//                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
-//                            } catch {
-//                                print("Error saving feed: \(error)")
-//                            }
-//                            do {
-//                                try db.collection("Feed").document(feed.id).setData(from: feed)
-//                            } catch {
-//                                print("Error saving feed: \(error)")
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    // 새로운 장소와 마커를 함께 저장할 때 쓰여지는 함수
-//    //
-//    func creatMarkerFeed() {
-//        //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
-//        
-//        var feed = MyFeed(writerNickname: userStore.user.nickname,
-//                          writerName: userStore.user.name,
-//                          writerProfileImage: userStore.user.profileImageURL,
-//                          images: images,
-//                          contents: text,
-//                          createdAt: createdAt,
-//                          title: postCoordinator.newMarkerTitle,
-//                          category: myselectedCategory,
-//                          address: searchResult.address,
-//                          roadAddress: searchResult.roadAddress,
-//                          mapx: newMarkerlng,
-//                          mapy: newMarkerlat
-//        )
-//        
-//        if let selectedImages = selectedImage {
-//            var imageUrls: [String] = []
-//            
-//            for image in selectedImages {
-//                guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
-//                
-//                let storageRef = storage.reference().child(UUID().uuidString) //
-//                
-//                storageRef.putData(imageData) { _, error in
-//                    if let error = error {
-//                        print("Error uploading image: \(error)")
-//                        return
-//                    }
-//                    
-//                    storageRef.downloadURL { url, error in
-//                        guard let imageUrl = url?.absoluteString else { return }
-//                        imageUrls.append(imageUrl)
-//                        
-//                        if imageUrls.count == selectedImages.count {
-//                            
-//                            feed.images = imageUrls
-//                            
-//                            do {
-//                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
-//                            } catch {
-//                                print("Error saving feed: \(error)")
-//                            }
-//                            do {
-//                                try db.collection("Feed").document(feed.id).setData(from: feed)
-//                            } catch {
-//                                print("Error saving feed: \(error)")
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
+
     func toggleCategorySelection(at index: Int) {
         selectedToggle[index].toggle()
         let categoryName = MyCategory.allCases[index].categoryName
@@ -504,63 +386,55 @@ struct FeedUpdateView: View {
         return columns
     }
     
-//    // MARK: Feed 객체를 뉴 피드에 넣은 이미지로 수정
-//    func modifyUpdateFeed(with images: [String]) {
-//        newFeed.images = images
-//    }
-    
-    func modifyUpdateFeed(for inputFeed: inout MyFeed, with images: [String]) {
-        inputFeed.images = images
+    // MARK: Feed 객체를 뉴 피드에 넣은 이미지로 수정
+    func modifyUpdateFeed(with selectedImages: [String]) -> [String] {
+        return selectedImages
     }
-    // MARK: Feed 객체 업데이트
     func updateFeed(inputFeed: MyFeed, feedId: String) {
         print("Function: \(#function) started")
-        print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column),","코드없데이트")
+        
+        // inputFeed의 복사본 생성
+        var feedCopy = inputFeed
+        
         if let selectedImages = selectedImage {
             var imageUrls: [String] = []
-
+            let group = DispatchGroup()  // DispatchGroup 생성
+            
             for image in selectedImages {
                 guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
                 
                 let storageRef = storage.reference().child(UUID().uuidString)
+                
+                group.enter() // DispatchGroup 시작
                 storageRef.putData(imageData) { _, error in
                     if let error = error {
                         print("Error uploading image: \(error)")
+                        group.leave()  // Error 발생 시 DispatchGroup 종료
                         return
                     }
                     
-                    /*
-                     do {
-                    //                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
-                    //                            } catch {
-                    //                                print("Error saving feed: \(error)")
-                    //                            }
-                    //                            do {
-                    //                                try db.collection("Feed").document(feed.id).setData(from: feed)
-                    //                            } catch {
-                    //                                print("Error saving feed: \(error)")
-                    //                            }
-                    //                        }
-                    //                    }
-                     */
                     storageRef.downloadURL { url, error in
-                        guard let imageUrl = url?.absoluteString else { return }
+                        guard let imageUrl = url?.absoluteString else {
+                            group.leave()  // Error 발생 시 DispatchGroup 종료
+                            return
+                        }
                         imageUrls.append(imageUrl)
-                        
-//                        if imageUrls.count == selectedImages.count {
-//                            DispatchQueue.main.async {
-//                                modifyUpdateFeed(with: imageUrls)
-//                            }
-                        if imageUrls.count == selectedImages.count {
-                            DispatchQueue.main.async {
-                                self.modifyUpdateFeed(for: inputFeed, with: imageUrls)
-                            }
+                        group.leave()  // 이미지 URL 획득 후 DispatchGroup 종료
+                    }
+                }
+            }
+            
+            // 모든 이미지 업로드가 완료되면
+            group.notify(queue: .main) {
+                let updatedImages = self.modifyUpdateFeed(with: imageUrls)
+                feedCopy.images = updatedImages
+                
                             Firestore.firestore().collection("Feed").document(feedId).updateData([
 
-                                "writerNickname": inputFeed.writerNickname,
-                                "writerName": inputFeed.writerName,
-                                "writerProfileImage": inputFeed.writerProfileImage,
-                                "images": inputFeed.images,
+                                "writerNickname": userStore.user.nickname,
+                                "writerName": userStore.user.id,
+                                "writerProfileImage": userStore.user.profileImageURL,
+                                "images": feedCopy.images,
                                 "contents": inputFeed.contents,
                                 "createdAt": inputFeed.createdAt,
                                 "title": inputFeed.title,
@@ -574,14 +448,11 @@ struct FeedUpdateView: View {
                                     print("Error updating feed: \(error.localizedDescription)")
                                 } else {
                                     print("Feed updated successfully")
-                                    //feedStore.fetchFeeds()
+                                    feedStore.fetchFeeds()
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-    }
-}
 

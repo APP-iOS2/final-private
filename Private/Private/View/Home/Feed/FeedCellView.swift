@@ -123,9 +123,6 @@ struct FeedCellView: View {
         }
         
         HStack(alignment: .top) {
-            Text("\(feed.id)")
-                .font(.pretendardRegular16)
-                .foregroundColor(.primary)
             HStack(alignment: .top) {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
