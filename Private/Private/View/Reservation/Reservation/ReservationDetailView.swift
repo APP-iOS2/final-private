@@ -67,7 +67,7 @@ struct ReservationDetailView: View {
             }
             
             NavigationLink {
-                TossPaymentsContentView(reservationData: reservationData, shopData: shopData)
+                TossPaymentsView(reservationData: reservationData, shopData: shopData)
             } label: {
                 Text("다음단계")
                     .font(.pretendardBold18)

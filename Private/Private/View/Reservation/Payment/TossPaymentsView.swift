@@ -9,7 +9,7 @@ import SwiftUI
 import TossPayments
 import Lottie
 
-struct TossPaymentsContentView: View {
+struct TossPaymentsView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var reservationStore: ReservationStore
     @StateObject var viewModel = TossPaymentsContentViewModel()
@@ -51,7 +51,7 @@ struct TossPaymentsContentView: View {
 
 struct TossPaymentsContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TossPaymentsContentView(reservationData: ReservationStore.tempReservation, shopData: ShopStore.shop)
+        TossPaymentsView(reservationData: ReservationStore.tempReservation, shopData: ShopStore.shop)
             .environmentObject(UserStore())
             .environmentObject(ReservationStore())
     }

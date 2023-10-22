@@ -56,52 +56,14 @@ struct MyReservation: View {
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
-//                        if viewNumber == 0 {
-//                            VStack(alignment: .leading) {
-//                                Divider()
-//                                    .opacity(0)
-//                                HStack {
-//                                    Image(systemName: "info.circle")
-//                                    Text("알립니다")
-//                                }
-//                                .font(.pretendardBold18)
-//                                .foregroundColor(Color.privateColor)
-//                                .padding(.bottom, 6)
-//                                
-//                                Text("예약 변경 및 취소는 예약시간 한 시간 전까지 가능합니다")
-//                                .font(.pretendardRegular16)
-//                                .foregroundStyle(Color.primary)
-//                            }
-//                            .padding()
-//                            .background(Color.subGrayColor)
-//                            .cornerRadius(12)
-//                            .padding(.bottom)
-//                        }
-//                        List {
-                            ForEach(!useCompleted ? reservationStore.reservationList.filter { Date() <= $0.date } : reservationStore.reservationList.filter { Date() > $0.date }, id: \.self) { reservation in
-                                ReservationCardView(useCompleted: $useCompleted, reservation: reservation)
-                                    .padding(.bottom, 12)
-                                PrivateDivder()
-                            }
-//                        }
-                        
+                        ForEach(!useCompleted ? reservationStore.reservationList.filter { Date() <= $0.date } : reservationStore.reservationList.filter { Date() > $0.date }, id: \.self) { reservation in
+                            ReservationCardView(useCompleted: $useCompleted, reservation: reservation)
+                            PrivateDivder()
+                        }
                     }
                     .padding()
                 }
             }
-//                .navigationTitle(
-//                    if colorScheme == .dark {
-//                        Image("private_dark")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: .screenWidth * 0.35)
-//                    } else {
-//                        Image("private_light")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: .screenWidth * 0.35)
-//                    }
-//                )
         }
         .navigationTitle("예약내역")
         .navigationBarBackButtonHidden()

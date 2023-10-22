@@ -44,14 +44,6 @@ struct ReservationCardView: View {
                     } label: {
                         Text("가게보기")
                     }
-                    
-//                    NavigationLink {
-//                        ReservationConfirmView(isCancelReservation: $isCancelReservation, reservationData: temporaryReservation, shopData: shopData)
-//                    } label: {
-//                        Text("예약상세")
-//                    }
-                    
-                    
                     if disableReservationButton {
                         Button(role: .destructive) {
                             print(#fileID, #function, #line, "- 예약내역 삭제")
@@ -86,6 +78,7 @@ struct ReservationCardView: View {
                     VStack(alignment: .leading) {
                             Text(shopData.name)
                                 .font(.pretendardMedium20)
+                                .foregroundStyle(Color.primary)
                                 .padding(.bottom, 6)
                         ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
                         ReservationCardCell(title: "결제 금액", content: "\(temporaryReservation.priceStr)")
@@ -95,51 +88,8 @@ struct ReservationCardView: View {
             .simultaneousGesture(TapGesture().onEnded{
                 isCancelReservation.toggle()
             })
-
-            
- 
-//            if viewNumber == 0 {
-//                HStack {
-//                    NavigationLink {
-//                        ModifyReservationView(temporaryReservation: $temporaryReservation, shopData: shopData)
-//                    } label: {
-//                        Text("예약 변경")
-//                            .foregroundStyle(disableReservationButton ? Color.secondary : .black)
-//                            .font(.pretendardBold18)
-//                            .frame(maxWidth: .infinity)
-//                            .padding()
-//                    }
-//                    .background(Color.privateColor)
-//                    .cornerRadius(12)
-//                    .disabled(disableReservationButton)
-//                    
-//                    Button {
-//                        isShowRemoveReservationAlert.toggle()
-//                    } label: {
-//                        Text("예약 취소")
-//                            .frame(maxWidth: .infinity)
-//                            .frame(height: 40)
-//                    }
-//                    .font(.pretendardMedium18)
-//                    .presentationCornerRadius(12)
-//                    .foregroundStyle(Color.primary)
-//                    .background(.gray)
-////                    .border(Color.white)
-//
-//
-//                    
-////                    ReservationButton(text: "예약 취소") {
-////                        isShowRemoveReservationAlert.toggle()
-////                    }
-////                    .font(.pretendardMedium18)
-////                    .foregroundStyle(disableReservationButton ? Color.secondary : .black)
-////                    .disabled(disableReservationButton)
-//                }
-//            }
         }
-        .padding()
-//        .background(Color.darkGrayColor)
-//        .cornerRadius(12)
+        .padding(.horizontal)
         .onAppear {
             self.temporaryReservation = self.reservation
             self.reservedDate = reservationStore.getReservationDate(reservationDate: self.temporaryReservation.date)
