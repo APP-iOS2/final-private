@@ -14,7 +14,7 @@ struct MySavedPlaceView: View {
     @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             if userStore.mySavedPlaceList.isEmpty {
                 Text("저장한 북마크가 없습니다.")
                     .font(.pretendardBold24)

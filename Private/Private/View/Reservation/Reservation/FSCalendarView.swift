@@ -11,7 +11,7 @@ import FSCalendar
 
 struct FSCalendarView: UIViewRepresentable {
     @EnvironmentObject var calendarData: CalendarData
-
+    
     let calendar = FSCalendar()
     let regularHoliday: [Int]
     let temporaryHoliday: [Date]
@@ -52,7 +52,6 @@ struct FSCalendarView: UIViewRepresentable {
     
     func updateUIView(_ uiView: FSCalendar, context: Context) {
         // 선택한 날짜를 업데이트
-//        uiView.select(calendarData.selectedDate)  // 선택된 날짜 설정
         uiView.setCurrentPage(calendarData.currentPage, animated: true)  // 페이지 넘기는 버튼 눌렀을 때
     }
     
@@ -105,7 +104,7 @@ struct FSCalendarView: UIViewRepresentable {
                     }
                 }
             }
-
+            
             if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }) {
                 return UIColor.secondaryLabel
             } else if calendar.shortWeekdaySymbols[day] == "Sun" { // 국경일에도 포함되도록
@@ -177,9 +176,12 @@ struct FSCalendarView: UIViewRepresentable {
             parent.calendarData.selectedDate = date
         }
         
+        // 보라색 에러 - 메인이 아닌 다른 곳에서 바꾸면 이런 문제가 발생..
         func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-            parent.calendarData.currentPage = calendar.currentPage
-            parent.calendarData.titleOfMonth = calendar.currentPage
+            DispatchQueue.main.async {  // 호출하는 버튼은 main에서 돌아감 -> 여기도 메인으로 돌아가게 해줘야 함
+                self.parent.calendarData.currentPage = calendar.currentPage
+                self.parent.calendarData.titleOfMonth = calendar.currentPage
+            }
         }
         
         // 선택 가능한 최대 날짜 - 1년 후까지

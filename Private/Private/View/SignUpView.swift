@@ -55,7 +55,7 @@ struct SignUpView: View {
                     .font(.pretendardBold14)
                     .foregroundStyle(.primary)
                     HStack {
-                        TextField("ex) 손흥민 (특수문자 불가)", text: $nickName)
+                        TextField("ex) Chris (특수문자 불가)", text: $nickName)
                             .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
                             .disableAutocorrection(true) // 자동수정 비활성화
                             .border(isNicknameValid ? Color.clear : Color.accentColor)
@@ -151,7 +151,7 @@ struct SignUpView: View {
             isHiddenCheckButton = true
             checkNicknameColor = .red
         }
-        else if !isValidNickname(nickName) && nickName.count > 0 {
+        else if (!isValidNickname(nickName) && nickName.count > 0) || nickName == "" {
             cautionNickname = "닉네임 형식이 맞지 않습니다."
             isHiddenCheckButton = false
             checkNicknameColor = .red

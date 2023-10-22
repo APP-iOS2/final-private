@@ -8,36 +8,66 @@
 import SwiftUI
 
 struct MyReservation: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var shopStore: ShopStore
     
+    /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
+    @State var useCompleted: Bool = false
+    
     @Binding var isShowingMyReservation: Bool
-        
+    
     var body: some View {
         NavigationStack {
-            ScrollView(.vertical, showsIndicators: false) {
+            HStack {
+                Button {
+                    useCompleted.toggle()
+                }label: {
+                    Text("이용예정")
+                        .font(.pretendardRegular16)
+                        .foregroundColor(!useCompleted ? .privateColor : .primary)
+                        .frame(width: .screenWidth*0.5)
+                        .padding(.bottom, 15)
+                        .modifier(YellowBottomBorder(showBorder: !useCompleted))
+                }
+                Spacer()
+                Button {
+                    useCompleted.toggle()
+                }label: {
+                    Text("이용완료")
+                        .font(.pretendardRegular16)
+                        .foregroundColor(useCompleted ? .privateColor : .primary)
+                        .frame(width: .screenWidth*0.5)
+                        .padding(.bottom, 15)
+                        .modifier(YellowBottomBorder(showBorder: useCompleted))
+                }
+            }
+            .padding()
+            
+            if reservationStore.reservationList.isEmpty {
                 VStack {
-                    ForEach(reservationStore.reservationList, id: \.self) { reservation in
-                        ReservationCardView(reservation: reservation)
+                    Spacer()
+                    Text("예약 내역이 없습니다.")
+                        .font(.pretendardMedium20)
+                        .foregroundStyle(.primary)
+                    Spacer()
+                }
+            } else {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack {
+                        ForEach(!useCompleted ? reservationStore.reservationList.filter { Date() <= $0.date } : reservationStore.reservationList.filter { Date() > $0.date }, id: \.self) { reservation in
+                            ReservationCardView(useCompleted: $useCompleted, reservation: reservation)
+                            PrivateDivder()
+                        }
                     }
                     .padding()
                 }
-                .padding()
-                .onAppear {
-                    reservationStore.fetchReservation()
-                }
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button {
-                            isShowingMyReservation.toggle()
-                        } label: {
-                            Text("확인")
-                                .font(.pretendardMedium20)
-                        }
-                    }
-                }
             }
         }
+        .navigationTitle("예약내역")
+        .navigationBarBackButtonHidden()
+        .backButtonArrow()
     }
 }
 

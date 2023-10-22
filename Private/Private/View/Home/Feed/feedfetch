@@ -1,0 +1,333 @@
+diff --git a/Private/Private.xcodeproj/project.pbxproj b/Private/Private.xcodeproj/project.pbxproj
+index 7e94100..70504ae 100644
+Binary files a/Private/Private.xcodeproj/project.pbxproj and b/Private/Private.xcodeproj/project.pbxproj differ
+diff --git a/Private/Private/Store/FeedStore.swift b/Private/Private/Store/FeedStore.swift
+index a5da67c..6b2dcde 100644
+--- a/Private/Private/Store/FeedStore.swift
++++ b/Private/Private/Store/FeedStore.swift
+@@ -9,17 +9,19 @@ import Firebase
+ import FirebaseAuth
+ import FirebaseFirestore
+ import FirebaseStorage
+-
++//uploadToast
++//
+ 
+ 
+ final class FeedStore: ObservableObject {
+     
++ 
+     var db = Firestore.firestore()
+     var storage = Storage.storage()
+     // @Published 는 SwiftUI에서 ObservableObject의 프로퍼티가 변경될 때 View를 업데이트하도록 합니다.
+     @Published var feedList: [MyFeed] = []
+-
+-
++    @Published var uploadToast: Bool = false
++    @Published var isPostViewPresented: Bool = false
+ 
+     var selctedFeed = MyFeed()
+     // Firestore 데이터베이스의 "Feed" 컬렉션에 대한 참조를 생성합니다.
+@@ -67,6 +69,7 @@ final class FeedStore: ObservableObject {
+                       "mapx": feed.mapx,
+                       "mapy": feed.mapy,
+                      ])
++            self.uploadToast = true
+     }
+     
+     // Feed 객체를 Firestore 데이터로 변환하는 함수입니다.
+diff --git a/Private/Private/View/Home/Feed/FeedCellView.swift b/Private/Private/View/Home/Feed/FeedCellView.swift
+index 6c4c676..91f42bd 100644
+--- a/Private/Private/View/Home/Feed/FeedCellView.swift
++++ b/Private/Private/View/Home/Feed/FeedCellView.swift
+@@ -3,17 +3,24 @@
+ //  Private
+ //
+ //  Created by yeon on 10/10/23.
+-//
++import FirebaseFirestore
+ import SwiftUI
+ import NMapsMap
+ import Kingfisher
++import FirebaseStorage
+ //import Combine
+ struct FeedCellView: View {
++    @Environment(\.dismiss) private var dismiss
++//    @Environment(\.presentationMode) var presentationMode
++//    @Binding var presentationMode: PresentationMode
++    
+     
++    @Environment(\.presentationMode) var presentationMode//: Binding<PresentationMode>
+     @Environment(\.colorScheme) var colorScheme
+     
+     var feed: MyFeed
+     @State private var currentPicture = 0
++    @EnvironmentObject var userDataStore: UserStore
+     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
+     @EnvironmentObject private var feedStore: FeedStore
+     @EnvironmentObject var chatRoomStore: ChatRoomStore
+@@ -26,11 +33,16 @@ struct FeedCellView: View {
+     @State private var isFeedUpdateViewPresented: Bool = false
+     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
+     @State private var isShowingLocation: Bool = false
++    
+     @State private var lat: String = ""
+     @State private var lng: String = ""
+     @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
+-    
++    @Binding var root: Bool
++    @Binding var selection: Int
++//    @Binding var isselctedFeed : Bool
++//    @State private var selectedFeed: Int? = nil
+     var body: some View {
++        //@Binding var isselectedFeed: Bool =  false
+         VStack {
+             HStack {
+                 KFImage(URL(string: feed.writerProfileImage))
+@@ -51,7 +63,8 @@ struct FeedCellView: View {
+                         .foregroundColor(.primary.opacity(0.8))
+                 }
+                 Spacer()
+-                
++                // 조건부로 FeedUpdateView 표시
++
+                 HStack {
+                     if feed.writerNickname == userStore.user.nickname {
+                         Button(action: {
+@@ -65,7 +78,7 @@ struct FeedCellView: View {
+                                 .foregroundColor(.primary)
+                                 .padding(.top, 5)
+                                 .padding(.leading, 15)
+-                                .padding(.trailing, 15)
++                                .padding(.trailing, 25)
+                         }
+                         .actionSheet(isPresented: $isActionSheetPresented) {
+                             ActionSheet(
+@@ -73,8 +86,14 @@ struct FeedCellView: View {
+                                 buttons: [
+                                     .default(Text("수정")) {
+                                         print("수정")
++                                        //MARK: FeedCellView에서 수정하는 곳
++                                        //selectedFeed = MyFeed // 선택된 피드 설정
++                                        
++                                        print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column)","\(feed.id)")
+                                         isFeedUpdateViewPresented = true
+-                                        FeedUpdateView(root: .constant(true), selection: .constant(0), isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
++//                                        FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
++                                        
++                                    
+                                     },
+                                     .destructive(Text("삭제")) {
+                                         print("삭제")
+@@ -83,7 +102,18 @@ struct FeedCellView: View {
+                                     .cancel() // 취소 버튼
+                                 ]
+                             )
++                       
++
++                        }
++                        .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
++                            FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
++                            
++                        
+                         }
++//                        
++//                        .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
++//                            FeedUpdateView(root: $root, selection: $selection, isFeedUpdateViewPresented: <#Binding<Bool>#>, searchResult: $searchResult, feed: feed)
++//                        }
+                     }
+                 }
+                 
+diff --git a/Private/Private/View/Home/Feed/FeedListView.swift b/Private/Private/View/Home/Feed/FeedListView.swift
+index 331613a..e065b6c 100644
+--- a/Private/Private/View/Home/Feed/FeedListView.swift
++++ b/Private/Private/View/Home/Feed/FeedListView.swift
+@@ -12,12 +12,14 @@ import NMapsMap
+ 
+ struct FeedListView: View {
+     @EnvironmentObject var feedStore : FeedStore
++    @Binding var root: Bool
++    @Binding var selection: Int
+ //    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
+     var body: some View {
+         NavigationView {
+             List {
+                 ForEach(feedStore.feedList, id:\.self) { feed in
+-                    FeedCellView(feed: feed)
++                    FeedCellView(feed: feed, root:$root,selection:$selection)
+                 }
+             }
+             .navigationBarTitle("팔로워의 리뷰", displayMode: .inline)
+diff --git a/Private/Private/View/Home/Feed/FeedMainView.swift b/Private/Private/View/Home/Feed/FeedMainView.swift
+index 34745b6..94fca8b 100644
+--- a/Private/Private/View/Home/Feed/FeedMainView.swift
++++ b/Private/Private/View/Home/Feed/FeedMainView.swift
+@@ -11,12 +11,14 @@ struct FeedMainView: View {
+     
+     @EnvironmentObject var feedStore: FeedStore
+     @EnvironmentObject var userStore: UserStore
++    @Binding var root: Bool
++    @Binding var selection: Int
+     var body: some View {
+       
+             ScrollView {
+                 ForEach(feedStore.feedList) { feed in
+                     
+-                    FeedCellView(feed: feed)
++                    FeedCellView(feed: feed, root:$root,selection:$selection)
+                         .padding(.bottom,15)
+                 }
+             }
+@@ -82,7 +84,7 @@ struct FeedMainView: View {
+ 
+ struct FeedMainView_Previews: PreviewProvider {
+     static var previews: some View {
+-        FeedMainView()
++        FeedMainView(root: .constant(true), selection: .constant(0))
+             .environmentObject(FeedStore())
+             .environmentObject(UserStore())
+     }
+diff --git a/Private/Private/View/Home/Feed/FeedUpdateView.swift b/Private/Private/View/Home/Feed/FeedUpdateView.swift
+index 96108ff..44dbbdd 100644
+--- a/Private/Private/View/Home/Feed/FeedUpdateView.swift
++++ b/Private/Private/View/Home/Feed/FeedUpdateView.swift
+@@ -18,20 +18,23 @@ import Kingfisher
+ struct FeedUpdateView: View {
+     @Environment(\.dismiss) private var dismiss
+     @Environment(\.presentationMode) var presentationMode
+-    
++//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
++
+     @EnvironmentObject var feedStore: FeedStore
+     @EnvironmentObject var userStore: UserStore
+-    @EnvironmentObject var userDataStore: UserStore
+-    @State var selctedFeed : MyFeed = MyFeed()
++//    @EnvironmentObject var userDataStore: UserStore
++//    @State var selctedFeed : MyFeed //= MyFeed()
+     @StateObject private var locationSearchStore = LocationSearchStore.shared
+     @StateObject private var postStore: PostStore = PostStore()
+     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
+     
+     @Binding var root: Bool
+     @Binding var selection: Int
++    //@Binding var isselctedFeed : Bool
+     @Binding var isFeedUpdateViewPresented: Bool /// FeedUpdateView
+     @Binding var searchResult: SearchResult
+     
++    
+     @State private var text: String = "" /// 텍스트마스터 내용
+     @State private var textPlaceHolder: String = "수정하실 내용을 적어주세요" /// 텍스트마스터 placeholder
+     @State private var lat: String = ""
+@@ -66,12 +69,12 @@ struct FeedUpdateView: View {
+     private let maxLine: Int = 12
+     private let fontSize: Double = 18
+     private let maxSelectedCategories = 3
+-    
++    let userDataStore: UserStore = UserStore()
+     var db = Firestore.firestore()
+     var storage = Storage.storage()
+     //
+     let filteredCategories = Category.filteredCases
+-    
++  
+     var body: some View {
+         NavigationStack {
+             ScrollView {
+@@ -292,7 +295,7 @@ struct FeedUpdateView: View {
+                     .padding(.trailing, 8)
+                     
+                     //MARK: 업로드
+-                    Text("업로드")
++                    Text("수정 완료")
+                         .font(.pretendardBold18)
+                         .frame(maxWidth: .infinity, minHeight: 50)
+                         .foregroundColor(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == "") ? .white : .black)
+@@ -346,13 +349,13 @@ struct FeedUpdateView: View {
+                     print("완료 버튼 클릭")
+                     print("registrationAlert 마지막상태: \(registrationAlert)")
+                 }
+-                return Alert(title: Text("게시물 작성"),
+-                             message: Text("작성을 완료하시겠습니까?"),
++                return Alert(title: Text("피드 수정"),
++                             message: Text("수정을 완료하시겠습니까?"),
+                              primaryButton: firstButton, secondaryButton: secondButton)
+             }
+             
+             .padding(.leading, 12)
+-            .navigationTitle("글쓰기")
++            .navigationTitle("피드 수정")
+             .navigationBarTitleDisplayMode(.inline)
+         } // navigationStack
+         .alert(isPresented: $categoryAlert) {
+@@ -508,8 +511,10 @@ struct FeedUpdateView: View {
+     func modifyFeed(with images: [String]) {
+         self.feed.images = images
+     }
+-    
++    // MARK: Feed 객체 업데이트
+     func updateFeed(_ inputFeed: MyFeed, feedID: String) {
++        print("Function: \(#function) started")
++                print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column),","코드없데이트")
+         if let selectedImages = selectedImage {
+             var imageUrls: [String] = []
+             for image in selectedImages {
+@@ -556,15 +561,20 @@ struct FeedUpdateView: View {
+         }
+     }
+ }
+-    
+-    struct FeedUpdateView_Previews: PreviewProvider {
+-        static var previews: some View {
+-            FeedUpdateView(root: .constant(true), selection: .constant(3), isFeedUpdateViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), feed: MyFeed())
+-                .environmentObject(FeedStore())
+-                .environmentObject(UserStore())
+-            
+-        }
+-    }
+-    
++//struct FeedUpdateView_Previews: PreviewProvider {
++//    static var previews: some View {
++//        FeedUpdateView(selctedFeed: .constant(0), root: Binding<Bool>, selection: Binding<Int>, isselctedFeed: Binding<Bool>, isFeedUpdateViewPresented: Binding<Bool>, searchResult: Binding<SearchResult>, feed: MyFeed
++//           )
++//    }
++//}
++//    struct FeedUpdateView_Previews: PreviewProvider {
++//        static var previews: some View {
++//            FeedUpdateView(isselctedFeed: .constant(true), root: .constant(true), selection: .constant(3), isFeedUpdateViewPresented: .constant(true), searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), feed: MyFeed())
++//                .environmentObject(FeedStore())
++//                .environmentObject(UserStore())
++//            
++//        }
++//    }
++//    
+     
+ 
+diff --git a/Private/Private/View/Home/MainHomeView.swift b/Private/Private/View/Home/MainHomeView.swift
+index b8dfb23..bcd7c87 100644
+--- a/Private/Private/View/Home/MainHomeView.swift
++++ b/Private/Private/View/Home/MainHomeView.swift
+@@ -10,7 +10,7 @@ import NMapsMap
+ 
+ struct MainHomeView: View {
+     @EnvironmentObject var feedStore: FeedStore
+-
++    @EnvironmentObject var postStore: PostStore
+     @ObservedObject var coordinator: Coordinator = Coordinator.shared
+     @ObservedObject var locationSearchStore = LocationSearchStore.shared
+     
+@@ -95,13 +95,13 @@ struct MainHomeView: View {
+             if selectedNumber == 0 {
+                 MapMainView()
+             } else if selectedNumber == 1 {
+-                FeedMainView()
++                FeedMainView(root: $root, selection: $selection)
+             }
+         }
+         .popup(isPresented: $feedStore.uploadToast) {
+             ToastMessageView(message: "업로드가 완료되었습니다!")
+                 .onDisappear {
+-                    feedStore.uploadToast = false
++                    self.feedStore.uploadToast = false
+                 }
+         } customize: {
+             $0

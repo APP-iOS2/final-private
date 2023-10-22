@@ -18,7 +18,7 @@ struct MySavedView: View {
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             if userStore.mySavedFeedList.isEmpty {
                 Text("저장한 피드가 없습니다")
                     .font(.pretendardBold24)
@@ -55,7 +55,7 @@ struct MySavedView: View {
                         .contextMenu(ContextMenu(menuItems: {
                             Button("선택한 피드 삭제") {
                                 userStore.deleteFeed(feed)
-                                userStore.user.myFeed.removeAll { $0 == feed.images[0] }
+                                userStore.user.myFeed.removeAll { $0 == feed.id }
                                 userStore.updateUser(user: userStore.user)
                             }
                         }))

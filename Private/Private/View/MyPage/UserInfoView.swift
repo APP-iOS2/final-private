@@ -95,7 +95,7 @@ struct UserInfoView: View {
                         .foregroundColor(.primary)
                 }.sheet(isPresented: $isModify, content: {
                     NavigationStack {
-                        UserInfoModifyView(isModify: $isModify, mypageNickname: "")
+                        UserInfoModifyView(isModify: $isModify)
                     }
                 })
             }

@@ -41,7 +41,7 @@ struct MainLoginView: View {
             .frame(width: .screenWidth * 0.9)
             
             Button {
-//                authStore.openKakaoService()
+                authStore.handleKakaoLogin()
             } label: {
                 Image("KakaoLogin")
                     .resizable()

@@ -11,7 +11,7 @@ struct DateTimePickerView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var holidayManager: HolidayManager
     @EnvironmentObject var calendarData: CalendarData
-
+    
     @State private var showingDate: Bool = true
     @State private var showingTime: Bool = false
     @State private var amReservation: [Int] = []  // 오전 예약시간
@@ -56,98 +56,96 @@ struct DateTimePickerView: View {
     
     var body: some View {
         ScrollView {
-            Button {
-//                showingDate.toggle()
-                withAnimation(.easeIn(duration: 0.5)) {
-                    showingDate.toggle()
-                }
-            } label: {
-                HStack {
-                    Image(systemName: "calendar")
-                    Text("날짜선택")
-                    Spacer()
-                    Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
-                        .foregroundStyle(Color.privateColor)
-                }
-                .font(.pretendardBold18)
-                .foregroundStyle(.white)
-            }
-            Divider()
-                .padding(.bottom)
+            //            Button {
+            //                withAnimation(.easeIn(duration: 0.5)) {
+            //                    showingDate.toggle()
+            //                }
+            //            } label: {
+            //                HStack {
+            //                    Image(systemName: "calendar")
+            //                    Text("날짜선택")
+            //                    Spacer()
+            //                    Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
+            //                        .foregroundStyle(Color.privateColor)
+            //                }
+            //                .font(.pretendardBold18)
+            //                .foregroundStyle(.white)
+            //            }
+            //            Divider()
+            //                .padding(.bottom)
             
             // 날짜 선택 화면 표시 여부
-            if showingDate {
-                HStack {
-                    Text(calendarData.strMonthTitle)  // selecteDate가 된 뒤로 안바뀜
-                    Spacer()
-                    Button {
-                        self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: -1, to: self.calendarData.currentPage)!
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .frame(width: 35, height: 35, alignment: .leading)
-                            .foregroundStyle(Color.privateColor)
-                    }
-                    .disabled(calendarData.disablePrevButton)
-                    
-                    // nextButton
-                    Button {
-                        self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: 1, to: self.calendarData.currentPage)!
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .frame(width: 35, height: 35, alignment: .trailing)
-                            .foregroundStyle(Color.privateColor)
-                    }
-                    .disabled(calendarData.disableNextButton)
-                    
+            //            if showingDate {
+            
+//            HStack {
+//                Image(systemName: "calendar")
+//                Text("날짜선택")
+//                    .font(.pretendardMedium20)
+//                Spacer()
+//            }
+            
+            HStack {
+                Text(calendarData.strMonthTitle)
+                    .font(.pretendardMedium18)
+                Spacer()
+                Button {
+                    self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: -1, to: self.calendarData.currentPage)!
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .frame(width: 35, height: 35, alignment: .leading)
+                        .foregroundStyle(Color.privateColor)
                 }
-                .padding(.horizontal)
+                .disabled(calendarData.disablePrevButton)
                 
-                // 여기 바꿈 selectedDate
-                FSCalendarView(regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
-                    .frame(height: 300)
+                // nextButton
+                Button {
+                    self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: 1, to: self.calendarData.currentPage)!
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .frame(width: 35, height: 35, alignment: .trailing)
+                        .foregroundStyle(Color.privateColor)
+                }
+                .disabled(calendarData.disableNextButton)
+                
+            }
+            .padding(.horizontal)
+            
+            FSCalendarView(regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
+                .frame(height: 300)
                 .padding(.bottom)
                 .onChange(of: calendarData.selectedDate) { newValue in
                     self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: newValue)
                     
                     separateReservationTime(timeSlots: availableTimeSlots)
-//                    print(temporaryReservation.date)
                 }
-            }
+            //            } // if문
             
-            Button {
-                showingTime.toggle()  // 여기서 애니메이션 주면 애니메이션이 살짝 되다 중간에 멈춤
-//                withAnimation(.easeIn(duration: 0.5)) {
-//                    showingTime.toggle()
-//                }
-            } label: {
-                HStack {
-                    Image(systemName: "clock")
-                    Text("시간선택")
-                    Spacer()
-                    Image(systemName: showingTime ? "chevron.up.circle": "chevron.down.circle")
-                        .foregroundStyle(Color.privateColor)
-                }
-                .font(.pretendardBold18)
-                .foregroundStyle(.white)
-            }
-            Divider()
-            
+            PrivateDivder()
+
             // 시간 선택 화면 표시 여부
-            if showingTime {
-                HStack {
-                    Spacer()
-                    Rectangle()
-                        .foregroundColor(Color.privateColor)
-                        .frame(width: 16, height: 16)
-                    Text("선택")
-                        .padding(.trailing, 6)
-                    Rectangle()
-                        .foregroundColor(Color.darkGrayColor)
-                        .frame(width: 16, height: 16)
-                    Text("불가")
-                }
-                .tint(.primary)
-                .padding(.top, 12)
+//            if showingTime {
+//                HStack {
+//                    Image(systemName: "clock")
+//                    Text("시간선택")
+//                        .font(.pretendardMedium20)
+//                    Spacer()
+//                }
+//                .padding(.bottom, 8)
+                
+//                HStack {
+//                    Spacer()
+//                    Rectangle()
+//                        .foregroundColor(Color.privateColor)
+//                        .frame(width: 16, height: 16)
+//                    Text("선택")
+//                        .padding(.trailing, 6)
+//                    Rectangle()
+//                        .foregroundColor(Color.darkGrayColor)
+//                        .frame(width: 16, height: 16)
+//                    Text("불가")
+//                }
+//                .tint(.primary)
+//                .padding(.top, 12)
                 
                 VStack(alignment: .leading) {
                     Divider()
@@ -219,7 +217,7 @@ struct DateTimePickerView: View {
                     }
                     
                 }
-            }
+//            }  // if 문
             
         }
         .padding()
@@ -230,11 +228,6 @@ struct DateTimePickerView: View {
             // 날짜의 기본값이 오늘일 때를 위함
             separateReservationTime(timeSlots: availableTimeSlots)
         }
-//        .refreshable {
-//            self.today = Calendar.current.startOfDay(for: Date())
-//            self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: temporaryReservation.date)
-//        }
-        
     }
     
     // 나중에 수정해야지..
@@ -254,7 +247,7 @@ struct DateTimePickerView: View {
         amReservation = morningTimeSlots
         pmReservation = afternoonTimeSlots
     }
-
+    
 }
 
 struct DateTimePickerView_Previews: PreviewProvider {

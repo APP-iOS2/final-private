@@ -15,13 +15,17 @@ struct ReservationCardView: View {
     
     @State private var isShowDeleteMyReservationAlert: Bool = false
     @State private var isShowRemoveReservationAlert: Bool = false
-    @State private var isShowModifyView: Bool = false
     @State private var disableReservationButton: Bool = false
+    @State private var isCancelReservation: Bool = false
     @State private var reservationState: String = ""
+    @State private var reservedTime: String = ""
+    @State private var reservedHour: Int = 0
     
     @State private var shopData: Shop = ShopStore.shop
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedDate: String = ""
+    
+    @Binding var useCompleted: Bool
     
     private let currentDate = Date()
     var reservation: Reservation
@@ -29,9 +33,10 @@ struct ReservationCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             HStack {
-                Text(reservationState)
-                    .font(.pretendardMedium20)
-                
+                Text(reservedDate)
+                    .font(.pretendardMedium16)
+                Text(self.reservedTime + " \(self.reservedHour)시")
+                    .font(.pretendardMedium16)
                 Spacer()
                 Menu {
                     NavigationLink {
@@ -39,13 +44,6 @@ struct ReservationCardView: View {
                     } label: {
                         Text("가게보기")
                     }
-                    
-                    NavigationLink {
-                        ReservationConfirmView(reservationData: temporaryReservation, shopData: shopData)
-                    } label: {
-                        Text("예약상세")
-                    }
-                    
                     if disableReservationButton {
                         Button(role: .destructive) {
                             print(#fileID, #function, #line, "- 예약내역 삭제")
@@ -58,60 +56,40 @@ struct ReservationCardView: View {
                     Image(systemName: "ellipsis")
                         .frame(width: 25, height: 20)
                 }
-                
                 .foregroundColor(Color.secondary)
             }
+            .padding(.bottom, 8)
             
-            HStack {
-                Text(reservedDate)
-                Text("\(temporaryReservation.time)시")
-            }
-            HStack(alignment: .top) {
-                KFImage(URL(string: shopData.shopImageURL)!)
-                    .placeholder({
-                        ProgressView()
-                    })
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 100, height: 100)
-                    .clipped()
-                    .padding(.trailing, 2)
-                
-                VStack(alignment: .leading) {
-                    Text(shopData.name)
-                        .font(.pretendardBold20)
-                        .padding(.bottom, 6)
+     
+            NavigationLink {
+                ReservationConfirmView(useCompleted: $useCompleted, reservationData: temporaryReservation, shopData: shopData)
+            } label: {
+                HStack(alignment: .top) {
+                    KFImage(URL(string: shopData.shopImageURL)!)
+                        .placeholder({
+                            ProgressView()
+                        })
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100, height: 100)
+                        .cornerRadius(10)
+                        .padding(.trailing, 2)
                     
-                    ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
+                    VStack(alignment: .leading) {
+                            Text(shopData.name)
+                                .font(.pretendardMedium20)
+                                .foregroundStyle(Color.primary)
+                                .padding(.bottom, 6)
+                        ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
+                        ReservationCardCell(title: "결제 금액", content: "\(temporaryReservation.priceStr)")
+                    }
                 }
             }
-            .padding(.bottom)
-            
-            if reservationState == "이용 전" {
-                Text("예약 변경 및 취소는 예약시간 한 시간 전까지 가능합니다")
-                    .font(.pretendardRegular16)
-                    .foregroundStyle(Color.red)
-                    .padding(.bottom)
-            }
-            
-            HStack {
-                ReservationButton(text: "예약 변경") {
-                    isShowModifyView.toggle()
-                }
-                .foregroundStyle(disableReservationButton ? Color.secondary : .black)
-                .disabled(disableReservationButton)
-                
-                ReservationButton(text: "예약 취소") {
-                    isShowRemoveReservationAlert.toggle()
-                }
-                .font(.pretendardMedium18)
-                .foregroundStyle(disableReservationButton ? Color.secondary : .black)
-                .disabled(disableReservationButton)
-            }
+            .simultaneousGesture(TapGesture().onEnded{
+                isCancelReservation.toggle()
+            })
         }
-        .padding()
-        .background(Color("SubGrayColor"))
-        .cornerRadius(12)
+        .padding(.horizontal)
         .onAppear {
             self.temporaryReservation = self.reservation
             self.reservedDate = reservationStore.getReservationDate(reservationDate: self.temporaryReservation.date)
@@ -124,10 +102,10 @@ struct ReservationCardView: View {
             }
             
             self.shopData = shopStore.getReservedShop(reservationData: self.reservation)
+            
+            reservedTime = reservationStore.conversionReservedTime(time: temporaryReservation.time).0
+            reservedHour = reservationStore.conversionReservedTime(time: temporaryReservation.time).1
         }
-        .navigationDestination(isPresented: $isShowModifyView, destination: {
-            ModifyReservationView(temporaryReservation: $temporaryReservation, isShowModifyView: $isShowModifyView, shopData: shopData)
-        })
         .alert("예약 내역 삭제", isPresented: $isShowDeleteMyReservationAlert) {
             Button(role: .destructive) {
                 reservationStore.deleteMyReservation(reservation: temporaryReservation)
@@ -140,7 +118,10 @@ struct ReservationCardView: View {
                 Text("돌아가기")
             }
             .foregroundStyle(Color.red)
+        } message: {
+            Text("예약 내역을 삭제하시겠습니까?")
         }
+        
         .alert("예약 취소", isPresented: $isShowRemoveReservationAlert) {
             Button(role: .destructive) {
                 reservationStore.removeReservation(reservation: temporaryReservation)
@@ -152,7 +133,8 @@ struct ReservationCardView: View {
             } label: {
                 Text("돌아가기")
             }
-            .foregroundStyle(Color.red)
+        } message: {
+            Text("예약을 취소하시겠습니까?")
         }
     }
     
@@ -167,7 +149,7 @@ struct ReservationCardView: View {
 
 struct ReservationCardView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationCardView(reservation: ReservationStore.tempReservation)
+        ReservationCardView(useCompleted: .constant(false), reservation: ReservationStore.tempReservation)
             .environmentObject(ReservationStore())
             .environmentObject(ShopStore())
     }
@@ -180,13 +162,11 @@ struct ReservationCardCell: View {
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             Text("\(title)")
-                .font(.pretendardMedium18)
-            
             Spacer()
-            
             Text("\(content)")
-                .font(.pretendardMedium16)
         }
+        .font(.pretendardMedium18)
+        .foregroundStyle(Color.primary)
         .padding(.bottom, 1)
     }
 }
