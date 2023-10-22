@@ -12,6 +12,7 @@ final class ChatRoomStore: ObservableObject {
     @Published var chatRoomList: [ChatRoom] = [ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")]
     @Published var messageList: [Message] = []
     @Published var isShowingChatLoading : Bool = false
+    @Published var chatRoomMessageToast : Bool = false
 
     
     let userCollection = Firestore.firestore().collection("User")
@@ -247,7 +248,7 @@ final class ChatRoomStore: ObservableObject {
         
         let subCollection2 = userCollection.document("\(otherUserNickname),\(myNickName)")
         let messageCollection2 = subCollection2.collection("Message")
-        
+       
         messageList.append(message)
         
         var messagesData: [String: Any] = [:]
@@ -282,6 +283,9 @@ final class ChatRoomStore: ObservableObject {
                             } else {
                                 print("messagesData:\(messagesData)")
                                 print("Reservation added to Firestore")
+//                                DispatchQueue.main.async {
+//                                    self.chatRoomMessageToast = true
+//                                }
                             }
                         }
                     } else if documentID == "\(otherUserNickname),\(myNickName)" {
@@ -291,11 +295,17 @@ final class ChatRoomStore: ObservableObject {
                             } else {
                                 print("messagesData:\(messagesData)")
                                 print("Reservation added to Firestore")
+//                                DispatchQueue.main.async {
+//                                    self.chatRoomMessageToast = true
+//                                }
                             }
                         }
                     }
                 }
             }
+        DispatchQueue.main.async {
+            self.chatRoomMessageToast = true
+        }
     }
 
     // Message 객체를 딕셔너리로 변환하는 함수
