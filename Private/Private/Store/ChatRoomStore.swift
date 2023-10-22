@@ -9,8 +9,10 @@ import Foundation
 import FirebaseFirestore
 
 final class ChatRoomStore: ObservableObject {
-    @Published var chatRoomList: [ChatRoom] = []
+    @Published var chatRoomList: [ChatRoom] = [ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")]
     @Published var messageList: [Message] = []
+    @Published var isShowingChatLoading : Bool = false
+
     
     let userCollection = Firestore.firestore().collection("User")
     let docRef = Firestore.firestore().collection("User")
@@ -135,9 +137,10 @@ final class ChatRoomStore: ObservableObject {
             }
         }
     }
+    
     func fetchMessage(myNickName: String, otherUserNickname: String){
         var tempChatMessageListLocal:[Message] = []
-        var isFirstExecution = true
+        self.isShowingChatLoading = true
 
         timer = Timer.scheduledTimer(withTimeInterval:  0.5, repeats: true) { timer in
             print("=======fetchMessage=========")
@@ -183,7 +186,6 @@ final class ChatRoomStore: ObservableObject {
                                        let content = messageData["content"] as? String,
                                        let timestamp = messageData["timestamp"] as? Double {
                                         let message = Message(sender: sender, content: content, timestamp: timestamp)
-//                                        print("message: \(message)")
                                         tempChatMessageListLocal.append(message)
                                     }
                                 }
@@ -210,7 +212,6 @@ final class ChatRoomStore: ObservableObject {
                                        let timestamp = messageData["timestamp"] as? Double
                                     {
                                         let message = Message(sender: sender, content: content, timestamp: timestamp)
-//                                        print("message: \(message)")
                                         tempChatMessageListLocal.append(message)
                                     }
                                 }
@@ -221,10 +222,10 @@ final class ChatRoomStore: ObservableObject {
             DispatchQueue.main.async {
                 if self.messageList == [] {
                     self.messageList = tempChatMessageListLocal
-//                    print("같음:self.messageList:\(self.messageList)\ntempChatMessageListLocal:\(tempChatMessageListLocal)")
+                    self.isShowingChatLoading = false
                 } else if self.messageList.count != tempChatMessageListLocal.count {
                     self.messageList = tempChatMessageListLocal
-//                    print("다름: self.messageList:\(self.messageList)\ntempChatMessageListLocal:\(tempChatMessageListLocal)")
+                    self.isShowingChatLoading = false
                 }
                 tempChatMessageListLocal=[]
             }
@@ -340,8 +341,6 @@ final class ChatRoomStore: ObservableObject {
     
     init() {
         print("ChatRoomStore reset.")
-        //        chatRoomList.append(ChatRoomStore.chatRoom)
-        //        messageList = ChatRoomStore.chatRoom.messages
     }
     
     //    static let chatRoom = ChatRoom(

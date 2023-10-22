@@ -17,28 +17,39 @@ struct ChatRoomView: View {
     var chatRoom: ChatRoom
     
     var body: some View {
-        List(chatRoomStore.messageList, id: \.self) { message in
-            if (message.sender == userStore.user.nickname) {
-                Text(message.content)
-                    .padding(10)
-                    .padding(.horizontal, 5)
-                    .background(Color.privateColor)
-                    .foregroundColor(.black)
-                    .cornerRadius(20)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .listRowSeparator(.hidden)
-            } else {
-                Text(message.content)
-                    .padding(10)
-                    .padding(.horizontal, 5)
-                    .background(Color.lightGrayColor)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .listRowSeparator(.hidden)
+//        ScrollView {
+        ZStack{
+            VStack{
+                List(chatRoomStore.messageList, id: \.self) { message in
+                    if (message.sender == userStore.user.nickname) {
+                        Text(message.content)
+                            .padding(10)
+                            .padding(.horizontal, 5)
+                            .background(Color.privateColor)
+                            .foregroundColor(.black)
+                            .cornerRadius(20)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .listRowSeparator(.hidden)
+                    } else {
+                        Text(message.content)
+                            .padding(10)
+                            .padding(.horizontal, 5)
+                            .background(Color.lightGrayColor)
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .listRowSeparator(.hidden)
+                    }
+                }
+                
+                .listStyle(.plain)
+            }
+            //    }
+            if chatRoomStore.isShowingChatLoading {
+                ProgressView()
             }
         }
-        .listStyle(.plain)
+           
         
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -92,10 +103,6 @@ struct ChatRoomView: View {
             message = ""
         }
     }
-    
-//    func sendMessage() {
-//        chatRoomStore.messageList.append(Message(sender: "나", content: message, timestamp: Date().timeIntervalSince1970))
-//    }
 }
 
 //struct ChatRoomView_Previews: PreviewProvider {
