@@ -56,7 +56,7 @@ struct ShopListView: View {
             .padding(.horizontal, 10)
             .padding(.bottom, 10)
             
-            ScrollView(.vertical) {
+            ScrollView(.vertical, showsIndicators: false) {
                 ForEach(shopStore.shopList.filter({ shop in
                     if selectedShopCategory == Category.general {
                         return true
@@ -119,9 +119,17 @@ struct ShopListCell: View {
                         .frame(width: CGFloat.screenWidth * 0.25, height: CGFloat.screenWidth * 0.25)
                         .cornerRadius(12)
                     
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("\(shop.name)")
-                            .font(Font.pretendardBold18)
+                    VStack(alignment: .leading, spacing: 5) {
+                        HStack(alignment: .center, spacing: 7) {
+                            Text("\(shop.name)")
+                                .font(Font.pretendardBold18)
+                            
+                            Divider()
+                                .frame(height: 20)
+                            
+                            Text("\(shop.category.categoryName)")
+                                .font(Font.pretendardMedium16)
+                        }
                         
                         Text("\(shop.address)")
                             .font(Font.pretendardRegular14)

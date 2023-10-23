@@ -12,6 +12,7 @@ import FirebaseAuth
 import GoogleSignIn
 import KakaoSDKCommon
 import KakaoSDKAuth
+import NMapsMap
 
 @main
 struct PrivateApp: App {
@@ -66,6 +67,8 @@ struct PrivateApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // Naver 지도 API 서비스 사용하기 위함
+        NMFAuthManager.shared().clientId = Bundle.main.infoDictionary?["NMFClientId"] as? String ?? "NMF Client ID is nil"
         return true
     }
     

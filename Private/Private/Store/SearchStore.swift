@@ -40,24 +40,28 @@ final class SearchStore: ObservableObject {
                          .whereField("nickname", isEqualTo: searchTerm)
                          .limit(to: 10)
             
-            do {
-                let querySnapshot = try await query.getDocuments()
-                
-                // 현재 사용자의 ID 가져오기
-                guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-                
-                // 사용자 정의 초기화 메서드를 사용하여 User 객체 생성 및 추가
-                let users: [User] = querySnapshot.documents.compactMap { document in
-                    let userData = document.data()
-                    if let user = User(document: userData), user.id != currentUserId {
-                        return user
-                    } else {
-                        return nil
-                    }
+        do {
+            let querySnapshot = try await query.getDocuments()
+            
+            // 현재 사용자의 ID 가져오기
+            guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+            
+            // 사용자 정의 초기화 메서드를 사용하여 User 객체 생성 및 추가
+            let users: [User] = querySnapshot.documents.compactMap { document in
+                let userData = document.data()
+                if let user = User(document: userData), user.id != currentUserId {
+                    return user
+                } else {
+                    return nil
                 }
-//                self.searchUserLists = users
-                addUserLists(users)
-            } catch {
+            }
+            //                self.searchUserLists = users
+            for newUser in users {
+                if !searchUserLists.contains(users) {
+                    searchUserLists.append(newUser)
+                }
+            }
+        } catch {
                 print("Error fetching users: \(error.localizedDescription)")
             }
         }
@@ -68,11 +72,14 @@ final class SearchStore: ObservableObject {
     
     
     func addRecentSearch(_ searchText: String) {
+        if searchText != "" {
             if self.recentSearchResult.contains(searchText) || searchText == ""{
                 self.removeRecentSearchResult(searchText)
             }
             self.recentSearchResult.insert(searchText, at: 0)
-            self.setUserDefaults()
+            
+        }
+        self.setUserDefaults()
     }
     
     func removeRecentSearchResult(_ resultText: String) {
@@ -84,16 +91,6 @@ final class SearchStore: ObservableObject {
             self.setUserDefaults()
         }
     }
-    
-    func addUserLists(_ users: [User]) {
-        for user in users {
-            if !self.searchUserLists.contains(user) {
-                self.searchUserLists.insert(user, at: 0)
-            }
-        }
-        self.setUserDefaults()
-    }
-
     
     func removeUserList(_ user: User) {
         if let index = self.searchUserLists.firstIndex(of: user) {

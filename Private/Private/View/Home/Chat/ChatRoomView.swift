@@ -6,18 +6,19 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ChatRoomView: View {
     
     @EnvironmentObject var chatRoomStore: ChatRoomStore
     @EnvironmentObject var userStore: UserStore
-
+    
     @State private var message: String = ""
     
     var chatRoom: ChatRoom
     
     var body: some View {
-//        ScrollView {
+        //        ScrollView {
         ZStack{
             VStack{
                 List(chatRoomStore.messageList, id: \.self) { message in
@@ -49,13 +50,20 @@ struct ChatRoomView: View {
                 ProgressView()
             }
         }
-           
+        
         
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 if (userStore.user.nickname == chatRoom.firstUserNickname) {
                     HStack {
-                        Image("userDefault")
+                        KFImage(URL(string: chatRoom.secondUserProfileImage))
+                            .placeholder {
+                                Image("userDefault")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30)
+                                    .cornerRadius(50)
+                            }
                             .resizable()
                             .scaledToFit()
                             .frame(width: 30)
@@ -88,7 +96,7 @@ struct ChatRoomView: View {
         .backButtonArrow()
         
         .onAppear {
-//            chatRoomStore.checkFetchMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname)
+            //            chatRoomStore.checkFetchMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname)
             chatRoomStore.fetchMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname)
             print("\(chatRoomStore.messageList)")
             print("\(userStore.user)")
@@ -99,8 +107,10 @@ struct ChatRoomView: View {
         }
         SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
             print("chatRoom-sendMessage\(chatRoom)")
-            chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
-            message = ""
+            if message != "" {
+                chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
+                message = ""
+            }
         }
     }
 }

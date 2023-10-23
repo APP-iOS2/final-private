@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Kingfisher
+
 
 struct ChatRoomCellView: View {
     
@@ -17,11 +19,16 @@ struct ChatRoomCellView: View {
     var body: some View {
         if (userStore.user.nickname == chatRoom.firstUserNickname) {
             HStack {
-                Image("userDefault")
+                KFImage(URL(string: chatRoom.secondUserProfileImage))
+                    .placeholder {
+                        Image("userDefault")
+                            .resizable()
+                            .clipShape(Circle())
+                            .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
+                    }
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 50)
-                    .cornerRadius(50)
+                    .clipShape(Circle())
+                    .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
                 VStack(alignment: .leading) {
                     Text("\(chatRoom.secondUserNickname)")
                         .font(.pretendardSemiBold16)
@@ -31,11 +38,17 @@ struct ChatRoomCellView: View {
             }
         } else {
             HStack {
-                Image("userDefault")
+                KFImage(URL(string: chatRoom.firstUserProfileImage))
+                    .placeholder {
+                        Image("userDefault")
+                            .resizable()
+                            .clipShape(Circle())
+                            .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
+                    }
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 50)
-                    .cornerRadius(50)
+                    .clipShape(Circle())
+                    .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
+                
                 VStack(alignment: .leading) {
                     Text("\(chatRoom.firstUserNickname)")
                         .font(.pretendardSemiBold16)

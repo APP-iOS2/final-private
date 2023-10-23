@@ -16,149 +16,188 @@ struct ShopDetailInfoView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 10) {
-                ZStack {
-                    Image(systemName: "text.justify.leading")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .foregroundStyle(Color.privateColor)
-                        .frame(width: 20, height: 20)
+            Section {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(shopData.shopInfo)
+                        .lineSpacing(6)
+                        .font(.pretendardRegular14)
                 }
-                .frame(width: 25, height: 25)
-                
-                Text("소개")
-                    .font(.pretendardMedium18)
-                    .foregroundStyle(Color.privateColor)
-                
-                Spacer()
-            }
-            
-            VStack(alignment: .leading, spacing: 0) {
-                Text(shopData.shopInfo)
-                    .lineSpacing(6)
-                    .font(.pretendardBold14)
-            }
-            .padding(10)
-            
-            Divider()
-            
-            HStack(alignment: .center, spacing: 10) {
-                ZStack {
-                    Image(systemName: "clock")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .foregroundStyle(Color.privateColor)
-                        .frame(width: 25, height: 25)
-                }
-                .frame(width: 25, height: 25)
-                
-                Text("영업 시간")
-                    .font(.pretendardMedium18)
-                    .foregroundStyle(Color.privateColor)
-                
-                Spacer()
-                
-                ZStack {
-                    Text("\(isShopOpen(shopData))")
+                .padding(10)
+            } header: {
+                HStack(alignment: .center, spacing: 10) {
+                    ZStack {
+                        Image(systemName: "text.justify.leading")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .foregroundStyle(Color.privateColor)
+                            .frame(width: 20, height: 20)
+                    }
+                    .frame(width: 25, height: 25)
+                    
+                    Text("소개")
                         .font(.pretendardMedium18)
-                        .foregroundStyle(Color.black)
-                        .padding(10)
+                        .foregroundStyle(Color.privateColor)
+                    
+                    Spacer()
                 }
-                .background(isShopOpen(shopData) == "영업중" ? Color.privateColor : Color.subGrayColor)
-                .cornerRadius(12)
             }
             
-            VStack(alignment: .leading, spacing: 6) {
-                ForEach(sortedWeekdays, id: \.self) { day in
-                    if let hours = shopData.weeklyBusinessHours[day] {
-                        HStack(spacing: 0) {
-                            Text("\(day)")
-                            
-                            VStack {
-                                Divider()
+            //            Divider()
+            
+            Section {
+                VStack(alignment: .leading, spacing: 6) {
+                    ForEach(sortedWeekdays, id: \.self) { day in
+                        if let hours = shopData.weeklyBusinessHours[day] {
+                            HStack(spacing: 0) {
+                                Text("\(day)")
+                                
+                                VStack {
+                                    Divider()
+                                        .background(Color("SubGrayColor"))
+                                }
+                                .padding(.horizontal, 12)
+                                
+                                if shopData.regularHoliday.contains(where: { holidayString in
+                                    return holidayString == day
+                                }) {
+                                    Text("정기 휴무")
+                                } else {
+                                    ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
+                                }
                             }
-                            .padding(.horizontal, 5)
-                            
-                            if shopData.regularHoliday.contains(where: { holidayString in
-                                return holidayString == day
-                            }) {
-                                Text("정기 휴무")
-                            } else {
-                                ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
-                            }
+                            .font(.pretendardRegular14)
                         }
-                        .font(.pretendardBold14)
                     }
                 }
+                .padding(10)
+            } header: {
+                HStack(alignment: .center, spacing: 10) {
+                    ZStack {
+                        Image(systemName: "clock")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .foregroundStyle(Color.privateColor)
+                            .frame(width: 25, height: 25)
+                    }
+                    .frame(width: 25, height: 25)
+                    
+                    Text("영업 시간")
+                        .font(.pretendardMedium18)
+                        .foregroundStyle(Color.privateColor)
+                    
+                    Spacer()
+                    
+                    ZStack {
+                        Text("\(isShopOpen(shopData))")
+                            .font(.pretendardMedium18)
+                            .foregroundStyle(Color.black)
+                            .padding(10)
+                    }
+                    .background(isShopOpen(shopData) == "영업중" || isShopOpen(shopData) == "금일 휴무" ? Color.privateColor : Color.subGrayColor)
+                    .cornerRadius(12)
+                }
             }
-            .padding(10)
             
-            VStack(spacing: 10) {
-                DisclosureGroup {
-                    VStack(alignment: .leading, spacing: 6) {
+            //            Divider()
+            
+            Section {
+                VStack(alignment: .leading, spacing: 6) {
+                    if shopData.temporaryHoliday.filter({ date in
+                        return date >= Calendar.current.startOfDay(for: Date())
+                    }).isEmpty {
+                        HStack(alignment: .center, spacing: 0) {
+                            Text("임시 휴무일이 없습니다.")
+                                .font(.pretendardRegular14)
+                            
+                            Spacer()
+                        }
+                    } else {
                         ForEach(shopData.temporaryHoliday.filter({ date in
                             return date >= Calendar.current.startOfDay(for: Date())
                         }), id: \.self) { day in
                             HStack(spacing: 0) {
                                 Text(AppDateFormatter.shared.fullDateString(from: day))
-                                    .font(.pretendardBold14)
+                                    .font(.pretendardRegular14)
                                 
                                 Spacer()
                             }
                         }
                     }
-                    .padding(10)
-                } label: {
-                    Text("휴무일")
+                }
+                .padding(10)
+            } header: {
+                HStack(alignment: .center, spacing: 10) {
+                    ZStack {
+                        Image(systemName: "calendar.badge.exclamationmark")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .foregroundStyle(Color.privateColor)
+                            .frame(width: 20, height: 20)
+                    }
+                    .frame(width: 25, height: 25)
+                    
+                    Text("임시 휴무일")
                         .font(.pretendardMedium18)
                         .foregroundStyle(Color.privateColor)
-                        .lineSpacing(5)
-                        .frame(alignment: .leading)
+                    
+                    Spacer()
                 }
-                .accentColor(Color.white)
-                
-                DisclosureGroup {
-                    VStack(alignment: .leading, spacing: 6) {
-                        if shopData.breakTimeHours.isEmpty {
-                            HStack(alignment: .center, spacing: 0) {
-                                Text("브레이크 타임이 없습니다.")
-                                    .font(Font.pretendardBold14)
-                                
-                                Spacer()
-                            }
-                        } else {
-                            ForEach(sortedWeekdays, id: \.self) { day in
-                                if let hours = shopData.breakTimeHours[day] {
-                                    HStack(spacing: 0) {
-                                        Text("\(day)")
-                                        
-                                        VStack {
-                                            Divider()
-                                        }
-                                        .padding(.horizontal, 5)
-                                        
-                                        if shopData.regularHoliday.contains(where: { holidayString in
-                                            return holidayString == day
-                                        }) {
-                                            Text("정기 휴무")
-                                        } else {
-                                            ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
-                                        }
+            }
+            
+            //            Divider()
+            
+            Section {
+                VStack(alignment: .leading, spacing: 6) {
+                    if shopData.breakTimeHours.isEmpty {
+                        HStack(alignment: .center, spacing: 0) {
+                            Text("브레이크 타임이 없습니다.")
+                                .font(.pretendardRegular14)
+                            
+                            Spacer()
+                        }
+                    } else {
+                        ForEach(sortedWeekdays, id: \.self) { day in
+                            if let hours = shopData.breakTimeHours[day] {
+                                HStack(spacing: 0) {
+                                    Text("\(day)")
+                                    
+                                    VStack {
+                                        Divider()
                                     }
-                                    .font(.pretendardBold14)
+                                    .padding(.horizontal, 5)
+                                    
+                                    if shopData.regularHoliday.contains(where: { holidayString in
+                                        return holidayString == day
+                                    }) {
+                                        Text("정기 휴무")
+                                    } else {
+                                        ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
+                                    }
                                 }
                             }
                         }
                     }
-                    .padding(10)
-                } label: {
+                }
+                .padding(10)
+            } header: {
+                HStack(alignment: .center, spacing: 10) {
+                    ZStack {
+                        Image(systemName: "hourglass")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundStyle(Color.privateColor)
+                            .frame(width: 25, height: 25)
+                    }
+                    .frame(width: 25, height: 25)
+                    
                     Text("브레이크 타임")
                         .font(.pretendardMedium18)
                         .foregroundStyle(Color.privateColor)
                         .lineSpacing(5)
                         .frame(alignment: .leading)
+                    
+                    Spacer()
                 }
-                .accentColor(Color.white)
             }
         }
     }

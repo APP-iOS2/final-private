@@ -119,6 +119,7 @@ struct FeedCellView: View {
             .tabViewStyle(PageTabViewStyle())
             .frame(width: .screenWidth, height: .screenWidth)
         }
+
         //MARK: 회색 장소 박스
         HStack {
             Button {
@@ -169,6 +170,7 @@ struct FeedCellView: View {
                 .padding(.leading, 15)
             }
             Spacer()
+            
         }
         .padding(.top, 5)
         .padding(.horizontal, 10)
