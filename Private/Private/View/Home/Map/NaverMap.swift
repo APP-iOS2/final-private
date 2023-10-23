@@ -43,6 +43,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     var myFeedList: [MyFeed] = []
     var markers: [NMFMarker] = []
     var locationManager: CLLocationManager?
+    var searchLocationMarker: NMFMarker?
 
     @Published var currentFeedId: String = "보리마루"
     @Published var isBookMarkTapped: Bool = false
@@ -227,17 +228,21 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     
     // MARK: 해당 장소 이동 시 위치 좌표에 마커
     func makeSearchLocationMarker() {
-        let marker = NMFMarker()
-        marker.position = NMGLatLng(lat: coord.lat, lng: coord.lng)
-        
-        marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
-        marker.captionMinZoom = 10
-        marker.captionMaxZoom = 17
-        marker.iconImage = NMFOverlayImage(name: "placeholder")
-        marker.width = CGFloat(40)
-        marker.height = CGFloat(40)
-        
-        marker.mapView = view.mapView
+        if let marker = searchLocationMarker {
+                marker.mapView = nil
+            }
+            let marker = NMFMarker()
+            marker.position = NMGLatLng(lat: coord.lat, lng: coord.lng)
+            
+            marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
+            marker.captionMinZoom = 10
+            marker.captionMaxZoom = 17
+            marker.iconImage = NMFOverlayImage(name: "placeholder")
+            marker.width = CGFloat(40)
+            marker.height = CGFloat(40)
+            
+            marker.mapView = view.mapView
+            searchLocationMarker = marker
     }
     
     // MARK: - Mark 터치 시 이벤트 발생
