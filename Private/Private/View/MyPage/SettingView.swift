@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SettingView: View {
     @EnvironmentObject private var authStore: AuthStore
+    @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var feedStore: FeedStore
     @State private var logoutAlert = false
     @State private var deleteAuth = false
     
@@ -37,7 +39,6 @@ struct SettingView: View {
                     Button{
                         print("로그아웃")
                         logoutAlert = true
-                        
                     } label: {
                         HStack {
                             Text("로그아웃")
@@ -69,7 +70,7 @@ struct SettingView: View {
                         deleteAuth = true
                     } label: {
                         HStack {
-                            Text("계정삭제")
+                            Text("회원탈퇴")
                                 .font(.pretendardRegular16)
                             Spacer()
                             Image(systemName: "chevron.right")
@@ -78,9 +79,14 @@ struct SettingView: View {
                     .foregroundColor(.red)
                     .alert(isPresented: $deleteAuth) {
                         Alert(
-                            title: Text("계정삭제"),
-                            message: Text("계정삭제 하시겠습니까?"),
-                            primaryButton:.destructive(Text("계정삭제"), action: { /*계정 삭제 함수 추가*/ }),
+                            title: Text("회원탈퇴"),
+                            message: Text("회원탈퇴 하시겠습니까?"),
+                            primaryButton:.destructive(Text("회원탈퇴"), action: {
+                                feedStore.deleteFeed (writerNickname: userStore.user.nickname)
+                                authStore.deleteAuth (userStore.user.email)
+                                userStore.deleteUser()
+                                platformLogout()
+                            }),
                             secondaryButton: .cancel(Text("취소"))
                         )
                     }
