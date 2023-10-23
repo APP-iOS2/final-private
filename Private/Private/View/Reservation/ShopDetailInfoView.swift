@@ -174,7 +174,6 @@ struct ShopDetailInfoView: View {
                                         ShopDetailHourTextView(startHour: hours.startHour, startMinute: hours.startMinute, endHour: hours.endHour, endMinute: hours.endMinute)
                                     }
                                 }
-                                .font(.pretendardRegular14)
                             }
                         }
                     }

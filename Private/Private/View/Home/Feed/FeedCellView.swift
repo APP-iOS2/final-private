@@ -3,33 +3,44 @@
 //  Private
 //
 //  Created by yeon on 10/10/23.
-//
+import FirebaseFirestore
 import SwiftUI
 import NMapsMap
 import Kingfisher
+import FirebaseStorage
 //import Combine
 struct FeedCellView: View {
-    
+    @Environment(\.dismiss) private var dismiss
+//    @Environment(\.presentationMode) var presentationMode
+//    @Binding var presentationMode: PresentationMode
+    @Environment(\.presentationMode) var presentationMode//: Binding<PresentationMode>
     @Environment(\.colorScheme) var colorScheme
-    
     var feed: MyFeed
+    //var category: Category
     @State private var currentPicture = 0
+    @EnvironmentObject var userDataStore: UserStore
     @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject var chatRoomStore: ChatRoomStore
     
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @StateObject private var locationSearchStore = LocationSearchStore.shared
-    
+
     @State private var message: String = ""
     @State private var isShowingMessageTextField: Bool = false
+    @State private var isFeedUpdateViewPresented: Bool = false
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
     @State private var isShowingLocation: Bool = false
+    
     @State private var lat: String = ""
     @State private var lng: String = ""
     @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
-    
+    @Binding var root: Bool
+    @Binding var selection: Int
+//    @Binding var isselctedFeed : Bool
+//    @State private var selectedFeed: Int? = nil
     var body: some View {
+        //@Binding var isselectedFeed: Bool =  false
         VStack {
             HStack {
                 KFImage(URL(string: feed.writerProfileImage))
@@ -50,7 +61,7 @@ struct FeedCellView: View {
                         .foregroundColor(.primary.opacity(0.8))
                 }
                 Spacer()
-                
+                // 조건부로 FeedUpdateView 표시
                 HStack {
                     if feed.writerNickname == userStore.user.nickname {
                         Button(action: {
@@ -64,7 +75,7 @@ struct FeedCellView: View {
                                 .foregroundColor(.primary)
                                 .padding(.top, 5)
                                 .padding(.leading, 15)
-                                .padding(.trailing, 15)
+                                .padding(.trailing, 25)
                         }
                         .actionSheet(isPresented: $isActionSheetPresented) {
                             ActionSheet(
@@ -72,19 +83,24 @@ struct FeedCellView: View {
                                 buttons: [
                                     .default(Text("수정")) {
                                         print("수정")
+                                        //MARK: FeedCellView에서 수정하는 곳
+                                        //selectedFeed = MyFeed // 선택된 피드 설정
+                                        print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column)","\(feed.id)")
+                                        isFeedUpdateViewPresented = true
                                     },
                                     .destructive(Text("삭제")) {
                                         print("삭제")
-                                        feedStore.deleteFeed(writerNickname: feed.writerNickname)
+                                        feedStore.deleteFeed(feedId: feed.id)
                                     },
                                     .cancel() // 취소 버튼
                                 ]
                             )
                         }
+                        .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
+                            FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
+                        }
                     }
                 }
-                
-                
             }
             .padding(.leading, 20)
             
@@ -95,10 +111,10 @@ struct FeedCellView: View {
                     }
                     .resizable()
                     .scaledToFill()
-                    .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)  // 너비와 높이를 화면 너비의 90%로 설정
+                    .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)
                     .clipped()
-                    .padding(.bottom, 10)  // 아래쪽에 10포인트의 패딩 추가
-                    .padding([.leading, .trailing], 15)  // 좌우에 15포인트의 패딩 추가
+                    .padding(.bottom, 10)
+                    .padding([.leading, .trailing], 15)
                     .tag(Int(feed.images.firstIndex(of: image) ?? 0))
                 }
             }
@@ -111,10 +127,8 @@ struct FeedCellView: View {
                 Text("\(feed.contents)")
                     .font(.pretendardRegular16)
                     .foregroundColor(.primary)
-                
             }
             .padding(.leading, .screenWidth/2 - .screenWidth*0.45 )
-            
             Spacer()
             VStack {
                 HStack{
@@ -148,6 +162,7 @@ struct FeedCellView: View {
                     Button {
                         withAnimation {
                             isShowingMessageTextField.toggle()
+                            
                         }
                     } label: {
                         Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
@@ -170,15 +185,29 @@ struct FeedCellView: View {
         }
         .padding(.top, -25)
         .padding(.bottom, 0)
+        .popup(isPresented: $chatRoomStore.chatRoomMessageToast) {
+            ToastMessageView(message: "메세지가 전송되었습니다.")
+                .onDisappear {
+                    userStore.clickSavedFeedToast = false
+                }
+        }customize: {
+           $0
+               .autohideIn(2)
+               .type(.floater(verticalPadding: 20))
+               .position(.bottom)
+               .animation(.spring())
+               .closeOnTapOutside(true)
+               .backgroundColor(.clear)
+       }
         
         if isShowingMessageTextField {
             SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
-                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
+                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname,firstUserProfileImage:userStore.user.profileImageURL, secondNickname: feed.writerNickname,secondUserProfileImage:feed.writerProfileImage) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
                 chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
                 message = ""
+                //메세지 완료
             }
         }
-        
         HStack {
             Button {
                 if (userStore.user.bookmark.contains("\(feed.id)")) {
@@ -197,9 +226,15 @@ struct FeedCellView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 15)
-                    .foregroundColor(.primary)
-                    .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
+//                    .foregroundColor(.primary)
+//                    .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
+                //MARK: 인덱스 벗어난대서 이렇게 고치니까 돌?아가지더라고요
                     .padding(.top, 5)
+                    .foregroundColor(
+                                (feed.images.count > 0 && userStore.user.bookmark.contains("\(feed.images[0].suffix(32))"))
+                                ? .privateColor
+                                : .primary
+                            )
             }
             .padding(.leading, 15)
             
@@ -228,6 +263,7 @@ struct FeedCellView: View {
                 .padding(.leading, 15)
             }
             Spacer()
+            
         }
         .padding(.top, 5)
         .padding(.horizontal, 10)
@@ -239,10 +275,12 @@ struct FeedCellView: View {
                 .presentationDetents([.height(.screenHeight * 0.6), .large])
         }
         
+        //토스트메세지
+        
+        
         Divider()
             .padding(.vertical, 10)
     }
-    //.padding(.top, 20)
 }
 //https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/81789D33-A401-4701-AB9F-ABBBE6DEC156?alt=media&token=a9b1fcdc-c1f9-48ec-87af-d7b617376365
 // https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/39968E65-7EB6-4D5D-AC00-8C8578AABFFF?alt=media&token=149585b7-ad7a-445a-a770-2e13af631ba0

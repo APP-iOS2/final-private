@@ -17,13 +17,13 @@ struct RequirementTextEditor: View {
     let limitChar: Int = 100
     let placeholder: String = "업체에 요청하실 내용을 적어주세요"
     
-    
     var body: some View {
         ZStack(alignment: .topLeading) {
             TextEditor(text: $requirementText)
                 .foregroundStyle(.primary)
                 .keyboardType(.default)
                 .frame(height: 80)
+                .padding(10)
                 .lineSpacing(10)
                 .focused($focusedField, equals: .requirement)
                 .onChange(of: self.requirementText, perform: {
@@ -31,14 +31,15 @@ struct RequirementTextEditor: View {
                         self.requirementText = String($0.prefix(limitChar))
                     }
                 })
-                .border(.secondary)
-            
+                .overlay(
+                     RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.secondary,lineWidth: 2)
+                   )
             if requirementText.isEmpty {
                 Text(placeholder)
                     .lineSpacing(10)
-                    .foregroundColor(Color.primary.opacity(0.25))
-                    .padding(.top, 10)
-                    .padding(.leading, 10)
+                    .foregroundColor(Color.primary.opacity(0.4))
+                    .padding(EdgeInsets(top: 15, leading: 20, bottom: 15, trailing: 20))
                     .onTapGesture {
                         if self.focusedField == .requirement {
                             hideKeyboard()
@@ -48,6 +49,8 @@ struct RequirementTextEditor: View {
                     }
             }
         }
+        .padding(.horizontal, 2)
+
     }
 }
 

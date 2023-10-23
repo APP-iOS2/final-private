@@ -1,29 +1,30 @@
 //
-//  MySavedView.swift
+//  OtherSavedView.swift
 //  Private
 //
-//  Created by 주진형 on 2023/09/25.
+//  Created by 박범수 on 10/22/23.
 //
 
 import SwiftUI
 import Kingfisher
 
-struct MySavedView: View {
+struct OtherSavedView: View {
     
     @EnvironmentObject private var userStore: UserStore
-    @EnvironmentObject private var feedStore: FeedStore
     @State var isMyPageFeedSheet: Bool = false
     @State var selctedFeed : MyFeed = MyFeed()
     @State private var isLongPressing = false
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
+    let user:User
+    
     var body: some View {
-        ScrollView(showsIndicators: false) {
+        ScrollView {
             if userStore.mySavedFeedList.isEmpty {
-                Text("저장한 피드가 없습니다.")
-                    .font(.pretendardMedium20)
-                    .foregroundStyle(.primary)
+                Text("저장한 피드가 없습니다")
+                    .font(.pretendardBold24)
+                    .foregroundColor(.primary)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
                 LazyVGrid(
@@ -43,8 +44,9 @@ struct MySavedView: View {
                                 .frame(width: .screenWidth * 0.33, height: .screenWidth * 0.33)
                                 .clipShape(Rectangle())
                         }
-                        .fullScreenCover(isPresented: $isMyPageFeedSheet) {
-                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.mySavedFeedList)
+                        .sheet(isPresented: $isMyPageFeedSheet){
+                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed, feedList: userStore.mySavedFeedList)
+                                .presentationDetents([.height(.screenHeight * 0.7)])
                         }
                         .gesture(
                             LongPressGesture()
@@ -55,7 +57,7 @@ struct MySavedView: View {
                         .contextMenu(ContextMenu(menuItems: {
                             Button("선택한 피드 삭제") {
                                 userStore.deleteFeed(feed)
-                                userStore.user.myFeed.removeAll { $0 == feed.id }
+                                userStore.user.myFeed.removeAll { $0 == feed.images[0] }
                                 userStore.updateUser(user: userStore.user)
                             }
                         }))
@@ -64,11 +66,5 @@ struct MySavedView: View {
             }
         }
         .ignoresSafeArea()
-    }
-}
-
-struct MySavedView_Previews: PreviewProvider {
-    static var previews: some View {
-        MySavedView().environmentObject(UserStore())
     }
 }

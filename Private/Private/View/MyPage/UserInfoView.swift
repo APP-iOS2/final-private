@@ -15,6 +15,7 @@ struct UserInfoView: View {
     var followerList: [String]
     var followingList: [String]
     @State var isModify: Bool = false
+    
     var body: some View {
         HStack {
             VStack() {
@@ -93,7 +94,7 @@ struct UserInfoView: View {
                         .foregroundColor(.primary)
                 }.sheet(isPresented: $isModify, content: {
                     NavigationStack {
-                        UserInfoModifyView(isModify: $isModify, mypageNickname: "")
+                        UserInfoModifyView(isModify: $isModify)
                     }
                 })
             }

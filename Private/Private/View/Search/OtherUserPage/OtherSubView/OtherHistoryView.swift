@@ -1,14 +1,14 @@
 //
-//  MyHistoryView.swift
+//  OtherHistoryView.swift
 //  Private
 //
-//  Created by 주진형 on 2023/09/25.
+//  Created by 박범수 on 10/22/23.
 //
 
 import SwiftUI
 import Kingfisher
 
-struct MyHistoryView: View {
+struct OtherHistoryView: View {
     
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var reservationStore: ReservationStore
@@ -16,19 +16,22 @@ struct MyHistoryView: View {
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
     @State var isReservation: Bool = false
-    @State var isMyPageFeedSheet: Bool = false 
+    @State var isMyPageFeedSheet: Bool = false
     //@State var selctedFeed : MyFeed = MyFeed()
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
+    
+    let user:User
+    
     var body: some View {
         VStack{
             if (isFeed == true) {
-                ScrollView(showsIndicators: false) {
+                ScrollView {
                     if userStore.myFeedList.isEmpty {
                         Text("게시물이 존재 하지 않습니다.")
-                            .font(.pretendardMedium20)
-                            .foregroundStyle(.primary)
+                            .font(.pretendardBold24)
+                            .foregroundColor(.primary)
                             .padding(.top, .screenHeight * 0.2 + 37.2)
                     } else {
                         LazyVGrid(
@@ -48,8 +51,9 @@ struct MyHistoryView: View {
                                         .frame(width: .screenWidth*0.33,height: .screenWidth*0.33)
                                         .clipShape(Rectangle())
                                 }
-                                .fullScreenCover(isPresented: $isMyPageFeedSheet) {
+                                .sheet(isPresented: $isMyPageFeedSheet) {
                                     MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.myFeedList)
+                                        .presentationDetents([.height(.screenHeight)])
                                 }
                             }
                         }
@@ -73,11 +77,5 @@ struct MyHistoryView: View {
             }
             Spacer()
         }
-    }
-}
-
-struct MyHistoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyHistoryView().environmentObject(UserStore())
     }
 }

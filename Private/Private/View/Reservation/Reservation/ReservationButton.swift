@@ -20,7 +20,7 @@ struct ReservationButton: View {
                 .frame(maxWidth: .infinity)
                 .padding()
         }
-        .background(Color("AccentColor"))
+        .background(Color.privateColor)
         .cornerRadius(12)
     }
 }

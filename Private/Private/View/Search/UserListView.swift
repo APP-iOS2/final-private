@@ -9,6 +9,8 @@ import SwiftUI
 
 struct UserListView: View {
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var searchStore: SearchStore
     @EnvironmentObject var followStore: FollowStore
     var searchTerm: String
@@ -21,7 +23,7 @@ struct UserListView: View {
     var body: some View {
         ScrollView {
             LazyVStack {
-                SearchBarView(searchTerm: $searchText, inSearchMode: $inSearchMode, isSearchTextEmpty: $isSearchTextEmpty)
+                SearchBarView(searchTerm: $searchText, inSearchMode: $inSearchMode)
                     .padding(.bottom, 12)
                 searchResultView
                 
@@ -31,25 +33,52 @@ struct UserListView: View {
         .frame(maxWidth: .infinity)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-        .backButtonArrow()
+        .navigationBarItems(leading: btnBack)
     }
-        
-        var searchResultView: some View {
-            ScrollView {
-                if searchStore.searchUserLists.isEmpty {
-                    Text("검색 결과가 없습니다.")
-                        .foregroundColor(.gray)
-                        .padding(.top)
-                } else {
-                    ForEach(searchStore.searchUserLists, id: \.self) { user in
-                        NavigationLink {
-                            LazyView(OtherProfileView(user: user))
-                        } label: {
-                            SearchUserCellView(user: user)
-                                .padding(.leading)
-                        }
+    
+    var searchResultView: some View {
+        ScrollView {
+            if searchStore.searchUserLists.isEmpty {
+                Text("검색 결과가 없습니다.")
+                    .foregroundColor(.gray)
+                    .padding(.top)
+            } else {
+                ForEach(searchStore.searchUserLists, id: \.self) { user in
+                    NavigationLink {
+                        LazyView(OtherProfileView(user: user))
+                    } label: {
+                        SearchUserCellView(user: user)
+                            .padding(.leading)
                     }
                 }
             }
         }
     }
+    
+    var btnBack : some View {
+        HStack {
+            Button(action: {
+                self.presentationMode.wrappedValue.dismiss()
+            }) {
+                HStack {
+                    Image(systemName: "chevron.backward")
+                        .resizable()
+                        .scaledToFit()
+                        .font(.pretendardSemiBold16)
+                        .foregroundColor(Color.privateColor)
+                }
+            }.padding(10)
+            if colorScheme == .dark {
+                Image("private_dark")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: .screenWidth * 0.35)
+            } else {
+                Image("private_light")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: .screenWidth * 0.35)
+            }
+        }
+    }
+}

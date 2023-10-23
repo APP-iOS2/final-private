@@ -2,49 +2,48 @@
 //  OtherProfileView.swift
 //  Private
 //
-//  Created by 박범수 on 10/19/23.
+//  Created by 박범수 on 10/20/23.
 //
 
 import SwiftUI
 
 struct OtherProfileView: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
     @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var followStore: FollowStore
+    
+    @StateObject var coordinator: Coordinator = Coordinator.shared
+    //내 마커 | 예약내역을 ->  ㅇㅇㅇ님의 마커 보기 , 아이콘 노란색 !!!
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
     @State var viewNumber: Int = 0
-    
     let user:User
     var body: some View {
         NavigationStack {
-            OtherInfoView(user: user, followerList:followStore.followerList, followingList: followStore.followingList)
+            OtherInfoView(followerList: followStore.followerList, followingList: followStore.followingList, user: user)
                 .padding(.top,-20.0)
                 .padding(.bottom, 20)
             HStack {
                 NavigationLink {
-                    MapMainView()
+                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
+                             markerTitle: $coordinator.newMarkerTitle,
+                             markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
+                    .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
+                        MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == coordinator.currentFeedId }[0])
+                            .presentationDetents([.height(.screenHeight * 0.55)])
+                    }
                 } label: {
                     HStack {
                         Image(systemName: "map")
-                        Text("내 마커")
+                            .foregroundStyle(Color("AccentColor"))
+                        Text("\(user.nickname)님의 마커 보기")
                             .font(.pretendardRegular14)
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 }
-                .frame(width: .screenWidth*0.5)
-                Divider()
-                    .background(Color.white)
-                    .frame(height: .screenHeight*0.02)
-                NavigationLink {
-                    MyReservation(isShowingMyReservation: .constant(true))
-                } label: {
-                    HStack {
-                        Image(systemName: "calendar.badge.clock")
-                        Text("예약내역")
-                            .font(.pretendardRegular14)
-                    }
-                    .foregroundColor(.white)
-                }
-                .frame(width: .screenWidth*0.5)
+                .frame(width: .screenWidth*0.9)
             }
             HStack {
                 Button {
@@ -55,7 +54,7 @@ struct OtherProfileView: View {
                         Text("피드")
                     }
                     .font(.pretendardRegular12)
-                    .foregroundColor(viewNumber == 0 ? .privateColor : .white)
+                    .foregroundColor(viewNumber == 0 ? .privateColor : .primary)
                     .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 0))
@@ -71,15 +70,22 @@ struct OtherProfileView: View {
                                 .scaledToFit()
                                 .frame(width: 15)
                         } else {
-                            Image ("bookmark")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 15)
+                            if colorScheme == ColorScheme.dark {
+                                Image ("bookmark_dark")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 15)
+                            } else {
+                                Image ("bookmark_light")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 15)
+                            }
                         }
                         Text("저장한 피드")
                     }
                     .font(.pretendardRegular12)
-                    .foregroundColor(viewNumber == 1 ? .privateColor : .white)
+                    .foregroundColor(viewNumber == 1 ? .privateColor : .primary)
                     .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 1))
@@ -93,7 +99,7 @@ struct OtherProfileView: View {
                         Text("저장한 장소")
                     }
                     .font(.pretendardRegular12)
-                    .foregroundColor(viewNumber == 2 ? .privateColor : .white)
+                    .foregroundColor(viewNumber == 2 ? .privateColor : .primary)
                     .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 2))
@@ -105,14 +111,23 @@ struct OtherProfileView: View {
                 .padding(.top, -9)
             
             TabView(selection: $viewNumber) {
-                MyHistoryView().tag(0)
-                MySavedView().tag(1)
-                MySavedPlaceView().tag(2)
+                OtherHistoryView(user: user).tag(0)
+                OtherSavedView(user: user).tag(1)
+                OtherSavedPlaceView(user: user).tag(2)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             Spacer()
+               
         }
         .navigationBarBackButtonHidden(true)
+        .navigationTitle("\(user.nickname)")
         .backButtonArrow()
+        .onAppear{
+            followStore.fetchFollowerFollowingList(userStore.user.email)
+            coordinator.checkIfLocationServicesIsEnabled()
+            Coordinator.shared.myFeedList = userStore.myFeedList
+            print("myFeedList: \(Coordinator.shared.myFeedList)")
+            coordinator.makeOnlyMyFeedMarkers()
+        }
     }
 }

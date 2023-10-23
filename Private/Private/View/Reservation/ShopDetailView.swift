@@ -77,7 +77,8 @@ struct ShopDetailHeaderView: View {
 struct ShopDetailBodyView: View {
     
     @Environment(\.colorScheme) var colorScheme
-    
+    @EnvironmentObject var calendarData: CalendarData
+
     @State var isExpanded: Bool = false
     @State var isAddressCopied: Bool = false
     @State var isMapShowing: Bool = false
@@ -95,6 +96,14 @@ struct ShopDetailBodyView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Spacer()
                             .frame(height: 10)
+                    
+                    HStack(spacing: 10) {
+                        Text(shopData.name)
+                            .foregroundColor(.primary)
+                            .font(.pretendardBold28)
+                        
+                        Divider()
+                            .frame(height: 25)
                         
                         HStack(spacing: 10) {
                             Text(shopData.name)
@@ -207,6 +216,12 @@ struct ShopDetailBodyView: View {
                         }
                     }
             }
+        })
+        .cornerRadius(12)
+        .onAppear {
+            calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)
+            calendarData.currentPage = calendarData.getSelectedDate(shopData: shopData)
+            calendarData.titleOfMonth = calendarData.getSelectedDate(shopData: shopData)
         }
     }
     
@@ -271,7 +286,7 @@ struct ShopDetailFooterView: View {
         })
         .frame(alignment: .bottom)
         .fullScreenCover(isPresented: $isReservationPresented) {
-            ReservationView(isReservationPresented: $isReservationPresented, shopData: shopViewModel.shop)
+            ReservationView(shopData: shopViewModel.shop)
         }
         .task {
             shopViewModel.fetchShop(shopID: shopViewModel.shop.id)

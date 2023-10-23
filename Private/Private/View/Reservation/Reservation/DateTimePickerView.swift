@@ -11,7 +11,7 @@ struct DateTimePickerView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var holidayManager: HolidayManager
     @EnvironmentObject var calendarData: CalendarData
-
+    
     @State private var showingDate: Bool = true
     @State private var showingTime: Bool = false
     @State private var amReservation: [Int] = []  // 오전 예약시간
@@ -56,173 +56,115 @@ struct DateTimePickerView: View {
     
     var body: some View {
         ScrollView {
-            Button {
-//                showingDate.toggle()
-                withAnimation(.easeIn(duration: 0.5)) {
-                    showingDate.toggle()
-                }
-            } label: {
-                HStack {
-                    Image(systemName: "calendar")
-                    Text("날짜선택")
-                    Spacer()
-                    Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
+            HStack {
+                Text(calendarData.strMonthTitle)
+                    .font(.pretendardMedium18)
+                Spacer()
+                Button {
+                    self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: -1, to: self.calendarData.currentPage)!
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .frame(width: 35, height: 35, alignment: .leading)
                         .foregroundStyle(Color.privateColor)
                 }
-                .font(.pretendardBold18)
-                .foregroundStyle(.white)
-            }
-            Divider()
-                .padding(.bottom)
-            
-            // 날짜 선택 화면 표시 여부
-            if showingDate {
-                HStack {
-                    Text(calendarData.strMonthTitle)  // selecteDate가 된 뒤로 안바뀜
-                    Spacer()
-                    Button {
-                        self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: -1, to: self.calendarData.currentPage)!
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .frame(width: 35, height: 35, alignment: .leading)
-                            .foregroundStyle(Color.privateColor)
-                    }
-                    .disabled(calendarData.disablePrevButton)
-                    
-                    // nextButton
-                    Button {
-                        self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: 1, to: self.calendarData.currentPage)!
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .frame(width: 35, height: 35, alignment: .trailing)
-                            .foregroundStyle(Color.privateColor)
-                    }
-                    .disabled(calendarData.disableNextButton)
-                    
-                }
-                .padding(.horizontal)
+                .disabled(calendarData.disablePrevButton)
                 
-                // 여기 바꿈 selectedDate
-                FSCalendarView(regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
-                    .frame(height: 300)
+                // nextButton
+                Button {
+                    self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: 1, to: self.calendarData.currentPage)!
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .frame(width: 35, height: 35, alignment: .trailing)
+                        .foregroundStyle(Color.privateColor)
+                }
+                .disabled(calendarData.disableNextButton)
+                
+            }
+            .padding(.horizontal)
+            
+            FSCalendarView(regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
+                .frame(height: 300)
                 .padding(.bottom)
                 .onChange(of: calendarData.selectedDate) { newValue in
                     self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: newValue)
                     
                     separateReservationTime(timeSlots: availableTimeSlots)
-//                    print(temporaryReservation.date)
                 }
-            }
             
-            Button {
-                showingTime.toggle()  // 여기서 애니메이션 주면 애니메이션이 살짝 되다 중간에 멈춤
-//                withAnimation(.easeIn(duration: 0.5)) {
-//                    showingTime.toggle()
-//                }
-            } label: {
-                HStack {
-                    Image(systemName: "clock")
-                    Text("시간선택")
-                    Spacer()
-                    Image(systemName: showingTime ? "chevron.up.circle": "chevron.down.circle")
-                        .foregroundStyle(Color.privateColor)
-                }
-                .font(.pretendardBold18)
-                .foregroundStyle(.white)
-            }
-            Divider()
+            PrivateDivder()
             
-            // 시간 선택 화면 표시 여부
-            if showingTime {
-                HStack {
-                    Spacer()
-                    Rectangle()
-                        .foregroundColor(Color.privateColor)
-                        .frame(width: 16, height: 16)
-                    Text("선택")
-                        .padding(.trailing, 6)
-                    Rectangle()
-                        .foregroundColor(Color.darkGrayColor)
-                        .frame(width: 16, height: 16)
-                    Text("불가")
-                }
-                .tint(.primary)
-                .padding(.top, 12)
+            VStack(alignment: .leading) {
+                Divider()
+                    .opacity(0)
                 
-                VStack(alignment: .leading) {
-                    Divider()
-                        .opacity(0)
+                // 오전
+                if amReservation.count > 0 {
+                    Text("오전")
                     
-                    // 오전
-                    if amReservation.count > 0 {
-                        Text("오전")
-                        
-                        LazyVGrid(columns: colums, spacing: 20) {
-                            ForEach(amReservation, id: \.self) { timeSlot in
-                                VStack {
-                                    Button {
-                                        self.temporaryReservation.time = timeSlot
-                                        isSelectedTime = true
-                                        print("\(timeSlot)")
-                                    } label: {
-                                        Text("\(timeSlot):00")  // 현재시간
-                                            .frame(minWidth: 60, maxWidth: .infinity)
-                                            .frame(height: 35)
-                                    }
-                                    .background(timeSlot == self.temporaryReservation.time ? Color.privateColor : Color.subGrayColor)
-                                    .tint(timeSlot == self.temporaryReservation.time ? .black : Color(.systemGray))
-                                    .cornerRadius(8)
+                    LazyVGrid(columns: colums, spacing: 20) {
+                        ForEach(amReservation, id: \.self) { timeSlot in
+                            VStack {
+                                Button {
+                                    self.temporaryReservation.time = timeSlot
+                                    isSelectedTime = true
+                                    print("\(timeSlot)")
+                                } label: {
+                                    Text("\(timeSlot):00")  // 현재시간
+                                        .frame(minWidth: 60, maxWidth: .infinity)
+                                        .frame(height: 35)
                                 }
+                                .background(timeSlot == self.temporaryReservation.time ? Color.privateColor : Color.subGrayColor)
+                                .tint(timeSlot == self.temporaryReservation.time ? .black : Color(.systemGray))
+                                .cornerRadius(8)
                             }
                         }
                     }
-                    
-                    // 오후
-                    if pmReservation.count > 0 {
-                        Text("오후")
-                        
-                        LazyVGrid(columns: colums, spacing: 20) {
-                            ForEach(pmReservation, id: \.self) { timeSlot in
-                                // 반복문 ForEach
-                                VStack {
-                                    Button {
-                                        // 시간 선택
-                                        // 버튼이 눌리면 색상 바꿔주기
-                                        self.temporaryReservation.time = timeSlot
-                                        isSelectedTime = true
-                                        print("\(timeSlot)")
-                                    } label: {
-                                        Text("\(timeSlot):00")  // 현재시간
-                                            .frame(minWidth: 60, maxWidth: .infinity)
-                                            .frame(height: 35)
-                                    }
-                                    .background(timeSlot == self.temporaryReservation.time ? Color.privateColor : Color.subGrayColor)
-                                    .tint(timeSlot == self.temporaryReservation.time ? .black : Color(.systemGray))
-                                    .cornerRadius(8)
-                                }
-                            }
-                        }
-                    }
-                    
-                    // 이용 가능 시간대가 없을 때
-                    if availableTimeSlots.isEmpty {
-                        VStack {
-                            Text("예약 가능한 시간이 없습니다.")
-                            Text("다른 날짜를 선택해주세요.")
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .font(.pretendardMedium18)
-                        .foregroundColor(.white)
-                        .background(Color.subGrayColor)
-                        .cornerRadius(8)
-                    }
-                    
                 }
+                
+                // 오후
+                if pmReservation.count > 0 {
+                    Text("오후")
+                    
+                    LazyVGrid(columns: colums, spacing: 20) {
+                        ForEach(pmReservation, id: \.self) { timeSlot in
+                            // 반복문 ForEach
+                            VStack {
+                                Button {
+                                    // 시간 선택
+                                    // 버튼이 눌리면 색상 바꿔주기
+                                    self.temporaryReservation.time = timeSlot
+                                    isSelectedTime = true
+                                    print("\(timeSlot)")
+                                } label: {
+                                    Text("\(timeSlot):00")  // 현재시간
+                                        .frame(minWidth: 60, maxWidth: .infinity)
+                                        .frame(height: 35)
+                                }
+                                .background(timeSlot == self.temporaryReservation.time ? Color.privateColor : Color.subGrayColor)
+                                .tint(timeSlot == self.temporaryReservation.time ? .black : Color(.systemGray))
+                                .cornerRadius(8)
+                            }
+                        }
+                    }
+                }
+                
+                // 이용 가능 시간대가 없을 때
+                if availableTimeSlots.isEmpty {
+                    VStack {
+                        Text("예약 가능한 시간이 없습니다.")
+                        Text("다른 날짜를 선택해주세요.")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .font(.pretendardMedium18)
+                    .foregroundColor(.white)
+                    .background(Color.subGrayColor)
+                    .cornerRadius(8)
+                }
+                
             }
-            
         }
-        .padding()
+        .padding(.horizontal)
         .onAppear {
             self.today = Calendar.current.startOfDay(for: Date())
             self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: temporaryReservation.date)
@@ -230,11 +172,6 @@ struct DateTimePickerView: View {
             // 날짜의 기본값이 오늘일 때를 위함
             separateReservationTime(timeSlots: availableTimeSlots)
         }
-//        .refreshable {
-//            self.today = Calendar.current.startOfDay(for: Date())
-//            self.availableTimeSlots = reservationStore.getAvailableTimeSlots(open: 9, close: 21, date: temporaryReservation.date)
-//        }
-        
     }
     
     // 나중에 수정해야지..
@@ -254,7 +191,7 @@ struct DateTimePickerView: View {
         amReservation = morningTimeSlots
         pmReservation = afternoonTimeSlots
     }
-
+    
 }
 
 struct DateTimePickerView_Previews: PreviewProvider {

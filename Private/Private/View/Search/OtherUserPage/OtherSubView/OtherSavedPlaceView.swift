@@ -1,24 +1,26 @@
 //
-//  MySavedPlaceView.swift
+//  OtherSavedPlaceView.swift
 //  Private
 //
-//  Created by 주진형 on 2023/09/25.
+//  Created by 박범수 on 10/22/23.
 //
 
 import SwiftUI
 
-struct MySavedPlaceView: View {
+struct OtherSavedPlaceView: View {
     @EnvironmentObject private var userStore: UserStore
     
     @State private var isShowingLocation: Bool = false
     @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     
+    let user:User
+    
     var body: some View {
-        ScrollView(showsIndicators: false) {
+        ScrollView {
             if userStore.mySavedPlaceList.isEmpty {
                 Text("저장한 북마크가 없습니다.")
-                    .font(.pretendardMedium20)
-                    .foregroundStyle(.primary)
+                    .font(.pretendardBold24)
+                    .foregroundColor(.primary)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
                 ShopInfoCardView(isShowingLocation: $isShowingLocation, searchResult: $searchResult, mySavedPlaceList: userStore.mySavedPlaceList)
@@ -28,11 +30,5 @@ struct MySavedPlaceView: View {
             LocationDetailView(searchResult: $searchResult)
                 .presentationDetents([.height(.screenHeight * 0.6), .large])
         }
-    }
-}
-
-struct MySavedPlaceView_Previews: PreviewProvider {
-    static var previews: some View {
-        MySavedPlaceView().environmentObject(UserStore())
     }
 }

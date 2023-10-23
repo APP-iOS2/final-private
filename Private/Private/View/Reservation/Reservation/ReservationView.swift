@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ReservationView: View {
+    @Namespace var bottomID
     @Environment(\.presentationMode) var presentationMode
     
     @EnvironmentObject var shopStore: ShopStore
@@ -15,60 +16,50 @@ struct ReservationView: View {
     @EnvironmentObject var holidayManager: HolidayManager
     @EnvironmentObject var calendarData: CalendarData
     
-    @State private var showingDate: Bool = false    // 예약 일시 선택
-    @State private var showingNumbers: Bool = false // 예약 인원 선택
+    @State private var showingDate: Bool = true    // 예약 일시 선택
     @State private var isSelectedTime: Bool = false
-    @State private var isShwoingDetailView: Bool = false
-    
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
-    
-    @Binding var isReservationPresented: Bool
     
     private let step = 1  // 인원선택 stepper의 step
     private let range = 1...6  // stepper 인원제한
     
     let shopData: Shop
     
+    var myReservation: Reservation {
+        return reservationStore.myReservation
+    }
+    
     var body: some View {
-        VStack {
+        ScrollViewReader { proxy in
             NavigationStack {
                 ScrollView {
-                    Text(shopData.name)
-                        .font(.pretendardBold24)
-                        .foregroundStyle(.white)
-                        .padding(.bottom)
-                    
                     VStack(alignment: .leading) {
                         Divider()
                             .opacity(0)
                         
                         Text("예약 일시")
-                            .font(.pretendardBold18)
-                            .foregroundStyle(.white)
+                            .font(.pretendardBold20)
+                            .foregroundStyle(Color.primary)
                         
                         HStack {
                             Image(systemName: "calendar")
-                            HStack {
-                                // 이 때 호출하면 언제 메소드는 언제 호출되는거야?
-                                Text(reservationStore.getReservationDate(reservationDate: calendarData.selectedDate))
-                                Text(" / ")
-                                Text(isSelectedTime ? self.reservedTime + " \(self.reservedHour)시" : "시간")
-                            }
+                            Text(isSelectedTime ? "\(reservationStore.getReservationDate(reservationDate: calendarData.selectedDate)) / \(self.reservedTime) \(self.reservedHour)시" : "날짜와 시간을 선택해주세요" )
+                                .font(.pretendardMedium18)
                             Spacer()
                             
                             Button {
-//                                showingDate.toggle()
                                 withAnimation {
                                     showingDate.toggle()
                                 }
                             } label: {
                                 Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                                     .foregroundStyle(Color.privateColor)
+                                    .imageScale(.large)
+                                
                             }
                         }
-                        .font(.pretendardMedium18)
                         .foregroundStyle(.white)
                         .padding()
                         .background(Color.subGrayColor)
@@ -80,56 +71,38 @@ struct ReservationView: View {
                                 .onChange(of: temporaryReservation.time) { newValue in
                                     self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
                                     self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1
+                                    withAnimation {
+                                        //                                  isTapped.toggle()
+                                        proxy.scrollTo(bottomID)
+                                    }
                                 }
                         }
-                        
+                        PrivateDivder()
                         Text("인원")
-                            .font(.pretendardBold18)
+                            .font(.pretendardBold20)
+                            .foregroundStyle(Color.primary)
                         
                         HStack {
-                            Image(systemName: "person")
-                            Text(isSelectedTime ? String(temporaryReservation.numberOfPeople) + "명" : "인원 선택")
-                            Spacer()
-                            Button {
-//                                showingNumbers.toggle()
-                                withAnimation {
-                                    showingNumbers.toggle()
-                                }
-                            } label: {
-                                Image(systemName: showingNumbers ? "chevron.up.circle": "chevron.down.circle")
-                                    .foregroundStyle(isSelectedTime ? Color.privateColor : Color.secondary)
+                            Stepper(value: $temporaryReservation.numberOfPeople, in: range, step: step) {
+                                Label("\(temporaryReservation.numberOfPeople)명", systemImage: "person")
                             }
-                            .disabled(!isSelectedTime)
                         }
                         .font(.pretendardMedium18)
-                        .foregroundStyle(.white)
-                        .padding()
-                        .background(Color.subGrayColor)
-                        .cornerRadius(12)
-                        .padding(.bottom, 20)
+                        .foregroundStyle(.primary)
+                        .padding(.bottom, 8)
                         
-                        // 가게 예약 가능인원 정보를 받을지 말지 정해야함
-                        if showingNumbers {
-                            HStack {
-                                Image(systemName: "info.circle")
-                                Text("1~6명 까지 선택 가능합니다.")
-                                    .font(.pretendardRegular16)
-                            }
-                            
-                            Divider()
-                            
-                            Stepper(value: $temporaryReservation.numberOfPeople, in: range, step: step) {
-                                Text("\(temporaryReservation.numberOfPeople)")
-                            }
-                            .padding(10)
+                        HStack {
+                            Image(systemName: "info.circle")
+                            Text("1~6명 까지 선택 가능합니다.")
+                                .font(.pretendardRegular16)
                         }
+                        .padding(.bottom)
                         
                         VStack(alignment: .leading) {
-                            Divider()
-                                .opacity(0)
                             HStack {
                                 Image(systemName: "info.circle")
                                 Text("알립니다")
+                                Spacer()
                             }
                             .font(.pretendardBold18)
                             .foregroundColor(Color.privateColor)
@@ -137,44 +110,48 @@ struct ReservationView: View {
                             
                             Group {
                                 Text("노쇼 방지를 위해 인원당 10,000원의 보증금을 받습니다.")
-                                    .padding(.bottom)
+                                    .padding(.bottom, 8)
                                 Text("당일 예약은 예약시간 1시간 전까지 가능합니다.")
                             }
-                                .font(.pretendardRegular16)
-                                .foregroundStyle(Color.primary)
+                            .font(.pretendardRegular16)
+                            .foregroundStyle(Color.primary)
                         }
                         .padding()
                         .background(Color.subGrayColor)
                         .cornerRadius(12)
-                        .padding(.bottom, 30)
-                        
-                        HStack {
-                            ReservationButton(text: "다음단계") {
-                                temporaryReservation.date = calendarData.selectedDate
-                                temporaryReservation.totalPrice = (temporaryReservation.numberOfPeople * 10000)
-                                isShwoingDetailView.toggle()
-                            }
-                            .font(.pretendardBold20)
-                            .foregroundStyle(isSelectedTime ? .black : Color.secondary)
-                            .disabled(!isSelectedTime)
-                        }
-                        .navigationDestination(isPresented: $isShwoingDetailView) {
-                            ReservationDetailView(isShwoingDetailView: $isShwoingDetailView, isReservationPresented: $isReservationPresented, reservationData: $temporaryReservation, shopData: shopData)
-                        }
                     }// VStack
-                }// ScrollView
-                .padding()
-                .navigationBarBackButtonHidden(true)
-                .backButtonX()
-                
-                .onAppear {
-                    self.temporaryReservation.shopId = self.shopData.id
-                    // calendarData의 데이타를 모두 바꿔줘야 함
-                    calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)
-                    calendarData.currentPage = calendarData.getSelectedDate(shopData: shopData)
-                    calendarData.titleOfMonth = calendarData.getSelectedDate(shopData: shopData)
-                    temporaryReservation.date = calendarData.getSelectedDate(shopData: shopData)
+                    .padding(.bottom)
+                    
+                    Spacer() // 가장 밑으로 가도록 해야 함
+                    
+                    NavigationLink {
+                        ReservationDetailView(reservationData: $temporaryReservation, shopData: shopData)
+                    } label: {
+                        Text("다음단계")
+                            .font(.pretendardBold18)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .simultaneousGesture(TapGesture().onEnded{
+                        temporaryReservation.date = calendarData.selectedDate
+                        temporaryReservation.totalPrice = (temporaryReservation.numberOfPeople * 10000)
+                    })
+                    .foregroundStyle(isSelectedTime ? .black : Color.secondary)
+                    .background(Color.privateColor)
+                    .cornerRadius(12)
+                    .disabled(!isSelectedTime)
+                    .id(bottomID)
+                    .navigationBarBackButtonHidden(true)
+                    .backButtonArrow()
+                    .onAppear {
+                        self.temporaryReservation.shopId = self.shopData.id
+                        temporaryReservation.date = calendarData.getSelectedDate(shopData: shopData)
+                    }
                 }
+                .padding()
+                .scrollIndicators(.hidden)
+                .navigationTitle(shopData.name)
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
     }
@@ -182,7 +159,7 @@ struct ReservationView: View {
 
 struct ReservationView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationView(isReservationPresented: .constant(true), shopData: ShopStore.shop)
+        ReservationView(shopData: ShopStore.shop)
             .environmentObject(ShopStore())
             .environmentObject(ReservationStore())
             .environmentObject(HolidayManager())

@@ -22,6 +22,7 @@ extension View {
         self.modifier(BackButtonArrowModifier())
     }
     
+    
     func backButtonX() -> some View {
         self.modifier(BackButtonXModifier())
     }
@@ -32,7 +33,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
     }
-
+    
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return viewControllers.count > 1
     }

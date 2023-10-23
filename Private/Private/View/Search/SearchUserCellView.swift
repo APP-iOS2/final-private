@@ -25,11 +25,11 @@ struct SearchUserCellView: View {
             VStack(alignment: .leading) {
                 Text(user.nickname)
                     .font(.pretendardBold18)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
                 
                 Text(user.name)
                     .font(.pretendardRegular14)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.primary)
             }
             Spacer() // // HStack 내의 가장 위에 쓰면 모든 요소가 오른쪽 정렬
         }
