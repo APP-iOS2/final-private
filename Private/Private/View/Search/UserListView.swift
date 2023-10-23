@@ -13,9 +13,9 @@ struct UserListView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var searchStore: SearchStore
     @EnvironmentObject var followStore: FollowStore
-    var searchTerm: String
     
-    @State private var searchText: String = ""
+    @Binding var searchTerm: String
+    
     @State private var trimmedSearchTerm: String = ""
     @State private var inSearchMode = false
     @State private var isSearchTextEmpty: Bool = true
@@ -23,7 +23,7 @@ struct UserListView: View {
     var body: some View {
         ScrollView {
             LazyVStack {
-                SearchBarView(searchTerm: $searchText, inSearchMode: $inSearchMode)
+                SearchBarView(searchTerm: $searchTerm, inSearchMode: $inSearchMode)
                     .padding(.bottom, 12)
                 searchResultView
                 
@@ -55,6 +55,7 @@ struct UserListView: View {
         }
     }
     
+    //상단 백버튼 - 로고 뷰
     var btnBack : some View {
         HStack {
             Button(action: {

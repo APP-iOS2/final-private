@@ -91,7 +91,7 @@ struct OtherInfoView: View {
                     .background(followStore.followCheck ? Color("AccentColor") : Color.white)
                     .cornerRadius(8)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 3)
+                        RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.gray, lineWidth: followStore.followCheck ? 0 : 1)
                     )
             }

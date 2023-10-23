@@ -19,13 +19,9 @@ struct SearchPageView: View {
             Spacer()
         }
     }
-
-
-
     
     struct RecentSearchListView: View {
         @EnvironmentObject var searchStore: SearchStore
-        
         var body: some View {
             VStack(spacing: 10) {
                 VStack(alignment: .leading) {
@@ -37,7 +33,7 @@ struct SearchPageView: View {
                 }
                     if !searchStore.recentSearchResult.isEmpty {
                         ForEach(searchStore.recentSearchResult.prefix(5), id: \.self) { resultText in
-                            RecentSearchRowView(resultText: resultText)
+//                            RecentSearchRowView(resultText: resultText)
                         }
                 } else {
                     Text("검색 기록이 없습니다")
@@ -51,18 +47,21 @@ struct SearchPageView: View {
     
     struct RecentSearchRowView: View {
         @EnvironmentObject var searchStore: SearchStore
-        let resultText: String
+        @Binding var resultText: String
         
         //foreach로 돌리는 데이터를 binding으로 받아야 하는데 해당 부분이 문제
         var body: some View {
             VStack {
                 HStack {
                     NavigationLink {
-                        UserListView(searchTerm: resultText)
+                        UserListView(searchTerm: $resultText)
                     } label: {
                         Text(resultText)
                             .font(.pretendardRegular16)
                             .foregroundColor(.primary)
+                            .onTapGesture {
+                                performSearchAndAddRecent()
+                            }
                     }
                     Spacer()
                     Button {
@@ -82,6 +81,13 @@ struct SearchPageView: View {
             }
             
         }
+        
+        func performSearchAndAddRecent() {
+               Task {
+                   await searchStore.searchUser(searchTerm: resultText)
+                   searchStore.addRecentSearch(resultText)
+               }
+           }
     }
     
     struct RecentUserListView: View {

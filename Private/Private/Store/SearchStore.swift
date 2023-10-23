@@ -55,7 +55,8 @@ final class SearchStore: ObservableObject {
                     return nil
                 }
             }
-            //                self.searchUserLists = users
+            //self.searchUserLists = users
+            ///중복값 처리인데 이게 동작을 안하네 왜 안하지?
             for newUser in users {
                 if !searchUserLists.contains(users) {
                     searchUserLists.append(newUser)
@@ -66,6 +67,7 @@ final class SearchStore: ObservableObject {
             }
         }
     
+    //최근 검색어 패치
     func fetchrecentSearchResult() {
         self.recentSearchResult = self.userDefaults.value(forKey: "SearchResults") as? [String] ?? []
 }
