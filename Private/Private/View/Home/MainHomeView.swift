@@ -112,6 +112,36 @@ struct MainHomeView: View {
                 .closeOnTapOutside(true)
                 .backgroundColor(.clear)
         }
+        
+        .popup(isPresented: $feedStore.deleteToast) {
+            ToastMessageView(message: "피드가 삭제되었습니다.")
+                .onDisappear {
+                    self.feedStore.uploadToast = false
+                }
+        } customize: {
+            $0
+                .autohideIn(3)
+                .type(.floater(verticalPadding: 20))
+                .position(.bottom)
+                .animation(.spring())
+                .closeOnTapOutside(true)
+                .backgroundColor(.clear)
+        }
+        
+        .popup(isPresented: $feedStore.updatedToast) {
+            ToastMessageView(message: "피드가 수정 완료 되었습니다.")
+                .onDisappear {
+                    self.feedStore.uploadToast = false
+                }
+        } customize: {
+            $0
+                .autohideIn(3)
+                .type(.floater(verticalPadding: 20))
+                .position(.bottom)
+                .animation(.spring())
+                .closeOnTapOutside(true)
+                .backgroundColor(.clear)
+        }
     }
 }
 
