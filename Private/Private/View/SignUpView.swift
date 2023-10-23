@@ -29,75 +29,58 @@ struct SignUpView: View {
     
     private let phoneNumberMaximumCount: Int = 11  /// 휴대폰 번호 최대 글자수
 
-//    var isNextAvailable: Bool {
-//        switch focusField {
-//        case .nickName:
-//            return !nickName.isEmpty && isValidNickname(nickName)
-//        case .none:
-//            return false
-//        }
-//    }
-//    var isFieldAllWrite: Bool {
-//        return !nickName.isEmpty &&
-//        checkNickname == true
-//    }
-//    텍스트 관련 연산프로퍼티 보류
     var body: some View {
         VStack {
             Spacer()
-            Text("Private")
+            Image("SplashDark")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
                 .font(.pretendardBold28)
                 .foregroundStyle(.primary)
+            
             Spacer()
             VStack(alignment: .leading, spacing: 10) {
                 //MARK: 닉네임
                 Text("닉네임")
                     .font(.pretendardBold14)
                     .foregroundStyle(.primary)
-                    HStack {
-                        TextField("ex) Chris (특수문자 불가)", text: $nickName)
+                HStack {
+                    ZStack {
+                        TextField("ex) Chris (특수문자 불가, 최대 20자)", text: $nickName)
                             .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
                             .disableAutocorrection(true) // 자동수정 비활성화
                             .border(isNicknameValid ? Color.clear : Color.accentColor)
                             .focused($focusField, equals: .nickName)
-                            .frame(width: .screenWidth*0.70, height: .screenHeight*0.05)
+                            .frame(width: .screenWidth*0.90, height: .screenHeight*0.05)
                             .padding(.leading, 5)
                             .background(Color.lightGrayColor)
                             .cornerRadius(7)
                             .onChange(of: nickName) { newValue in
                                 ischeckNickname()
-                                checkNickname = false
-                                nickName = newValue.trimmingCharacters(in: .whitespaces)
+                                checkNickname = true
+                                nickName = String(newValue.prefix(20)).trimmingCharacters(in: .whitespaces)
+                                Task {
+                                    checkNickname = await authStore.doubleCheckNickname(nickname: nickName)
+                                    print("중복여부: \(checkNickname)")
+                                }
                             }
                         
                         Spacer()
                         //MARK: 중복확인
                         if isHiddenCheckButton {
-                            Button {
-                                Task {
-                                    checkNickname = await authStore.doubleCheckNickname(nickname: nickName)
-                                    if checkNickname == false && nickName.count > 0 {
-                                        cautionNickname = "이미 사용 중인 닉네임"
-                                        checkNicknameColor = .red
-                                    } else {
-                                        cautionNickname = "사용 가능"
-                                        checkNicknameColor = .green
-                                    }
-                                }
-                            } label: {
-                                if checkNickname == false && true {
-                                    Text("중복확인")
-                                        .font(.pretendardBold18)
-                                        .foregroundStyle(nickName.count >= 0 ? .blue : .secondary)
-                                } else {
-                                    Text(cautionNickname)
-                                        .font(.pretendardBold18)
-                                        .foregroundStyle(checkNicknameColor)
-                                }
+                            if checkNickname == false {
+                                Text("이미 사용 중인 닉네임")
+                                    .font(.pretendardBold18)
+                                    .foregroundStyle(.red)
+                                    .padding(.leading, 180)
+                            } else {
+                                Text("사용 가능")
+                                    .foregroundStyle(.green)
+                                    .padding(.leading, 250)
                             }
-                            .padding(.trailing, 7)
                         }
-                    } // HStack
+                    }
+                } // HStack
                 if !isValidNickname(nickName) && nickName.count > 0 {
                     Text(cautionNickname)
                         .font(.pretendardMedium16)
@@ -109,7 +92,7 @@ struct SignUpView: View {
                     .foregroundStyle(.primary)
                 TextField("ex) 01098765432 (-)없이", text: $phoneNumber)
                     .disableAutocorrection(true) // 자동수정 비활성화
-                    .frame(width: .screenWidth*0.70, height: .screenHeight*0.05)
+                    .frame(width: .screenWidth*0.90, height: .screenHeight*0.05)
                     .padding(.leading, 5)
                     .background(Color.lightGrayColor)
                     .cornerRadius(7)
@@ -123,24 +106,22 @@ struct SignUpView: View {
             Button {
                 userStore.user.nickname = nickName
                 userStore.user.phoneNumber = phoneNumber
-                
                     userStore.updateUser(user: userStore.user)
                 } label: {
                     Text("정보입력 완료하기")
                 }
             .buttonStyle(.borderedProminent)
-            .disabled(!checkNickname || phoneNumber.isEmpty)
+            .disabled(checkNickname == false || phoneNumber.count < phoneNumberMaximumCount)
             .padding()
-            
-            Button{
-                print("로그아웃")
-                authStore.signOutGoogle()
-            } label: {
-                HStack {
-                    Text("로그아웃")
-                    Image(systemName: "chevron.right")
-                }
-            }
+//            Button{
+//                print("로그아웃")
+//                authStore.signOutGoogle()
+//            } label: {
+//                HStack {
+//                    Text("로그아웃")
+//                    Image(systemName: "chevron.right")
+//                }
+//            }
             Spacer()
         } // 가장 큰 VStack
         .padding(.horizontal, 12)

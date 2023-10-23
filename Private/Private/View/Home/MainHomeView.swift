@@ -105,7 +105,7 @@ struct MainHomeView: View {
                 }
         } customize: {
             $0
-                .autohideIn(1)
+                .autohideIn(2)
                 .type(.floater(verticalPadding: 20))
                 .position(.bottom)
                 .animation(.spring())

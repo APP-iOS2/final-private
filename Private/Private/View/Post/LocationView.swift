@@ -38,13 +38,23 @@ struct LocationView: View {
     var body: some View {
         ZStack {
             VStack {
-                Text("지도를 탭하여 원하는 장소를 선택할 수 있습니다.")
-                    .font(.pretendardRegular14)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    .background(Color.darkGrayColor)
-                    .cornerRadius(30)
+                HStack {
+                    Text("지도를 탭하여 원하는 장소를 선택할 수 있습니다.")
+                        .font(.pretendardRegular14)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(Color.darkGrayColor)
+                        .cornerRadius(30)
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.pretendardBold24)
+                            .foregroundStyle(.black)
+                            .padding(.leading, 10)
+                    }
+                }
                 Spacer()
             }
             .zIndex(1)

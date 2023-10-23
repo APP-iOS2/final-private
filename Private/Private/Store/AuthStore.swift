@@ -142,8 +142,8 @@ class AuthStore: ObservableObject {
     
     func doubleCheckNickname(nickname: String) async -> Bool {
         do {
-            let datas = try await Firestore.firestore().collection("User").document(nickname).getDocument()
-            if let data = datas.data(), !data.isEmpty {
+            let datas = try await Firestore.firestore().collection("User").whereField("nickname", isEqualTo: nickname).getDocuments()
+            if !datas.isEmpty {
                 return false
             } else {
                 return true
@@ -154,6 +154,7 @@ class AuthStore: ObservableObject {
             return false
         }
     }
+
     
     // MARK: - 카카오톡 로그인
     

@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 struct LocationDetailView: View {
     @EnvironmentObject var feedStore: FeedStore
-    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
+    @ObservedObject var detailCoordinator = DetailCoordinator.shared
     @Binding var searchResult: SearchResult
 
     var body: some View {
@@ -29,14 +29,14 @@ struct LocationDetailView: View {
             .zIndex(1)
             .padding(.top, 20)
             
-            PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView, coord: $postCoordinator.coord, tappedLatLng: $postCoordinator.tappedLatLng)
+            LocationDetailMap(currentFeedId: $detailCoordinator.currentFeedId, showMarkerDetailView: $detailCoordinator.showMarkerDetailView, coord: $detailCoordinator.coord, tappedLatLng: $detailCoordinator.tappedLatLng)
             
         }
         .onAppear {
             Coordinator.shared.feedList = feedStore.feedList
-            postCoordinator.removeAllMarkers()
-            postCoordinator.makeSearchLocationMarker()
-            postCoordinator.moveCameraPosition()
+            detailCoordinator.removeAllMarkers()
+            detailCoordinator.makeSearchLocationMarker()
+            detailCoordinator.moveCameraPosition()
         }
     }
 }
