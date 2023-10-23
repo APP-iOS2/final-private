@@ -44,7 +44,7 @@ struct OtherInfoView: View {
             VStack {
                 HStack {
                     VStack {
-                        Text("\(user.savedFeed.count)")
+                        Text("\(userStore.otherFeedList.count)")
                             .font(.pretendardBold18)
                             .foregroundColor(.primary)
                             .padding(.bottom, 5.0)
@@ -92,7 +92,7 @@ struct OtherInfoView: View {
                     .cornerRadius(8)
                     .overlay(
                         RoundedRectangle(cornerRadius: 3)
-                            .stroke(Color.gray, lineWidth: followStore.followCheck ? 1 : 0)
+                            .stroke(Color.gray, lineWidth: followStore.followCheck ? 0 : 1)
                     )
             }
             .padding(.top, 40.0)

@@ -16,7 +16,7 @@ struct OtherProfileView: View {
     @EnvironmentObject private var followStore: FollowStore
     
     @StateObject var coordinator: Coordinator = Coordinator.shared
-    //내 마커 | 예약내역을 ->  ㅇㅇㅇ님의 마커 보기 , 아이콘 노란색 !!!
+    
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
     @State var viewNumber: Int = 0
     let user:User
@@ -31,7 +31,7 @@ struct OtherProfileView: View {
                              markerTitle: $coordinator.newMarkerTitle,
                              markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
                     .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
-                        MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == coordinator.currentFeedId }[0])
+                        MapFeedSheetView(feed: userStore.otherFeedList.filter { $0.id == coordinator.currentFeedId }[0])
                             .presentationDetents([.height(.screenHeight * 0.55)])
                     }
                 } label: {
@@ -123,9 +123,10 @@ struct OtherProfileView: View {
         .navigationTitle("\(user.nickname)")
         .backButtonArrow()
         .onAppear{
-            followStore.fetchFollowerFollowingList(userStore.user.email)
+            userStore.fetchotherUser(userEmail: user.email)
+            followStore.fetchFollowerFollowingList(user.email)
             coordinator.checkIfLocationServicesIsEnabled()
-            Coordinator.shared.myFeedList = userStore.myFeedList
+            Coordinator.shared.myFeedList = userStore.otherFeedList
             print("myFeedList: \(Coordinator.shared.myFeedList)")
             coordinator.makeOnlyMyFeedMarkers()
         }
