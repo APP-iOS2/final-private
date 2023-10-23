@@ -8,33 +8,13 @@
 import SwiftUI
 
 struct SettingView: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var authStore: AuthStore
     @State private var logoutAlert = false
     @State private var deleteAuth = false
     
-    var backButton : some View {
-        Button {
-            self.presentationMode.wrappedValue.dismiss()
-        } label: {
-            Image(systemName: "chevron.left")
-                .foregroundColor(.white)
-        }
-    } // custom backbutton
     var body: some View {
         NavigationStack {
             List {
-                Section (content: {
-                    Toggle(isOn: .constant(true), label: {
-                        Text("모든알림")
-                            .font(.pretendardRegular16)
-                            .foregroundColor(.primary)
-                    })
-                }, header: {
-                    Text("알림")
-                        .font(.pretendardRegular12)
-                        .foregroundColor(.primary)
-                })
                 Section (content: {
                     HStack {
                         VStack {
@@ -67,7 +47,7 @@ struct SettingView: View {
                             Image(systemName: "chevron.right")
                         }
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .alert(isPresented: $logoutAlert) {
                         Alert(
                             title: Text("로그아웃")
@@ -113,7 +93,7 @@ struct SettingView: View {
             .navigationTitle("설정").font(.pretendardRegular16).foregroundColor(.primary)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: backButton)
+            .backButtonArrow()
         }
     }
     
