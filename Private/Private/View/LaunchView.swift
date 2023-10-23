@@ -30,16 +30,6 @@ struct LaunchView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: .screenWidth)
-                    Button{
-                        print("로그아웃")
-                        authStore.signOutGoogle()
-                        authStore.handleKakaoLogout()
-                    } label: {
-                        HStack {
-                            Text("로그아웃")
-                            Image(systemName: "chevron.right")
-                        }
-                    }
                 }
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
