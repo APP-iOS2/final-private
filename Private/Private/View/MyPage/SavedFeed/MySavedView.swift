@@ -11,6 +11,7 @@ import Kingfisher
 struct MySavedView: View {
     
     @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var feedStore: FeedStore
     @State var isMyPageFeedSheet: Bool = false
     @State var selctedFeed : MyFeed = MyFeed()
     @State private var isLongPressing = false
@@ -20,9 +21,9 @@ struct MySavedView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             if userStore.mySavedFeedList.isEmpty {
-                Text("저장한 피드가 없습니다")
-                    .font(.pretendardBold24)
-                    .foregroundColor(.primary)
+                Text("저장한 피드가 없습니다.")
+                    .font(.pretendardMedium20)
+                    .foregroundStyle(.primary)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
                 LazyVGrid(
@@ -42,9 +43,8 @@ struct MySavedView: View {
                                 .frame(width: .screenWidth * 0.33, height: .screenWidth * 0.33)
                                 .clipShape(Rectangle())
                         }
-                        .sheet(isPresented: $isMyPageFeedSheet){
-                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed, feedList: userStore.mySavedFeedList)
-                                .presentationDetents([.height(.screenHeight * 0.7)])
+                        .fullScreenCover(isPresented: $isMyPageFeedSheet) {
+                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.mySavedFeedList)
                         }
                         .gesture(
                             LongPressGesture()

@@ -51,12 +51,17 @@ struct MyPageView: View {
                 .padding(.bottom, 20)
             HStack {
                 NavigationLink {
+                    NavigationStack {
                     NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
                              markerTitle: $coordinator.newMarkerTitle,
                              markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
                     .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
                         MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == coordinator.currentFeedId }[0])
                             .presentationDetents([.height(.screenHeight * 0.55)])
+                    }
+                    .navigationBarBackButtonHidden(true)
+                    .navigationTitle("내 마커")
+                    .backButtonArrow()
                     }
                 } label: {
                     HStack {
@@ -84,6 +89,7 @@ struct MyPageView: View {
                 .frame(width: .screenWidth*0.5)
             }
             HStack {
+                Spacer()
                 Button {
                     viewNumber = 0
                 }label: {
@@ -93,11 +99,12 @@ struct MyPageView: View {
                     }
                     .font(.pretendardRegular12)
                     .foregroundColor(viewNumber == 0 ? .privateColor : .primary)
-                    .frame(width: .screenWidth*0.3)
+                    .frame(width: .screenWidth*0.33)
                     .padding(.bottom, 15)
+                    .padding([.trailing,.leading], 0)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 0))
                 }
-                Spacer()
+                
                 Button {
                     viewNumber = 1
                 }label: {
@@ -124,24 +131,29 @@ struct MyPageView: View {
                     }
                     .font(.pretendardRegular12)
                     .foregroundColor(viewNumber == 1 ? .privateColor : .primary)
-                    .frame(width: .screenWidth*0.3)
+                    .frame(width: .screenWidth*0.33)
+                    .padding([.trailing,.leading], 0)
                     .padding(.bottom, 15)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 1))
                 }
-                Spacer()
+                
                 Button {
                     viewNumber = 2
                 }label: {
                     HStack {
+                        Spacer()
                         viewNumber == 2 ? Image(systemName: "pin.fill") : Image (systemName: "pin")
                         Text("저장한 장소")
+                        Spacer()
                     }
                     .font(.pretendardRegular12)
                     .foregroundColor(viewNumber == 2 ? .privateColor : .primary)
-                    .frame(width: .screenWidth*0.3)
+                    .frame(width: .screenWidth*0.33)
                     .padding(.bottom, 15)
+                    .padding([.trailing,.leading], 0)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 2))
                 }
+                Spacer()
             }
             .padding(.top, 20)
             Divider()
