@@ -80,15 +80,18 @@ struct ShopDetailBodyView: View {
     
     @State var isExpanded: Bool = false
     @State var isAddressCopied: Bool = false
+    @State var isMapShowing: Bool = false
     
     @Binding var selectedShopDetailCategory: ShopDetailCategory
+    
+    @StateObject var coordinator: Coordinator = Coordinator.shared
     
     @State var shopData: Shop
     
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 0) {
-                HStack(alignment: .top, spacing: 0) {
+                HStack(alignment: .center, spacing: 0) {
                     VStack(alignment: .leading, spacing: 2) {
                         Spacer()
                             .frame(height: 10)
@@ -128,6 +131,16 @@ struct ShopDetailBodyView: View {
                     }
                     
                     Spacer()
+                    
+                    Button {
+                        isMapShowing.toggle()
+                    } label: {
+                        Image(systemName: "map")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundStyle(Color.privateColor)
+                            .frame(width: 20, height: 20)
+                    }
                 }
                 .padding(.horizontal, 10)
                 
@@ -165,12 +178,6 @@ struct ShopDetailBodyView: View {
             })
             .cornerRadius(12)
         }
-//        .popup(isPresented: $isAddressCopied, view: {
-//            ToastMessageView(message: "장소가 복사 되었습니다!")
-//                .onDisappear {
-//                    isAddressCopied = false
-//                }
-//        })
         .popup(isPresented: $isAddressCopied) {
             ToastMessageView(message: "장소가 복사 되었습니다!")
                 .onDisappear {
@@ -182,7 +189,25 @@ struct ShopDetailBodyView: View {
                 .type(.toast)
                 .position(.center)
         }
-
+        .sheet(isPresented: $isMapShowing) {
+            NavigationStack {
+                UIMapView((shopData.coord.lat, shopData.coord.lng))
+                    .ignoresSafeArea()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button {
+                                isMapShowing.toggle()
+                            } label: {
+                                Image(systemName: "chevron.backward")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .font(.pretendardSemiBold16)
+                                    .foregroundColor(Color.privateColor)
+                            }
+                        }
+                    }
+            }
+        }
     }
     
     func copyToClipboard(_ text: String) {
@@ -321,5 +346,69 @@ class ShopViewModel: ObservableObject {
                 self.shop = shop
             }
         }
+    }
+}
+
+struct UIMapView: UIViewRepresentable {
+    
+    var coord: (Double, Double)
+    
+    init(_ coord: (Double, Double)) {
+        self.coord = coord
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(coord)
+    }
+    
+    func makeUIView(context: Context) -> NMFNaverMapView {
+        let view = NMFNaverMapView()
+        let marker = NMFMarker()
+        let locationOverlay = view.mapView.locationOverlay
+
+        locationOverlay.location = NMGLatLng(lat: coord.0, lng: coord.1)
+        locationOverlay.hidden = false
+        
+        marker.position = NMGLatLng(lat: coord.0, lng: coord.1)
+        marker.width = 20
+        marker.height = 20
+        marker.mapView = view.mapView
+        marker.iconImage = NMFOverlayImage(name: "placeholder")
+
+        view.showZoomControls = true
+        view.showScaleBar = true
+
+        view.mapView.positionMode = .direction
+        view.mapView.zoomLevel = 17
+        view.mapView.mapType = .basic
+        view.mapView.isZoomGestureEnabled = true
+        view.mapView.isRotateGestureEnabled = false
+        view.mapView.setLayerGroup(NMF_LAYER_GROUP_BUILDING, isEnabled: true)
+        
+        view.mapView.addCameraDelegate(delegate: context.coordinator)
+        view.mapView.addOptionDelegate(delegate: context.coordinator)
+        
+        return view
+    }
+    
+    func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: coord.0, lng: coord.1))
+        cameraUpdate.animation = .fly
+        cameraUpdate.animationDuration = 1
+        uiView.mapView.moveCamera(cameraUpdate)
+    }
+    
+    class Coordinator: NSObject, NMFMapViewCameraDelegate, NMFMapViewOptionDelegate {
+        var coord: (Double, Double)
+        
+        init(_ coord: (Double, Double)) {
+            self.coord = coord
+        }
+        
+        func mapView(_ mapView: NMFMapView, cameraWillChangeByReason reason: Int, animated: Bool) { }
+        
+        func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) { }
+        
+        func mapViewOptionChanged(_ mapView: NMFMapView) { }
     }
 }
