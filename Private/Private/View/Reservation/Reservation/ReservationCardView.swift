@@ -79,7 +79,7 @@ struct ReservationCardView: View {
                         Text(shopData.name)
                             .font(.pretendardMedium20)
                             .foregroundStyle(Color.primary)
-                            .padding(.bottom, 6)
+                            .padding(.vertical, 6)
                         Spacer()
                         HStack {
                             Text("예약 인원")
@@ -88,8 +88,9 @@ struct ReservationCardView: View {
                             Text("\(temporaryReservation.numberOfPeople)명")
                                 .font(.pretendardMedium16)
                         }
-                        .foregroundStyle(Color.gray)
-
+                        .foregroundStyle(Color.primary)
+                        .opacity(0.7)
+                        .padding(.bottom, 1)
                         HStack {
                             Text("결제 금액")
                                 .font(.pretendardSemiBold16)
@@ -97,11 +98,8 @@ struct ReservationCardView: View {
                             Text(temporaryReservation.priceStr)
                                 .font(.pretendardMedium16)
                         }
-                        .foregroundStyle(Color.gray)
-//                        ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
-//                            .foregroundStyle(Color.darkGraySubColor)
-//                        ReservationCardCell(title: "결제 금액", content: "\(temporaryReservation.priceStr)")
-//                            .foregroundStyle(Color.darkGraySubColor)
+                        .foregroundStyle(Color.primary)
+                        .opacity(0.7)
                     }
                 }
             }
