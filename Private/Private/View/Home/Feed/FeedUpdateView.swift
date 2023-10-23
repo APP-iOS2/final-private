@@ -28,7 +28,6 @@ struct FeedUpdateView: View {
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @Binding var root: Bool
     @Binding var selection: Int
-    //@Binding var isselctedFeed : Bool
     @Binding var isFeedUpdateViewPresented: Bool /// FeedUpdateView
     @Binding var searchResult: SearchResult
     @State private var text: String = "" /// 텍스트마스터 내용

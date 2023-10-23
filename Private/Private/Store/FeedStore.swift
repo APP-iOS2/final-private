@@ -53,6 +53,22 @@ final class FeedStore: ObservableObject {
             .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
     }
+//    func fetchFollowingFeeds() {
+//        FollowStore.followingID(nickname: "yourNickname").getDocument { [weak self] (document, error) in
+//            if let error = error {
+//                print("Error fetching following list: \(error.localizedDescription)")
+//                return
+//            }
+//            
+//            guard let document = document, document.exists,
+//                  let followingList = document.data()?["following"] as? [String] else {
+//                print("Cannot fetch following list")
+//                return
+//            }
+//            
+//            self?.fetchFeeds(followingList: followingList)
+//        }
+//    }
     //MARK: 피드 추가
     func addFeed(_ feed: MyFeed) {
         feedRef.document(feed.id).collection("Feed")
