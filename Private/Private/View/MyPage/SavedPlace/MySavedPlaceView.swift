@@ -17,8 +17,8 @@ struct MySavedPlaceView: View {
         ScrollView(showsIndicators: false) {
             if userStore.mySavedPlaceList.isEmpty {
                 Text("저장한 북마크가 없습니다.")
-                    .font(.pretendardBold24)
-                    .foregroundColor(.primary)
+                    .font(.pretendardMedium20)
+                    .foregroundStyle(.primary)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
                 ShopInfoCardView(isShowingLocation: $isShowingLocation, searchResult: $searchResult, mySavedPlaceList: userStore.mySavedPlaceList)
