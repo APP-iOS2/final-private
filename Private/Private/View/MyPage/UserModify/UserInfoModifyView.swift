@@ -84,7 +84,7 @@ struct UserInfoModifyView: View {
                 VStack (alignment: .leading) {
                     HStack {
                         Text("닉네임")
-                            .font(.pretendardBold14)
+                            .font(.pretendardBold18)
                             .foregroundColor(.primary)
                             .frame(width: .screenWidth * 0.2)
                             .padding(.trailing, 5)
@@ -92,7 +92,7 @@ struct UserInfoModifyView: View {
                             .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
                             .disableAutocorrection(true) // 자동수정 비활성화
                             .border(isNicknameValid ? Color.clear : Color.accentColor)
-                            .font(.pretendardRegular12)
+                            .font(.pretendardRegular16)
                         //.focused($focusField, equals: .mypageNickname)
                         //.frame(width: .screenWidth*0.70, height: .screenHeight*0.05)
                             .padding(.leading, 5)
