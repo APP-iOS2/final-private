@@ -335,5 +335,36 @@ final class UserStore: ObservableObject {
             "mapy": feed.mapy,
         ]
     }
+    func deleteCollection (_ collectionName: String) {
+        Firestore.firestore().collection("User").document(user.email)
+            .collection(collectionName)
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error fetching documents: \(error)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let documentReference = document.reference
+                        documentReference.delete { error in
+                            if let error = error {
+                                print("Error deleting document: \(error)")
+                            } else {
+                                print("Document deleted successfully")
+                            }
+                        }
+                    }
+                }
+            }
+    }
+    func deleteUser() {
+        deleteCollection("MyFeed")
+        deleteCollection("MyReservation")
+        deleteCollection("SavedFeed")
+        deleteCollection("SavedPlace")
+        deleteCollection("follower")
+        deleteCollection("following")
+            
+        Firestore.firestore().collection("User").document(user.email)
+            .delete()
+    }
 }
 
