@@ -19,6 +19,7 @@ final class ChatRoomStore: ObservableObject {
     
     private var timer: Timer?
     private var timeInterval: Double = 0.1
+    private var listenerObject: ListenerRegistration?
     
     //@MainActor 검토
     func subscribeToChatRoomChanges (user: User) {
@@ -31,7 +32,7 @@ final class ChatRoomStore: ObservableObject {
         
         let userCollection = Firestore.firestore().collection("ChatRoom")
         
-        userCollection
+        listenerObject = userCollection
             .addSnapshotListener { [weak self] (querySnapshot, error) in
                 if let error = error {
                     print("Error getting chat room documents: \(error)")
@@ -73,6 +74,10 @@ final class ChatRoomStore: ObservableObject {
                 }
             }
     }
+    
+    func removeListener() {
+           listenerObject?.remove()
+       }
     
     func addChatRoomToUser(user: User, chatRoom: ChatRoom) {
         let userCollection = Firestore.firestore().collection("ChatRoom")
@@ -279,10 +284,12 @@ final class ChatRoomStore: ObservableObject {
                     }
                 }
             DispatchQueue.main.async {
-                if self.messageList == [] {
-                    self.messageList = tempChatMessageListLocal
-                    self.isShowingChatLoading = false
-                } else if self.messageList.count != tempChatMessageListLocal.count {
+//                if self.messageList == [] {
+//                    self.messageList = tempChatMessageListLocal
+//                    self.isShowingChatLoading = false
+//                } else 
+                
+                if self.messageList != tempChatMessageListLocal {
                     self.messageList = tempChatMessageListLocal
                     self.isShowingChatLoading = false
                 }
