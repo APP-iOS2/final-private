@@ -99,7 +99,6 @@ struct ShopDetailBodyView: View {
                         
                         HStack(spacing: 10) {
                             Text(shopData.name)
-                                .foregroundColor(.white)
                                 .font(.pretendardBold28)
                             
                             Divider()
@@ -187,7 +186,7 @@ struct ShopDetailBodyView: View {
                 }
         } customize: {
             $0
-                .autohideIn(1)
+                .autohideIn(2)
                 .type(.toast)
                 .position(.center)
         }
@@ -204,7 +203,7 @@ struct ShopDetailBodyView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .font(.pretendardSemiBold16)
-                                    .foregroundColor(Color.privateColor)
+                                    .foregroundColor(Color.black)
                             }
                         }
                     }

@@ -49,7 +49,7 @@ struct ShopListView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 22)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.subGrayColor)
                 }
             }
             .frame(height: 40)
