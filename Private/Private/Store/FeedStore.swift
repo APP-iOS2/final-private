@@ -125,34 +125,34 @@ final class FeedStore: ObservableObject {
      */
     /// 일단 주석해두었습니다
 //    //MARK: 해당 닉을 가진 사람의 게시글 전체  삭제
-//    func deleteFeed(writerNickname: String) {
-//        // Firestore.firestore().collection("Feed")
-//        let query = feedRef.whereField("id", isEqualTo: writerNickname)
-//        
-//        query.getDocuments { (querySnapshot, error) in
-//            if let error = error {
-//                print("Error deleting feed from Firebase: \(error.localizedDescription)")
-//                return
-//            }
-//            
-//            guard let documents = querySnapshot?.documents else {
-//                print("No documents found.")
-//                return
-//            }
-//            
-//            for document in documents {
-//                // 해당 문서를 삭제
-//                document.reference.delete { error in
-//                    if let error = error {
-//                        print("Error deleting feed from Firebase: \(error.localizedDescription)")
-//                    } else {
-//                        print("Feed deleted from Firebase successfully")
-//                        self.fetchFeeds()
-//                    }
-//                }
-//            }
-//        }
-//    }
+    func deleteFeed(writerNickname: String) {
+        // Firestore.firestore().collection("Feed")
+        let query = feedRef.whereField("writerNickname", isEqualTo: writerNickname)
+        
+        query.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error deleting feed from Firebase: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+                print("No documents found.")
+                return
+            }
+            
+            for document in documents {
+                // 해당 문서를 삭제
+                document.reference.delete { error in
+                    if let error = error {
+                        print("Error deleting feed from Firebase: \(error.localizedDescription)")
+                    } else {
+                        print("Feed deleted from Firebase successfully")
+                        self.fetchFeeds()
+                    }
+                }
+            }
+        }
+    }
     
     
     
