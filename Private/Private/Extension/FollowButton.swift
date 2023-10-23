@@ -21,9 +21,8 @@ struct FollowButton: View {
         Button {
             followStore.followCheck.toggle()
             followStore.manageFollow(userId: user.nickname, myNickName: userStore.user.nickname, userEmail: user.email)
-            
         } label: {
-            Text((followStore.followCheck) ? "팔로잉" : "팔로우")
+            Text((followStore.followCheck) ? "팔로우" : "팔로잉")
         }
         .background((followStore.followCheck) ? Color("AccentColor") : Color.white)
     }

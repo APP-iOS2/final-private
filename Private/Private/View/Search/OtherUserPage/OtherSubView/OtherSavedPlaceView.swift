@@ -17,13 +17,13 @@ struct OtherSavedPlaceView: View {
     
     var body: some View {
         ScrollView {
-            if userStore.mySavedPlaceList.isEmpty {
+            if userStore.otherSavedPlaceList.isEmpty {
                 Text("저장한 북마크가 없습니다.")
                     .font(.pretendardBold24)
                     .foregroundColor(.primary)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
-                ShopInfoCardView(isShowingLocation: $isShowingLocation, searchResult: $searchResult, mySavedPlaceList: userStore.mySavedPlaceList)
+                ShopInfoCardView(isShowingLocation: $isShowingLocation, searchResult: $searchResult, mySavedPlaceList: userStore.otherSavedPlaceList)
             }
         }
         .sheet(isPresented: $isShowingLocation) {
