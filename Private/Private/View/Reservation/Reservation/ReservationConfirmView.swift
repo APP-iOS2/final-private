@@ -21,14 +21,13 @@ struct ReservationConfirmView: View {
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
     @State private var isShowRemoveReservationAlert: Bool = false
-    @Binding var useCompleted: Bool
+    @Binding var viewNumber: Int
     
     let reservationData: Reservation  // 예약 데이터
     let shopData: Shop
     
     var body: some View {
         VStack {
-            //            VStack(alignment: .leading) {
             ScrollView {
             VStack(alignment: .leading) {
                 Text("예약 정보")
@@ -51,7 +50,7 @@ struct ReservationConfirmView: View {
                 
                 ReservationCardCell(title: "예약자", content: userStore.user.name)
                 ReservationCardCell(title: "이메일", content: userStore.user.email)
-                ReservationCardCell(title: "요구사항", content: reservationData.requirement ?? "요구사항 없음")
+                ReservationCardCell(title: "요구사항", content: reservationData.requirementStr)
             }
             .padding(.bottom, 10)
             PrivateDivder()
@@ -67,7 +66,7 @@ struct ReservationConfirmView: View {
                 ReservationCardCell(title: "사업자번호", content: shopData.businessNumber)
             }
         }
-            if !useCompleted {
+            if viewNumber == 0 {
                 VStack(alignment: .leading) {
                     HStack {
                         Image(systemName: "info.circle")
@@ -109,7 +108,7 @@ struct ReservationConfirmView: View {
             }
         }
         .padding()
-                .navigationTitle("예약 내역")
+        .navigationTitle("예약 내역")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .backButtonArrow()
@@ -123,6 +122,6 @@ struct ReservationConfirmView: View {
 
 struct ReservationConfirmView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationConfirmView(useCompleted: .constant(false), reservationData: ReservationStore.tempReservation, shopData: ShopStore.shop)
+        ReservationConfirmView(viewNumber: .constant(0), reservationData: ReservationStore.tempReservation, shopData: ShopStore.shop)
     }
 }

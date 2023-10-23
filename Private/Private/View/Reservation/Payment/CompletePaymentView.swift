@@ -14,6 +14,8 @@ struct CompletePaymentView: View {
     
     var body: some View {
         VStack {
+            Spacer()
+                .frame(height: 1)
             ScrollView() {
                 LottieView(fileName: "Complete", loopMode: .playOnce)
                     .frame(width: 130, height: 130)
@@ -21,8 +23,10 @@ struct CompletePaymentView: View {
                     .font(.pretendardBold24)
                     .foregroundStyle(.primary)
                     .padding(.bottom, 12)
-                ReservationConfirmView(useCompleted: .constant(true), reservationData: reservationStore.myReservation, shopData: shopData)
+                ReservationConfirmView(viewNumber: .constant(1), reservationData: reservationStore.myReservation, shopData: shopData)
             }
+            .scrollIndicators(.hidden)
+
             ReservationButton(text: "확인") {
                 NavigationUtil.popToRootView()
             }

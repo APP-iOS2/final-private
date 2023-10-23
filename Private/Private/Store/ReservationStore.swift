@@ -138,7 +138,7 @@ final class ReservationStore: ObservableObject {
             "date": dateTimestamp,
             "numberOfPeople": reservationData.numberOfPeople,
             "totalPrice": reservationData.totalPrice,
-            "requirement": reservationData.requirement ?? "요구사항 없음"  // 나중에 수정
+            "requirement": reservationData.requirementStr
         ]
         
         // Firestore Reservation에 추가

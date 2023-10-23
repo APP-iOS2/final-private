@@ -64,12 +64,30 @@ class CalendarData: ObservableObject {
     func getSelectedDate(shopData: Shop) -> Date {
         var selectDate: Date = today
         
-        if shopData.regularHoliday.contains(AppDateFormatter.shared.dayString(from: today)) || shopData.temporaryHoliday.contains(where: { date in
-            return Calendar.current.isDate(date, inSameDayAs: today)
-        }){
+        let regularHolidayIsToday = shopData.regularHoliday.contains(AppDateFormatter.shared.dayString(from: selectDate))
+        
+        let temporaryHolidayIsToday = shopData.temporaryHoliday.contains { date in
+            return Calendar.current.isDateInToday(date)
+        }
+
+        if regularHolidayIsToday || temporaryHolidayIsToday {
             selectDate = Date().addingTimeInterval(60 * 60 * 24)
             return selectDate
+        } else {
+            return selectDate
+
         }
-        return selectDate
+        
+//        if shopData.regularHoliday.contains(AppDateFormatter.shared.dayString(from: selectDate)) || shopData.temporaryHoliday.contains(where: { date in
+//            return Calendar.current.isDate(date, inSameDayAs: today)
+//            selectDate = Date().addingTimeInterval(60 * 60 * 24)
+//            return selectDate
+//        }){
+////            selectDate = Date().addingTimeInterval(60 * 60 * 24)
+////            return selectDate
+//            return selectDate
+//
+//        }
+//        return selectDate
     }
 }

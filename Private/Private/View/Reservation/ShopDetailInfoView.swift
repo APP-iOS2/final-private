@@ -115,7 +115,7 @@ struct ShopDetailInfoView: View {
                         .lineSpacing(5)
                         .frame(alignment: .leading)
                 }
-                .accentColor(Color.white)
+                .accentColor(Color.primary)
                 
                 DisclosureGroup {
                     VStack(alignment: .leading, spacing: 6) {
@@ -158,7 +158,7 @@ struct ShopDetailInfoView: View {
                         .lineSpacing(5)
                         .frame(alignment: .leading)
                 }
-                .accentColor(Color.white)
+                .accentColor(Color.primary)
             }
         }
     }

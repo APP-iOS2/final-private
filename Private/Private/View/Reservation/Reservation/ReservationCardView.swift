@@ -25,7 +25,7 @@ struct ReservationCardView: View {
     @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
     @State private var reservedDate: String = ""
     
-    @Binding var useCompleted: Bool
+    @Binding var viewNumber: Int
     
     private let currentDate = Date()
     var reservation: Reservation
@@ -44,7 +44,7 @@ struct ReservationCardView: View {
                     } label: {
                         Text("가게보기")
                     }
-                    if disableReservationButton {
+                    if viewNumber == 1 {
                         Button(role: .destructive) {
                             print(#fileID, #function, #line, "- 예약내역 삭제")
                             isShowDeleteMyReservationAlert.toggle()
@@ -60,9 +60,9 @@ struct ReservationCardView: View {
             }
             .padding(.bottom, 8)
             
-     
+            
             NavigationLink {
-                ReservationConfirmView(useCompleted: $useCompleted, reservationData: temporaryReservation, shopData: shopData)
+                ReservationConfirmView(viewNumber: $viewNumber, reservationData: temporaryReservation, shopData: shopData)
             } label: {
                 HStack(alignment: .top) {
                     KFImage(URL(string: shopData.shopImageURL)!)
@@ -76,12 +76,32 @@ struct ReservationCardView: View {
                         .padding(.trailing, 2)
                     
                     VStack(alignment: .leading) {
-                            Text(shopData.name)
-                                .font(.pretendardMedium20)
-                                .foregroundStyle(Color.primary)
-                                .padding(.bottom, 6)
-                        ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
-                        ReservationCardCell(title: "결제 금액", content: "\(temporaryReservation.priceStr)")
+                        Text(shopData.name)
+                            .font(.pretendardMedium20)
+                            .foregroundStyle(Color.primary)
+                            .padding(.bottom, 6)
+                        Spacer()
+                        HStack {
+                            Text("예약 인원")
+                                .font(.pretendardSemiBold16)
+                            Spacer()
+                            Text("\(temporaryReservation.numberOfPeople)명")
+                                .font(.pretendardMedium16)
+                        }
+                        .foregroundStyle(Color.gray)
+
+                        HStack {
+                            Text("결제 금액")
+                                .font(.pretendardSemiBold16)
+                            Spacer()
+                            Text(temporaryReservation.priceStr)
+                                .font(.pretendardMedium16)
+                        }
+                        .foregroundStyle(Color.gray)
+//                        ReservationCardCell(title: "예약 인원", content: "\(temporaryReservation.numberOfPeople)명")
+//                            .foregroundStyle(Color.darkGraySubColor)
+//                        ReservationCardCell(title: "결제 금액", content: "\(temporaryReservation.priceStr)")
+//                            .foregroundStyle(Color.darkGraySubColor)
                     }
                 }
             }
@@ -149,24 +169,8 @@ struct ReservationCardView: View {
 
 struct ReservationCardView_Previews: PreviewProvider {
     static var previews: some View {
-        ReservationCardView(useCompleted: .constant(false), reservation: ReservationStore.tempReservation)
+        ReservationCardView(viewNumber: .constant(1), reservation: ReservationStore.tempReservation)
             .environmentObject(ReservationStore())
             .environmentObject(ShopStore())
-    }
-}
-
-struct ReservationCardCell: View {
-    let title: String
-    let content: String
-    
-    var body: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Text("\(title)")
-            Spacer()
-            Text("\(content)")
-        }
-        .font(.pretendardMedium18)
-        .foregroundStyle(Color.primary)
-        .padding(.bottom, 1)
     }
 }

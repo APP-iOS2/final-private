@@ -77,7 +77,8 @@ struct ShopDetailHeaderView: View {
 struct ShopDetailBodyView: View {
     
     @Environment(\.colorScheme) var colorScheme
-    
+    @EnvironmentObject var calendarData: CalendarData
+
     @State var isExpanded: Bool = false
     @Binding var selectedShopDetailCategory: ShopDetailCategory
     
@@ -92,7 +93,7 @@ struct ShopDetailBodyView: View {
                     
                     HStack(spacing: 10) {
                         Text(shopData.name)
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .font(.pretendardBold28)
                         
                         Divider()
@@ -160,6 +161,11 @@ struct ShopDetailBodyView: View {
             }
         })
         .cornerRadius(12)
+        .onAppear {
+            calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)
+            calendarData.currentPage = calendarData.getSelectedDate(shopData: shopData)
+            calendarData.titleOfMonth = calendarData.getSelectedDate(shopData: shopData)
+        }
     }
     
     func copyToClipboard(_ text: String) {

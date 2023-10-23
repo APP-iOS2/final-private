@@ -24,4 +24,10 @@ struct Reservation: Hashable {
         let result = numberFormatter.string(from: NSNumber(value: totalPrice))
         return(result! + "원")
     }
+    
+    var requirementStr: String {
+        guard let requirement else { return "요구사항 없음"}
+        if requirement.isEmpty { return "요구사항 없음" } else { return requirement }
+    }
+    
 }
