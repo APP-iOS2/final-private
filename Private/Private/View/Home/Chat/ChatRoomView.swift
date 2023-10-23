@@ -23,23 +23,34 @@ struct ChatRoomView: View {
             VStack{
                 List(chatRoomStore.messageList, id: \.self) { message in
                     if (message.sender == userStore.user.nickname) {
-                        Text(message.content)
-                            .padding(10)
-                            .padding(.horizontal, 5)
-                            .background(Color.privateColor)
-                            .foregroundColor(.black)
-                            .cornerRadius(20)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .listRowSeparator(.hidden)
+                        HStack(alignment: .bottom){
+                            Spacer()
+                            Text(formatTimestamp(message.timestamp))
+                                .font(.pretendardRegular12)
+                            Text(message.content)
+                                .padding(10)
+                                .padding(.horizontal, 5)
+                                .background(Color.privateColor)
+                                .foregroundColor(.black)
+                                .cornerRadius(20)
+                                .frame(alignment: .trailing)
+
+                        }
+                        .listRowSeparator(.hidden)
                     } else {
-                        Text(message.content)
-                            .padding(10)
-                            .padding(.horizontal, 5)
-                            .background(Color.lightGrayColor)
-                            .foregroundColor(.white)
-                            .cornerRadius(20)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .listRowSeparator(.hidden)
+                        HStack(alignment: .bottom){
+                            Text(message.content)
+                                .padding(10)
+                                .padding(.horizontal, 5)
+                                .background(Color.lightGrayColor)
+                                .foregroundColor(Color.chatTextColor)
+                                .cornerRadius(20)
+                                .frame(alignment: .leading)
+                            Text(formatTimestamp(message.timestamp))
+                                .font(.pretendardRegular12)
+                            Spacer()
+                        }
+                        .listRowSeparator(.hidden)
                     }
                 }
                 
@@ -74,6 +85,7 @@ struct ChatRoomView: View {
                         }
                         .padding(.leading, 5)
                         Spacer()
+                        
                     }
                 } else {
                     HStack {
@@ -112,6 +124,15 @@ struct ChatRoomView: View {
                 message = ""
             }
         }
+        
+        
+    }
+    func formatTimestamp(_ timestamp: Double) -> String {
+        let date = Date(timeIntervalSince1970: timestamp) // 타임스탬프로부터 날짜 생성
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm" // 원하는 시간 형식 설정
+        
+        return formatter.string(from: date) // 포맷팅된 시간 반환
     }
 }
 
