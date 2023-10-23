@@ -21,6 +21,9 @@ final class FeedStore: ObservableObject {
     // @Published 는 SwiftUI에서 ObservableObject의 프로퍼티가 변경될 때 View를 업데이트하도록 합니다.
     @Published var feedList: [MyFeed] = []
     @Published var uploadToast: Bool = false
+    @Published var updatedToast: Bool = false
+    @Published var deleteToast: Bool = false
+
     @Published var isPostViewPresented: Bool = false
 
     var selctedFeed = MyFeed()
@@ -177,7 +180,9 @@ final class FeedStore: ObservableObject {
                         print("Error deleting feed from Firebase: \(error.localizedDescription)")
                     } else {
                         print("Feed deleted from Firebase successfully")
+                        self.deleteToast = true
                         self.fetchFeeds()
+                        
                     }
                 }
             }
