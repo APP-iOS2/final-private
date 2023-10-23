@@ -8,11 +8,11 @@ import SwiftUI
 import NMapsMap
 import Kingfisher
 import FirebaseStorage
-
+//import Combine
 struct FeedCellView: View {
-    
+
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.presentationMode) var presentationMode//: Binding<PresentationMode>
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     var feed: MyFeed
     @State private var currentPicture = 0
@@ -23,7 +23,7 @@ struct FeedCellView: View {
     
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @StateObject private var locationSearchStore = LocationSearchStore.shared
-    
+
     @State private var message: String = ""
     @State private var isShowingMessageTextField: Bool = false
     @State private var isFeedUpdateViewPresented: Bool = false
@@ -38,7 +38,7 @@ struct FeedCellView: View {
     @Binding var selection: Int
 
     var body: some View {
-
+        
         VStack {
             HStack {
                 KFImage(URL(string: feed.writerProfileImage))
@@ -82,7 +82,6 @@ struct FeedCellView: View {
                                     .default(Text("수정")) {
                                         print("수정")
                                         //MARK: FeedCellView에서 수정하는 곳
-                                        //selectedFeed = MyFeed // 선택된 피드 설정
                                         print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column)","\(feed.id)")
                                         isFeedUpdateViewPresented = true
                                     },
@@ -91,7 +90,8 @@ struct FeedCellView: View {
                                         feedStore.deleteFeed(feedId: feed.id)
                                         feedStore.deleteToast = true
                                     },
-                                        .cancel(Text("취소"))
+                                    //.cancel() // 취소 버튼
+                                    .cancel(Text("취소"))
                                 ]
                             )
                         }
@@ -101,6 +101,7 @@ struct FeedCellView: View {
                     }
                 }
             }
+            //MARK:  사진과 닉네임 사이 간격 조정 20->10
             .padding(.leading, 20)
             
             TabView(selection: $currentPicture) {
@@ -119,7 +120,6 @@ struct FeedCellView: View {
             .tabViewStyle(PageTabViewStyle())
             .frame(width: .screenWidth, height: .screenWidth)
         }
-
         //MARK: 회색 장소 박스
         HStack {
             Button {
@@ -139,7 +139,7 @@ struct FeedCellView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 15)
-                    //.foregroundColor(.primary)
+                    .foregroundColor(.primary)
                     .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
                     .padding(.top, 5)
             }
@@ -170,7 +170,6 @@ struct FeedCellView: View {
                 .padding(.leading, 15)
             }
             Spacer()
-            
         }
         .padding(.top, 5)
         .padding(.horizontal, 10)
@@ -179,7 +178,80 @@ struct FeedCellView: View {
         .sheet(isPresented: $isShowingLocation) {
             LocationDetailView(searchResult: $searchResult)
                 .presentationDetents([.height(.screenHeight * 0.6), .large])
-        }
+        }//MARK: 회색 박스 안 주소와 가게명 끝
+        
+        //MARK: contents
+//        HStack(alignment: .top) {
+//            HStack(alignment: .top) {
+//                
+//                Text("\(feed.contents)")
+//                    .font(.pretendardRegular16)
+//                    .foregroundColor(.primary)
+//                    .padding(.top, 15)
+//            }
+//            .padding(.leading, .screenWidth/2 - .screenWidth*0.45 )
+//            Spacer()
+//            VStack {
+//                HStack{
+//                    //MARK: 내 글일땐 북마크 안 뜨게 하기
+//                    if feed.writerNickname != userStore.user.nickname {
+//                        Button {
+//                            if(userStore.user.myFeed.contains("\(feed.id)")) {
+//                                userStore.deleteFeed(feed)
+//                                userStore.user.myFeed.removeAll { $0 == "\(feed.id)" }
+//                                userStore.updateUser(user: userStore.user)
+//                                userStore.clickSavedCancelFeedToast = true
+//                            } else {
+//                                userStore.saveFeed(feed) //장소 저장 로직(사용가능)
+//                                userStore.user.myFeed.append("\(feed.id)")
+//                                userStore.updateUser(user: userStore.user)
+//                                userStore.clickSavedFeedToast = true
+//                            }
+//                        } label: {
+//                            if colorScheme == ColorScheme.dark {
+//                                Image(userStore.user.myFeed.contains("\(feed.id)") ? "bookmark_fill" : "bookmark_dark")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(width: 20)
+//                                    .padding(.trailing, 5)
+//                            } else {
+//                                Image(userStore.user.myFeed.contains( "\(feed.id)" ) ? "bookmark_fill" : "bookmark_light")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(width: 20)
+//                                    .padding(.trailing, 5)
+//                            }
+//                        }
+//                    }
+//                    //MARK: 내 글일땐 비행기 안 뜨게 하기
+//                    if feed.writerNickname != userStore.user.nickname {
+//                        Button {
+//                            withAnimation {
+//                                isShowingMessageTextField.toggle()
+//                            }
+//                        } label: {
+//                            Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 20)
+//                                .font(.pretendardRegular14)
+//                                .foregroundColor(.white)
+//                                .padding(.horizontal, 25)
+//                                .padding(.vertical, 8)
+//                                .background(isShowingMessageTextField ? Color.privateColor : Color.darkGrayColor)
+//                                .cornerRadius(30)
+//                        }
+//                    }
+//                }
+//            }
+//            .font(.pretendardMedium24)
+//            .foregroundColor(.primary)
+//            .padding(.trailing,.screenWidth/2 - .screenWidth*0.45)
+//            //.disabled(true)
+//        }
+//        .padding(.top, -25)
+//        .padding(.bottom, 0)
+//
         HStack(alignment: .top) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
@@ -206,6 +278,7 @@ struct FeedCellView: View {
                     }
                 }
                 .padding(.leading, .screenWidth/2 - .screenWidth*0.45)
+                
                 Spacer()
                 VStack {
                     HStack {
@@ -267,19 +340,19 @@ struct FeedCellView: View {
                 //.disabled(true)
             }
         }
-        .padding(.top, -25)
-        .padding(.bottom, 0)
-        
+
         if isShowingMessageTextField {
             SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
                 let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname,firstUserProfileImage:userStore.user.profileImageURL, secondNickname: feed.writerNickname,secondUserProfileImage:feed.writerProfileImage) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
+                                chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
+                                message = ""
                 chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
                 message = ""
-                //메세지 완료
             }
         }
         Divider()
             .padding(.vertical, 10)
+
     }
 }
 //MARK: UILabel의 실제 크기를 기반으로 isTruncated 값을 설정하여 "더보기" 버튼을 정확하게 표시or 숨기기 3줄 넘어가면 보여요
@@ -316,5 +389,3 @@ extension UILabel {
         return labelTextSize.height > bounds.size.height
     }
 }
-//https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/81789D33-A401-4701-AB9F-ABBBE6DEC156?alt=media&token=a9b1fcdc-c1f9-48ec-87af-d7b617376365
-// https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/39968E65-7EB6-4D5D-AC00-8C8578AABFFF?alt=media&token=149585b7-ad7a-445a-a770-2e13af631ba0
