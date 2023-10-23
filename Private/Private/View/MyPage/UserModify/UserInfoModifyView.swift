@@ -81,48 +81,66 @@ struct UserInfoModifyView: View {
                     .background(Color.primary)
                     .frame(width: .screenWidth*0.9)
                     .padding([.top,.bottom],15)
-                VStack {
+                VStack (alignment: .leading) {
                     HStack {
                         Text("닉네임")
                             .font(.pretendardBold14)
                             .foregroundColor(.primary)
+                            .frame(width: .screenWidth * 0.2)
+                            .padding(.trailing, 5)
                         TextField("\(userStore.user.nickname)", text: $mypageNickname)
                             .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
                             .disableAutocorrection(true) // 자동수정 비활성화
                             .border(isNicknameValid ? Color.clear : Color.accentColor)
+                            .font(.pretendardRegular12)
                         //.focused($focusField, equals: .mypageNickname)
-                            .frame(width: .screenWidth*0.70, height: .screenHeight*0.05)
+                        //.frame(width: .screenWidth*0.70, height: .screenHeight*0.05)
                             .padding(.leading, 5)
                             .onChange(of: mypageNickname) { newValue in
                                 ischeckNickname()
                                 checkNickname = false
                                 mypageNickname = newValue.trimmingCharacters(in: .whitespaces)
                             }
-                    }
-                    if isHiddenCheckButton {
-                        Button {
-                            Task {
-                                checkNickname = await authStore.doubleCheckNickname(nickname: mypageNickname)
-                                if checkNickname == false && mypageNickname.count > 0 {
-                                    cautionNickname = "이미 사용 중인 닉네임"
-                                    checkNicknameColor = .red
+                        
+                        
+                        if isHiddenCheckButton {
+                            Button {
+//                                Task {
+//                                    checkNickname = await authStore.doubleCheckNickname(nickname: mypageNickname)
+//                                    if checkNickname == false && mypageNickname.count > 0 {
+//                                        cautionNickname = "이미 사용 중인 닉네임"
+//                                        checkNicknameColor = .red
+//                                    } else {
+//                                        cautionNickname = "사용 가능"
+//                                        checkNicknameColor = .green
+//                                    }
+//                                }
+                                userStore.checkNickName(mypageNickname) { exists in
+                                    if exists {
+                                        cautionNickname = "이미 사용 중인 닉네임"
+                                        checkNicknameColor = .red
+                                        checkNickname = false
+                                        print("이미 사용중")
+                                        userStore.clickIsSavedNickName = true
+                                        } else {
+                                            checkNickname = true
+                                            cautionNickname = "사용 가능"
+                                            checkNicknameColor = .green
+                                        }
+                                }
+                            } label: {
+                                if checkNickname == false && true {
+                                    Text("중복확인")
+                                        .font(.pretendardRegular12)
+                                        .foregroundStyle(mypageNickname.count >= 0 ? .blue : .secondary)
                                 } else {
-                                    cautionNickname = "사용 가능"
-                                    checkNicknameColor = .green
+                                    Text(cautionNickname)
+                                        .font(.pretendardRegular12)
+                                        .foregroundStyle(checkNicknameColor)
                                 }
                             }
-                        } label: {
-                            if checkNickname == false && true {
-                                Text("중복확인")
-                                    .font(.pretendardBold18)
-                                    .foregroundStyle(mypageNickname.count >= 0 ? .blue : .secondary)
-                            } else {
-                                Text(cautionNickname)
-                                    .font(.pretendardBold18)
-                                    .foregroundStyle(checkNicknameColor)
-                            }
+                            .padding(.trailing, 7)
                         }
-                        .padding(.trailing, 7)
                     }
                     if !isValidNickname(mypageNickname) && mypageNickname.count > 0 {
                         Text(cautionNickname)
@@ -149,22 +167,53 @@ struct UserInfoModifyView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    if mypageNickname != "" {
-                        userStore.user.nickname = mypageNickname
+                if mypageNickname == "" {
+                    Button {
+                        if mypageNickname != "" {
+                            userStore.user.nickname = mypageNickname
+                        }
+                        if selectedImage != nil {
+                            uploadimage(img: selectedImage!)
+                        }
+                        userStore.updateUser(user: userStore.user)
+                        isModify = false
+                    } label: {
+                        Text("수정")
+                            .font(.pretendardSemiBold16)
+                            .foregroundColor(.privateColor)
                     }
-                    if selectedImage != nil {
-                        uploadimage(img: selectedImage!)
+                } else {
+                    Button {
+                        if mypageNickname != "" {
+                            userStore.user.nickname = mypageNickname
+                        }
+                        if selectedImage != nil {
+                            uploadimage(img: selectedImage!)
+                        }
+                        userStore.updateUser(user: userStore.user)
+                        isModify = false
+                    } label: {
+                        Text("수정")
+                            .font(.pretendardSemiBold16)
+                            .foregroundColor(checkNicknameColor == .green ? .privateColor : .primary.opacity(0.5))
                     }
-                    userStore.updateUser(user: userStore.user)
-                    isModify = false
-                } label: {
-                    Text("수정")
-                        .font(.pretendardSemiBold16)
-                        .foregroundColor(checkNicknameColor == .green ? .privateColor : .primary.opacity(0.5))
+                    .disabled(checkNicknameColor != .green)
                 }
-                .disabled(checkNicknameColor != .green)
             }
+        }
+        .popup(isPresented: $userStore.clickIsSavedNickName){
+            ToastMessageView(message: "이미 사용중인 닉네임 입니다!")
+                .onDisappear {
+                    userStore.clickSavedFeedToast = false
+                }
+        } customize: {
+            $0
+                .autohideIn(2)
+                .type(.floater(verticalPadding: 20))
+                .position(.bottom)
+                .animation(.spring())
+                .closeOnTapOutside(true)
+                .backgroundColor(.clear)
         }
     }
     func uploadimage(img: UIImage) {
