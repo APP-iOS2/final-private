@@ -59,7 +59,6 @@ struct ShopDetailInfoView: View {
                 Spacer()
                 
                 ZStack {
-//                    Text("영업 전")  // 오픈 시간 전이면 영업 전, 마감 시간 이후 ~ 영업 종료
                     Text("\(isShopOpen(shopData))")
                         .font(.pretendardMedium18)
                         .foregroundStyle(Color.black)
@@ -116,6 +115,7 @@ struct ShopDetailInfoView: View {
                         .lineSpacing(5)
                         .frame(alignment: .leading)
                 }
+                .accentColor(Color.white)
                 
                 DisclosureGroup {
                     VStack(alignment: .leading, spacing: 6) {
@@ -158,6 +158,7 @@ struct ShopDetailInfoView: View {
                         .lineSpacing(5)
                         .frame(alignment: .leading)
                 }
+                .accentColor(Color.white)
             }
         }
     }
@@ -167,7 +168,7 @@ struct ShopDetailInfoView: View {
         if shop.regularHoliday.contains(AppDateFormatter.shared.dayString(from: today)) || shop.temporaryHoliday.contains(where: { date in
             return Calendar.current.isDate(date, inSameDayAs: today)
         }){
-            return "휴무"
+            return "금일 휴무"
         }
         
         let calendar = Calendar.current
@@ -187,29 +188,9 @@ struct ShopDetailInfoView: View {
         endDateComponents.hour = shop.weeklyBusinessHours[currentDay]!.endHour
         endDateComponents.minute = shop.weeklyBusinessHours[currentDay]!.endMinute
         
-//        var startBreakTimeDateComponents = DateComponents()
-//        startBreakTimeDateComponents.year = calendar.component(.year, from: today)
-//        startBreakTimeDateComponents.month = calendar.component(.month, from: today)
-//        startBreakTimeDateComponents.day = calendar.component(.day, from: today)
-//        startBreakTimeDateComponents.hour = shop.breakTimeHours[currentDay]!.startHour
-//        startBreakTimeDateComponents.minute = shop.breakTimeHours[currentDay]!.startMinute
-//
-//        var endBreakTimeDateComponents = DateComponents()
-//        endBreakTimeDateComponents.year = calendar.component(.year, from: today)
-//        endBreakTimeDateComponents.month = calendar.component(.month, from: today)
-//        endBreakTimeDateComponents.day = calendar.component(.day, from: today)
-//        endBreakTimeDateComponents.hour = shop.breakTimeHours[currentDay]!.endHour
-//        endBreakTimeDateComponents.minute = shop.breakTimeHours[currentDay]!.endMinute
-        
         if let startDate = calendar.date(from: startDateComponents),
            let endDate = calendar.date(from: endDateComponents) {
             if today >= startDate && today <= today {
-//                if let breakTimeStart = calendar.date(from: startBreakTimeDateComponents),
-//                   let breakTimeEnd = calendar.date(from: endBreakTimeDateComponents) {
-//                    if today >= breakTimeStart && today <= breakTimeEnd {
-//                        return "영업전"
-//                    }
-//                }
                 return "영업중"
             }
         }

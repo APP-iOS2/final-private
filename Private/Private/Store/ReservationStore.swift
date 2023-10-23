@@ -13,12 +13,13 @@ import FirebaseFirestoreSwift   //GeoPoint 사용을 위한 프레임워크
 
 final class ReservationStore: ObservableObject {
     @Published var reservationList: [Reservation] = []
+    @Published var myReservation: Reservation = tempReservation
     
     private let db = Firestore.firestore()
     static let user = Auth.auth().currentUser
     
     init() {
-        
+        self.fetchReservation()
     }
     
     static let tempReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
@@ -157,6 +158,7 @@ final class ReservationStore: ObservableObject {
                 print("Reservation added to Firestore")
             }
         }
+        self.fetchReservation()
     }
     
     
@@ -212,6 +214,7 @@ final class ReservationStore: ObservableObject {
                 self.fetchReservation()
             }
         }
+        self.fetchReservation()
     }
     
     
@@ -241,8 +244,7 @@ final class ReservationStore: ObservableObject {
                 print("문서 삭제 성공")
             }
         }
-        
-        fetchReservation()
+        self.fetchReservation()
     }
     
     
@@ -263,8 +265,7 @@ final class ReservationStore: ObservableObject {
                 print("문서 삭제 성공")
             }
         }
-        
-        fetchReservation()
+        self.fetchReservation()
     }
     
     
@@ -351,6 +352,8 @@ final class ReservationStore: ObservableObject {
         return nil
     }
     
+    // 네이버 예약을 보니까 페이지를 넘길 때 있는 시간대면, 괜찮지만, 아닐때는 저기함
+    
     
     /// 예약가능한 시간을 배열로 리턴
     /// - Parameters:
@@ -359,6 +362,7 @@ final class ReservationStore: ObservableObject {
     ///   - date: 예약 날짜
     /// - Returns: 예약 가능 시간대
     func getAvailableTimeSlots(open: Int, close: Int, date: Date) -> [Int] {  
+//        func getAvailableTimeSlots(open: Int, close: Int, reservationTime: Int) -> [Int] {
         // 브레이크 타임 적용 -> Shop 데이터 받아야 함
         // 예약된 타임은 disable 시키기
         let reservationDate: Date = date

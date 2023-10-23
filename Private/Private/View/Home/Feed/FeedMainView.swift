@@ -11,12 +11,14 @@ struct FeedMainView: View {
     
     @EnvironmentObject var feedStore: FeedStore
     @EnvironmentObject var userStore: UserStore
+    @Binding var root: Bool
+    @Binding var selection: Int
     var body: some View {
       
             ScrollView {
                 ForEach(feedStore.feedList) { feed in
                     
-                    FeedCellView(feed: feed)
+                    FeedCellView(feed: feed, root:$root,selection:$selection)
                         .padding(.bottom,15)
                 }
             }
@@ -82,7 +84,7 @@ struct FeedMainView: View {
 
 struct FeedMainView_Previews: PreviewProvider {
     static var previews: some View {
-        FeedMainView()
+        FeedMainView(root: .constant(true), selection: .constant(0))
             .environmentObject(FeedStore())
             .environmentObject(UserStore())
     }

@@ -34,10 +34,11 @@ struct ShopListView: View {
     @State var isShowingFilteringView: Bool = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .top, spacing: 0) {
                 Text("\(selectedShopCategory.categoryName), \(selectedShopListSortCriterion.rawValue)")
-                    .font(Font.pretendardSemiBold16)
+                    .font(.pretendardBold20)
+                    .foregroundColor(.privateColor)
                 
                 Spacer()
                 
@@ -47,10 +48,13 @@ struct ShopListView: View {
                     Image(systemName: "line.3.horizontal.decrease")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 20, height: 20)
+                        .frame(width: 22)
+                        .foregroundColor(.primary)
                 }
-                .padding(.horizontal, 10)
             }
+            .frame(height: 40)
+            .padding(.horizontal, 10)
+            .padding(.bottom, 10)
             
             ScrollView(.vertical) {
                 ForEach(shopStore.shopList.filter({ shop in
@@ -80,6 +84,8 @@ struct ShopListView: View {
         .fullScreenCover(isPresented: $isShowingFilteringView) {
             ShopListFilteringView(originalShopCategory: selectedShopCategory, originalShopListSortCriterion: selectedShopListSortCriterion, selectedShopCategory: $selectedShopCategory, selectedShopListSortCriterion: $selectedShopListSortCriterion, isShowingFilteringView: $isShowingFilteringView)
         }
+        .padding(.top, 10)
+        .padding(.horizontal, 10)
     }
 }
 

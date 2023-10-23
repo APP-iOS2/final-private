@@ -10,7 +10,7 @@ import NMapsMap
 
 struct MainHomeView: View {
     @EnvironmentObject var feedStore: FeedStore
-
+    @EnvironmentObject var postStore: PostStore
     @ObservedObject var coordinator: Coordinator = Coordinator.shared
     @ObservedObject var locationSearchStore = LocationSearchStore.shared
     
@@ -95,13 +95,13 @@ struct MainHomeView: View {
             if selectedNumber == 0 {
                 MapMainView()
             } else if selectedNumber == 1 {
-                FeedMainView()
+                FeedMainView(root: $root, selection: $selection)
             }
         }
         .popup(isPresented: $feedStore.uploadToast) {
             ToastMessageView(message: "업로드가 완료되었습니다!")
                 .onDisappear {
-                    feedStore.uploadToast = false
+                    self.feedStore.uploadToast = false
                 }
         } customize: {
             $0
