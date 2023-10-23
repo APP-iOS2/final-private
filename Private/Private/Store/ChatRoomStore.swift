@@ -84,7 +84,7 @@ final class ChatRoomStore: ObservableObject {
             var chatRoomData: [String: Any] = [:]
             
             chatRoomData["firstUserNickname"] = chatRoom.firstUserNickname
-            chatRoomData["firstUserProfileImage"] = chatRoom.firstUserProfileImage
+            chatRoomData["firstUserProfileImage"] = user.profileImageURL
             chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
             chatRoomData["secondUserProfileImage"] = chatRoom.secondUserProfileImage
 //            chatRoomData["Message"] = []
@@ -117,7 +117,7 @@ final class ChatRoomStore: ObservableObject {
             chatRoomData["firstUserNickname"] = chatRoom.firstUserNickname
             chatRoomData["firstUserProfileImage"] = chatRoom.firstUserProfileImage
             chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
-            chatRoomData["secondUserProfileImage"] = chatRoom.secondUserProfileImage
+            chatRoomData["secondUserProfileImage"] = user.profileImageURL
 //            chatRoomData["Message"] = []
             
 //            let messageSubcollection = subCollection.collection("Message")
@@ -317,7 +317,7 @@ final class ChatRoomStore: ObservableObject {
         ]
     }
     
-    func findChatRoom(user:User, firstNickname: String, secondNickname: String) -> ChatRoom? {
+    func findChatRoom(user:User, firstNickname: String, firstUserProfileImage: String, secondNickname: String, secondUserProfileImage: String) -> ChatRoom? {
         for chatRoom in self.chatRoomList {
             if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
                 (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
@@ -327,7 +327,7 @@ final class ChatRoomStore: ObservableObject {
         
         //chatRoom이 없는 경우 생성
         print("::make new chatRoom")
-        let newChatRoom = ChatRoom(firstUserNickname: firstNickname, firstUserProfileImage: "", secondUserNickname: secondNickname, secondUserProfileImage: "")
+        let newChatRoom = ChatRoom(firstUserNickname: firstNickname, firstUserProfileImage: firstUserProfileImage, secondUserNickname: secondNickname, secondUserProfileImage: secondUserProfileImage)
         
         addChatRoomToUser(user: user, chatRoom: newChatRoom)
 //        for chatRoom in self.chatRoomList {

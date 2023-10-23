@@ -202,7 +202,7 @@ struct FeedCellView: View {
         
         if isShowingMessageTextField {
             SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
-                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
+                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname,firstUserProfileImage:userStore.user.profileImageURL, secondNickname: feed.writerNickname,secondUserProfileImage:feed.writerProfileImage) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
                 chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
                 message = ""
                 //메세지 완료
