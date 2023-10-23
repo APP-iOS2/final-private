@@ -22,21 +22,6 @@ struct OtherProfileView: View {
     let user:User
     var body: some View {
         NavigationStack {
-            HStack {
-                if colorScheme == .dark {
-                    Image("private_dark")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: .screenWidth * 0.35)
-                } else {
-                    Image("private_light")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: .screenWidth * 0.35)
-                }
-                Spacer()
-               EmptyView()
-            }
             OtherInfoView(followerList: followStore.followerList, followingList: followStore.followingList, user: user)
                 .padding(.top,-20.0)
                 .padding(.bottom, 20)
@@ -134,6 +119,9 @@ struct OtherProfileView: View {
             Spacer()
                
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle("\(user.nickname)")
+        .backButtonArrow()
         .onAppear{
             followStore.fetchFollowerFollowingList(userStore.user.email)
             coordinator.checkIfLocationServicesIsEnabled()

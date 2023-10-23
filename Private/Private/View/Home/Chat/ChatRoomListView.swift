@@ -56,9 +56,30 @@ struct ChatRoomListView: View {
         .navigationBarItems(trailing: EditButton().foregroundColor(.privateColor))
     }
     
+//    func deleteChatRoom(at offsets: IndexSet) {
+//        chatRoomStore.chatRoomList.remove(atOffsets: offsets)
+//        chatRoomStore.removeChatRoom(myNickName: userStore.user.nickname, otherUserNickname: chatRoomStore.chatRoomList[offsets])
+//    }
+//    
     func deleteChatRoom(at offsets: IndexSet) {
+        let selectedIndices = Array(offsets)
+        for index in selectedIndices {
+            let chatRoom = chatRoomStore.chatRoomList[index]
+            let otherUserNickname: String
+            if userStore.user.nickname == chatRoom.firstUserNickname {
+                otherUserNickname = chatRoom.secondUserNickname
+            } else {
+                otherUserNickname = chatRoom.firstUserNickname
+            }
+            
+            // Chat Room 삭제 로직 추가
+            chatRoomStore.removeChatRoom(myNickName: userStore.user.nickname, otherUserNickname: otherUserNickname)
+        }
+        
+        // 선택된 Chat Room 삭제
         chatRoomStore.chatRoomList.remove(atOffsets: offsets)
     }
+
 }
 
 struct ChatRoomListView_Previews: PreviewProvider {

@@ -73,6 +73,7 @@ struct ShopInfoCardView: View {
                                     .font(.pretendardRegular12)
                                     .foregroundColor(.primary)
                                     .padding(.leading,-3)
+                                    .multilineTextAlignment(.leading)
                             }
                         }
                         .padding(.top,2)
@@ -82,21 +83,22 @@ struct ShopInfoCardView: View {
                 
                 Spacer()
                 Button {
+                    userStore.user.bookmark.removeAll { $0 == "\(place.id)" }
                     userStore.deletePlace(place)
-                    userStore.user.bookmark.removeAll { $0 == "\(place.images[0].suffix(32))" }
                     userStore.updateUser(user: userStore.user)
                 } label: {
                     Image(systemName: "pin.circle.fill")
-                                        .resizable()
-                                        .frame(width: 25, height: 25)
-                                        .foregroundColor(Color("AccentColor"))
-                                        .padding(.trailing,7)
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(Color("AccentColor"))
+                        .padding(.trailing,7)
                 }
             }
             Divider()
                 .background(Color.primary)
                 .frame(width: .screenWidth * 0.98)
         }
+        
     }
 }
 

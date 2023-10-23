@@ -53,24 +53,34 @@ struct SearchPageView: View {
         @EnvironmentObject var searchStore: SearchStore
         let resultText: String
         
+        //foreach로 돌리는 데이터를 binding으로 받아야 하는데 해당 부분이 문제
         var body: some View {
-            HStack {
-                NavigationLink {
-                    UserListView(searchTerm: resultText)
-                } label: {
-                    Text(resultText)
-                        .foregroundColor(.gray)
+            VStack {
+                HStack {
+                    NavigationLink {
+                        UserListView(searchTerm: resultText)
+                    } label: {
+                        Text(resultText)
+                            .font(.pretendardRegular16)
+                            .foregroundColor(.primary)
+                    }
+                    Spacer()
+                    Button {
+                        searchStore.removeRecentSearchResult(resultText)
+                    } label: {
+                        Image(systemName: "minus.circle.fill")
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.trailing, 4)
                 }
-                Spacer()
-                Button {
-                    searchStore.removeRecentSearchResult(resultText)
-                } label: {
-                    Image(systemName: "minus.circle.fill")
-                        .foregroundColor(.gray)
-                }
-                .padding(.trailing, 10)
+                .padding(.horizontal, 15)
+                .padding(.bottom, 8)
+                Divider()
+                    .frame(width: .screenWidth * 0.75)
+                    .background(Color.primary)
+                    .opacity(0.3)
             }
-            .padding(.bottom, 8)
+            
         }
     }
     
@@ -121,8 +131,9 @@ struct SearchPageView: View {
                     Image(systemName: "minus.circle.fill")
                         .foregroundColor(.red)
                 }
-                .padding(.trailing, 10)
+                .padding(.trailing, 4)
             }
+            .padding(.horizontal, 20)
             .padding(.bottom, 8)
         }
     }
