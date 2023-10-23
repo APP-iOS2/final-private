@@ -28,7 +28,7 @@ struct OtherHistoryView: View {
         VStack{
             if (isFeed == true) {
                 ScrollView {
-                    if userStore.myFeedList.isEmpty {
+                    if userStore.otherFeedList.isEmpty {
                         Text("게시물이 존재 하지 않습니다.")
                             .font(.pretendardBold24)
                             .foregroundColor(.primary)
@@ -39,7 +39,7 @@ struct OtherHistoryView: View {
                             alignment: .center,
                             spacing: 1
                         ) {
-                            ForEach(userStore.myFeedList, id: \.self) { feed in
+                            ForEach(userStore.otherFeedList, id: \.self) { feed in
                                 Button {
                                     feedStore.selctedFeed = feed
                                     isMyPageFeedSheet = true
@@ -52,7 +52,7 @@ struct OtherHistoryView: View {
                                         .clipShape(Rectangle())
                                 }
                                 .sheet(isPresented: $isMyPageFeedSheet) {
-                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.myFeedList)
+                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.otherFeedList)
                                         .presentationDetents([.height(.screenHeight)])
                                 }
                             }

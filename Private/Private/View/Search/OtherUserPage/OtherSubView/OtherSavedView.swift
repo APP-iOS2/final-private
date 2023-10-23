@@ -21,7 +21,7 @@ struct OtherSavedView: View {
     
     var body: some View {
         ScrollView {
-            if userStore.mySavedFeedList.isEmpty {
+            if userStore.otherSavedFeedList.isEmpty {
                 Text("저장한 피드가 없습니다")
                     .font(.pretendardBold24)
                     .foregroundColor(.primary)
@@ -32,7 +32,7 @@ struct OtherSavedView: View {
                     alignment: .center,
                     spacing: 1
                 ) {
-                    ForEach(userStore.mySavedFeedList, id: \.self) { feed in
+                    ForEach(userStore.otherSavedFeedList, id: \.self) { feed in
                         Button {
                             selctedFeed = feed
                             isMyPageFeedSheet = true
@@ -45,7 +45,7 @@ struct OtherSavedView: View {
                                 .clipShape(Rectangle())
                         }
                         .sheet(isPresented: $isMyPageFeedSheet){
-                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed, feedList: userStore.mySavedFeedList)
+                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed, feedList: userStore.otherSavedFeedList)
                                 .presentationDetents([.height(.screenHeight * 0.7)])
                         }
                         .gesture(
@@ -58,7 +58,7 @@ struct OtherSavedView: View {
                             Button("선택한 피드 삭제") {
                                 userStore.deleteFeed(feed)
                                 userStore.user.myFeed.removeAll { $0 == feed.images[0] }
-                                userStore.updateUser(user: userStore.user)
+                                userStore.updateUser(user: user)
                             }
                         }))
                     }

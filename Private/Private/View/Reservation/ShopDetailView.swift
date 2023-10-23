@@ -26,7 +26,7 @@ struct ShopDetailView: View {
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject private var userStore: UserStore
-
+    
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     @State var isReservationPresented: Bool = false
     
@@ -35,7 +35,7 @@ struct ShopDetailView: View {
     init(shop: Shop) {
         self.shopViewModel = ShopViewModel(shop: shop)
     }
-        
+    
     var body: some View {
         ScrollView(.vertical) {
             ZStack(alignment: .topLeading) {
@@ -53,9 +53,9 @@ struct ShopDetailView: View {
         .backButtonArrow()
         
         ShopDetailFooterView(isReservationPresented: $isReservationPresented, shopViewModel: shopViewModel)
-        .task {
-            await shopStore.getAllShopData()
-        }
+            .task {
+                await shopStore.getAllShopData()
+            }
     }
 }
 
@@ -78,7 +78,7 @@ struct ShopDetailBodyView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var calendarData: CalendarData
-
+    
     @State var isExpanded: Bool = false
     @State var isAddressCopied: Bool = false
     @State var isMapShowing: Bool = false
@@ -99,137 +99,131 @@ struct ShopDetailBodyView: View {
                         
                         HStack(spacing: 10) {
                             Text(shopData.name)
-                                .foregroundColor(.primary)
+                                .foregroundColor(.white)
                                 .font(.pretendardBold28)
                             
                             Divider()
                                 .frame(height: 25)
                             
-                            HStack(spacing: 10) {
-                                Text(shopData.name)
-                                    .foregroundColor(.white)
-                                    .font(.pretendardBold28)
-                                
-                                Divider()
-                                    .frame(height: 25)
-                                
-                                Text(shopData.category.categoryName)
-                                    .font(.pretendardMedium18)
-                            }
+                            Text(shopData.category.categoryName)
+                                .font(.pretendardMedium18)
+                        }
+                        
+                        HStack(alignment: .center, spacing: 5) {
+                            Text(shopData.address + " " + shopData.addressDetail)
+                                .font(.pretendardRegular14)
                             
-                            HStack(alignment: .center, spacing: 5) {
-                                Text(shopData.address + " " + shopData.addressDetail)
-                                    .font(.pretendardRegular14)
-                                
-                                Button {
-                                    copyToClipboard(shopData.name + " " + shopData.address + " " + shopData.addressDetail)
-                                    self.isAddressCopied = true
-                                } label: {
-                                    Image(systemName: "doc.on.doc")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .foregroundStyle(Color.privateColor)
-                                        .frame(width: 15, height: 15)
-                                }
-                                
-                                Spacer()
+                            Button {
+                                copyToClipboard(shopData.name + " " + shopData.address + " " + shopData.addressDetail)
+                                self.isAddressCopied = true
+                            } label: {
+                                Image(systemName: "doc.on.doc")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundStyle(Color.privateColor)
+                                    .frame(width: 15, height: 15)
                             }
                             
                             Spacer()
-                                .frame(height: 10)
                         }
                         
                         Spacer()
-                        
-                        Button {
-                            isMapShowing.toggle()
-                        } label: {
-                            Image(systemName: "map")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(Color.privateColor)
-                                .frame(width: 20, height: 20)
-                        }
+                            .frame(height: 10)
                     }
-                    .padding(.horizontal, 10)
                     
-                    Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(.pretendardRegular16)) {
-                        ForEach(ShopDetailCategory.allCases, id: \.self) { category in
-                            Text(category.rawValue)
-                                .font(.pretendardRegular16)
-                                .foregroundColor(.chatTextColor)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .padding(10)
+                    Spacer()
                     
-                    ScrollView {
-                        switch selectedShopDetailCategory {
-                        case .shopInfo:
-                            ShopDetailInfoView(shopData: shopData)
-                        case .shopMenu:
-                            ShopDetailMenuView(shopData: shopData)
-                        case .shopCurrentReview:
-                            ShopwDetailCurrentReviewView(shopData: shopData)
-                        }
+                    Button {
+                        isMapShowing.toggle()
+                    } label: {
+                        Image(systemName: "map")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundStyle(Color.privateColor)
+                            .frame(width: 20, height: 20)
                     }
-                    .padding([.top, .horizontal], 10)
                 }
-                .frame(maxWidth: .infinity)
-                .background(content: {
-                    ZStack {
-                        if colorScheme == ColorScheme.light {
-                            Color.white
-                        } else {
-                            Color.black
-                        }
+                .padding(.horizontal, 10)
+                
+                Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(.pretendardRegular16)) {
+                    ForEach(ShopDetailCategory.allCases, id: \.self) { category in
+                        Text(category.rawValue)
+                            .font(.pretendardRegular16)
+                            .foregroundColor(.chatTextColor)
                     }
-                })
-                .cornerRadius(12)
-            }
-            .popup(isPresented: $isAddressCopied) {
-                ToastMessageView(message: "장소가 복사 되었습니다!")
-                    .onDisappear {
-                        isAddressCopied = false
+                }
+                .pickerStyle(.segmented)
+                .padding(10)
+                
+                ScrollView {
+                    switch selectedShopDetailCategory {
+                    case .shopInfo:
+                        ShopDetailInfoView(shopData: shopData)
+                    case .shopMenu:
+                        ShopDetailMenuView(shopData: shopData)
+                    case .shopCurrentReview:
+                        ShopwDetailCurrentReviewView(shopData: shopData)
                     }
-            } customize: {
-                $0
-                    .autohideIn(1)
-                    .type(.toast)
-                    .position(.center)
+                }
+                .padding([.top, .horizontal], 10)
             }
-            .sheet(isPresented: $isMapShowing) {
-                NavigationStack {
-                    UIMapView((shopData.coord.lat, shopData.coord.lng))
-                        .ignoresSafeArea()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                Button {
-                                    isMapShowing.toggle()
-                                } label: {
-                                    Image(systemName: "chevron.backward")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .font(.pretendardSemiBold16)
-                                        .foregroundColor(Color.privateColor)
-                                }
+            
+            .frame(maxWidth: .infinity)
+            .background(content: {
+                ZStack {
+                    if colorScheme == ColorScheme.light {
+                        Color.white
+                    } else {
+                        Color.black
+                    }
+                }
+            })
+            .cornerRadius(12)
+        }
+        .popup(isPresented: $isAddressCopied) {
+            ToastMessageView(message: "장소가 복사 되었습니다!")
+                .onDisappear {
+                    isAddressCopied = false
+                }
+        } customize: {
+            $0
+                .autohideIn(1)
+                .type(.toast)
+                .position(.center)
+        }
+        .sheet(isPresented: $isMapShowing) {
+            NavigationStack {
+                UIMapView((shopData.coord.lat, shopData.coord.lng))
+                    .ignoresSafeArea()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button {
+                                isMapShowing.toggle()
+                            } label: {
+                                Image(systemName: "chevron.backward")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .font(.pretendardSemiBold16)
+                                    .foregroundColor(Color.privateColor)
                             }
                         }
-                }
-            }
-            .cornerRadius(12)
-            .onAppear {
-                calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)
-                calendarData.currentPage = calendarData.getSelectedDate(shopData: shopData)
-                calendarData.titleOfMonth = calendarData.getSelectedDate(shopData: shopData)
+                    }
             }
         }
-    }
-    
-    func copyToClipboard(_ text: String) {
-        UIPasteboard.general.string = text
+        .cornerRadius(12)
+        
+        .onAppear {
+            calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)
+            calendarData.currentPage = calendarData.getSelectedDate(shopData: shopData)
+            calendarData.titleOfMonth = calendarData.getSelectedDate(shopData: shopData)
+        }
     }
 }
+
+func copyToClipboard(_ text: String) {
+    UIPasteboard.general.string = text
+}
+
 
 struct ShopDetailFooterView: View {
     

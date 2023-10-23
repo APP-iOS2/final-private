@@ -252,4 +252,15 @@ class AuthStore: ObservableObject {
             }
         }
     }
+    /// 회원 탈퇴
+    func deleteAuth (_ email: String) {
+        Auth.auth().currentUser?.delete { error in
+            if let error = error {
+                print("사용자 삭제 중 오류 발생: \(error.localizedDescription)")
+            } else {
+                print("사용자 삭제 완료")
+            }
+        }
+        
+    }
 }

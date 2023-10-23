@@ -30,7 +30,7 @@ struct SearchBarView: View {
                         }
                     }
                     .navigationDestination(isPresented: $contiuneOnboarding) {
-                        UserListView(searchTerm: searchTerm.trimmingCharacters(in: .whitespaces))
+                        UserListView(searchTerm: $searchTerm)
                     }
                 }
             .padding(.horizontal)
