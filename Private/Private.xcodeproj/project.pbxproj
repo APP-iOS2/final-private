@@ -137,11 +137,12 @@
 		B5A315432ADCBF9D00363EC3 /* Holiday.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A315422ADCBF9D00363EC3 /* Holiday.swift */; };
 		B5A315452ADCCB8500363EC3 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A315442ADCCB8500363EC3 /* NetworkManager.swift */; };
 		B5BEAA232AC154430002CC2C /* ReservationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEAA222AC154430002CC2C /* ReservationDetailView.swift */; };
+		B5C623472AE50B0000B3E46B /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C623462AE50B0000B3E46B /* NavigationUtil.swift */; };
+		B5C623492AE50FB600B3E46B /* PrivateDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C623482AE50FB600B3E46B /* PrivateDivider.swift */; };
+		B5C623702AE59FB300B3E46B /* ReservationCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C6236F2AE59FB300B3E46B /* ReservationCardCell.swift */; };
 		D11194612AE5534100759B9D /* OtherHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11194602AE5534100759B9D /* OtherHistoryView.swift */; };
 		D11194632AE5539C00759B9D /* OtherSavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11194622AE5539C00759B9D /* OtherSavedView.swift */; };
 		D11194652AE553ED00759B9D /* OtherSavedPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11194642AE553ED00759B9D /* OtherSavedPlaceView.swift */; };
-		B5C623472AE50B0000B3E46B /* NavigationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C623462AE50B0000B3E46B /* NavigationUtil.swift */; };
-		B5C623492AE50FB600B3E46B /* PrivateDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C623482AE50FB600B3E46B /* PrivateDivider.swift */; };
 		D1A0257F2AE0AC55004250E1 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0257E2AE0AC55004250E1 /* LazyView.swift */; };
 		D1A025812AE0B109004250E1 /* SearchPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A025802AE0B109004250E1 /* SearchPageView.swift */; };
 		D1A025852AE0B234004250E1 /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A025842AE0B234004250E1 /* UserListView.swift */; };
@@ -291,6 +292,7 @@
 		B5BEAA222AC154430002CC2C /* ReservationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationDetailView.swift; sourceTree = "<group>"; };
 		B5C623462AE50B0000B3E46B /* NavigationUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtil.swift; sourceTree = "<group>"; };
 		B5C623482AE50FB600B3E46B /* PrivateDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateDivider.swift; sourceTree = "<group>"; };
+		B5C6236F2AE59FB300B3E46B /* ReservationCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationCardCell.swift; sourceTree = "<group>"; };
 		BD81231EFA3DC67095A11398 /* Pods-PrivateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrivateTests.release.xcconfig"; path = "Target Support Files/Pods-PrivateTests/Pods-PrivateTests.release.xcconfig"; sourceTree = "<group>"; };
 		D11194602AE5534100759B9D /* OtherHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherHistoryView.swift; sourceTree = "<group>"; };
 		D11194622AE5539C00759B9D /* OtherSavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherSavedView.swift; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 				3CCD2DF72ABC357C005709F4 /* ReservationView.swift */,
 				B52AC20A2ABD6EFF004A9D51 /* DateTimePickerView.swift */,
 				B5BEAA222AC154430002CC2C /* ReservationDetailView.swift */,
+				B5C6236F2AE59FB300B3E46B /* ReservationCardCell.swift */,
 				B591C71F2ACC59E700602727 /* MyReservation.swift */,
 				B591C7212ACC5C1B00602727 /* ReservationCardView.swift */,
 				B54C14BE2AD45CC300E45636 /* ModifyReservationView.swift */,
@@ -1190,6 +1193,7 @@
 				D1A025812AE0B109004250E1 /* SearchPageView.swift in Sources */,
 				D11194632AE5539C00759B9D /* OtherSavedView.swift in Sources */,
 				3CCD2DF62ABC3572005709F4 /* PostView.swift in Sources */,
+				B5C623702AE59FB300B3E46B /* ReservationCardCell.swift in Sources */,
 				B5C623472AE50B0000B3E46B /* NavigationUtil.swift in Sources */,
 				3C97476E2AD4DC4E007AE3CB /* Bundle+.swift in Sources */,
 				E47089A22AD8E5A500D168BA /* MyPageFeedView.swift in Sources */,
