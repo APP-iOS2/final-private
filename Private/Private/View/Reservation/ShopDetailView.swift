@@ -13,6 +13,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 import NMapsMap
+import PopupView
 
 enum ShopDetailCategory: String, CaseIterable {
     case shopInfo = "가게 정보"
@@ -52,7 +53,6 @@ struct ShopDetailView: View {
         .backButtonArrow()
         
         ShopDetailFooterView(isReservationPresented: $isReservationPresented, shopViewModel: shopViewModel)
-        
         .task {
             await shopStore.getAllShopData()
         }
@@ -79,87 +79,110 @@ struct ShopDetailBodyView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @State var isExpanded: Bool = false
+    @State var isAddressCopied: Bool = false
+    
     @Binding var selectedShopDetailCategory: ShopDetailCategory
     
     @State var shopData: Shop
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .top, spacing: 0) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Spacer()
-                        .frame(height: 10)
-                    
-                    HStack(spacing: 10) {
-                        Text(shopData.name)
-                            .foregroundColor(.white)
-                            .font(.pretendardBold28)
+        ZStack {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .top, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Spacer()
+                            .frame(height: 10)
                         
-                        Divider()
-                            .frame(height: 25)
+                        HStack(spacing: 10) {
+                            Text(shopData.name)
+                                .foregroundColor(.white)
+                                .font(.pretendardBold28)
+                            
+                            Divider()
+                                .frame(height: 25)
+                            
+                            Text(shopData.category.categoryName)
+                                .font(.pretendardMedium18)
+                        }
                         
-                        Text(shopData.category.categoryName)
-                            .font(.pretendardMedium18)
-                    }
-                    
-                    HStack(alignment: .center, spacing: 5) {
-                        Text(shopData.address + " " + shopData.addressDetail)
-                            .font(.pretendardRegular14)
-                        
-                        Button {
-                            copyToClipboard(shopData.name + " " + shopData.address + " " + shopData.addressDetail)
-                        } label: {
-                            Image(systemName: "doc.on.doc")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(Color.privateColor)
-                                .frame(width: 15, height: 15)
+                        HStack(alignment: .center, spacing: 5) {
+                            Text(shopData.address + " " + shopData.addressDetail)
+                                .font(.pretendardRegular14)
+                            
+                            Button {
+                                copyToClipboard(shopData.name + " " + shopData.address + " " + shopData.addressDetail)
+                                self.isAddressCopied = true
+                            } label: {
+                                Image(systemName: "doc.on.doc")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundStyle(Color.privateColor)
+                                    .frame(width: 15, height: 15)
+                            }
+                            
+                            Spacer()
                         }
                         
                         Spacer()
+                            .frame(height: 10)
                     }
                     
                     Spacer()
-                        .frame(height: 10)
                 }
+                .padding(.horizontal, 10)
                 
-                Spacer()
-            }
-            .padding(.horizontal, 10)
-            
-            Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(.pretendardRegular16)) {
-                ForEach(ShopDetailCategory.allCases, id: \.self) { category in
-                    Text(category.rawValue)
-                        .font(.pretendardRegular16)
-                        .foregroundColor(.chatTextColor)
+                Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(.pretendardRegular16)) {
+                    ForEach(ShopDetailCategory.allCases, id: \.self) { category in
+                        Text(category.rawValue)
+                            .font(.pretendardRegular16)
+                            .foregroundColor(.chatTextColor)
+                    }
                 }
-            }
-            .pickerStyle(.segmented)
-            .padding(10)
-            
-            ScrollView {
-                switch selectedShopDetailCategory {
-                case .shopInfo:
-                    ShopDetailInfoView(shopData: shopData)
-                case .shopMenu:
-                    ShopDetailMenuView(shopData: shopData)
-                case .shopCurrentReview:
-                    ShopwDetailCurrentReviewView(shopData: shopData)
+                .pickerStyle(.segmented)
+                .padding(10)
+                
+                ScrollView {
+                    switch selectedShopDetailCategory {
+                    case .shopInfo:
+                        ShopDetailInfoView(shopData: shopData)
+                    case .shopMenu:
+                        ShopDetailMenuView(shopData: shopData)
+                    case .shopCurrentReview:
+                        ShopwDetailCurrentReviewView(shopData: shopData)
+                    }
                 }
+                .padding([.top, .horizontal], 10)
             }
-            .padding([.top, .horizontal], 10)
+            .frame(maxWidth: .infinity)
+            .background(content: {
+                ZStack {
+                    if colorScheme == ColorScheme.light {
+                        Color.white
+                    } else {
+                        Color.black
+                    }
+                }
+            })
+            .cornerRadius(12)
         }
-        .frame(maxWidth: .infinity)
-        .background(content: {
-            ZStack {
-                if colorScheme == ColorScheme.light {
-                    Color.white
-                } else {
-                    Color.black
+//        .popup(isPresented: $isAddressCopied, view: {
+//            ToastMessageView(message: "장소가 복사 되었습니다!")
+//                .onDisappear {
+//                    isAddressCopied = false
+//                }
+//        })
+        .popup(isPresented: $isAddressCopied) {
+            ToastMessageView(message: "장소가 복사 되었습니다!")
+                .onDisappear {
+                    isAddressCopied = false
                 }
-            }
-        })
-        .cornerRadius(12)
+        } customize: {
+            $0
+                .autohideIn(1)
+                .type(.toast)
+                .position(.center)
+        }
+
     }
     
     func copyToClipboard(_ text: String) {
