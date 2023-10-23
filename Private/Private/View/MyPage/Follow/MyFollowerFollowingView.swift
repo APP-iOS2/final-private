@@ -51,9 +51,12 @@ struct MyFollowerFollowingView: View {
                 MyFollowingView(user: user, followingList: followingList).tag(1)
             }
             .tabViewStyle(PageTabViewStyle())
+            .padding([.leading,.trailing],5)
         }
         .navigationTitle("\(user.nickname)")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .backButtonArrow()
         .onAppear {
             //followStore.fetchFollowerFollowingList(user.email)
         }
