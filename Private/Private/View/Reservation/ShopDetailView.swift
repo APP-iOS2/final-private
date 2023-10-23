@@ -17,7 +17,7 @@ import NMapsMap
 enum ShopDetailCategory: String, CaseIterable {
     case shopInfo = "가게 정보"
     case shopMenu = "메뉴"
-    case shopCurrentReview = "최근 리뷰"
+    case shopCurrentReview = "최근 피드"
 }
 
 struct ShopDetailView: View {
@@ -99,12 +99,12 @@ struct ShopDetailBodyView: View {
                             .frame(height: 25)
                         
                         Text(shopData.category.categoryName)
-                            .font(.pretendardBold18)
+                            .font(.pretendardMedium18)
                     }
                     
                     HStack(alignment: .center, spacing: 5) {
                         Text(shopData.address + " " + shopData.addressDetail)
-                            .font(.pretendardBold14)
+                            .font(.pretendardRegular14)
                         
                         Button {
                             copyToClipboard(shopData.name + " " + shopData.address + " " + shopData.addressDetail)
@@ -188,6 +188,8 @@ struct ShopDetailFooterView: View {
                         }
                     } else {
                         shopViewModel.shop.bookmarks.append(userStore.user.email)
+                        userStore.saveShop(shopViewModel.shop)
+                        userStore.updateUser(user: userStore.user)
                     }
                     shopViewModel.updateShop(shopID: shopViewModel.shop.id)
                     shopViewModel.fetchShop(shopID: shopViewModel.shop.id)
