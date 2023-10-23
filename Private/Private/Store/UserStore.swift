@@ -18,7 +18,7 @@ final class UserStore: ObservableObject {
     @Published var myFeedList: [MyFeed] = []
     @Published var mySavedFeedList: [MyFeed] = []
     @Published var mySavedPlace: [MyFeed] = []
-
+    
     @Published var mySavedPlaceList: [MyFeed] = []
     @Published var otherFeedList: [MyFeed] = []
     @Published var otherSavedFeedList: [MyFeed] = []
@@ -28,6 +28,7 @@ final class UserStore: ObservableObject {
     @Published var clickSavedPlaceToast: Bool = false
     @Published var clickSavedCancelFeedToast: Bool = false
     @Published var clickSavedCancelPlaceToast: Bool = false
+    @Published var clickIsSavedNickName: Bool = false
     
     func fetchMyInfo(userEmail: String, completion: @escaping (Bool) -> Void) {
         Firestore.firestore().collection("User").document(userEmail).getDocument { snapshot, error in
@@ -229,52 +230,52 @@ final class UserStore: ObservableObject {
     }
     
     //MARK: 현재 유저의 닉네임을 불러오는 함수
-        func getCurrentUserNickname(completion: @escaping (String?) -> Void) {
-               let userRef = Firestore.firestore().collection("User").document(user.email)
-               
-               userRef.getDocument { (document, error) in
-                   if let document = document, document.exists {
-                       let data = document.data()
-                       let nickname = data?["nickname"] as? String
-                       completion(nickname)
-                   } else {
-                       completion(nil)
-                   }
-               }
+    func getCurrentUserNickname(completion: @escaping (String?) -> Void) {
+        let userRef = Firestore.firestore().collection("User").document(user.email)
+        
+        userRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let data = document.data()
+                let nickname = data?["nickname"] as? String
+                completion(nickname)
+            } else {
+                completion(nil)
+            }
         }
+    }
     
     func createMarker() {
         
     }
-//    func createUser(user: User) {
-//        Firestore.firestore().collection("User")
-//            .document(user.email)
-////            .setData(user.toDictionary())
-//            .setData(["email" : user.email,
-//                      "name" : user.name,
-//                      "nickname" : user.nickname,
-//                      "phoneNumber" : user.phoneNumber,
-//                      "profileImageURL" : user.profileImageURL,
-//                      "follower" : user.follower,
-//                      "following" : user.following,
-//                      "myFeed" : user.myFeed,
-//                      "savedFeed" : user.savedFeed,
-//                      "bookmark" : user.bookmark,
-//                      "chattingRoom" : user.chattingRoom,
-//                      "myReservation" : user.myReservation
-//                     ]
-//            )
-//        
-//        fetchCurrentUser(userEmail: user.email)
-//    }
-  
+    //    func createUser(user: User) {
+    //        Firestore.firestore().collection("User")
+    //            .document(user.email)
+    ////            .setData(user.toDictionary())
+    //            .setData(["email" : user.email,
+    //                      "name" : user.name,
+    //                      "nickname" : user.nickname,
+    //                      "phoneNumber" : user.phoneNumber,
+    //                      "profileImageURL" : user.profileImageURL,
+    //                      "follower" : user.follower,
+    //                      "following" : user.following,
+    //                      "myFeed" : user.myFeed,
+    //                      "savedFeed" : user.savedFeed,
+    //                      "bookmark" : user.bookmark,
+    //                      "chattingRoom" : user.chattingRoom,
+    //                      "myReservation" : user.myReservation
+    //                     ]
+    //            )
+    //
+    //        fetchCurrentUser(userEmail: user.email)
+    //    }
+    
     func deleteFeed(_ feed: MyFeed) {
         Firestore.firestore().collection("User").document(user.email)
             .collection("SavedFeed")
             .document("\(feed.id)")
             .delete()
     }
-
+    
     func savePlace(_ feed: MyFeed) {
         Firestore.firestore().collection("User").document(user.email)
             .collection("SavedPlace")
@@ -294,11 +295,29 @@ final class UserStore: ObservableObject {
                      ])
     }
     
+    
     func deletePlace(_ feed: MyFeed) {
         Firestore.firestore().collection("User").document(user.email)
             .collection("SavedPlace")
             .document("\(feed.id)")
             .delete()
+    }
+    func checkNickName(_ userNickName: String, completion: @escaping (Bool) -> Void) {
+        let query = Firestore.firestore().collection("User").whereField("nickname",isEqualTo: userNickName)
+        query.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error searching documents: \(error)")
+                completion(false)
+            } else {
+                if let documentCount = querySnapshot?.documents.count, documentCount > 0 {
+                    // 닉네임이 존재하는 경우
+                    completion(true)
+                } else {
+                    // 닉네임이 존재하지 않는 경우
+                    completion(false)
+                }
+            }
+        }
     }
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
         return [

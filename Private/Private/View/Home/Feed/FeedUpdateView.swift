@@ -28,7 +28,6 @@ struct FeedUpdateView: View {
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @Binding var root: Bool
     @Binding var selection: Int
-    //@Binding var isselctedFeed : Bool
     @Binding var isFeedUpdateViewPresented: Bool /// FeedUpdateView
     @Binding var searchResult: SearchResult
     @State private var text: String = "" /// 텍스트마스터 내용
@@ -55,6 +54,7 @@ struct FeedUpdateView: View {
     @FocusState private var isTextMasterFocused: Bool
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
+    
     @State var feed: MyFeed
     //    @State var category : Category
     private let minLine: Int = 10
@@ -244,7 +244,6 @@ struct FeedUpdateView: View {
                             .foregroundColor(.secondary)
                         //Text()
                     }
-                    
                     LazyVGrid(columns: createGridColumns(), spacing: 20) {
                         ForEach (filteredCategories.indices, id: \.self) { index in
                             VStack {
@@ -293,11 +292,8 @@ struct FeedUpdateView: View {
                             print("신규마커최종위치: \(newMarkerlat), \(newMarkerlng)")
                             //
                         }
-                    
                         .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == ""))
-                    
                 }
-                
             }
             
             .toolbar {
@@ -320,6 +316,7 @@ struct FeedUpdateView: View {
                 }
                 let secondButton = Alert.Button.default(Text("완료")) {
                     print("registrationAlert 마지막상태: \(registrationAlert)")
+                    self.feedStore.updatedToast = true
                     // 업데이트 피드가 있으면
                     //MARK: 이부분 주석..
                     //                    if postCoordinator.newMarkerTitle.isEmpty {
@@ -329,9 +326,7 @@ struct FeedUpdateView: View {
                     //                    }
                     //MARK: 업데이트 피드 함수를
                     let newFeed = MyFeed(id: feed.id, writerNickname: feed.writerNickname, writerName: feed.writerName, writerProfileImage: feed.writerProfileImage, images: images, contents: text, createdAt: feed.createdAt, title: searchResult.title, category: myselectedCategory, address: searchResult.address, roadAddress: searchResult.roadAddress, mapx: searchResult.mapx, mapy: searchResult.mapy)
-            
-                    
-       
+     
                     updateFeed(inputFeed: newFeed, feedId: feed.id)
                     searchResult.title = ""
                     searchResult.address = ""
@@ -339,6 +334,7 @@ struct FeedUpdateView: View {
                     postCoordinator.newMarkerTitle = ""
                     
                     registrationAlert = false
+                    
                     isFeedUpdateViewPresented = false
                     selection = 1
                     print("완료 버튼 클릭")
@@ -348,7 +344,6 @@ struct FeedUpdateView: View {
                              message: Text("수정을 완료하시겠습니까?"),
                              primaryButton: firstButton, secondaryButton: secondButton)
             }
-            
             .padding(.leading, 12)
             .navigationTitle("피드 수정")
             .navigationBarTitleDisplayMode(.inline)
@@ -361,7 +356,6 @@ struct FeedUpdateView: View {
             )
         }
     } // body
-
     func toggleCategorySelection(at index: Int) {
         selectedToggle[index].toggle()
         let categoryName = MyCategory.allCases[index].categoryName
@@ -378,9 +372,6 @@ struct FeedUpdateView: View {
             myselectedCategory.remove(at: selectedIndex)
         }
     }
-    
-    
-    
     func createGridColumns() -> [GridItem] {
         let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
         return columns
@@ -449,6 +440,7 @@ struct FeedUpdateView: View {
                                 } else {
                                     print("Feed updated successfully")
                                     feedStore.fetchFeeds()
+                                    
                                 }
                             }
                         }

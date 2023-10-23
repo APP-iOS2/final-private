@@ -20,7 +20,7 @@ struct SearchView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            SearchBarView(searchTerm: $searchTerm, inSearchMode: $inSearchMode, isSearchTextEmpty: $isSearchTextEmpty)
+            SearchBarView(searchTerm: $searchTerm, inSearchMode: $inSearchMode)
                 .padding(.bottom, 30)
             ScrollView(showsIndicators: false) {
                 SearchPageView()
@@ -33,11 +33,7 @@ struct SearchView: View {
             searchStore.fetchrecentSearchResult()
         }
         .onDisappear {
-            Task {
-                await searchStore.searchUser(searchTerm: searchTerm)
-                searchStore.addRecentSearch(searchTerm)
                 searchTerm = ""
-            }
         }
     }
 }

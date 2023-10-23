@@ -29,12 +29,12 @@ struct ShopDetailMenuView: View {
                             .frame(width: 120, height: 120)                         
                             .cornerRadius(12)
                         
-                        VStack(alignment: .leading, spacing: 0) {
+                        VStack(alignment: .leading, spacing: 5) {
                             Text("\(menu.name)")
-                                .font(.pretendardMedium20)
+                                .font(.pretendardMedium18)
                             
                             Text("\(menu.price)")
-                                .font(.pretendardRegular16)
+                                .font(.pretendardRegular14)
                         }
                         
                         Spacer()
