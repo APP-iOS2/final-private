@@ -43,7 +43,7 @@ struct ReservationDetailView: View {
                     ReservationCardCell(title: "이메일", content: userStore.user.email)
                     
                     Text("요구사항")
-                        .font(.pretendardMedium18)
+                        .font(.pretendardSemiBold16)
                         .foregroundStyle(Color.primary)
                     RequirementTextEditor(requirementText: $requirementText)
                 }
@@ -83,6 +83,7 @@ struct ReservationDetailView: View {
             .cornerRadius(12)
             .padding()
         }
+        .scrollIndicators(.hidden)
         .navigationTitle("예약")  // 없애던가 남기던가~
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
