@@ -162,6 +162,7 @@ struct FeedCellView: View {
                     Button {
                         withAnimation {
                             isShowingMessageTextField.toggle()
+                            
                         }
                     } label: {
                         Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
@@ -184,12 +185,27 @@ struct FeedCellView: View {
         }
         .padding(.top, -25)
         .padding(.bottom, 0)
+        .popup(isPresented: $chatRoomStore.chatRoomMessageToast) {
+            ToastMessageView(message: "메세지가 전송되었습니다.")
+                .onDisappear {
+                    userStore.clickSavedFeedToast = false
+                }
+        }customize: {
+           $0
+               .autohideIn(2)
+               .type(.floater(verticalPadding: 20))
+               .position(.bottom)
+               .animation(.spring())
+               .closeOnTapOutside(true)
+               .backgroundColor(.clear)
+       }
         
         if isShowingMessageTextField {
             SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
-                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname, secondNickname: feed.writerNickname) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
+                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname,firstUserProfileImage:userStore.user.profileImageURL, secondNickname: feed.writerNickname,secondUserProfileImage:feed.writerProfileImage) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
                 chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
                 message = ""
+                //메세지 완료
             }
         }
         HStack {
@@ -247,6 +263,7 @@ struct FeedCellView: View {
                 .padding(.leading, 15)
             }
             Spacer()
+            
         }
         .padding(.top, 5)
         .padding(.horizontal, 10)
@@ -257,6 +274,9 @@ struct FeedCellView: View {
             LocationDetailView(searchResult: $searchResult)
                 .presentationDetents([.height(.screenHeight * 0.6), .large])
         }
+        
+        //토스트메세지
+        
         
         Divider()
             .padding(.vertical, 10)
