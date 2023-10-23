@@ -158,6 +158,7 @@
 		D1EC43922AC16E2900B088EA /* FollowStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43912AC16E2900B088EA /* FollowStore.swift */; };
 		D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43992AC2D42F00B088EA /* SearchView.swift */; };
 		E3071A252AD9204D00090B62 /* MapSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3071A242AD9204D00090B62 /* MapSearchView.swift */; };
+		E3602D342AE6491000706CCB /* LocationDetailMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3602D332AE6491000706CCB /* LocationDetailMap.swift */; };
 		E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E385FAB42AC161EE00AC7255 /* PostStore.swift */; };
 		E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3876FC22AC294E200CFE728 /* PictureView.swift */; };
 		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
@@ -314,6 +315,7 @@
 		DCBBE0A1367066F0B655E6C5 /* Pods-Private-PrivateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.release.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E121B3F00B9AC989B133EC53 /* Pods-Private-PrivateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.debug.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E3071A242AD9204D00090B62 /* MapSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchView.swift; sourceTree = "<group>"; };
+		E3602D332AE6491000706CCB /* LocationDetailMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailMap.swift; sourceTree = "<group>"; };
 		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
 		E3876FC22AC294E200CFE728 /* PictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
@@ -695,6 +697,7 @@
 				3CB734072ABD6EEF00D82503 /* MapMainView.swift */,
 				63BB09992ABD87BD002CCE4E /* NaverMap.swift */,
 				E3A5A0BE2ADF71D800DB13B3 /* PostNaverMap.swift */,
+				E3602D332AE6491000706CCB /* LocationDetailMap.swift */,
 				3C2FC8EF2ACE9B740034F561 /* MapFeedSheetView.swift */,
 				3C69C8C02ADF6B1A004476D1 /* MapFeedCellView.swift */,
 				E3071A242AD9204D00090B62 /* MapSearchView.swift */,
@@ -1150,6 +1153,7 @@
 				D1D2F7FD2AE0CAAC00C89FB7 /* SearchBarTextField.swift in Sources */,
 				E47B3F752AC14A22002164A6 /* MySavedView.swift in Sources */,
 				3CB7340A2ABD6F0100D82503 /* FeedMainView.swift in Sources */,
+				E3602D342AE6491000706CCB /* LocationDetailMap.swift in Sources */,
 				D1A6CA0F2ABD802E00AE59D0 /* SearchUserCellView.swift in Sources */,
 				3CCD2DDE2ABC3141005709F4 /* User.swift in Sources */,
 				B5483D402AE3C88300C4F989 /* LottieView.swift in Sources */,

@@ -10,7 +10,8 @@ import SwiftUI
 struct LocationSearchView: View {
     
     @StateObject private var locationSearchStore = LocationSearchStore.shared
-    
+    @ObservedObject var detailCoordinator = DetailCoordinator.shared
+
     @Binding var showLocation: Bool
     @Binding var searchResult: SearchResult
     @Binding var isSearchedLocation: Bool
