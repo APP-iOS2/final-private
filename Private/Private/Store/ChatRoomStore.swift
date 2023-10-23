@@ -13,10 +13,9 @@ final class ChatRoomStore: ObservableObject {
     @Published var messageList: [Message] = []
     @Published var isShowingChatLoading : Bool = false
     @Published var chatRoomMessageToast : Bool = false
-
     
     let userCollection = Firestore.firestore().collection("User")
-    let docRef = Firestore.firestore().collection("User")
+    let chatRoomCollection = Firestore.firestore().collection("ChatRoom")
     
     private var timer: Timer?
     private var timeInterval: Double = 0.1
@@ -74,7 +73,7 @@ final class ChatRoomStore: ObservableObject {
                 }
             }
     }
- 
+    
     func addChatRoomToUser(user: User, chatRoom: ChatRoom) {
         let userCollection = Firestore.firestore().collection("ChatRoom")
         
@@ -87,18 +86,18 @@ final class ChatRoomStore: ObservableObject {
             chatRoomData["firstUserProfileImage"] = user.profileImageURL
             chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
             chatRoomData["secondUserProfileImage"] = chatRoom.secondUserProfileImage
-//            chatRoomData["Message"] = []
+            //            chatRoomData["Message"] = []
             
             // Create Message subcollection
-//               let messageSubcollection = subCollection.collection("Message")
-//               
-//            messageSubcollection.addDocument(data: [:]) { error in
-//                if let error = error {
-//                    print("Error adding document to Message subcollection: \(error.localizedDescription)")
-//                } else {
-//                    print("Document added to Message subcollection")
-//                }
-//            }
+            //               let messageSubcollection = subCollection.collection("Message")
+            //
+            //            messageSubcollection.addDocument(data: [:]) { error in
+            //                if let error = error {
+            //                    print("Error adding document to Message subcollection: \(error.localizedDescription)")
+            //                } else {
+            //                    print("Document added to Message subcollection")
+            //                }
+            //            }
             
             subCollection.setData(chatRoomData) { error in
                 if let error = error {
@@ -109,7 +108,6 @@ final class ChatRoomStore: ObservableObject {
             }
         } else {
             // Create Message subcollection
-            
             let subCollection = userCollection.document("\(user.nickname),\(chatRoom.firstUserNickname)")
             
             var chatRoomData: [String: Any] = [:]
@@ -118,17 +116,17 @@ final class ChatRoomStore: ObservableObject {
             chatRoomData["firstUserProfileImage"] = chatRoom.firstUserProfileImage
             chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
             chatRoomData["secondUserProfileImage"] = user.profileImageURL
-//            chatRoomData["Message"] = []
+            //            chatRoomData["Message"] = []
             
-//            let messageSubcollection = subCollection.collection("Message")
-//            
-//         messageSubcollection.addDocument(data: [:]) { error in
-//             if let error = error {
-//                 print("Error adding document to Message subcollection: \(error.localizedDescription)")
-//             } else {
-//                 print("Document added to Message subcollection")
-//             }
-//         }
+            //            let messageSubcollection = subCollection.collection("Message")
+            //
+            //         messageSubcollection.addDocument(data: [:]) { error in
+            //             if let error = error {
+            //                 print("Error adding document to Message subcollection: \(error.localizedDescription)")
+            //             } else {
+            //                 print("Document added to Message subcollection")
+            //             }
+            //         }
             subCollection.setData(chatRoomData) { error in
                 if let error = error {
                     print("Error adding chatRoom: \(error.localizedDescription)")
@@ -139,10 +137,72 @@ final class ChatRoomStore: ObservableObject {
         }
     }
     
+    func removeChatRoom(myNickName: String, otherUserNickname: String){
+        
+        let subCollection1 = chatRoomCollection.document("\(myNickName),\(otherUserNickname)")
+        let subCollection2 = chatRoomCollection.document("\(otherUserNickname),\(myNickName)")
+        
+        let subCollectionMessage1 = subCollection1.collection("Message")
+        let subCollectionMessage2 = subCollection2.collection("Message")
+        
+        // 문서 삭제
+        subCollection1.collection("Message").getDocuments { (snapshot, error) in
+            if let error = error {
+                print("메시지 컬렉션 가져오기 오류: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents else {
+                print("메시지 컬렉션 없음")
+                return
+            }
+            
+            for document in documents {
+                document.reference.delete()
+            }
+            
+            // 채팅방 문서 삭제
+            subCollection1.delete { error in
+                if let error = error {
+                    print("채팅방 문서 삭제 오류: \(error.localizedDescription)")
+                } else {
+                    print("채팅방 문서 삭제 성공")
+                }
+            }
+            
+            
+        }
+        
+        subCollection2.collection("Message").getDocuments { (snapshot, error) in
+            if let error = error {
+                print("메시지 컬렉션 가져오기 오류: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents else {
+                print("메시지 컬렉션 없음")
+                return
+            }
+            
+            for document in documents {
+                document.reference.delete()
+            }
+            
+            // 채팅방 문서 삭제
+            subCollection2.delete { error in
+                if let error = error {
+                    print("채팅방 문서 삭제 오류: \(error.localizedDescription)")
+                } else {
+                    print("채팅방 문서 삭제 성공")
+                }
+            }
+        }
+    }
+    
     func fetchMessage(myNickName: String, otherUserNickname: String){
         var tempChatMessageListLocal:[Message] = []
         self.isShowingChatLoading = true
-
+        
         timer = Timer.scheduledTimer(withTimeInterval:  0.5, repeats: true) { timer in
             print("=======fetchMessage=========")
             let userCollection = Firestore.firestore().collection("ChatRoom")
@@ -154,7 +214,7 @@ final class ChatRoomStore: ObservableObject {
             
             userCollection
                 .getDocuments { (querySnapshot, error) in
-
+                    
                     if let error = error {
                         print("Error getting chat room documents: \(error)")
                         return
@@ -198,14 +258,12 @@ final class ChatRoomStore: ObservableObject {
                                     print("Error getting chat room documents: \(error)")
                                     return
                                 }
-                                
                                 guard let querySnapshot = querySnapshot else {
                                     print("No chat room documents found for the given nickname")
                                     return
                                 }
                                 
                                 for document in querySnapshot.documents {
-                                    //                                for message in messageList
                                     let documentData = document.data()
                                     if let messageData = documentData as? [String: Any],
                                        let sender = messageData["sender"] as? String,
@@ -231,14 +289,13 @@ final class ChatRoomStore: ObservableObject {
                 tempChatMessageListLocal=[]
             }
         }
-
     }
     
     func stopFetchMessage() {
         messageList = []
-           timer?.invalidate()
-           timer = nil
-       }
+        timer?.invalidate()
+        timer = nil
+    }
     
     func sendMessage(myNickName: String, otherUserNickname: String, message: Message) {
         print("myNickName:\(myNickName) /n otherUserNickname:\(otherUserNickname) /n message:\(message)")
@@ -248,7 +305,7 @@ final class ChatRoomStore: ObservableObject {
         
         let subCollection2 = userCollection.document("\(otherUserNickname),\(myNickName)")
         let messageCollection2 = subCollection2.collection("Message")
-       
+        
         messageList.append(message)
         
         var messagesData: [String: Any] = [:]
@@ -281,11 +338,7 @@ final class ChatRoomStore: ObservableObject {
                             if let error = error {
                                 print("Error adding chatRoom: \(error.localizedDescription)")
                             } else {
-                                print("messagesData:\(messagesData)")
                                 print("Reservation added to Firestore")
-//                                DispatchQueue.main.async {
-//                                    self.chatRoomMessageToast = true
-//                                }
                             }
                         }
                     } else if documentID == "\(otherUserNickname),\(myNickName)" {
@@ -293,11 +346,7 @@ final class ChatRoomStore: ObservableObject {
                             if let error = error {
                                 print("Error adding chatRoom: \(error.localizedDescription)")
                             } else {
-                                print("messagesData:\(messagesData)")
                                 print("Reservation added to Firestore")
-//                                DispatchQueue.main.async {
-//                                    self.chatRoomMessageToast = true
-//                                }
                             }
                         }
                     }
@@ -307,7 +356,7 @@ final class ChatRoomStore: ObservableObject {
             self.chatRoomMessageToast = true
         }
     }
-
+    
     // Message 객체를 딕셔너리로 변환하는 함수
     func messageToDictionary(_ message: Message) -> [String: Any]? {
         return [
@@ -330,24 +379,18 @@ final class ChatRoomStore: ObservableObject {
         let newChatRoom = ChatRoom(firstUserNickname: firstNickname, firstUserProfileImage: firstUserProfileImage, secondUserNickname: secondNickname, secondUserProfileImage: secondUserProfileImage)
         
         addChatRoomToUser(user: user, chatRoom: newChatRoom)
-//        for chatRoom in self.chatRoomList {
-//            if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
-//                (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
-//                return chatRoom
-//            }
-//        }
         print("::chatRoomList is empty.")
         return newChatRoom
     }
     
-//    func searchChatRoom(firstNickname:String, secondNickname:String) -> ChatRoom {
-//        for chatRoom in self.chatRoomList {
-//                if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
-//                   (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
-//                    return chatRoom
-//                }
-//            }
-//    }
+    //    func searchChatRoom(firstNickname:String, secondNickname:String) -> ChatRoom {
+    //        for chatRoom in self.chatRoomList {
+    //                if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
+    //                   (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
+    //                    return chatRoom
+    //                }
+    //            }
+    //    }
     
     init() {
         print("ChatRoomStore reset.")
