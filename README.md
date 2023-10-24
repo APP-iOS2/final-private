@@ -8,40 +8,46 @@ Private는 내가 아는 사람들이 방문했던, 믿을 만한 장소들만 �
 
 ## 📱 주요 기능(⭐️스크린샷-기능 도표로)
 
+- ### 주요기능 gif
 |![마커 클릭](https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/1b5da49a-9577-4cbb-a24b-f48d156f538f)|![업로드](https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/e6950e71-842f-4e28-8fc9-3ffe1be58615)|![예약](https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/250ee786-f57a-411f-ab59-1a0e0192cdd5)|
 |:----:|:----:|:-----:|
-|`피드 보기`|`피드 등록하기`|`예약하기`|
+|`피드 보기`|`피드 등록`|`예약`|
 
+- ### 로그인
 |<img width="324" alt="스크린샷 2023-10-24 오후 4 53 27" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/1ddca088-4e08-41e1-a90d-7f8a3acbb4be">|<img width="324" alt="스크린샷 2023-10-24 오후 4 54 56" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/bfb07a4a-8810-4a1c-a1a7-9b22b83150b0">|<img width="324" alt="스크린샷 2023-10-24 오후 4 55 53" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/4b1dd865-9919-422b-8177-ed68e0c72129">|<img width="324" alt="스크린샷 2023-10-24 오후 8 51 15" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/6c1663a0-aa26-4ee0-8bf1-0382461968a0">|
 |:----:|:----:|:-----:|:----:|
 |`소셜 로그인 뷰`|`로그인 알림 뷰`|`구글계정 로그인 뷰`|`유저 정보 입력 뷰`|
 
-
+- ### 피드
 |<img width="324" alt="스크린샷 2023-10-24 오후 5 08 24" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/3f456daf-7ad9-4cf8-8e96-4bfa20d7af7b">|<img width="324" alt="스크린샷 2023-10-24 오후 5 16 31" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/3014fe23-bd5d-4ff9-a0f8-d019de243bc0">|<img width="324" alt="스크린샷 2023-10-24 오후 5 22 50" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/f6be2368-45f1-460d-91a5-a5e92b68251c">|<img width="324" alt="스크린샷 2023-10-24 오후 5 25 07" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/7154b53d-5402-4a54-9250-62624c380554">|
 |:----:|:----:|:-----:|:----:|
 |`홈 탭` <br> `(지도)`|`피드보기 뷰`|`홈 탭` <br> `(피드)`|`채팅 보내기`|
 
 
+- ### 채팅 및 유저 검색
 |<img width="324" alt="스크린샷 2023-10-24 오후 5 27 29" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/9e260721-0c10-40cb-8e13-2a4e62405a87">|<img width="324" alt="스크린샷 2023-10-24 오후 5 28 35" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/165e7e75-4680-4c5d-a6d6-4e46945790ac">|<img width="324" alt="스크린샷 2023-10-24 오후 5 30 01" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/198500af-f5d6-4ab6-b284-70d08db08c7e">|<img width="324" alt="스크린샷 2023-10-24 오후 5 30 50" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/96aa5528-5dbf-4766-a655-5c04908db852">|
 |:----:|:----:|:-----:|:----:|
 |`홈 탭` <br> `(채팅)`|`채팅방 뷰`|`검색 탭`|`검색 탭` <br> `(유저 검색뷰)`|
 
 
+- ### 피드 작성 및 가게 목록
 |<img width="324" alt="스크린샷 2023-10-24 오후 5 32 29" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/23b21289-d79a-41f9-be83-31ad61e19a45">|<img width="324" alt="스크린샷 2023-10-24 오후 5 33 59" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/49f5c84f-f52f-4d48-a9a7-d76da7c8d5af">|<img width="324" alt="스크린샷 2023-10-24 오후 5 36 55" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/49792b9f-5144-4c93-9406-0506779b265b">|<img width="324" alt="스크린샷 2023-10-24 오후 5 40 36" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/0ce44a47-8370-4719-936f-9f804e16640c">|
 |:----:|:----:|:-----:|:----:|
 |`검색한 유저 페이지 뷰`|`작성 탭`|`작성 탭` <br> `(피드 작성 완료)`|`예약 탭` <br> `(예약 가능한 가게뷰)`|
 
 
+- ### 가게 디테일 및 예약하기
 |<img width="324" alt="스크린샷 2023-10-24 오후 5 45 58" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/fc9cd7aa-db88-441f-928d-7c8062d0abee">|<img width="324" alt="스크린샷 2023-10-24 오후 5 46 18" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/c19a1123-a06c-4482-af15-c7e07b9944a3">|<img width="324" alt="스크린샷 2023-10-24 오후 5 46 50" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/9b06e6ce-9caf-4d9c-8e40-f3f9e914e9eb">|<img width="324" alt="스크린샷 2023-10-24 오후 5 54 03" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/f71d844a-b786-4b06-b974-9d2d3e12383f">|
 |:----:|:----:|:-----:|:----:|
 |`상점 디테일 뷰` <br> `(가게 정보)`|`상점 디테일 뷰` <br> `(메뉴)`|`상점 디테일 뷰` <br> `(최근 피드)`|`예약진행 뷰`|
 
 
+- ### 결제하기
 |<img width="324" alt="스크린샷 2023-10-24 오후 5 48 23" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/9187e32a-8fab-48be-bdb6-131311620e3a">|<img width="324" alt="스크린샷 2023-10-24 오후 5 49 47" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/0edd9610-9c08-496b-b2e2-4defcdc7bf8c">|<img width="324" alt="스크린샷 2023-10-24 오후 5 50 11" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/f4366cf8-e51d-4021-9b31-9081f5e3f9e3">|<img width="324" alt="스크린샷 2023-10-24 오후 5 51 27" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/9316d73e-02ec-44ce-a133-242475f50a3a">|
 |:----:|:----:|:-----:|:----:|
 |`예약진행 뷰`|`결제 뷰`|`예약 확인 뷰`|`마이페이지 탭`|
 
-
+- ### 마이페이지
 |<img width="324" alt="스크린샷 2023-10-24 오후 6 02 47" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/bd4d6750-4769-4ef3-907d-449c35f97bff">|<img width="324" alt="스크린샷 2023-10-24 오후 6 01 21" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/87d3b59a-0c9b-45da-9cde-869454c799d3">|<img width="324" alt="스크린샷 2023-10-24 오후 5 59 57" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/aa1498f9-09ae-4458-8065-10c36ed073f6">|<img width="324" alt="스크린샷 2023-10-24 오후 5 58 38" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/41d48e1d-d633-49b6-a251-24a3eb6fac62">|
 |:----:|:----:|:-----:|:----:|
 |`내 마커`|`예약 내역`|`프로필 편집`|`설정 뷰`|
