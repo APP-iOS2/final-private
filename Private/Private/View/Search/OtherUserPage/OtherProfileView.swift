@@ -27,7 +27,7 @@ struct OtherProfileView: View {
                 .padding(.bottom, 20)
             HStack {
                 NavigationLink {
-                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
+                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView,
                              markerTitle: $coordinator.newMarkerTitle,
                              markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
                     .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
@@ -128,7 +128,7 @@ struct OtherProfileView: View {
             coordinator.checkIfLocationServicesIsEnabled()
             Coordinator.shared.myFeedList = userStore.otherFeedList
             print("myFeedList: \(Coordinator.shared.myFeedList)")
-            coordinator.makeOnlyMyFeedMarkers()
+//            coordinator.makeOnlyMyFeedMarkers()
         }
     }
 }

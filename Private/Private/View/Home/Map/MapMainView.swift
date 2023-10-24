@@ -30,13 +30,13 @@ struct MapMainView: View {
                         .padding(.vertical, 10)
                         .background(Color.darkGrayColor)
                         .cornerRadius(30)
-                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
-                             markerTitle: $coordinator.newMarkerTitle,
-                             markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
+                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView,
+                     markerTitle: $coordinator.newMarkerTitle,
+                     markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
                 } else {
-                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
-                             markerTitle: $coordinator.newMarkerTitle,
-                             markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
+                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView,
+                     markerTitle: $coordinator.newMarkerTitle,
+                     markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
                 }
             }
         }
@@ -65,12 +65,6 @@ struct MapMainView: View {
                 .closeOnTapOutside(true)
                 .backgroundColor(.clear)
         }
-        
-//        .overlay(
-//            TextField("", text: $coordinator.newMarkerTitle)
-//                .opacity(0)
-//                .frame(width: 0, height: 0)
-//        )
     }
 }
 
