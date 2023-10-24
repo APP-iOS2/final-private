@@ -9,15 +9,16 @@ import SwiftUI
 import Kingfisher
 
 struct MySavedView: View {
-    
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var feedStore: FeedStore
+    
     @State var isMyPageFeedSheet: Bool = false
-    @State var selctedFeed : MyFeed = MyFeed()
     @State private var isLongPressing = false
+    
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             if userStore.mySavedFeedList.isEmpty {
@@ -33,7 +34,7 @@ struct MySavedView: View {
                 ) {
                     ForEach(userStore.mySavedFeedList, id: \.self) { feed in
                         Button {
-                            selctedFeed = feed
+                            feedStore.selctedFeed = feed
                             isMyPageFeedSheet = true
                         } label: {
                             KFImage(URL(string:feed.images[0])) .placeholder {
@@ -54,7 +55,7 @@ struct MySavedView: View {
                         )
                         .contextMenu(ContextMenu(menuItems: {
                             Button("선택한 피드 삭제") {
-                                userStore.deleteFeed(feed)
+                                userStore.deleteSavedFeed(feed)
                                 userStore.user.myFeed.removeAll { $0 == feed.id }
                                 userStore.updateUser(user: userStore.user)
                             }

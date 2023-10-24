@@ -11,11 +11,12 @@ import FirebaseFirestoreSwift
 import Kingfisher
 
 struct MyFollowingView: View {
-    //@EnvironmentObject var userStore: UserStore
     @EnvironmentObject var followStore: FollowStore
+    @State private var followingUserList: [User] = []
+    
     let user: User
     var followingList: [String]
-    @State private var followingUserList: [User] = []
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             ForEach(followingUserList, id:\.self) { following in
@@ -56,7 +57,6 @@ struct MyFollowingView: View {
                             .foregroundColor(.black)
                             .background(Color.yellow)
                             .cornerRadius(20)
-                        
                     }
                 }
                 .padding(EdgeInsets(top: 10, leading: 25, bottom: 10, trailing: 25))
@@ -66,7 +66,6 @@ struct MyFollowingView: View {
             }
         }
         .onAppear {
-            
             if followingUserList.count != followingList.count {
                 searchFollowingUser(searchNickname: followingList)
             }
@@ -74,7 +73,6 @@ struct MyFollowingView: View {
         .refreshable {
             followStore.fetchFollowerFollowingList(user.email)
         }
-        
     }
     func searchFollowingUser(searchNickname: [String]) {
         let db = Firestore.firestore()

@@ -12,15 +12,17 @@ import FirebaseStorage
 struct UserInfoModifyView: View {
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject var authStore: AuthStore
+    
     @State private var checkNicknameColor: Color = Color.red
     @State private var cautionNickname: String = ""
     @State private var checkNickname: Bool = false
     @State private var isHiddenCheckButton: Bool = false
     @State private var isNicknameValid: Bool = true
-    @Binding var isModify: Bool
     @State var mypageNickname: String = ""
     @State var isImagePickerPresented: Bool = false
     @State private var selectedImage: UIImage?
+    @Binding var isModify: Bool
+    
     var storage = Storage.storage()
     var body: some View {
         NavigationStack {
@@ -46,7 +48,6 @@ struct UserInfoModifyView: View {
                                     .foregroundColor(.gray)
                                     .clipShape(Circle())
                             }
-                            
                         } else {
                             if ((selectedImage) != nil) {
                                 Image(uiImage: selectedImage!)
@@ -93,28 +94,14 @@ struct UserInfoModifyView: View {
                             .disableAutocorrection(true) // 자동수정 비활성화
                             .border(isNicknameValid ? Color.clear : Color.privateColor)
                             .font(.pretendardRegular16)
-                        //.focused($focusField, equals: .mypageNickname)
-                        //.frame(width: .screenWidth*0.70, height: .screenHeight*0.05)
                             .padding(.leading, 5)
                             .onChange(of: mypageNickname) { newValue in
                                 ischeckNickname()
                                 checkNickname = false
                                 mypageNickname = newValue.trimmingCharacters(in: .whitespaces)
                             }
-                        
-                        
                         if isHiddenCheckButton {
                             Button {
-//                                Task {
-//                                    checkNickname = await authStore.doubleCheckNickname(nickname: mypageNickname)
-//                                    if checkNickname == false && mypageNickname.count > 0 {
-//                                        cautionNickname = "이미 사용 중인 닉네임"
-//                                        checkNicknameColor = .red
-//                                    } else {
-//                                        cautionNickname = "사용 가능"
-//                                        checkNicknameColor = .green
-//                                    }
-//                                }
                                 userStore.checkNickName(mypageNickname) { exists in
                                     if exists {
                                         cautionNickname = "이미 사용 중인 닉네임"
@@ -253,7 +240,6 @@ struct UserInfoModifyView: View {
     }
     func isValidNickname(_ nickName: String) -> Bool {
         let nicknameExpression = "^[a-zA-Z0-9]+$"
-        
         let nickNamePredicate = NSPredicate(format:"SELF MATCHES %@", nicknameExpression)
         return nickNamePredicate.evaluate(with: nickName)
     }
@@ -261,6 +247,6 @@ struct UserInfoModifyView: View {
 
 struct UserInfoModifyView_Previews: PreviewProvider {
     static var previews: some View {
-        UserInfoModifyView(isModify: .constant(true), mypageNickname: "").environmentObject(UserStore())
+        UserInfoModifyView(mypageNickname: "", isModify: .constant(true)).environmentObject(UserStore())
     }
 }

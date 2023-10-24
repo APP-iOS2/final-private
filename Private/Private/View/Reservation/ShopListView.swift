@@ -17,7 +17,6 @@ enum ShopListSortCriterion: String, CaseIterable {
 }
 
 struct ShopListView: View {
-    
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject var shopStore: ShopStore

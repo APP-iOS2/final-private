@@ -11,10 +11,11 @@ import FirebaseFirestoreSwift
 import Kingfisher
 
 struct MyFollowerView: View {
-    //@EnvironmentObject var userStore: UserStore
+    @State private var followerUserList: [User] = []
+    
     let user: User
     var followerList: [String]
-    @State private var followerUserList: [User] = []
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             ForEach(followerUserList, id: \.self) { follower in
@@ -54,7 +55,6 @@ struct MyFollowerView: View {
                             .foregroundColor(.black)
                             .background(Color.yellow)
                             .cornerRadius(20)
-                        
                     }
                 }
                 .padding(EdgeInsets(top: 10, leading: 25, bottom: 10, trailing: 25))
@@ -64,7 +64,6 @@ struct MyFollowerView: View {
             }
         }
         .onAppear {
-            //followStore.fetchFollowerFollowingList(user.email)
             if followerUserList.count != followerList.count {
                 searchFollowerUser(searchNickname: followerList)
             }
@@ -74,15 +73,12 @@ struct MyFollowerView: View {
             searchFollowerUser(searchNickname: user.follower)
         }
     }
-    
     func searchFollowerUser(searchNickname: [String]) {
         let db = Firestore.firestore()
-        
         for index in searchNickname {
             let query = db.collection("User")
                 .whereField("nickname",isEqualTo: index)
                 .limit(to: 10)
-            
             query.getDocuments { (querySnapshot,error) in
                 if let error = error {
                     print("데이터 가져오기 실패: \(error.localizedDescription)")

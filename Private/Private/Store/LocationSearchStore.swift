@@ -77,7 +77,6 @@ class LocationSearchStore: ObservableObject {
                     DispatchQueue.main.async {
                         print("success reverseGeoCoding")
                         print(data)
-//                        self.searchResultList = data.items
                     }
                 }
             case .failure(let error):

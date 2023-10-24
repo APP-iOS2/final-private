@@ -21,7 +21,7 @@ struct MySavedPlaceView: View {
                     .foregroundStyle(.primary)
                     .padding(.top, .screenHeight * 0.2 + 37.2)
             } else {
-                ShopInfoCardView(isShowingLocation: $isShowingLocation, searchResult: $searchResult, mySavedPlaceList: userStore.mySavedPlaceList)
+                ShopInfoCardView(isShowingLocation: $isShowingLocation, searchResult: $searchResult, mySavedPlaceList: userStore.mySavedPlaceList, isOtherUser: false)
             }
         }
         .sheet(isPresented: $isShowingLocation) {

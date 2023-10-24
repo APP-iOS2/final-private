@@ -9,18 +9,19 @@ import SwiftUI
 import Kingfisher
 
 struct MyHistoryView: View {
-    
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var reservationStore: ReservationStore
     @EnvironmentObject private var feedStore: FeedStore
+    
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
     @State var isReservation: Bool = false
-    @State var isMyPageFeedSheet: Bool = false 
-    //@State var selctedFeed : MyFeed = MyFeed()
+    @State var isMyPageFeedSheet: Bool = false
+    
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
+    
     var body: some View {
         VStack{
             if (isFeed == true) {
