@@ -72,58 +72,14 @@ struct DateTimePickerView: View {
                 Divider()
                     .opacity(0)
                 
-                // 오전
                 if amReservation.count > 0 {
                     Text("오전")
-                    
-                    LazyVGrid(columns: colums, spacing: 20) {
-                        ForEach(amReservation, id: \.self) { timeSlot in
-                            VStack {
-                                Button {
-                                    self.temporaryReservation.time = timeSlot
-                                    isSelectedTime = true
-                                    print("\(timeSlot)")
-                                } label: {
-                                    Text("\(timeSlot):00")  // 현재시간
-                                        .frame(minWidth: 60, maxWidth: .infinity)
-                                        .frame(height: 35)
-                                }
-                                .background(timeSlot == self.temporaryReservation.time ? Color.privateColor : Color.subGrayColor)
-                                .tint(timeSlot == self.temporaryReservation.time ? .black : Color(.systemGray))
-                                .cornerRadius(8)
-                            }
-                        }
-                    }
+                    ReservationTime(isSelectedTime: $isSelectedTime, timeOfDay: $amReservation, reservationData: $temporaryReservation)
                 }
-                
-                // 오후
                 if pmReservation.count > 0 {
                     Text("오후")
-                    
-                    LazyVGrid(columns: colums, spacing: 20) {
-                        ForEach(pmReservation, id: \.self) { timeSlot in
-                            // 반복문 ForEach
-                            VStack {
-                                Button {
-                                    // 시간 선택
-                                    // 버튼이 눌리면 색상 바꿔주기
-                                    self.temporaryReservation.time = timeSlot
-                                    isSelectedTime = true
-                                    print("\(timeSlot)")
-                                } label: {
-                                    Text("\(timeSlot):00")  // 현재시간
-                                        .frame(minWidth: 60, maxWidth: .infinity)
-                                        .frame(height: 35)
-                                }
-                                .background(timeSlot == self.temporaryReservation.time ? Color.privateColor : Color.subGrayColor)
-                                .tint(timeSlot == self.temporaryReservation.time ? .black : Color(.systemGray))
-                                .cornerRadius(8)
-                            }
-                        }
-                    }
+                    ReservationTime(isSelectedTime: $isSelectedTime, timeOfDay: $pmReservation, reservationData: $temporaryReservation)
                 }
-                
-                // 이용 가능 시간대가 없을 때
                 if availableTimeSlots.isEmpty {
                     VStack {
                         Text("예약 가능한 시간이 없습니다.")
@@ -149,7 +105,6 @@ struct DateTimePickerView: View {
         }
     }
     
-    // 나중에 수정해야지..
     /// 예약 가능한 시간대를 오전, 오후로 나눠서 두 개의 배열로 리턴
     /// - Parameter timeSlots: 예약 가능한 시간대
     func separateReservationTime(timeSlots: [Int]) {
@@ -175,5 +130,36 @@ struct DateTimePickerView_Previews: PreviewProvider {
             .environmentObject(ReservationStore())
             .environmentObject(HolidayManager())
             .environmentObject(CalendarData())
+    }
+}
+
+/// 예약 시간 선택 버튼 뷰
+struct ReservationTime: View {
+    @EnvironmentObject var reservationStore: ReservationStore
+    private let colums = [GridItem(.adaptive(minimum: 80))] // 레이아웃 최소 사이즈
+    
+    @Binding var isSelectedTime: Bool
+    @Binding var timeOfDay: [Int]
+    @Binding var reservationData: Reservation
+    
+    var body: some View {
+        LazyVGrid(columns: colums, spacing: 20) {
+            ForEach(timeOfDay, id: \.self) { timeSlot in
+                // 반복문 ForEach
+                VStack {
+                    Button {
+                        self.reservationData.time = timeSlot
+                        isSelectedTime = true
+                    } label: {
+                        Text("\(timeSlot):00")  // 현재시간
+                            .frame(minWidth: 60, maxWidth: .infinity)
+                            .frame(height: 35)
+                    }
+                    .background(timeSlot == self.reservationData.time ? Color.privateColor : Color.subGrayColor)
+                    .tint(timeSlot == self.reservationData.time ? .black : Color(.systemGray))
+                    .cornerRadius(8)
+                }
+            }
+        }
     }
 }

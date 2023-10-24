@@ -401,4 +401,20 @@ final class ReservationStore: ObservableObject {
         return (when, hour)
     }
     
+    /// 예약 가능한 시간대를 오전, 오후로 나눠서 두 개의 배열로 리턴
+    /// - Parameter timeSlots: 예약 가능한 시간대
+    func separateReservationTime(timeSlots: [Int]) -> ([Int], [Int]) {
+        var morningTimeSlots: [Int] = []
+        var afternoonTimeSlots: [Int] = []
+        
+        for timeSlot in timeSlots {
+            if timeSlot < 12 {
+                morningTimeSlots.append(timeSlot)
+            } else {
+                afternoonTimeSlots.append(timeSlot)
+            }
+        }
+        return (morningTimeSlots, afternoonTimeSlots)
+    }
+    
 }
