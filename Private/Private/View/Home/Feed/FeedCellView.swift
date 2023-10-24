@@ -82,9 +82,7 @@ struct FeedCellView: View {
                                     title: Text("선택하세요"),
                                     buttons: [
                                         .default(Text("수정")) {
-                                            print("수정")
                                             //MARK: FeedCellView에서 수정하는 곳
-                                            print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column)","\(feed.id)")
                                             isFeedUpdateViewPresented = true
                                         },
                                         .destructive(Text("삭제")) {
@@ -152,7 +150,7 @@ struct FeedCellView: View {
                             .frame(width: 15)
                             .padding(.horizontal, 10)
                             .foregroundColor(isChangePlaceColor ? .privateColor : .white)
-                            .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
+                            .foregroundColor(userStore.user.bookmark.contains("\(feed.id)") ? .privateColor : .primary)
                     }
                     .padding(.leading, 5)
                     //MARK: 회색 박스 안 주소와 가게명

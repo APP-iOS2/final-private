@@ -444,6 +444,28 @@ struct FeedUpdateView: View {
                                     
                                 }
                             }
+                userCollection.document(userStore.user.email).collection("MyFeed").document(feedId).updateData([
+                    "writerNickname": userStore.user.nickname,
+                    "writerName": userStore.user.id,
+                    "writerProfileImage": userStore.user.profileImageURL,
+                    "images": feedCopy.images,
+                    "contents": inputFeed.contents,
+                    "createdAt": inputFeed.createdAt,
+                    "title": inputFeed.title,
+                    "category": inputFeed.category,
+                    "address": inputFeed.address,
+                    "roadAddress": inputFeed.roadAddress,
+                    "mapx": inputFeed.mapx,
+                    "mapy": inputFeed.mapy
+                ]) { error in
+                    if let error = error {
+                        print("Error updating feed: \(error.localizedDescription)")
+                    } else {
+                        print("Feed updated successfully")
+                        feedStore.fetchFeeds()
+                        
+                    }
+                }
                         }
                     }
                 }
