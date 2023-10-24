@@ -18,7 +18,12 @@ struct MapMainView: View {
     @EnvironmentObject var authStore: AuthStore
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var feedStore: FeedStore
+    
+    @Binding var root: Bool
+    @Binding var selection: Int
+    
     @State private var coord: NMGLatLng = NMGLatLng(lat: 0.0, lng: 0.0)
+    
     var body: some View {
         ZStack {
             VStack {
@@ -47,7 +52,7 @@ struct MapMainView: View {
         }
         
         .sheet(isPresented: $coordinator.showMarkerDetailView) {
-            MapFeedSheetView(feed: feedStore.feedList.filter { $0.id == coordinator.currentFeedId }[0])
+            MapFeedSheetView(root: $root, selection: $selection ,feed: feedStore.feedList.filter { $0.id == coordinator.currentFeedId }[0])
                 .presentationDetents([.height(.screenHeight * 0.55)])
         }
         

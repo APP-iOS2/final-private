@@ -93,7 +93,7 @@ struct MainHomeView: View {
                 MapSearchView(showLocation: $showLocation, searchResult: $searchResult, coord: $coordinator.coord, selection: $selection)
             }
             if selectedNumber == 0 {
-                MapMainView()
+                MapMainView(root: $root, selection: $selection)
             } else if selectedNumber == 1 {
                 FeedMainView(root: $root, selection: $selection)
             }
