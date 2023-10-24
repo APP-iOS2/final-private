@@ -93,7 +93,7 @@ class LocationSearchStore: ObservableObject {
         // 문자열을 index를 사용하여 처리합니다.
         let index = input.index(input.startIndex, offsetBy: index)
         
-        // Substring을 사용하여 3번째와 4번째 문자 앞에 점을 추가합니다.
+        // Substring을 사용하여 n번째 문자 앞에 점을 추가합니다.
         var output = input
         output.insert(".", at: index)
         
