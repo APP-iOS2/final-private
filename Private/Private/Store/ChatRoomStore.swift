@@ -291,6 +291,7 @@ final class ChatRoomStore: ObservableObject {
                 
                 if self.messageList != tempChatMessageListLocal {
                     self.messageList = tempChatMessageListLocal
+                    tempChatMessageListLocal=[]
                     self.isShowingChatLoading = false
                 }
                 tempChatMessageListLocal=[]
@@ -313,11 +314,12 @@ final class ChatRoomStore: ObservableObject {
         let subCollection2 = userCollection.document("\(otherUserNickname),\(myNickName)")
         let messageCollection2 = subCollection2.collection("Message")
         
-        messageList.append(message)
+        var tempMessageList = messageList
+        tempMessageList.append(message)
         
         var messagesData: [String: Any] = [:]
         
-        for message in messageList {
+        for message in tempMessageList {
             if let messageDict = messageToDictionary(message) {
                 print("messageDict:\(messageDict)")
                 messagesData = messageDict
