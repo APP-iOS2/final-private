@@ -52,13 +52,18 @@ struct MyPageView: View {
             HStack {
                 NavigationLink {
                     NavigationStack {
-                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
-                             markerTitle: $coordinator.newMarkerTitle,
-                             markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
-                    .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
-                        MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == coordinator.currentFeedId }[0])
-                            .presentationDetents([.height(.screenHeight * 0.55)])
-                    }
+                        NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
+                                 markerTitle: $coordinator.newMarkerTitle,
+                                 markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
+                        .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
+                            MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == coordinator.currentFeedId }[0])
+                                .presentationDetents([.height(.screenHeight * 0.55)])
+                        }
+                        .onAppear {
+                            coordinator.checkIfLocationServicesIsEnabled()
+                            Coordinator.shared.myFeedList = userStore.myFeedList
+                            coordinator.makeOnlyMyFeedMarkers()
+                        }
                     .navigationBarBackButtonHidden(true)
                     .navigationTitle("내 마커")
                     .backButtonArrow()
