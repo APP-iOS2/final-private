@@ -75,10 +75,9 @@ struct MyFollowingView: View {
         }
     }
     func searchFollowingUser(searchNickname: [String]) {
-        let db = Firestore.firestore()
         
         for index in searchNickname {
-            let query = db.collection("User")
+            let query = userCollection
                 .whereField("nickname",isEqualTo: index)
                 .limit(to: 10)
             

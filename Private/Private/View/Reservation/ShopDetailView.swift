@@ -237,31 +237,6 @@ struct ShopDetailFooterView: View {
     
     var body: some View {
         HStack(spacing: 10) {
-            VStack(spacing: 2) {
-                Button {
-                    if shopViewModel.shop.bookmarks.contains(userStore.user.email) {
-                        shopViewModel.shop.bookmarks.removeAll { userID in
-                            return userID == userStore.user.email
-                        }
-                    } else {
-                        shopViewModel.shop.bookmarks.append(userStore.user.email)
-//                        userStore.saveShop(shopViewModel.shop)
-                        userStore.updateUser(user: userStore.user)
-                    }
-                    shopViewModel.updateShop(shopID: shopViewModel.shop.id)
-                    shopViewModel.fetchShop(shopID: shopViewModel.shop.id)
-                } label: {
-                    Image(systemName: shopViewModel.shop.bookmarks.contains(userStore.user.email) ? "pin.fill" : "pin")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
-                }
-                
-                Text("\(shopViewModel.shop.bookmarks.count)")
-                    .font(.pretendardSemiBold12)
-            }
-            
             ReservationButton(text: "예약하기") {
                 isReservationPresented.toggle()
             }
@@ -300,8 +275,7 @@ class ShopViewModel: ObservableObject {
     }
     
     func fetchBookmarks(shopID: String) {
-        let db = Firestore.firestore()
-        let shopRef = db.collection("Shop").document(shopID)
+        let shopRef = shopCollection.document(shopID)
         
         shopRef.getDocument { snapshot, error in
             if let error = error {
@@ -318,8 +292,7 @@ class ShopViewModel: ObservableObject {
     }
     
     func updateShop(shopID: String) {
-        let db = Firestore.firestore()
-        let shopRef = db.collection("Shop").document(shopID)
+        let shopRef = shopCollection.document(shopID)
         
         shopRef.updateData([
 //                "address": shop.address,
@@ -345,8 +318,7 @@ class ShopViewModel: ObservableObject {
     }
     
     func fetchShop(shopID: String) {
-        let db = Firestore.firestore()
-        let shopRef = db.collection("Shop").document(shopID)
+        let shopRef = shopCollection.document(shopID)
         
         shopRef.getDocument { snapshot, error in
             if let error = error {

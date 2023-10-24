@@ -167,7 +167,7 @@ struct ShopListFilteringView: View {
                                 .foregroundColor(selectedShopCategory == data ? Color.black : Color.white)
                                 .padding(10)
                         }
-                        .background(selectedShopCategory == data ? Color("AccentColor") : Color("SubGrayColor"))
+                        .background(selectedShopCategory == data ? Color.privateColor : Color("SubGrayColor"))
                         .cornerRadius(12)
                     }
                 } header: {
@@ -189,7 +189,7 @@ struct ShopListFilteringView: View {
                                 .foregroundColor(selectedShopListSortCriterion == data ? Color.black : Color.white)
                                 .padding(10)
                         }
-                        .background(selectedShopListSortCriterion == data ? Color("AccentColor") : Color("SubGrayColor"))
+                        .background(selectedShopListSortCriterion == data ? Color.privateColor : Color("SubGrayColor"))
                         .cornerRadius(12)
                     }
                 } header: {

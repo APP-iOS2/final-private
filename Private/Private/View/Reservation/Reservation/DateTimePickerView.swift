@@ -25,47 +25,22 @@ struct DateTimePickerView: View {
     @Binding var isSelectedTime: Bool  // 시간대가 설정 되었는지
     
     let shopData: Shop
-    let colums = [GridItem(.adaptive(minimum: 80))] // 레이아웃 최소 사이즈
-    
-    // 얘는 어따 옮기지
-    var regualrHoloday: [Int] {
-        var regularHoliday: [Int] = []
-        
-        for holiday in shopData.regularHoliday {
-            switch holiday {
-            case "일요일":
-                regularHoliday.append(1)
-            case "월요일":
-                regularHoliday.append(2)
-            case "화요일":
-                regularHoliday.append(3)
-            case "수요일":
-                regularHoliday.append(4)
-            case "목요일":
-                regularHoliday.append(5)
-            case "금요일":
-                regularHoliday.append(6)
-            case "토요일":
-                regularHoliday.append(7)
-            default:
-                break
-            }
-        }
-        return regularHoliday
-    }
+    private let colums = [GridItem(.adaptive(minimum: 80))] // 레이아웃 최소 사이즈
     
     var body: some View {
         ScrollView {
             HStack {
-                Text(calendarData.strMonthTitle)
+                Text(calendarData.strMonthTitle) // FSCalendar 위에 달력 타이틀
                     .font(.pretendardMedium18)
                 Spacer()
+                
+                // prevButton
                 Button {
                     self.calendarData.currentPage = Calendar.current.date(byAdding: .month, value: -1, to: self.calendarData.currentPage)!
                 } label: {
                     Image(systemName: "chevron.left")
                         .frame(width: 35, height: 35, alignment: .leading)
-                        .foregroundStyle(Color.privateColor)
+                        .foregroundStyle(calendarData.disablePrevButton ? Color.secondary : Color.privateColor)
                 }
                 .disabled(calendarData.disablePrevButton)
                 
@@ -75,14 +50,14 @@ struct DateTimePickerView: View {
                 } label: {
                     Image(systemName: "chevron.right")
                         .frame(width: 35, height: 35, alignment: .trailing)
-                        .foregroundStyle(Color.privateColor)
+                        .foregroundStyle(calendarData.disableNextButton ? Color.secondary : Color.privateColor)
                 }
                 .disabled(calendarData.disableNextButton)
                 
             }
             .padding(.horizontal)
             
-            FSCalendarView(regularHoliday: regualrHoloday, temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
+            FSCalendarView(regularHoliday: holidayManager.regularHolidayToInt(shopData: shopData), temporaryHoliday: shopData.temporaryHoliday, publicHolidays: holidayManager.publicHolidays)
                 .frame(height: 300)
                 .padding(.bottom)
                 .onChange(of: calendarData.selectedDate) { newValue in

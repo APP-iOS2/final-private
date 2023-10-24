@@ -250,7 +250,7 @@ struct FeedUpdateView: View {
                                 if selectedToggle[index] {
                                     Text(MyCategory.allCases[index].categoryName)
                                         .font(.pretendardMedium16)
-                                        .foregroundColor(.black)
+                                        .foregroundColor(.primary)
                                         .frame(width: 70, height: 30)
                                         .padding(.vertical, 4)
                                         .padding(.horizontal, 4)
@@ -259,7 +259,8 @@ struct FeedUpdateView: View {
                                 } else {
                                     Text(MyCategory.allCases[index].categoryName)
                                         .font(.pretendardMedium16)
-                                        .foregroundColor(.black)
+                                        .foregroundColor(.white)
+                                        .background(Color.black)
                                         .frame(width: 70, height: 30)
                                         .padding(.vertical, 4)
                                         .padding(.horizontal, 4)
@@ -420,7 +421,7 @@ struct FeedUpdateView: View {
                 let updatedImages = self.modifyUpdateFeed(with: imageUrls)
                 feedCopy.images = updatedImages
                 
-                            Firestore.firestore().collection("Feed").document(feedId).updateData([
+                feedCollection.document(feedId).updateData([
 
                                 "writerNickname": userStore.user.nickname,
                                 "writerName": userStore.user.id,

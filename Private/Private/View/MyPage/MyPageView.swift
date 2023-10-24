@@ -26,7 +26,7 @@ struct MyPageView: View {
             HStack {
                 if colorScheme == .dark {
                     Image("private_dark")
-                        .resizable()
+                        .resizable()    
                         .scaledToFit()
                         .frame(width: .screenWidth * 0.35)
                 } else {
