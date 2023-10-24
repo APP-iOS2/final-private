@@ -14,6 +14,8 @@ struct MyPageFeedView: View {
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     @EnvironmentObject private var userStore: UserStore
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
+    @ObservedObject var detailCoordinator = DetailCoordinator.shared
+
     @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     @State private var isShowingLocation: Bool = false
     @State private var lat: String = ""
@@ -126,13 +128,9 @@ struct MyPageFeedView: View {
                                         lat = locationSearchStore.formatCoordinates(feedListFeed.mapy, 2) ?? ""
                                         lng = locationSearchStore.formatCoordinates(feedListFeed.mapx, 3) ?? ""
                                         
-                                        postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                                        detailCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
                                         postCoordinator.newMarkerTitle = feedListFeed.title
                                         searchResult.title = feedListFeed.title
-                                        
-                                        postCoordinator.moveCameraPosition()
-                                        postCoordinator.makeSearchLocationMarker()
-                                        
                                     } label: {
                                         VStack(alignment: .leading, spacing: 5) {
                                             Text("\(feedListFeed.title)")
