@@ -82,7 +82,7 @@ struct MapFeedCellView: View {
                             Spacer()
                             Button {
                                 if(userStore.user.myFeed.contains("\(feed.id)")) {
-                                    userStore.deleteFeed(feed)
+                                    userStore.deleteSavedFeed(feed)
                                     userStore.user.myFeed.removeAll { $0 == "\(feed.id)" }
                                     userStore.updateUser(user: userStore.user)
                                     userStore.clickSavedCancelFeedToast = true
