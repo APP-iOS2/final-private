@@ -65,7 +65,7 @@ struct UserInfoModifyView: View {
                         ZStack {
                             Circle()
                                 .frame(width: 35, height: 35)
-                                .foregroundColor(Color("AccentColor"))
+                                .foregroundColor(Color(.private))
                             Image(systemName: "camera")
                                 .resizable()
                                 .frame(width: 25, height: 20)
@@ -91,7 +91,7 @@ struct UserInfoModifyView: View {
                         TextField("\(userStore.user.nickname)", text: $mypageNickname)
                             .textInputAutocapitalization(.never) // 첫글자 대문자 비활성화
                             .disableAutocorrection(true) // 자동수정 비활성화
-                            .border(isNicknameValid ? Color.clear : Color.accentColor)
+                            .border(isNicknameValid ? Color.clear : Color.privateColor)
                             .font(.pretendardRegular16)
                         //.focused($focusField, equals: .mypageNickname)
                         //.frame(width: .screenWidth*0.70, height: .screenHeight*0.05)

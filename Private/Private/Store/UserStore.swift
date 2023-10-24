@@ -270,9 +270,15 @@ final class UserStore: ObservableObject {
     //        fetchCurrentUser(userEmail: user.email)
     //    }
     
-    func deleteFeed(_ feed: MyFeed) {
+    func deleteSavedFeed(_ feed: MyFeed) {
         Firestore.firestore().collection("User").document(user.email)
             .collection("SavedFeed")
+            .document("\(feed.id)")
+            .delete()
+    }
+    func deleteMyFeed(_ feed: MyFeed) {
+        Firestore.firestore().collection("User").document(user.email)
+            .collection("MyFeed")
             .document("\(feed.id)")
             .delete()
     }

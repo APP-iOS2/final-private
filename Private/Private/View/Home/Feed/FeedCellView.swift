@@ -89,7 +89,9 @@ struct FeedCellView: View {
                                         },
                                         .destructive(Text("삭제")) {
                                             print("삭제")
+                                            userStore.deleteMyFeed(feed)
                                             feedStore.deleteFeed(feedId: feed.id)
+                                            userStore.updateUser(user: userStore.user)
                                             feedStore.deleteToast = true
                                         },
                                         //.cancel() // 취소 버튼
@@ -195,7 +197,7 @@ struct FeedCellView: View {
                         
                         Button {
                             if(userStore.user.myFeed.contains("\(feed.id)")) {
-                                userStore.deleteFeed(feed)
+                                userStore.deleteSavedFeed(feed)
                                 userStore.user.myFeed.removeAll { $0 == "\(feed.id)" }
                                 userStore.updateUser(user: userStore.user)
                                 userStore.clickSavedCancelFeedToast = true
