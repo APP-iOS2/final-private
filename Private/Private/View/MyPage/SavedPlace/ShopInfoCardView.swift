@@ -13,6 +13,7 @@ struct ShopInfoCardView: View {
     @EnvironmentObject var userStore: UserStore
     
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
+    @ObservedObject var detailCoordinator = DetailCoordinator.shared
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     
     @Binding var isShowingLocation: Bool
@@ -31,7 +32,7 @@ struct ShopInfoCardView: View {
                     lat = locationSearchStore.formatCoordinates(place.mapy, 2) ?? ""
                     lng = locationSearchStore.formatCoordinates(place.mapx, 3) ?? ""
                     
-                    postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                    detailCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
                     postCoordinator.newMarkerTitle = place.title
                     searchResult.title = place.title
                     
