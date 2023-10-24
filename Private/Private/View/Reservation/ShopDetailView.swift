@@ -237,31 +237,6 @@ struct ShopDetailFooterView: View {
     
     var body: some View {
         HStack(spacing: 10) {
-            VStack(spacing: 2) {
-                Button {
-                    if shopViewModel.shop.bookmarks.contains(userStore.user.email) {
-                        shopViewModel.shop.bookmarks.removeAll { userID in
-                            return userID == userStore.user.email
-                        }
-                    } else {
-                        shopViewModel.shop.bookmarks.append(userStore.user.email)
-//                        userStore.saveShop(shopViewModel.shop)
-                        userStore.updateUser(user: userStore.user)
-                    }
-                    shopViewModel.updateShop(shopID: shopViewModel.shop.id)
-                    shopViewModel.fetchShop(shopID: shopViewModel.shop.id)
-                } label: {
-                    Image(systemName: shopViewModel.shop.bookmarks.contains(userStore.user.email) ? "pin.fill" : "pin")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
-                }
-                
-                Text("\(shopViewModel.shop.bookmarks.count)")
-                    .font(.pretendardSemiBold12)
-            }
-            
             ReservationButton(text: "예약하기") {
                 isReservationPresented.toggle()
             }
