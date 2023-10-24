@@ -59,18 +59,6 @@ struct MainHomeView: View {
                     
                     Spacer()
                     
-                    Button {
-                        isShowSearch.toggle()
-                        print("검색 버튼 클릭")
-                    } label: {
-                        Image(systemName: "magnifyingglass")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 22)
-                            .padding(.bottom, 10)
-                            .padding(.trailing, 10)
-                    }
-                    
                     NavigationLink {
                         ChatRoomListView()
                     } label: {
