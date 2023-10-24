@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct MyPageView: View {
-    
-    @Environment(\.colorScheme) var colorScheme
-    
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var followStore: FollowStore
+    
+    @Environment(\.colorScheme) var colorScheme
     
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     

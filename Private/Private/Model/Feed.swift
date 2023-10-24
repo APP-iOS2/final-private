@@ -56,32 +56,3 @@ enum Category: Int, CaseIterable, Hashable, Codable {
         return allCases.filter { $0 != .general }
     }
 }
-
-/*
-extension Feed {
-    init?(documentData: [String: Any]) {
-        self.contents = documentData["contents"] as? String ?? ""
-        
-        let visitedShopData = documentData["visitedShop"] as? [String: Any] ?? [:]
-        
-        guard let visitedShop = Shop(documentData: visitedShopData) else {
-            return nil
-        }
-        self.visitedShop = visitedShop
-        
-        let writerData = documentData["writer"] as? [String: Any] ?? [:]
-        self.writer = User(document: writerData) ?? User()
-        
-        self.images = documentData["images"] as? [String] ?? []
-        
-        if let createdAtTimestamp = documentData["createdAt"] as? Timestamp {
-            self.createdAt = createdAtTimestamp.dateValue().timeIntervalSince1970
-        } else {
-            self.createdAt = Date().timeIntervalSince1970
-        }
-        
-        let categoryData = documentData["category"] as? [Int] ?? []
-        self.category = categoryData.compactMap(Category.init(rawValue:))
-    }
-}
-*/

@@ -10,9 +10,10 @@ import Kingfisher
 import NMapsMap
 
 struct MyPageFeedView: View {
-    @Binding var isMyPageFeedSheet: Bool
-    @StateObject private var locationSearchStore = LocationSearchStore.shared
     @EnvironmentObject private var userStore: UserStore
+    
+    @StateObject private var locationSearchStore = LocationSearchStore.shared
+    
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @ObservedObject var detailCoordinator = DetailCoordinator.shared
 
@@ -21,6 +22,7 @@ struct MyPageFeedView: View {
     @State private var lat: String = ""
     @State private var lng: String = ""
     @State private var currentPicture: Int = 0
+    @Binding var isMyPageFeedSheet: Bool
     var feed: MyFeed
     var feedList:[MyFeed]
     var body: some View {
@@ -111,8 +113,6 @@ struct MyPageFeedView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: 15)
-                        //                    .foregroundColor(.primary)
-                        //                    .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
                                         //MARK: 인덱스 벗어난대서 이렇게 고치니까 돌?아가지더라고요
                                             .padding(.top, 5)
                                             .foregroundColor(
@@ -124,10 +124,8 @@ struct MyPageFeedView: View {
                                     .padding(.leading, 15)
                                     Button {
                                         isShowingLocation = true
-                                        
                                         lat = locationSearchStore.formatCoordinates(feedListFeed.mapy, 2) ?? ""
                                         lng = locationSearchStore.formatCoordinates(feedListFeed.mapx, 3) ?? ""
-                                        
                                         detailCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
                                         postCoordinator.newMarkerTitle = feedListFeed.title
                                         searchResult.title = feedListFeed.title

@@ -11,6 +11,7 @@ struct SettingView: View {
     @EnvironmentObject private var authStore: AuthStore
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var feedStore: FeedStore
+    
     @State private var logoutAlert = false
     @State private var deleteAuth = false
     

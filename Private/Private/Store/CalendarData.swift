@@ -75,19 +75,6 @@ class CalendarData: ObservableObject {
             return selectDate
         } else {
             return selectDate
-
         }
-        
-//        if shopData.regularHoliday.contains(AppDateFormatter.shared.dayString(from: selectDate)) || shopData.temporaryHoliday.contains(where: { date in
-//            return Calendar.current.isDate(date, inSameDayAs: today)
-//            selectDate = Date().addingTimeInterval(60 * 60 * 24)
-//            return selectDate
-//        }){
-////            selectDate = Date().addingTimeInterval(60 * 60 * 24)
-////            return selectDate
-//            return selectDate
-//
-//        }
-//        return selectDate
     }
 }

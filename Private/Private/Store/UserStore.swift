@@ -178,46 +178,6 @@ final class UserStore: ObservableObject {
             .document(user.email).delete()
     }
     
-    
-    //    static let shopItem = ShopItem(item: "비빔밥", price: "10000", image: "")
-    
-    //    static let user = User(
-    //        name: "맛집탐방러",
-    //        nickname: "Private",
-    //        phoneNumber: "010-0000-0000",
-    //        profileImageURL: "https://discord.com/channels/1087563203686445056/1153285554646036550/1154579593819344928",
-    //        follower: [],
-    //        following: [],
-    //        myFeed: [dummyFeed,dummyFeed1,dummyFeed2,dummyFeed3],
-    //        savedFeed: [],
-    //        bookmark: [
-    //            Shop(
-    //            name: "강남 맛집",
-    //            category: Category.koreanFood,
-    //            coord: NMGLatLng(lat: 36.444, lng: 127.332),
-    //            address: "서울시 강남구",
-    //            addressDetail: "7번 출구 어딘가",
-    //            shopTelNumber: "010-1234-5678",
-    //            shopInfo: "미슐랭 맛집",
-    //            shopImageURL: "https://img.daily.co.kr/@files/www.daily.co.kr/content/food/2020/20200730/40d0fb3794229958bdd1e36520a4440f.jpg",
-    //            shopItems: [shopItem],
-    //            numberOfBookmark: 0
-    //        ), Shop(
-    //            name: "강남 맛집2",
-    //            category: Category.koreanFood,
-    //            coord: NMGLatLng(lat: 36.4445, lng: 127.331),
-    //            address: "서울시 강남구",
-    //            addressDetail: "7번 출구 어딘가",
-    //            shopTelNumber: "010-1234-5678",
-    //            shopInfo: "미슐랭 맛집",
-    //            shopImageURL: "https://mblogthumb-phinf.pstatic.net/MjAxNzAzMjZfMTM5/MDAxNDkwNDYxMDM1NzE4.sdrUUcAQOXtk6xZ7FJcEyyq-7P9kbo9OJ-GdKuWMfcYg.F9ljFIbwPQ25fdCXYUvN8fbC0Aun5UhHjVq_JE3UJc8g.PNG.nydelphie/DSC03257.png?type=w800",
-    //            shopItems: [shopItem],
-    //            numberOfBookmark: 0
-    //        )
-    //        ],
-    //        chattingRoom: [],
-    //        myReservation: []
-    //    )
     func saveFeed(_ feed: MyFeed) {
         do {
             try
@@ -276,6 +236,7 @@ final class UserStore: ObservableObject {
             .document("\(feed.id)")
             .delete()
     }
+    
     func deleteMyFeed(_ feed: MyFeed) {
         userCollection.document(user.email)
             .collection("MyFeed")
@@ -302,13 +263,13 @@ final class UserStore: ObservableObject {
                      ])
     }
     
-    
     func deletePlace(_ feed: MyFeed) {
         userCollection.document(user.email)
             .collection("SavedPlace")
             .document("\(feed.id)")
             .delete()
     }
+    
     func checkNickName(_ userNickName: String, completion: @escaping (Bool) -> Void) {
         let query = userCollection.whereField("nickname",isEqualTo: userNickName)
         query.getDocuments { (querySnapshot, error) in
@@ -326,6 +287,7 @@ final class UserStore: ObservableObject {
             }
         }
     }
+    
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
         return [
             "writerNickname": feed.writerNickname,
@@ -342,6 +304,7 @@ final class UserStore: ObservableObject {
             "mapy": feed.mapy,
         ]
     }
+    
     func deleteCollection (_ collectionName: String) {
         userCollection.document(user.email)
             .collection(collectionName)
@@ -362,6 +325,7 @@ final class UserStore: ObservableObject {
                 }
             }
     }
+    
     func deleteUser() {
         deleteCollection("MyFeed")
         deleteCollection("MyReservation")
