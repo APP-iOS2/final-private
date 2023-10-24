@@ -189,10 +189,10 @@ struct FeedCellView: View {
                 
                 Spacer()
                 
-                Divider()
-                
                 HStack {
                     if feed.writerNickname != userStore.user.nickname {
+                        Divider()
+                        
                         Button {
                             if(userStore.user.myFeed.contains("\(feed.id)")) {
                                 userStore.deleteFeed(feed)
