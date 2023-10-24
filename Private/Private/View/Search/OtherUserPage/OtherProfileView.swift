@@ -19,6 +19,8 @@ struct OtherProfileView: View {
     
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
     @State var viewNumber: Int = 0
+    @State var selection: Int = 1
+    @State private var root: Bool = false
     let user:User
     var body: some View {
         NavigationStack {
@@ -121,8 +123,8 @@ struct OtherProfileView: View {
                 .padding(.top, -9)
             
             TabView(selection: $viewNumber) {
-                OtherHistoryView(user: user).tag(0)
-                OtherSavedView(user: user).tag(1)
+                OtherHistoryView(root:$root, selection:$selection, user:user).tag(0)
+                OtherSavedView(root:$root, selection:$selection, user: user).tag(1)
                 OtherSavedPlaceView(user: user).tag(2)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))

@@ -13,10 +13,15 @@ struct OtherHistoryView: View {
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var reservationStore: ReservationStore
     @EnvironmentObject private var feedStore: FeedStore
+    
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
     @State var isReservation: Bool = false
     @State var isMyPageFeedSheet: Bool = false
+    
+    @Binding var root: Bool
+    @Binding var selection: Int
+    
     //@State var selctedFeed : MyFeed = MyFeed()
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
@@ -52,7 +57,7 @@ struct OtherHistoryView: View {
                                         .clipShape(Rectangle())
                                 }
                                 .sheet(isPresented: $isMyPageFeedSheet) {
-                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.otherFeedList)
+                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, root:$root, selection:$selection, feed: feedStore.selctedFeed, feedList: userStore.otherFeedList, isMyFeedList: false)
                                         .presentationDetents([.height(.screenHeight)])
                                 }
                             }

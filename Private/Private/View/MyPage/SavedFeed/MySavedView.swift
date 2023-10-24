@@ -15,6 +15,9 @@ struct MySavedView: View {
     @State var isMyPageFeedSheet: Bool = false
     @State private var isLongPressing = false
     
+    @Binding var root: Bool
+    @Binding var selection: Int
+    
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
@@ -45,7 +48,7 @@ struct MySavedView: View {
                                 .clipShape(Rectangle())
                         }
                         .fullScreenCover(isPresented: $isMyPageFeedSheet) {
-                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.mySavedFeedList)
+                            MyPageFeedView( isMyPageFeedSheet: $isMyPageFeedSheet, root:$root, selection:$selection, feed: feedStore.selctedFeed, feedList: userStore.mySavedFeedList, isMyFeedList: false)
                         }
                         .gesture(
                             LongPressGesture()
@@ -68,8 +71,8 @@ struct MySavedView: View {
     }
 }
 
-struct MySavedView_Previews: PreviewProvider {
-    static var previews: some View {
-        MySavedView().environmentObject(UserStore())
-    }
-}
+//struct MySavedView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MySavedView().environmentObject(UserStore())
+//    }
+//}
