@@ -10,10 +10,13 @@ import SwiftUI
 struct MyFollowerFollowingView: View {
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var followStore: FollowStore
+    
     let user: User
     var followerList : [String]
     var followingList : [String]
+    
     @State var viewNumber: Int
+    
     var body: some View {
         NavigationStack {
             HStack {
@@ -57,9 +60,6 @@ struct MyFollowerFollowingView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .backButtonArrow()
-        .onAppear {
-            //followStore.fetchFollowerFollowingList(user.email)
-        }
     }
 }
 

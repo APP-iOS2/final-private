@@ -10,7 +10,7 @@ import NMapsMap
 import FirebaseFirestore
 import FirebaseStorage
 
-struct LocationView: View {
+struct LocationChoiceView: View {
     @Environment(\.dismiss) private var dismiss
 
     @ObservedObject var locationSearchStore = LocationSearchStore.shared
@@ -77,8 +77,8 @@ struct LocationView: View {
             } .foregroundStyle(.red)
             Button("등록") {
                 postCoordinator.newMarkerAlert = false
-                newMarkerlat = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lat,  3) ?? ""
-                newMarkerlng = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lng , 4) ?? ""
+                newMarkerlat = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lat, 3) ?? ""
+                newMarkerlng = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lng, 4) ?? ""
                 searchResult.title = postCoordinator.newMarkerTitle
                 isSearchedLocation = false
                 print("신규등록 시 \(newMarkerlat), \(newMarkerlng)")
@@ -105,7 +105,7 @@ struct LocationView: View {
 
 struct LocationView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationView(searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), registrationAlert: .constant(false), newMarkerlat: .constant(""), newMarkerlng: .constant(""), isSearchedLocation: .constant(false))
+        LocationChoiceView(searchResult: .constant(SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")), registrationAlert: .constant(false), newMarkerlat: .constant(""), newMarkerlng: .constant(""), isSearchedLocation: .constant(false))
             .environmentObject(UserStore())
             .environmentObject(FeedStore())
             .environmentObject(ShopStore())

@@ -9,15 +9,19 @@ import SwiftUI
 import Kingfisher
 
 struct MySavedView: View {
-    
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var feedStore: FeedStore
+    
     @State var isMyPageFeedSheet: Bool = false
-    @State var selctedFeed : MyFeed = MyFeed()
     @State private var isLongPressing = false
+    
+    @Binding var root: Bool
+    @Binding var selection: Int
+    
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             if userStore.mySavedFeedList.isEmpty {
@@ -33,7 +37,7 @@ struct MySavedView: View {
                 ) {
                     ForEach(userStore.mySavedFeedList, id: \.self) { feed in
                         Button {
-                            selctedFeed = feed
+                            feedStore.selctedFeed = feed
                             isMyPageFeedSheet = true
                         } label: {
                             KFImage(URL(string:feed.images[0])) .placeholder {
@@ -44,7 +48,7 @@ struct MySavedView: View {
                                 .clipShape(Rectangle())
                         }
                         .fullScreenCover(isPresented: $isMyPageFeedSheet) {
-                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.mySavedFeedList)
+                            MyPageFeedView( isMyPageFeedSheet: $isMyPageFeedSheet, root:$root, selection:$selection, feed: feedStore.selctedFeed, feedList: userStore.mySavedFeedList, isMyFeedList: false)
                         }
                         .gesture(
                             LongPressGesture()
@@ -67,8 +71,8 @@ struct MySavedView: View {
     }
 }
 
-struct MySavedView_Previews: PreviewProvider {
-    static var previews: some View {
-        MySavedView().environmentObject(UserStore())
-    }
-}
+//struct MySavedView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MySavedView().environmentObject(UserStore())
+//    }
+//}

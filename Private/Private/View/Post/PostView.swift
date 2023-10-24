@@ -119,7 +119,7 @@ struct PostView: View {
                                 .presentationDetents([.fraction(0.75), .large])
                         }
                         .sheet(isPresented: $isSearchedLocation) {
-                            LocationView(searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng, isSearchedLocation: $isSearchedLocation)
+                            LocationChoiceView(searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng, isSearchedLocation: $isSearchedLocation)
                         }
                     }
                     .padding(.vertical, 10)
@@ -137,6 +137,11 @@ struct PostView: View {
                             } else {
                                 Button {
                                     if !postCoordinator.newMarkerTitle.isEmpty {
+                                        newMarkerlat = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lat, 3) ?? ""
+                                        newMarkerlng = locationSearchStore.changeCoordinates(postCoordinator.tappedLatLng.lng, 4) ?? ""
+                                        detailCoordinator.coord = NMGLatLng(lat: postCoordinator.tappedLatLng.lat , lng: postCoordinator.tappedLatLng.lng)
+                                        print("뉴마커 \(newMarkerlat), \(newMarkerlng)")
+                                        print("신규위도값: \(detailCoordinator.coord.lat), 신규경도값: \(detailCoordinator.coord.lng)")
                                         clickLocation.toggle()
                                     } else {
                                         lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""

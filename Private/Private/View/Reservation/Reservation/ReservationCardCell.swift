@@ -18,7 +18,6 @@ struct ReservationCardCell: View {
             Spacer()
             Text("\(content)")
                 .font(.pretendardMedium16)
-//            Spacer()
         }
         .foregroundStyle(Color.primary)
         .padding(.bottom, 0.5)

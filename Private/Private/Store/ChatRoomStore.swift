@@ -91,18 +91,6 @@ final class ChatRoomStore: ObservableObject {
             chatRoomData["firstUserProfileImage"] = user.profileImageURL
             chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
             chatRoomData["secondUserProfileImage"] = chatRoom.secondUserProfileImage
-            //            chatRoomData["Message"] = []
-            
-            // Create Message subcollection
-            //               let messageSubcollection = subCollection.collection("Message")
-            //
-            //            messageSubcollection.addDocument(data: [:]) { error in
-            //                if let error = error {
-            //                    print("Error adding document to Message subcollection: \(error.localizedDescription)")
-            //                } else {
-            //                    print("Document added to Message subcollection")
-            //                }
-            //            }
             
             subCollection.setData(chatRoomData) { error in
                 if let error = error {
@@ -121,17 +109,7 @@ final class ChatRoomStore: ObservableObject {
             chatRoomData["firstUserProfileImage"] = chatRoom.firstUserProfileImage
             chatRoomData["secondUserNickname"] = chatRoom.secondUserNickname
             chatRoomData["secondUserProfileImage"] = user.profileImageURL
-            //            chatRoomData["Message"] = []
-            
-            //            let messageSubcollection = subCollection.collection("Message")
-            //
-            //         messageSubcollection.addDocument(data: [:]) { error in
-            //             if let error = error {
-            //                 print("Error adding document to Message subcollection: \(error.localizedDescription)")
-            //             } else {
-            //                 print("Document added to Message subcollection")
-            //             }
-            //         }
+           
             subCollection.setData(chatRoomData) { error in
                 if let error = error {
                     print("Error adding chatRoom: \(error.localizedDescription)")
@@ -284,11 +262,6 @@ final class ChatRoomStore: ObservableObject {
                     }
                 }
             DispatchQueue.main.async {
-//                if self.messageList == [] {
-//                    self.messageList = tempChatMessageListLocal
-//                    self.isShowingChatLoading = false
-//                } else 
-                
                 if self.messageList != tempChatMessageListLocal {
                     self.messageList = tempChatMessageListLocal
                     tempChatMessageListLocal=[]
@@ -392,45 +365,9 @@ final class ChatRoomStore: ObservableObject {
         return newChatRoom
     }
     
-    //    func searchChatRoom(firstNickname:String, secondNickname:String) -> ChatRoom {
-    //        for chatRoom in self.chatRoomList {
-    //                if (chatRoom.firstUserNickname == firstNickname && chatRoom.secondUserNickname == secondNickname) ||
-    //                   (chatRoom.firstUserNickname == secondNickname && chatRoom.secondUserNickname == firstNickname) {
-    //                    return chatRoom
-    //                }
-    //            }
-    //    }
-    
     init() {
         print("ChatRoomStore reset.")
     }
-    
-    //    static let chatRoom = ChatRoom(
-    //        otherUserName: "userName", otherUserNickname: "boogie", otherUserProfileImage: "이미지", messages: message
-    //    )
-    
-    //    static let message = [
-    //        Message(
-    //            sender: "나",
-    //            content: "여기 어때?",
-    //            timestamp: Date().timeIntervalSince1970
-    //        ),
-    //        Message(
-    //            sender: "상대방",
-    //            content: "좀 괜찮던데?",
-    //            timestamp: Date().timeIntervalSince1970
-    //        ),
-    //        Message(
-    //            sender: "나",
-    //            content: "머먹음?",
-    //            timestamp: Date().timeIntervalSince1970
-    //        ),
-    //        Message(
-    //            sender: "상대방",
-    //            content: "크림치즈파스타가 진짜 존맛이더라 꼭 먹어라 여기서 만약에 더 길어진다면?!?!?!?!?!!?!? 더 길어지냐??\n 줄바꿈도 되냐?",
-    //            timestamp: Date().timeIntervalSince1970
-    //        )
-    //    ]
 }
 
 

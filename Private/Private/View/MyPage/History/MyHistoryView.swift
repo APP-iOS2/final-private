@@ -9,18 +9,22 @@ import SwiftUI
 import Kingfisher
 
 struct MyHistoryView: View {
-    
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var reservationStore: ReservationStore
     @EnvironmentObject private var feedStore: FeedStore
+    
     @State var isFeed: Bool = true
     @State var isMap: Bool = false
     @State var isReservation: Bool = false
-    @State var isMyPageFeedSheet: Bool = false 
-    //@State var selctedFeed : MyFeed = MyFeed()
+    @State var isMyPageFeedSheet: Bool = false
+    
+    @Binding var root: Bool
+    @Binding var selection: Int
+    
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
+    
     var body: some View {
         VStack{
             if (isFeed == true) {
@@ -49,7 +53,7 @@ struct MyHistoryView: View {
                                         .clipShape(Rectangle())
                                 }
                                 .fullScreenCover(isPresented: $isMyPageFeedSheet) {
-                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.myFeedList)
+                                    MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, root:$root, selection:$selection, feed: feedStore.selctedFeed, feedList: userStore.myFeedList, isMyFeedList: true)
                                 }
                             }
                         }
@@ -76,8 +80,8 @@ struct MyHistoryView: View {
     }
 }
 
-struct MyHistoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyHistoryView().environmentObject(UserStore())
-    }
-}
+//struct MyHistoryView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MyHistoryView(root: true, selection: <#Binding<Int>#>).environmentObject(UserStore())
+//    }
+//}

@@ -13,9 +13,6 @@ public enum HolidayApi {
     static let requestUrl = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getHoliDeInfo?"
     static let mediaParam = "pageNo=1&numOfRows=100&_type=json"
     static let key = Bundle.main.publicHoliday_API_KEY
-//    static var thisYear: Int = Calendar.current.component(.year, from: Date())
-//    static var nextYear: Int = thisYear + 1
-//    Calendar.current.component(.year, from: Date()) + 1
 }
 
 // 2022 / 2023 / 2024만 모아서 딕셔너리를 합침

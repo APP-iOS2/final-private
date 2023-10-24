@@ -14,6 +14,10 @@ struct OtherSavedView: View {
     @State var isMyPageFeedSheet: Bool = false
     @State var selctedFeed : MyFeed = MyFeed()
     @State private var isLongPressing = false
+    
+    @Binding var root: Bool
+    @Binding var selection: Int
+    
     var columns: [GridItem] = [GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil),
                                GridItem(.fixed(.screenWidth*0.33), spacing: 1, alignment:  nil)]
@@ -45,7 +49,7 @@ struct OtherSavedView: View {
                                 .clipShape(Rectangle())
                         }
                         .sheet(isPresented: $isMyPageFeedSheet){
-                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: selctedFeed, feedList: userStore.otherSavedFeedList)
+                            MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, root:$root, selection:$selection, feed: selctedFeed, feedList: userStore.otherSavedFeedList, isMyFeedList: false)
                                 .presentationDetents([.height(.screenHeight * 0.7)])
                         }
                         .gesture(
@@ -54,13 +58,6 @@ struct OtherSavedView: View {
                                     isLongPressing = true
                                 }
                         )
-                        .contextMenu(ContextMenu(menuItems: {
-                            Button("선택한 피드 삭제") {
-                                userStore.deleteSavedFeed(feed)
-                                userStore.user.myFeed.removeAll { $0 == feed.images[0] }
-                                userStore.updateUser(user: user)
-                            }
-                        }))
                     }
                 }
             }
