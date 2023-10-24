@@ -38,12 +38,12 @@ struct UserListView: View {
     
     var searchResultView: some View {
         ScrollView {
-            if searchStore.searchUserLists.isEmpty {
+            if searchStore.searchUserResults.isEmpty {
                 Text("검색 결과가 없습니다.")
                     .foregroundColor(.gray)
                     .padding(.top)
             } else {
-                ForEach(searchStore.searchUserLists, id: \.self) { user in
+                ForEach(searchStore.searchUserResults, id: \.self) { user in
                     NavigationLink {
                         LazyView(OtherProfileView(user: user))
                     } label: {

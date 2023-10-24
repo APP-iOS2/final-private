@@ -19,9 +19,6 @@ struct SearchBarView: View {
                 SearchBarTextField(text: $searchTerm, isEditing: $inSearchMode, placeholder: "사용자 닉네임 검색")
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
-//                    .onChange(of: searchTerm) { newValue in
-//                        let trimmedSearchTerm = searchTerm.trimmingCharacters(in: .whitespaces)
-//                    }
                     .onSubmit {
                         contiuneOnboarding = true
                         Task {

@@ -151,7 +151,6 @@
 		D1D2F7FD2AE0CAAC00C89FB7 /* SearchBarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */; };
 		D1D2F8012AE10EC300C89FB7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F8002AE10EC300C89FB7 /* Constants.swift */; };
 		D1D2F8072AE23EBE00C89FB7 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F8062AE23EBE00C89FB7 /* SearchBarView.swift */; };
-		D1D2F8092AE25D2100C89FB7 /* Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F8082AE25D2100C89FB7 /* Equatable.swift */; };
 		D1D2F80B2AE264F300C89FB7 /* OtherProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F80A2AE264F300C89FB7 /* OtherProfileView.swift */; };
 		D1D2F80D2AE264FE00C89FB7 /* OtherInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D2F80C2AE264FE00C89FB7 /* OtherInfoView.swift */; };
 		D1DC8D5B2ACFC67E0087CBD7 /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */; };
@@ -305,7 +304,6 @@
 		D1D2F7FC2AE0CAAC00C89FB7 /* SearchBarTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarTextField.swift; sourceTree = "<group>"; };
 		D1D2F8002AE10EC300C89FB7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D1D2F8062AE23EBE00C89FB7 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
-		D1D2F8082AE25D2100C89FB7 /* Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equatable.swift; sourceTree = "<group>"; };
 		D1D2F80A2AE264F300C89FB7 /* OtherProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherProfileView.swift; sourceTree = "<group>"; };
 		D1D2F80C2AE264FE00C89FB7 /* OtherInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherInfoView.swift; sourceTree = "<group>"; };
 		D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
@@ -436,7 +434,6 @@
 				D1DC8D5A2ACFC67E0087CBD7 /* FollowButton.swift */,
 				D1A0257E2AE0AC55004250E1 /* LazyView.swift */,
 				3C97476D2AD4DC4E007AE3CB /* Bundle+.swift */,
-				D1D2F8082AE25D2100C89FB7 /* Equatable.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1135,7 +1132,6 @@
 				3C79CE1E2AC10EE900CEA98D /* Modifiers.swift in Sources */,
 				3CCD2DFE2ABC37F8005709F4 /* TextMaster.swift in Sources */,
 				D1D2F8012AE10EC300C89FB7 /* Constants.swift in Sources */,
-				D1D2F8092AE25D2100C89FB7 /* Equatable.swift in Sources */,
 				D1D2F8072AE23EBE00C89FB7 /* SearchBarView.swift in Sources */,
 				D11194612AE5534100759B9D /* OtherHistoryView.swift in Sources */,
 				D11194652AE553ED00759B9D /* OtherSavedPlaceView.swift in Sources */,

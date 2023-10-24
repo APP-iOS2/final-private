@@ -30,7 +30,7 @@ final class UserStore: ObservableObject {
     @Published var clickSavedCancelPlaceToast: Bool = false
     
     func fetchMyInfo(userEmail: String, completion: @escaping (Bool) -> Void) {
-        Firestore.firestore().collection("User").document(userEmail).getDocument { snapshot, error in
+        userCollection.document(userEmail).getDocument { snapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
             } else if let userData = snapshot?.data(), let user = User(document: userData) {
@@ -41,8 +41,7 @@ final class UserStore: ObservableObject {
     }
     
     func createUser(user: User) {
-        Firestore.firestore().collection("User")
-            .document(user.email)
+        userCollection.document(user.email)
         //            .setData(user.toDictionary())
             .setData(["email" : user.email,
                       "name" : user.name,
@@ -64,8 +63,7 @@ final class UserStore: ObservableObject {
     
     
     func updateUser(user: User) {
-        Firestore.firestore().collection("User")
-            .document(user.email)
+        userCollection.document(user.email)
             .updateData(["email" : user.email,
                          "name" : user.name,
                          "nickname" : user.nickname,
@@ -84,14 +82,14 @@ final class UserStore: ObservableObject {
     }
     
     func fetchCurrentUser(userEmail: String) {
-        Firestore.firestore().collection("User").document(userEmail).getDocument { snapshot, error in
+        userCollection.document(userEmail).getDocument { snapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
             } else if let userData = snapshot?.data(), let user = User(document: userData) {
                 self.user = user
             }
         }
-        Firestore.firestore().collection("User").document(userEmail).collection("MyFeed").addSnapshotListener { querySnapshot, error in
+        userCollection.document(userEmail).collection("MyFeed").addSnapshotListener { querySnapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
             }
@@ -104,7 +102,7 @@ final class UserStore: ObservableObject {
                 return feed
             } .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
-        Firestore.firestore().collection("User").document(userEmail).collection("SavedFeed").addSnapshotListener { querySnapshot, error in
+        userCollection.document(userEmail).collection("SavedFeed").addSnapshotListener { querySnapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
             }
@@ -117,7 +115,7 @@ final class UserStore: ObservableObject {
                 return feed
             }.sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
-        Firestore.firestore().collection("User").document(userEmail).collection("SavedPlace").addSnapshotListener { querySnapshot, error in
+        userCollection.document(userEmail).collection("SavedPlace").addSnapshotListener { querySnapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
             }
@@ -133,7 +131,7 @@ final class UserStore: ObservableObject {
     }
     
     func fetchotherUser(userEmail:String) {
-        Firestore.firestore().collection("User").document(userEmail).collection("MyFeed").addSnapshotListener { querySnapshot, error in
+        userCollection.document(userEmail).collection("MyFeed").addSnapshotListener { querySnapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
             }
@@ -144,7 +142,7 @@ final class UserStore: ObservableObject {
                 return feed
             }.sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
-        Firestore.firestore().collection("User").document(userEmail).collection("SavedFeed").addSnapshotListener { querySnapshot, error in
+        userCollection.document(userEmail).collection("SavedFeed").addSnapshotListener { querySnapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
             }
@@ -155,7 +153,7 @@ final class UserStore: ObservableObject {
                 return feed
             } .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
-        Firestore.firestore().collection("User").document(userEmail).collection("SavedPlace").addSnapshotListener { querySnapshot, error in
+        userCollection.document(userEmail).collection("SavedPlace").addSnapshotListener { querySnapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
             }
@@ -172,8 +170,7 @@ final class UserStore: ObservableObject {
     }
     
     func deleteUser(userEmail: String) {
-        Firestore.firestore().collection("User")
-            .document(user.email).delete()
+        userCollection.document(user.email).delete()
     }
     
     
@@ -219,7 +216,7 @@ final class UserStore: ObservableObject {
     func saveFeed(_ feed: MyFeed) {
         do {
             try
-            Firestore.firestore().collection("User").document(user.email).collection("SavedFeed")
+            userCollection.document(user.email).collection("SavedFeed")
                 .document("\(feed.id)")
                 .setData(from:feed)
             
@@ -230,7 +227,7 @@ final class UserStore: ObservableObject {
     
     //MARK: 현재 유저의 닉네임을 불러오는 함수
         func getCurrentUserNickname(completion: @escaping (String?) -> Void) {
-               let userRef = Firestore.firestore().collection("User").document(user.email)
+               let userRef = userCollection.document(user.email)
                
                userRef.getDocument { (document, error) in
                    if let document = document, document.exists {
@@ -269,14 +266,14 @@ final class UserStore: ObservableObject {
 //    }
   
     func deleteFeed(_ feed: MyFeed) {
-        Firestore.firestore().collection("User").document(user.email)
+        userCollection.document(user.email)
             .collection("SavedFeed")
             .document("\(feed.id)")
             .delete()
     }
 
     func savePlace(_ feed: MyFeed) {
-        Firestore.firestore().collection("User").document(user.email)
+        userCollection.document(user.email)
             .collection("SavedPlace")
             .document("\(feed.id)")
             .setData(["writerNickname": "",
@@ -295,7 +292,7 @@ final class UserStore: ObservableObject {
     }
     
     func deletePlace(_ feed: MyFeed) {
-        Firestore.firestore().collection("User").document(user.email)
+        userCollection.document(user.email)
             .collection("SavedPlace")
             .document("\(feed.id)")
             .delete()

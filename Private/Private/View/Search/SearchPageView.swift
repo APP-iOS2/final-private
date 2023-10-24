@@ -32,7 +32,8 @@ struct SearchPageView: View {
                     Divider().padding()
                 }
                     if !searchStore.recentSearchResult.isEmpty {
-                        ForEach(searchStore.recentSearchResult.prefix(5), id: \.self) { resultText in
+                        let array = Array(searchStore.recentSearchResult.prefix(5))
+                        ForEach(array, id: \.self) { resultText in
                             RecentSearchRowView(resultText: resultText)
                         }
                 } else {
@@ -49,20 +50,15 @@ struct SearchPageView: View {
         @EnvironmentObject var searchStore: SearchStore
         let resultText: String
         
-        //foreach로 돌리는 데이터를 binding으로 받아야 하는데 해당 부분이 문제
         var body: some View {
             VStack {
                 HStack {
-                    NavigationLink {
-//                        UserListView(searchTerm: resultText)
-                    } label: {
-                        Text(resultText)
-                            .font(.pretendardRegular16)
-                            .foregroundColor(.primary)
-                            .onTapGesture {
-                                performSearchAndAddRecent()
-                            }
-                    }
+                    Text(resultText)
+                        .font(.pretendardRegular16)
+                        .foregroundColor(.primary)
+                        .onTapGesture {
+                            performSearchAndAddRecent()
+                        }
                     Spacer()
                     Button {
                         searchStore.removeRecentSearchResult(resultText)
@@ -104,7 +100,8 @@ struct SearchPageView: View {
                 }
                 VStack(alignment: .leading) {
                     if !searchStore.searchUserLists.isEmpty {
-                        ForEach(searchStore.searchUserLists.prefix(4), id: \.self) { user in
+                        let array = Array(searchStore.searchUserLists.prefix(4))
+                        ForEach(array, id: \.self) { user in
                             RecentUserRowView(user: user)
                         }
                     } else {
