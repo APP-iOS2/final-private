@@ -275,8 +275,7 @@ class ShopViewModel: ObservableObject {
     }
     
     func fetchBookmarks(shopID: String) {
-        let db = Firestore.firestore()
-        let shopRef = db.collection("Shop").document(shopID)
+        let shopRef = shopCollection.document(shopID)
         
         shopRef.getDocument { snapshot, error in
             if let error = error {
@@ -293,8 +292,7 @@ class ShopViewModel: ObservableObject {
     }
     
     func updateShop(shopID: String) {
-        let db = Firestore.firestore()
-        let shopRef = db.collection("Shop").document(shopID)
+        let shopRef = shopCollection.document(shopID)
         
         shopRef.updateData([
 //                "address": shop.address,
@@ -320,8 +318,7 @@ class ShopViewModel: ObservableObject {
     }
     
     func fetchShop(shopID: String) {
-        let db = Firestore.firestore()
-        let shopRef = db.collection("Shop").document(shopID)
+        let shopRef = shopCollection.document(shopID)
         
         shopRef.getDocument { snapshot, error in
             if let error = error {

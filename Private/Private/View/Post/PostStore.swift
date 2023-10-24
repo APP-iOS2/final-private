@@ -63,7 +63,7 @@ struct ImagePickerView: UIViewControllerRepresentable {
 final class PostStore: ObservableObject {
     
     @Published var feedList: [MyFeed] = []
-    private let dbRef = Firestore.firestore().collection("User")
+    private let dbRef = userCollection
     
     var feedId: String = ""
     

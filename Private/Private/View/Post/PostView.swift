@@ -411,7 +411,7 @@ struct PostView: View {
                             feed.images = imageUrls
                             
                             do {
-                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
+                                try userCollection.document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
                             } catch {
                                 print("Error saving feed: \(error)")
                             }
@@ -467,12 +467,12 @@ struct PostView: View {
                             feed.images = imageUrls
                             
                             do {
-                                try db.collection("User").document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
+                                try userCollection.document(userStore.user.email).collection("MyFeed").document(feed.id) .setData(from: feed)
                             } catch {
                                 print("Error saving feed: \(error)")
                             }
                             do {
-                                try db.collection("Feed").document(feed.id).setData(from: feed)
+                                try feedCollection.document(feed.id).setData(from: feed)
                             } catch {
                                 print("Error saving feed: \(error)")
                             }

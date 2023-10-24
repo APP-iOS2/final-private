@@ -23,17 +23,19 @@ struct SearchPageView: View {
     struct RecentSearchListView: View {
         @EnvironmentObject var searchStore: SearchStore
         var body: some View {
-            VStack(spacing: 10) {
+            VStack {
                 VStack(alignment: .leading) {
                     Text("최근 검색어")
                         .font(.pretendardMedium24)
                         .padding()
                     
-                    Divider().padding()
+                    Divider()
+//                        .padding()
                 }
                     if !searchStore.recentSearchResult.isEmpty {
-                        ForEach(searchStore.recentSearchResult.prefix(5), id: \.self) { resultText in
-//                            RecentSearchRowView(resultText: resultText)
+                        let array = Array(searchStore.recentSearchResult.prefix(5))
+                        ForEach(array, id: \.self) { resultText in
+                            RecentSearchRowView(resultText: resultText)
                         }
                 } else {
                     Text("검색 기록이 없습니다")
@@ -47,22 +49,14 @@ struct SearchPageView: View {
     
     struct RecentSearchRowView: View {
         @EnvironmentObject var searchStore: SearchStore
-        @Binding var resultText: String
+        let resultText: String
         
-        //foreach로 돌리는 데이터를 binding으로 받아야 하는데 해당 부분이 문제
         var body: some View {
             VStack {
                 HStack {
-                    NavigationLink {
-                        UserListView(searchTerm: $resultText)
-                    } label: {
-                        Text(resultText)
-                            .font(.pretendardRegular16)
-                            .foregroundColor(.primary)
-                            .onTapGesture {
-                                performSearchAndAddRecent()
-                            }
-                    }
+                    Text(resultText)
+                        .font(.pretendardRegular16)
+                        .foregroundColor(.primary)
                     Spacer()
                     Button {
                         searchStore.removeRecentSearchResult(resultText)
@@ -81,30 +75,25 @@ struct SearchPageView: View {
             }
             
         }
-        
-        func performSearchAndAddRecent() {
-               Task {
-                   await searchStore.searchUser(searchTerm: resultText)
-                   searchStore.addRecentSearch(resultText)
-               }
-           }
     }
     
     struct RecentUserListView: View {
         @EnvironmentObject var searchStore: SearchStore
 
         var body: some View {
-            VStack(spacing: 10) {
+            VStack {
                 VStack(alignment: .leading) {
                     Text("찾은 사용자")
                         .font(.pretendardMedium24)
                         .padding()
                     
-                    Divider().padding()
+                    Divider()
+//                        .padding()
                 }
                 VStack(alignment: .leading) {
                     if !searchStore.searchUserLists.isEmpty {
-                        ForEach(searchStore.searchUserLists.prefix(3), id: \.self) { user in
+                        let array = Array(searchStore.searchUserLists.prefix(4))
+                        ForEach(array, id: \.self) { user in
                             RecentUserRowView(user: user)
                         }
                     } else {

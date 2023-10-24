@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-struct User: Identifiable, Hashable {
+struct User: Identifiable, Hashable, Equatable {
     let id: String = UUID().uuidString
     let email: String
     var name: String
@@ -69,6 +69,10 @@ struct User: Identifiable, Hashable {
         self.bookmark = []
         self.chattingRoom = []
         self.myReservation = []
+    }
+    
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.nickname == rhs.nickname
     }
     
     func toDictionary() -> [String: Any] {

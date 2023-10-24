@@ -11,31 +11,13 @@ import Firebase
 final class SearchStore: ObservableObject {
     @Published var recentSearchResult: [String] = []
     @Published var searchUserLists: [User] = []
+    @Published var searchUserResults: [User] = []
     
     let userDefaults: UserDefaults = UserDefaults.standard
     
-//    init() {
-//        fetchUsers()
-//    }
-//    
-//    func fetchUsers() {
-//        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-//        
-//        userCollection.getDocuments { snapshot, _ in
-//            guard let documents = snapshot?.documents else { return }
-//            self.users = documents.compactMap({ document in
-//                let userData = document.data()
-//                if let user = User(document: userData), user.id != currentUserId {
-//                    return user
-//                } else {
-//                    return nil
-//                }
-//            })
-//        }
-//    }
-    
     @MainActor
     func searchUser(searchTerm: String) async {
+        self.searchUserResults = []
             let query = userCollection
                          .whereField("nickname", isEqualTo: searchTerm)
                          .limit(to: 10)
@@ -55,11 +37,12 @@ final class SearchStore: ObservableObject {
                     return nil
                 }
             }
-            //self.searchUserLists = users
-            ///중복값 처리인데 이게 동작을 안하네 왜 안하지?
             for newUser in users {
-                if !searchUserLists.contains(users) {
+                if !searchUserLists.contains(newUser) {
                     searchUserLists.append(newUser)
+                }
+                if !searchUserResults.contains(newUser) {
+                    searchUserResults.append(newUser)
                 }
             }
         } catch {
@@ -67,11 +50,10 @@ final class SearchStore: ObservableObject {
             }
         }
     
-    //최근 검색어 패치
+    
     func fetchrecentSearchResult() {
         self.recentSearchResult = self.userDefaults.value(forKey: "SearchResults") as? [String] ?? []
 }
-    
     
     func addRecentSearch(_ searchText: String) {
         if searchText != "" {
@@ -81,7 +63,7 @@ final class SearchStore: ObservableObject {
             self.recentSearchResult.insert(searchText, at: 0)
             
         }
-        self.setUserDefaults()
+        self.setSearchDefaults()
     }
     
     func removeRecentSearchResult(_ resultText: String) {
@@ -90,7 +72,7 @@ final class SearchStore: ObservableObject {
                     self.recentSearchResult.remove(at: index)
                     break
                 }
-            self.setUserDefaults()
+            self.setSearchDefaults()
         }
     }
     
@@ -98,13 +80,15 @@ final class SearchStore: ObservableObject {
         if let index = self.searchUserLists.firstIndex(of: user) {
             self.searchUserLists.remove(at: index)
         }
+        self.setSearchDefaults()
     }
 
     
-    func setUserDefaults() {
+    func setSearchDefaults() {
             self.userDefaults.set(self.recentSearchResult, forKey: "SearchResults")
     }
-    // 초기화 버튼용
+    
+    // userDefaults 초기화 버튼용
 //    func resetUserDefaults() {
 //        DispatchQueue.main.async {
 //            UserDefaults.resetStandardUserDefaults()

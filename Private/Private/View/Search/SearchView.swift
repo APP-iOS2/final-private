@@ -30,10 +30,8 @@ struct SearchView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .onAppear {
+            searchTerm = ""
             searchStore.fetchrecentSearchResult()
-        }
-        .onDisappear {
-                searchTerm = ""
         }
     }
 }

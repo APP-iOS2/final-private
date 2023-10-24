@@ -421,7 +421,7 @@ struct FeedUpdateView: View {
                 let updatedImages = self.modifyUpdateFeed(with: imageUrls)
                 feedCopy.images = updatedImages
                 
-                            Firestore.firestore().collection("Feed").document(feedId).updateData([
+                feedCollection.document(feedId).updateData([
 
                                 "writerNickname": userStore.user.nickname,
                                 "writerName": userStore.user.id,

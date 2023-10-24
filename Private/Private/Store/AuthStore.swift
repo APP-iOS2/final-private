@@ -91,7 +91,7 @@ class AuthStore: ObservableObject {
             
             let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
             
-            Firestore.firestore().collection("User").whereField("email", isEqualTo: (user?.profile?.email)!).getDocuments { snapshot, error in
+            userCollection.whereField("email", isEqualTo: (user?.profile?.email)!).getDocuments { snapshot, error in
                 if snapshot!.documents.isEmpty {
                     if let error = error {
                         print(error.localizedDescription)
@@ -110,7 +110,7 @@ class AuthStore: ObservableObject {
                         }
                     }
                 } else {
-                    Firestore.firestore().collection("User").document((user?.profile?.email)!).getDocument { snapshot, error in
+                    userCollection.document((user?.profile?.email)!).getDocument { snapshot, error in
                         _ = snapshot!.data()
                         
                         Auth.auth().signIn(with: credential) { result, error in
@@ -142,7 +142,7 @@ class AuthStore: ObservableObject {
     
     func doubleCheckNickname(nickname: String) async -> Bool {
         do {
-            let datas = try await Firestore.firestore().collection("User").whereField("nickname", isEqualTo: nickname).getDocuments()
+            let datas = try await userCollection.whereField("nickname", isEqualTo: nickname).getDocuments()
             if !datas.isEmpty {
                 return false
             } else {
@@ -208,7 +208,7 @@ class AuthStore: ObservableObject {
                                                "myReservation" : []
                 ]
                 
-                Firestore.firestore().collection("User").whereField("email", isEqualTo: (user?.kakaoAccount?.email)!)
+                userCollection.whereField("email", isEqualTo: (user?.kakaoAccount?.email)!)
                     .getDocuments { snapshot, error in
                         if snapshot!.documents.isEmpty {
                             Auth.auth().createUser(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in
@@ -223,7 +223,7 @@ class AuthStore: ObservableObject {
                                 }
                             }
                         } else {
-                            Firestore.firestore().collection("User").document((user?.kakaoAccount?.email)!).getDocument { (snapshot, error) in
+                            userCollection.document((user?.kakaoAccount?.email)!).getDocument { (snapshot, error) in
                                 let currentData = snapshot!.data()
                                 
                                 Auth.auth().signIn(withEmail: (user?.kakaoAccount?.email)!, password: "\(String(describing: user?.id))") { result, error in

@@ -62,7 +62,7 @@ final class ShopStore: ObservableObject {
     @MainActor
     func getAllShopData() async {
         do {
-            let documents = try await Firestore.firestore().collection("Shop").getDocuments()
+            let documents = try await shopCollection.getDocuments()
             var tempShopList: [Shop] = []
 
             for document in documents.documents {
