@@ -28,7 +28,7 @@ struct MapSearchView: View {
     @State private var inSearchMode = false
     var body: some View {
         VStack(alignment: .leading) {
-            SearchBarTextField(text: $searchText, isEditing: $inSearchMode, placeholder: "원하는 위치명을 입력하세요.")
+            SearchBarTextField(text: $searchText, isEditing: $inSearchMode, placeholder: "원하는 장소명을 입력하세요.")
             
             ScrollView {
                 VStack(alignment: .leading) {

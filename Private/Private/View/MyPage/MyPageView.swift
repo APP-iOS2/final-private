@@ -15,7 +15,7 @@ struct MyPageView: View {
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var followStore: FollowStore
     
-    @StateObject var coordinator: Coordinator = Coordinator.shared
+    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     
     @Binding var root: Bool
     @Binding var selection: Int
@@ -51,12 +51,16 @@ struct MyPageView: View {
                 .padding(.bottom, 20)
             HStack {
                 NavigationLink {
-                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
-                             markerTitle: $coordinator.newMarkerTitle,
-                             markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
-                    .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
-                        MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == coordinator.currentFeedId }[0])
-                            .presentationDetents([.height(.screenHeight * 0.55)])
+                    NavigationStack {
+                        PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView, showMyMarkerDetailView: $postCoordinator.showMyMarkerDetailView, coord: $postCoordinator.coord, tappedLatLng: $postCoordinator.tappedLatLng)
+                        .sheet(isPresented: $postCoordinator.showMyMarkerDetailView) {
+                            MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == postCoordinator.currentFeedId }[0])
+                                .presentationDetents([.height(.screenHeight * 0.55)])
+                        }
+                    .navigationBarBackButtonHidden(true)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("내 마커")
+                    .backButtonArrow()
                     }
                 } label: {
                     HStack {
@@ -84,24 +88,28 @@ struct MyPageView: View {
                 .frame(width: .screenWidth*0.5)
             }
             HStack {
+                Spacer()
                 Button {
                     viewNumber = 0
                 }label: {
                     HStack {
+                        Spacer()
                         viewNumber == 0 ? Image( systemName: "location.fill") : Image (systemName: "location")
                         Text("내 피드")
+                        Spacer()
                     }
                     .font(.pretendardRegular12)
                     .foregroundColor(viewNumber == 0 ? .privateColor : .primary)
-                    .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
+                    .padding([.trailing,.leading], 0)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 0))
                 }
-                Spacer()
+                
                 Button {
                     viewNumber = 1
                 }label: {
                     HStack {
+                        Spacer()
                         if viewNumber == 1 {
                             Image("bookmark_fill")
                                 .resizable()
@@ -121,27 +129,31 @@ struct MyPageView: View {
                             }
                         }
                         Text("저장한 피드")
+                        Spacer()
                     }
                     .font(.pretendardRegular12)
                     .foregroundColor(viewNumber == 1 ? .privateColor : .primary)
-                    .frame(width: .screenWidth*0.3)
+                    .padding([.trailing,.leading], 0)
                     .padding(.bottom, 15)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 1))
                 }
-                Spacer()
+                
                 Button {
                     viewNumber = 2
                 }label: {
                     HStack {
+                        Spacer()
                         viewNumber == 2 ? Image(systemName: "pin.fill") : Image (systemName: "pin")
                         Text("저장한 장소")
+                        Spacer()
                     }
                     .font(.pretendardRegular12)
                     .foregroundColor(viewNumber == 2 ? .privateColor : .primary)
-                    .frame(width: .screenWidth*0.3)
                     .padding(.bottom, 15)
+                    .padding([.trailing,.leading], 0)
                     .modifier(YellowBottomBorder(showBorder: viewNumber == 2))
                 }
+                Spacer()
             }
             .padding(.top, 20)
             Divider()
@@ -159,10 +171,9 @@ struct MyPageView: View {
         }
         .onAppear{
             followStore.fetchFollowerFollowingList(userStore.user.email)
-            coordinator.checkIfLocationServicesIsEnabled()
-            Coordinator.shared.myFeedList = userStore.myFeedList
-            print("myFeedList: \(Coordinator.shared.myFeedList)")
-            coordinator.makeOnlyMyFeedMarkers()
+            postCoordinator.checkIfLocationServicesIsEnabled()
+            PostCoordinator.shared.myFeedList = userStore.myFeedList
+            postCoordinator.makeOnlyMyFeedMarkers()
         }
     }
 }

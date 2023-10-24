@@ -59,18 +59,6 @@ struct MainHomeView: View {
                     
                     Spacer()
                     
-                    Button {
-                        isShowSearch.toggle()
-                        print("검색 버튼 클릭")
-                    } label: {
-                        Image(systemName: "magnifyingglass")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 22)
-                            .padding(.bottom, 10)
-                            .padding(.trailing, 10)
-                    }
-                    
                     NavigationLink {
                         ChatRoomListView()
                     } label: {
@@ -93,7 +81,7 @@ struct MainHomeView: View {
                 MapSearchView(showLocation: $showLocation, searchResult: $searchResult, coord: $coordinator.coord, selection: $selection)
             }
             if selectedNumber == 0 {
-                MapMainView()
+                MapMainView(root: $root, selection: $selection)
             } else if selectedNumber == 1 {
                 FeedMainView(root: $root, selection: $selection)
             }
@@ -105,7 +93,37 @@ struct MainHomeView: View {
                 }
         } customize: {
             $0
-                .autohideIn(1)
+                .autohideIn(2)
+                .type(.floater(verticalPadding: 20))
+                .position(.bottom)
+                .animation(.spring())
+                .closeOnTapOutside(true)
+                .backgroundColor(.clear)
+        }
+        
+        .popup(isPresented: $feedStore.deleteToast) {
+            ToastMessageView(message: "피드가 삭제되었습니다.")
+                .onDisappear {
+                    self.feedStore.uploadToast = false
+                }
+        } customize: {
+            $0
+                .autohideIn(3)
+                .type(.floater(verticalPadding: 20))
+                .position(.bottom)
+                .animation(.spring())
+                .closeOnTapOutside(true)
+                .backgroundColor(.clear)
+        }
+        
+        .popup(isPresented: $feedStore.updatedToast) {
+            ToastMessageView(message: "피드가 수정 완료 되었습니다.")
+                .onDisappear {
+                    self.feedStore.uploadToast = false
+                }
+        } customize: {
+            $0
+                .autohideIn(3)
                 .type(.floater(verticalPadding: 20))
                 .position(.bottom)
                 .animation(.spring())

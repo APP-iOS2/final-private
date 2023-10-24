@@ -74,7 +74,6 @@ struct Item: Codable {
         dateComponents.day = day
         
         if let date = calendar.date(from: dateComponents) {
-            print("공휴일: \(date) ====")
             return date
         } else {
             print("공휴일 가져오기 실패")

@@ -14,7 +14,6 @@ struct NaverMap: UIViewRepresentable {
     
     @Binding var currentFeedId: String
     @Binding var showMarkerDetailView: Bool
-    @Binding var showMyMarkerDetailView: Bool
     @Binding var markerTitle: String
     @Binding var markerTitleEdit: Bool
     @Binding var coord: NMGLatLng
@@ -43,6 +42,7 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
     var myFeedList: [MyFeed] = []
     var markers: [NMFMarker] = []
     var locationManager: CLLocationManager?
+    var searchLocationMarker: NMFMarker?
 
     @Published var currentFeedId: String = "보리마루"
     @Published var isBookMarkTapped: Bool = false
@@ -191,53 +191,23 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
         markerTapped()
     }
     
-    func makeOnlyMyFeedMarkers() {
-        
-        removeAllMarkers()
-        
-        var tempMarkers: [NMFMarker] = []
-        
-        for feedMarker in myFeedList {
+    // MARK: 해당 장소 이동 시 위치 좌표에 마커
+    func makeSearchLocationMarker() {
+        if let marker = searchLocationMarker {
+                marker.mapView = nil
+            }
             let marker = NMFMarker()
-            let lat = locationSearchStore.formatCoordinates(feedMarker.mapy, 2) ?? ""
-            let lng = locationSearchStore.formatCoordinates(feedMarker.mapx, 3) ?? ""
-            coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+            marker.position = NMGLatLng(lat: coord.lat, lng: coord.lng)
             
-            marker.position = NMGLatLng(lat: coord.lat, lng: coord.lng )
             marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
-            marker.captionText = feedMarker.id
-            
-            marker.captionTextSize = 0.1
             marker.captionMinZoom = 10
             marker.captionMaxZoom = 17
             marker.iconImage = NMFOverlayImage(name: "placeholder")
             marker.width = CGFloat(40)
             marker.height = CGFloat(40)
             
-            tempMarkers.append(marker)
-        }
-        
-        markers = tempMarkers
-        
-        for marker in markers {
             marker.mapView = view.mapView
-        }
-        myMarkerTapped()
-    }
-    
-    // MARK: 해당 장소 이동 시 위치 좌표에 마커
-    func makeSearchLocationMarker() {
-        let marker = NMFMarker()
-        marker.position = NMGLatLng(lat: coord.lat, lng: coord.lng)
-        
-        marker.captionRequestedWidth = 100 // 마커 캡션 너비 지정
-        marker.captionMinZoom = 10
-        marker.captionMaxZoom = 17
-        marker.iconImage = NMFOverlayImage(name: "placeholder")
-        marker.width = CGFloat(40)
-        marker.height = CGFloat(40)
-        
-        marker.mapView = view.mapView
+            searchLocationMarker = marker
     }
     
     // MARK: - Mark 터치 시 이벤트 발생
@@ -251,24 +221,6 @@ final class Coordinator: NSObject, ObservableObject,NMFMapViewCameraDelegate, NM
                 self.view.mapView.moveCamera(cameraUpdate)
                 
                 self.showMarkerDetailView = true
-                self.currentFeedId = marker.captionText
-                print("markerTapped: \(currentFeedId)")
-                
-                return true
-            }
-        }
-    }
-    
-    func myMarkerTapped() {
-        for marker in markers {
-            marker.touchHandler = { [self] (overlay) -> Bool in
-                print("markerTapped: \(marker.captionText)")
-                let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: marker.position.lat, lng: marker.position.lng), zoomTo: 17)
-                cameraUpdate.animation = .fly
-                cameraUpdate.animationDuration = 1
-                self.view.mapView.moveCamera(cameraUpdate)
-                
-                self.showMyMarkerDetailView = true
                 self.currentFeedId = marker.captionText
                 print("markerTapped: \(currentFeedId)")
                 

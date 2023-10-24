@@ -25,7 +25,8 @@ struct PostView: View {
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     @StateObject private var postStore: PostStore = PostStore()
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
-    
+    @ObservedObject var detailCoordinator = DetailCoordinator.shared
+
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var searchResult: SearchResult
@@ -78,10 +79,10 @@ struct PostView: View {
                             if userStore.user.profileImageURL.isEmpty {
                                 Circle()
                                     .frame(width: .screenWidth*0.15)
-                                Image(systemName: "person")
+                                Image(systemName: "person.fill")
                                     .resizable()
-                                    .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
-                                    .foregroundColor(Color.darkGraySubColor)
+                                    .frame(width: .screenWidth*0.15,height: .screenWidth*0.15)
+                                    .foregroundColor(.gray)
                                     .clipShape(Circle())
                             } else {
                                 KFImage(URL(string: userStore.user.profileImageURL))
@@ -103,7 +104,7 @@ struct PostView: View {
                     TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize, placeholder: textPlaceHolder)
                     
                         .padding(.trailing, 10)
-                    
+                    Divider()
                     //MARK: 장소
                     VStack {
                         Button {
@@ -126,10 +127,13 @@ struct PostView: View {
                     HStack {
                         VStack(alignment: .leading) {
                             if searchResult.title.isEmpty && postCoordinator.newMarkerTitle.isEmpty {
-                                Text("장소를 선택해주세요")
+                                Text("장소를 선택해주세요.")
                                     .font(.pretendardRegular16)
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(Color.privateColor)
                                     .padding(.bottom, 5)
+                                    .onTapGesture {
+                                        showLocation = true
+                                    }
                             } else {
                                 Button {
                                     if !postCoordinator.newMarkerTitle.isEmpty {
@@ -137,8 +141,8 @@ struct PostView: View {
                                     } else {
                                         lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
                                         lng = locationSearchStore.formatCoordinates(searchResult.mapx, 3) ?? ""
-                                        postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                                        print("위도값: \(postCoordinator.coord.lat), 경도값: \(postCoordinator.coord.lng)")
+                                        detailCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                                        print("위도값: \(detailCoordinator.coord.lat), 경도값: \(detailCoordinator.coord.lng)")
                                         print("지정장소 클릭")
                                         clickLocation.toggle()
                                     }
@@ -179,9 +183,13 @@ struct PostView: View {
                     
                     //MARK: 사진
                     HStack {
-                        Label("사진", systemImage: "camera")
-                            .font(.pretendardMedium18)
-                            .foregroundStyle(Color.privateColor)
+                        Button {
+                            isImagePickerPresented.toggle()
+                        } label: {
+                            Label("사진", systemImage: "camera")
+                                .font(.pretendardMedium18)
+                                .foregroundStyle(Color.privateColor)
+                        }
                         Spacer()
                         Button {
                             isImagePickerPresented.toggle()
@@ -217,11 +225,12 @@ struct PostView: View {
                                             ZStack {
                                                 Circle()
                                                     .frame(width: .screenWidth*0.06)
-                                                Image(systemName: "x.circle")
-                                                    .font(.pretendardMedium20)
+                                                    .foregroundStyle(.red)
+                                                Image(systemName: "minus")
+                                                    .font(.pretendardRegular16)
                                                     .foregroundColor(Color.white)
-                                                    .padding(8)
                                             }
+                                            .padding(EdgeInsets(top: 7, leading: 0, bottom: 0, trailing: 7))
                                         }
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                                     }
@@ -283,7 +292,7 @@ struct PostView: View {
                     .padding(.trailing, 8)
                     
                     //MARK: 업로드
-                    Text("업로드")
+                    Text("작성 완료")
                         .font(.pretendardBold18)
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .foregroundColor(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == "") ? .white : .black)
@@ -475,6 +484,9 @@ struct PostView: View {
     }
 
     func toggleCategorySelection(at index: Int) {
+        if categoryAlert {
+            return
+        }
         selectedToggle[index].toggle()
         let categoryName = MyCategory.allCases[index].categoryName
 
@@ -483,13 +495,13 @@ struct PostView: View {
                 myselectedCategory.append(categoryName)
             } else {
                 categoryAlert = true
-                myselectedCategory = []
-                selectedToggle = Array(repeating: false, count: MyCategory.allCases.count)
+                selectedToggle[index] = false
             }
         } else if let selectedIndex = myselectedCategory.firstIndex(of: categoryName) {
             myselectedCategory.remove(at: selectedIndex)
         }
     }
+
     
     func createGridColumns() -> [GridItem] {
         let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)

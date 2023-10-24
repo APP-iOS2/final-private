@@ -8,279 +8,279 @@ import SwiftUI
 import NMapsMap
 import Kingfisher
 import FirebaseStorage
-//import Combine
+import ExpandableText
+
 struct FeedCellView: View {
+    
     @Environment(\.dismiss) private var dismiss
-//    @Environment(\.presentationMode) var presentationMode
-//    @Binding var presentationMode: PresentationMode
-    @Environment(\.presentationMode) var presentationMode//: Binding<PresentationMode>
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     var feed: MyFeed
-    //var category: Category
     @State private var currentPicture = 0
     @EnvironmentObject var userDataStore: UserStore
-    @EnvironmentObject private var userStore: UserStore // 피드,장소 저장하는 함수 사용하기 위해서 선언
+    @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject var chatRoomStore: ChatRoomStore
     
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @StateObject private var locationSearchStore = LocationSearchStore.shared
+    @ObservedObject var detailCoordinator = DetailCoordinator.shared
 
     @State private var message: String = ""
     @State private var isShowingMessageTextField: Bool = false
     @State private var isFeedUpdateViewPresented: Bool = false
     @State private var isActionSheetPresented = false // 액션 시트 표시 여부를 관리하는 상태 변수
     @State private var isShowingLocation: Bool = false
-    
+    @State private var isChangePlaceColor: Bool = false
+    @State private var isExpanded: Bool = false //글 더보기
+    @State private var isTruncated: Bool = false//글 더보기
     @State private var lat: String = ""
     @State private var lng: String = ""
     @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     @Binding var root: Bool
     @Binding var selection: Int
-//    @Binding var isselctedFeed : Bool
-//    @State private var selectedFeed: Int? = nil
+    
     var body: some View {
-        //@Binding var isselectedFeed: Bool =  false
-        VStack {
-            HStack {
-                KFImage(URL(string: feed.writerProfileImage))
-                    .resizable()
-                    .placeholder {
-                        Image("userDefault")
-                            .resizable()
-                            .clipShape(Circle())
-                            .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
-                    }
-                    .clipShape(Circle())
-                    .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("\(feed.writerNickname)")
-                        .font(.pretendardMedium16)
-                    Text("\(feed.createdDate)")
-                        .font(.pretendardRegular12)
-                        .foregroundColor(.primary.opacity(0.8))
-                }
-                Spacer()
-                // 조건부로 FeedUpdateView 표시
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading) {
                 HStack {
-                    if feed.writerNickname == userStore.user.nickname {
-                        Button(action: {
-                            // 수정 및 삭제 옵션을 표시하는 액션 시트 표시
-                            isActionSheetPresented.toggle()
-                        }) {
-                            Image(systemName: "ellipsis")
+                    KFImage(URL(string: feed.writerProfileImage))
+                        .resizable()
+                        .placeholder {
+                            Image("userDefault")
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 15)
-                                .foregroundColor(.primary)
-                                .padding(.top, 5)
-                                .padding(.leading, 15)
-                                .padding(.trailing, 25)
+                                .clipShape(Circle())
+                                .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
                         }
-                        .actionSheet(isPresented: $isActionSheetPresented) {
-                            ActionSheet(
-                                title: Text("선택하세요"),
-                                buttons: [
-                                    .default(Text("수정")) {
-                                        print("수정")
-                                        //MARK: FeedCellView에서 수정하는 곳
-                                        //selectedFeed = MyFeed // 선택된 피드 설정
-                                        print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column)","\(feed.id)")
-                                        isFeedUpdateViewPresented = true
-                                    },
-                                    .destructive(Text("삭제")) {
-                                        print("삭제")
-                                        feedStore.deleteFeed(feedId: feed.id)
-                                    },
-                                    .cancel() // 취소 버튼
-                                ]
-                            )
-                        }
-                        .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
-                            FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
+                        .clipShape(Circle())
+                        .frame(width: .screenWidth*0.13, height: .screenWidth*0.13)
+                        .padding(.trailing, 5)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(feed.writerNickname)")
+                            .font(.pretendardMedium16)
+                        Text("\(feed.createdDate)")
+                            .font(.pretendardRegular12)
+                            .foregroundColor(.primary.opacity(0.8))
+                    }
+                    Spacer()
+                    //MARK:  조건부로 FeedUpdateView 표시
+                    HStack {
+                        if feed.writerNickname == userStore.user.nickname {
+                            Button(action: {
+                                // 수정 및 삭제 옵션을 표시하는 액션 시트 표시
+                                isActionSheetPresented.toggle()
+                            }) {
+                                Image(systemName: "ellipsis")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 15)
+                                    .foregroundColor(.primary)
+                                    .padding(.top, 5)
+                            }
+                            .actionSheet(isPresented: $isActionSheetPresented) {
+                                ActionSheet(
+                                    title: Text("선택하세요"),
+                                    buttons: [
+                                        .default(Text("수정")) {
+                                            print("수정")
+                                            //MARK: FeedCellView에서 수정하는 곳
+                                            print("File: \(#file), Line: \(#line), Function: \(#function), Column: \(#column)","\(feed.id)")
+                                            isFeedUpdateViewPresented = true
+                                        },
+                                        .destructive(Text("삭제")) {
+                                            print("삭제")
+                                            userStore.deleteMyFeed(feed)
+                                            feedStore.deleteFeed(feedId: feed.id)
+                                            userStore.updateUser(user: userStore.user)
+                                            feedStore.deleteToast = true
+                                        },
+                                        //.cancel() // 취소 버튼
+                                        .cancel(Text("취소"))
+                                    ]
+                                )
+                            }
+                            .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
+                                FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
+                            }
                         }
                     }
                 }
+                //MARK:  사진과 닉네임 사이 간격 조정 20->10
+                .padding(.leading, 20)
+                .padding(.bottom, 5)
+                
+                TabView(selection: $currentPicture) {
+                    ForEach(feed.images, id: \.self) { image in
+                        KFImage(URL(string: image ))
+                            .placeholder {
+                                Image(systemName: "photo")
+                            }
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: .screenWidth, height: .screenWidth)
+                            .clipped()
+                            .padding(.bottom, 10)
+                            .tag(Int(feed.images.firstIndex(of: image) ?? 0))
+                    }
+                }
+                .tabViewStyle(PageTabViewStyle())
+                .frame(width: .screenWidth, height: .screenWidth)
             }
-            .padding(.leading, 20)
+            .padding(.bottom, 10)
             
-            TabView(selection: $currentPicture) {
-                ForEach(feed.images, id: \.self) { image in
-                    KFImage(URL(string: image )) .placeholder {
-                        Image(systemName: "photo")
-                    }
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.width * 0.9)
-                    .clipped()
-                    .padding(.bottom, 10)
-                    .padding([.leading, .trailing], 15)
-                    .tag(Int(feed.images.firstIndex(of: image) ?? 0))
-                }
-            }
-            .tabViewStyle(PageTabViewStyle())
-            .frame(width: .screenWidth, height: .screenWidth)
-        }
-        
-        HStack(alignment: .top) {
-            HStack(alignment: .top) {
-                Text("\(feed.contents)")
-                    .font(.pretendardRegular16)
-                    .foregroundColor(.primary)
-            }
-            .padding(.leading, .screenWidth/2 - .screenWidth*0.45 )
-            Spacer()
-            VStack {
-                HStack{
+            //MARK: 회색 장소 박스
+            HStack {
+                HStack {
                     Button {
-                        if(userStore.user.myFeed.contains("\(feed.id)")) {
-                            userStore.deleteFeed(feed)
-                            userStore.user.myFeed.removeAll { $0 == "\(feed.id)" }
+                        if (userStore.user.bookmark.contains("\(feed.id)")) {
+                            userStore.deletePlace(feed)
+                            userStore.user.bookmark.removeAll { $0 == "\(feed.id)" }
                             userStore.updateUser(user: userStore.user)
-                            userStore.clickSavedCancelFeedToast = true
+                            userStore.clickSavedCancelPlaceToast = true
+                            isChangePlaceColor.toggle()
                         } else {
-                            userStore.saveFeed(feed) //장소 저장 로직(사용가능)
-                            userStore.user.myFeed.append("\(feed.id)")
+                            userStore.savePlace(feed) //장소 저장 로직(사용가능)
+                            userStore.user.bookmark.append("\(feed.id)")
                             userStore.updateUser(user: userStore.user)
-                            userStore.clickSavedFeedToast = true
+                            userStore.clickSavedPlaceToast = true
+                            isChangePlaceColor.toggle()
                         }
                     } label: {
-                        if colorScheme == ColorScheme.dark {
-                            Image(userStore.user.myFeed.contains("\(feed.id)") ? "bookmark_fill" : "bookmark_dark")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20)
-                                .padding(.trailing, 5)
-                        } else {
-                            Image(userStore.user.myFeed.contains( "\(feed.id)" ) ? "bookmark_fill" : "bookmark_light")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20)
-                                .padding(.trailing, 5)
-                        }
-                    }
-                    Button {
-                        withAnimation {
-                            isShowingMessageTextField.toggle()
-                            
-                        }
-                    } label: {
-                        Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
+                        Image(systemName: userStore.user.bookmark.contains("\(feed.id)") ? "pin.fill": "pin")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 20)
-                            .font(.pretendardRegular14)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 25)
-                            .padding(.vertical, 8)
-                            .background(isShowingMessageTextField ? Color.privateColor : Color.darkGrayColor)
-                            .cornerRadius(30)
+                            .frame(width: 15)
+                            .padding(.horizontal, 10)
+                            .foregroundColor(isChangePlaceColor ? .privateColor : .white)
+                            .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
+                    }
+                    .padding(.leading, 5)
+                    //MARK: 회색 박스 안 주소와 가게명
+                    Button {
+                        isShowingLocation = true
+                        
+                        lat = locationSearchStore.formatCoordinates(feed.mapy, 2) ?? ""
+                        lng = locationSearchStore.formatCoordinates(feed.mapx, 3) ?? ""
+                        
+                        detailCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                        postCoordinator.newMarkerTitle = feed.title
+                        searchResult.title = feed.title
+                        
+                        print("피드 장소 선택 시 좌표: \(postCoordinator.coord)")
+                    } label: {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("\(feed.title)")
+                                .font(.pretendardMedium16)
+                                .foregroundColor(.primary)
+                            Text("\(feed.roadAddress)")
+                                .font(.pretendardRegular12)
+                                .foregroundColor(.primary)
+                                .multilineTextAlignment(.leading)
+                        }
+                        .padding(.leading, 10)
                     }
                 }
-            }
-            .font(.pretendardMedium24)
-            .foregroundColor(.primary)
-            .padding(.trailing,.screenWidth/2 - .screenWidth*0.45)
-            //.disabled(true)
-        }
-        .padding(.top, -25)
-        .padding(.bottom, 0)
-        .popup(isPresented: $chatRoomStore.chatRoomMessageToast) {
-            ToastMessageView(message: "메세지가 전송되었습니다.")
-                .onDisappear {
-                    userStore.clickSavedFeedToast = false
+                .padding(.horizontal, 10)
+                //            .frame(width: .screenWidth * 0.7, height: 80)
+                //            .background(Color.darkGraySubColor)
+                
+                .sheet(isPresented: $isShowingLocation) {
+                    LocationDetailView(searchResult: $searchResult)
+                        .presentationDetents([.height(.screenHeight * 0.6), .large])
                 }
-        }customize: {
-           $0
-               .autohideIn(2)
-               .type(.floater(verticalPadding: 20))
-               .position(.bottom)
-               .animation(.spring())
-               .closeOnTapOutside(true)
-               .backgroundColor(.clear)
-       }
-        
-        if isShowingMessageTextField {
-            SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
-                let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname,firstUserProfileImage:userStore.user.profileImageURL, secondNickname: feed.writerNickname,secondUserProfileImage:feed.writerProfileImage) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
-                chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
-                message = ""
-                //메세지 완료
-            }
-        }
-        HStack {
-            Button {
-                if (userStore.user.bookmark.contains("\(feed.id)")) {
-                    userStore.deletePlace(feed)
-                    userStore.user.bookmark.removeAll { $0 == "\(feed.id)" }
-                    userStore.updateUser(user: userStore.user)
-                    userStore.clickSavedCancelPlaceToast = true
-                } else {
-                    userStore.savePlace(feed) //장소 저장 로직(사용가능)
-                    userStore.user.bookmark.append("\(feed.id)")
-                    userStore.updateUser(user: userStore.user)
-                    userStore.clickSavedPlaceToast = true
+                
+                Spacer()
+                
+                HStack {
+                    if feed.writerNickname != userStore.user.nickname {
+                        Divider()
+                        
+                        Button {
+                            if(userStore.user.myFeed.contains("\(feed.id)")) {
+                                userStore.deleteSavedFeed(feed)
+                                userStore.user.myFeed.removeAll { $0 == "\(feed.id)" }
+                                userStore.updateUser(user: userStore.user)
+                                userStore.clickSavedCancelFeedToast = true
+                            } else {
+                                userStore.saveFeed(feed) //장소 저장 로직(사용가능)
+                                userStore.user.myFeed.append("\(feed.id)")
+                                userStore.updateUser(user: userStore.user)
+                                userStore.clickSavedFeedToast = true
+                            }
+                        } label: {
+                            if colorScheme == ColorScheme.dark {
+                                Image(userStore.user.myFeed.contains("\(feed.id)") ? "bookmark_fill" : "bookmark_dark")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20)
+                                    .padding(.trailing, 5)
+                            } else {
+                                Image(userStore.user.myFeed.contains( "\(feed.id)" ) ? "bookmark_fill" : "bookmark_light")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20)
+                                    .padding(.trailing, 5)
+                            }
+                        }
+                        
+                        Button {
+                            withAnimation {
+                                isShowingMessageTextField.toggle()
+                            }
+                        } label: {
+                            Image(systemName: isShowingMessageTextField ? "paperplane.fill" : "paperplane")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20)
+                                .foregroundColor(isShowingMessageTextField ? .privateColor : .white)
+                        }
+                    }
                 }
-            } label: {
-                Image(systemName: userStore.user.bookmark.contains("\(feed.id)") ? "pin.fill": "pin")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 15)
-//                    .foregroundColor(.primary)
-//                    .foregroundColor(userStore.user.bookmark.contains("\(feed.images[0].suffix(32))") ? .privateColor : .primary)
-                //MARK: 인덱스 벗어난대서 이렇게 고치니까 돌?아가지더라고요
-                    .padding(.top, 5)
-                    .foregroundColor(
-                                (feed.images.count > 0 && userStore.user.bookmark.contains("\(feed.images[0].suffix(32))"))
-                                ? .privateColor
-                                : .primary
-                            )
+                .font(.pretendardMedium24)
+                .foregroundColor(.primary)
+                .padding(.trailing)
             }
-            .padding(.leading, 15)
+            .padding(.vertical, 20)
+            .background(Color.darkGraySubColor)
             
-            Button {
-                isShowingLocation = true
-                
-                lat = locationSearchStore.formatCoordinates(feed.mapy, 2) ?? ""
-                lng = locationSearchStore.formatCoordinates(feed.mapx, 3) ?? ""
-                
-                postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
-                postCoordinator.newMarkerTitle = feed.title
-                searchResult.title = feed.title
-                
-                postCoordinator.moveCameraPosition()
-                postCoordinator.makeSearchLocationMarker()
-                
-            } label: {
-                VStack(alignment: .leading, spacing: 5) {
-                    Text("\(feed.title)")
-                        .font(.pretendardMedium16)
-                        .foregroundColor(.primary)
-                    Text("\(feed.roadAddress)")
-                        .font(.pretendardRegular12)
-                        .foregroundColor(.primary)
+            VStack(alignment: .center) {
+                //MARK: 회색 박스 안 주소와 가게명 끝
+                if isShowingMessageTextField {
+                    SendMessageTextField(text: $message, placeholder: "메시지를 입력하세요") {
+                        if message != "" {
+                            let chatRoom = chatRoomStore.findChatRoom(user: userStore.user, firstNickname: userStore.user.nickname,firstUserProfileImage:userStore.user.profileImageURL, secondNickname: feed.writerNickname,secondUserProfileImage:feed.writerProfileImage) ?? ChatRoom(firstUserNickname: "ii", firstUserProfileImage: "", secondUserNickname: "boogie", secondUserProfileImage: "")
+                            chatRoomStore.sendMessage(myNickName: userStore.user.nickname, otherUserNickname: userStore.user.nickname == chatRoom.firstUserNickname ? chatRoom.secondUserNickname : chatRoom.firstUserNickname, message: Message(sender: userStore.user.nickname, content: message, timestamp: Date().timeIntervalSince1970))
+                            withAnimation {
+                                isShowingMessageTextField.toggle()
+                            }
+                            message = ""
+                        }
+                    }
+                    .padding(.horizontal, 20)
                 }
-                .padding(.leading, 15)
             }
-            Spacer()
             
+            VStack(alignment: .leading) {
+                Text("\(feed.contents)")
+                    .font(.pretendardRegular16)
+                    .foregroundStyle(Color.primary)
+                    .multilineTextAlignment(.leading)
+                    .padding(.top, 10)
+                    .padding(.horizontal, 10)
+            }
+            
+            //        VStack(alignment: .leading) {
+            //            ExpandableText(text: feed.contents)
+            //                .font(.pretendardRegular16)
+            //                .lineLimit(3)
+            //                .expandAnimation(.easeOut)
+            //                .expandButton(TextSet(text: "더보기", font: .pretendardRegular16, color: .privateColor))
+            //                .collapseButton(TextSet(text: "접기", font: .pretendardRegular16, color: .privateColor))
+            //        }
+            //        .padding(.horizontal, 10)
+            
+            Divider()
+                .padding(.vertical, 10)
         }
-        .padding(.top, 5)
-        .padding(.horizontal, 10)
-        .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
-        .background(Color.darkGraySubColor)
-        
-        .sheet(isPresented: $isShowingLocation) {
-            LocationDetailView(searchResult: $searchResult)
-                .presentationDetents([.height(.screenHeight * 0.6), .large])
-        }
-        
-        //토스트메세지
-        
-        
-        Divider()
-            .padding(.vertical, 10)
     }
 }
-//https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/81789D33-A401-4701-AB9F-ABBBE6DEC156?alt=media&token=a9b1fcdc-c1f9-48ec-87af-d7b617376365
-// https://firebasestorage.googleapis.com:443/v0/b/private-43c86.appspot.com/o/39968E65-7EB6-4D5D-AC00-8C8578AABFFF?alt=media&token=149585b7-ad7a-445a-a770-2e13af631ba0

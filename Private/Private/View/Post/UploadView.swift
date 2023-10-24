@@ -23,6 +23,7 @@ struct UploadView: View {
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var userDataStore: UserStore
+    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
 
     var body: some View {
         NavigationStack {
@@ -30,6 +31,9 @@ struct UploadView: View {
         }
         .onAppear {
             feedStore.isPostViewPresented = true
+            searchResult.title = ""
+            searchResult.roadAddress = ""
+            postCoordinator.newMarkerTitle = ""
             print("업로드 뷰 올라옴")
         }
         .fullScreenCover(isPresented: $feedStore.isPostViewPresented) {

@@ -18,7 +18,7 @@ final class UserStore: ObservableObject {
     @Published var myFeedList: [MyFeed] = []
     @Published var mySavedFeedList: [MyFeed] = []
     @Published var mySavedPlace: [MyFeed] = []
-
+    
     @Published var mySavedPlaceList: [MyFeed] = []
     @Published var otherFeedList: [MyFeed] = []
     @Published var otherSavedFeedList: [MyFeed] = []
@@ -28,6 +28,7 @@ final class UserStore: ObservableObject {
     @Published var clickSavedPlaceToast: Bool = false
     @Published var clickSavedCancelFeedToast: Bool = false
     @Published var clickSavedCancelPlaceToast: Bool = false
+    @Published var clickIsSavedNickName: Bool = false
     
     func fetchMyInfo(userEmail: String, completion: @escaping (Bool) -> Void) {
         userCollection.document(userEmail).getDocument { snapshot, error in
@@ -130,7 +131,7 @@ final class UserStore: ObservableObject {
         }
     }
     
-    func fetchotherUser(userEmail:String) {
+    func fetchotherUser(userEmail:String, completion: @escaping (Bool) -> Void) {
         userCollection.document(userEmail).collection("MyFeed").addSnapshotListener { querySnapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
@@ -167,6 +168,7 @@ final class UserStore: ObservableObject {
             }
             .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
+        completion(true)
     }
     
     func deleteUser(userEmail: String) {
@@ -239,6 +241,7 @@ final class UserStore: ObservableObject {
                    }
                }
         }
+    }
     
     func createMarker() {
         
@@ -271,7 +274,13 @@ final class UserStore: ObservableObject {
             .document("\(feed.id)")
             .delete()
     }
-
+    func deleteMyFeed(_ feed: MyFeed) {
+        Firestore.firestore().collection("User").document(user.email)
+            .collection("MyFeed")
+            .document("\(feed.id)")
+            .delete()
+    }
+    
     func savePlace(_ feed: MyFeed) {
         userCollection.document(user.email)
             .collection("SavedPlace")
@@ -291,11 +300,29 @@ final class UserStore: ObservableObject {
                      ])
     }
     
+    
     func deletePlace(_ feed: MyFeed) {
         userCollection.document(user.email)
             .collection("SavedPlace")
             .document("\(feed.id)")
             .delete()
+    }
+    func checkNickName(_ userNickName: String, completion: @escaping (Bool) -> Void) {
+        let query = Firestore.firestore().collection("User").whereField("nickname",isEqualTo: userNickName)
+        query.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("Error searching documents: \(error)")
+                completion(false)
+            } else {
+                if let documentCount = querySnapshot?.documents.count, documentCount > 0 {
+                    // 닉네임이 존재하는 경우
+                    completion(true)
+                } else {
+                    // 닉네임이 존재하지 않는 경우
+                    completion(false)
+                }
+            }
+        }
     }
     private func makeFeedData(from feed: MyFeed) -> [String: Any] {
         return [
@@ -312,6 +339,37 @@ final class UserStore: ObservableObject {
             "mapx": feed.mapx,
             "mapy": feed.mapy,
         ]
+    }
+    func deleteCollection (_ collectionName: String) {
+        Firestore.firestore().collection("User").document(user.email)
+            .collection(collectionName)
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error fetching documents: \(error)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        let documentReference = document.reference
+                        documentReference.delete { error in
+                            if let error = error {
+                                print("Error deleting document: \(error)")
+                            } else {
+                                print("Document deleted successfully")
+                            }
+                        }
+                    }
+                }
+            }
+    }
+    func deleteUser() {
+        deleteCollection("MyFeed")
+        deleteCollection("MyReservation")
+        deleteCollection("SavedFeed")
+        deleteCollection("SavedPlace")
+        deleteCollection("follower")
+        deleteCollection("following")
+            
+        Firestore.firestore().collection("User").document(user.email)
+            .delete()
     }
 }
 

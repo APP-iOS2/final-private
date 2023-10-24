@@ -56,7 +56,7 @@ struct OtherSavedView: View {
                         )
                         .contextMenu(ContextMenu(menuItems: {
                             Button("선택한 피드 삭제") {
-                                userStore.deleteFeed(feed)
+                                userStore.deleteSavedFeed(feed)
                                 userStore.user.myFeed.removeAll { $0 == feed.images[0] }
                                 userStore.updateUser(user: user)
                             }

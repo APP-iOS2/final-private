@@ -27,8 +27,8 @@ struct MyHistoryView: View {
                 ScrollView(showsIndicators: false) {
                     if userStore.myFeedList.isEmpty {
                         Text("게시물이 존재 하지 않습니다.")
-                            .font(.pretendardBold24)
-                            .foregroundColor(.primary)
+                            .font(.pretendardMedium20)
+                            .foregroundStyle(.primary)
                             .padding(.top, .screenHeight * 0.2 + 37.2)
                     } else {
                         LazyVGrid(
@@ -48,9 +48,8 @@ struct MyHistoryView: View {
                                         .frame(width: .screenWidth*0.33,height: .screenWidth*0.33)
                                         .clipShape(Rectangle())
                                 }
-                                .sheet(isPresented: $isMyPageFeedSheet) {
+                                .fullScreenCover(isPresented: $isMyPageFeedSheet) {
                                     MyPageFeedView(isMyPageFeedSheet: $isMyPageFeedSheet, feed: feedStore.selctedFeed, feedList: userStore.myFeedList)
-                                        .presentationDetents([.height(.screenHeight)])
                                 }
                             }
                         }

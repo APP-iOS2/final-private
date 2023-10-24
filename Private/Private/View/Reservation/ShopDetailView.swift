@@ -13,11 +13,12 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 import NMapsMap
+import PopupView
 
 enum ShopDetailCategory: String, CaseIterable {
     case shopInfo = "가게 정보"
     case shopMenu = "메뉴"
-    case shopCurrentReview = "최근 리뷰"
+    case shopCurrentReview = "최근 피드"
 }
 
 struct ShopDetailView: View {
@@ -25,7 +26,7 @@ struct ShopDetailView: View {
     @EnvironmentObject var shopStore: ShopStore
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject private var userStore: UserStore
-
+    
     @State var selectedShopDetailCategory: ShopDetailCategory = .shopInfo
     @State var isReservationPresented: Bool = false
     
@@ -34,7 +35,7 @@ struct ShopDetailView: View {
     init(shop: Shop) {
         self.shopViewModel = ShopViewModel(shop: shop)
     }
-        
+    
     var body: some View {
         ScrollView(.vertical) {
             ZStack(alignment: .topLeading) {
@@ -52,10 +53,9 @@ struct ShopDetailView: View {
         .backButtonArrow()
         
         ShopDetailFooterView(isReservationPresented: $isReservationPresented, shopViewModel: shopViewModel)
-        
-        .task {
-            await shopStore.getAllShopData()
-        }
+            .task {
+                await shopStore.getAllShopData()
+            }
     }
 }
 
@@ -78,100 +78,151 @@ struct ShopDetailBodyView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var calendarData: CalendarData
-
+    
     @State var isExpanded: Bool = false
+    @State var isAddressCopied: Bool = false
+    @State var isMapShowing: Bool = false
+    
     @Binding var selectedShopDetailCategory: ShopDetailCategory
+    
+    @StateObject var coordinator: Coordinator = Coordinator.shared
     
     @State var shopData: Shop
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .top, spacing: 0) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Spacer()
-                        .frame(height: 10)
-                    
-                    HStack(spacing: 10) {
-                        Text(shopData.name)
-                            .foregroundColor(.primary)
-                            .font(.pretendardBold28)
+        ZStack {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .center, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Spacer()
+                            .frame(height: 10)
                         
-                        Divider()
-                            .frame(height: 25)
+                        HStack(spacing: 10) {
+                            Text(shopData.name)
+                                .font(.pretendardBold28)
+                            
+                            Divider()
+                                .frame(height: 25)
+                            
+                            Text(shopData.category.categoryName)
+                                .font(.pretendardMedium18)
+                        }
                         
-                        Text(shopData.category.categoryName)
-                            .font(.pretendardBold18)
-                    }
-                    
-                    HStack(alignment: .center, spacing: 5) {
-                        Text(shopData.address + " " + shopData.addressDetail)
-                            .font(.pretendardBold14)
-                        
-                        Button {
-                            copyToClipboard(shopData.name + " " + shopData.address + " " + shopData.addressDetail)
-                        } label: {
-                            Image(systemName: "doc.on.doc")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundStyle(Color.privateColor)
-                                .frame(width: 15, height: 15)
+                        HStack(alignment: .center, spacing: 5) {
+                            Text(shopData.address + " " + shopData.addressDetail)
+                                .font(.pretendardRegular14)
+                            
+                            Button {
+                                copyToClipboard(shopData.name + " " + shopData.address + " " + shopData.addressDetail)
+                                self.isAddressCopied = true
+                            } label: {
+                                Image(systemName: "doc.on.doc")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundStyle(Color.privateColor)
+                                    .frame(width: 15, height: 15)
+                            }
+                            
+                            Spacer()
                         }
                         
                         Spacer()
+                            .frame(height: 10)
                     }
                     
                     Spacer()
-                        .frame(height: 10)
+                    
+                    Button {
+                        isMapShowing.toggle()
+                    } label: {
+                        Image(systemName: "map")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundStyle(Color.privateColor)
+                            .frame(width: 20, height: 20)
+                    }
                 }
+                .padding(.horizontal, 10)
                 
-                Spacer()
-            }
-            .padding(.horizontal, 10)
-            
-            Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(.pretendardRegular16)) {
-                ForEach(ShopDetailCategory.allCases, id: \.self) { category in
-                    Text(category.rawValue)
-                        .font(.pretendardRegular16)
-                        .foregroundColor(.chatTextColor)
+                Picker(selection: $selectedShopDetailCategory, label: Text(selectedShopDetailCategory.rawValue).font(.pretendardRegular16)) {
+                    ForEach(ShopDetailCategory.allCases, id: \.self) { category in
+                        Text(category.rawValue)
+                            .font(.pretendardRegular16)
+                            .foregroundColor(.chatTextColor)
+                    }
                 }
-            }
-            .pickerStyle(.segmented)
-            .padding(10)
-            
-            ScrollView {
-                switch selectedShopDetailCategory {
-                case .shopInfo:
-                    ShopDetailInfoView(shopData: shopData)
-                case .shopMenu:
-                    ShopDetailMenuView(shopData: shopData)
-                case .shopCurrentReview:
-                    ShopwDetailCurrentReviewView(shopData: shopData)
+                .pickerStyle(.segmented)
+                .padding(10)
+                
+                ScrollView {
+                    switch selectedShopDetailCategory {
+                    case .shopInfo:
+                        ShopDetailInfoView(shopData: shopData)
+                    case .shopMenu:
+                        ShopDetailMenuView(shopData: shopData)
+                    case .shopCurrentReview:
+                        ShopwDetailCurrentReviewView(shopData: shopData)
+                    }
                 }
+                .padding([.top, .horizontal], 10)
             }
-            .padding([.top, .horizontal], 10)
+            
+            .frame(maxWidth: .infinity)
+            .background(content: {
+                ZStack {
+                    if colorScheme == ColorScheme.light {
+                        Color.white
+                    } else {
+                        Color.black
+                    }
+                }
+            })
+            .cornerRadius(12)
         }
-        .frame(maxWidth: .infinity)
-        .background(content: {
-            ZStack {
-                if colorScheme == ColorScheme.light {
-                    Color.white
-                } else {
-                    Color.black
+        .popup(isPresented: $isAddressCopied) {
+            ToastMessageView(message: "장소가 복사 되었습니다!")
+                .onDisappear {
+                    isAddressCopied = false
                 }
+        } customize: {
+            $0
+                .autohideIn(2)
+                .type(.toast)
+                .position(.center)
+        }
+        .sheet(isPresented: $isMapShowing) {
+            NavigationStack {
+                UIMapView((shopData.coord.lat, shopData.coord.lng))
+                    .ignoresSafeArea()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button {
+                                isMapShowing.toggle()
+                            } label: {
+                                Image(systemName: "chevron.backward")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .font(.pretendardSemiBold16)
+                                    .foregroundColor(Color.black)
+                            }
+                        }
+                    }
             }
-        })
+        }
         .cornerRadius(12)
+        
         .onAppear {
             calendarData.selectedDate = calendarData.getSelectedDate(shopData: shopData)
             calendarData.currentPage = calendarData.getSelectedDate(shopData: shopData)
             calendarData.titleOfMonth = calendarData.getSelectedDate(shopData: shopData)
         }
     }
-    
-    func copyToClipboard(_ text: String) {
-        UIPasteboard.general.string = text
-    }
 }
+
+func copyToClipboard(_ text: String) {
+    UIPasteboard.general.string = text
+}
+
 
 struct ShopDetailFooterView: View {
     
@@ -186,29 +237,6 @@ struct ShopDetailFooterView: View {
     
     var body: some View {
         HStack(spacing: 10) {
-            VStack(spacing: 2) {
-                Button {
-                    if shopViewModel.shop.bookmarks.contains(userStore.user.email) {
-                        shopViewModel.shop.bookmarks.removeAll { userID in
-                            return userID == userStore.user.email
-                        }
-                    } else {
-                        shopViewModel.shop.bookmarks.append(userStore.user.email)
-                    }
-                    shopViewModel.updateShop(shopID: shopViewModel.shop.id)
-                    shopViewModel.fetchShop(shopID: shopViewModel.shop.id)
-                } label: {
-                    Image(systemName: shopViewModel.shop.bookmarks.contains(userStore.user.email) ? "pin.fill" : "pin")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
-                }
-                
-                Text("\(shopViewModel.shop.bookmarks.count)")
-                    .font(.pretendardSemiBold12)
-            }
-            
             ReservationButton(text: "예약하기") {
                 isReservationPresented.toggle()
             }
@@ -299,5 +327,69 @@ class ShopViewModel: ObservableObject {
                 self.shop = shop
             }
         }
+    }
+}
+
+struct UIMapView: UIViewRepresentable {
+    
+    var coord: (Double, Double)
+    
+    init(_ coord: (Double, Double)) {
+        self.coord = coord
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(coord)
+    }
+    
+    func makeUIView(context: Context) -> NMFNaverMapView {
+        let view = NMFNaverMapView()
+        let marker = NMFMarker()
+        let locationOverlay = view.mapView.locationOverlay
+
+        locationOverlay.location = NMGLatLng(lat: coord.0, lng: coord.1)
+        locationOverlay.hidden = false
+        
+        marker.position = NMGLatLng(lat: coord.0, lng: coord.1)
+        marker.width = 20
+        marker.height = 20
+        marker.mapView = view.mapView
+        marker.iconImage = NMFOverlayImage(name: "placeholder")
+
+        view.showZoomControls = true
+        view.showScaleBar = true
+
+        view.mapView.positionMode = .direction
+        view.mapView.zoomLevel = 17
+        view.mapView.mapType = .basic
+        view.mapView.isZoomGestureEnabled = true
+        view.mapView.isRotateGestureEnabled = false
+        view.mapView.setLayerGroup(NMF_LAYER_GROUP_BUILDING, isEnabled: true)
+        
+        view.mapView.addCameraDelegate(delegate: context.coordinator)
+        view.mapView.addOptionDelegate(delegate: context.coordinator)
+        
+        return view
+    }
+    
+    func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: coord.0, lng: coord.1))
+        cameraUpdate.animation = .fly
+        cameraUpdate.animationDuration = 1
+        uiView.mapView.moveCamera(cameraUpdate)
+    }
+    
+    class Coordinator: NSObject, NMFMapViewCameraDelegate, NMFMapViewOptionDelegate {
+        var coord: (Double, Double)
+        
+        init(_ coord: (Double, Double)) {
+            self.coord = coord
+        }
+        
+        func mapView(_ mapView: NMFMapView, cameraWillChangeByReason reason: Int, animated: Bool) { }
+        
+        func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) { }
+        
+        func mapViewOptionChanged(_ mapView: NMFMapView) { }
     }
 }

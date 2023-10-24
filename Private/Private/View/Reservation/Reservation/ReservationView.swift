@@ -18,7 +18,7 @@ struct ReservationView: View {
     
     @State private var showingDate: Bool = true    // 예약 일시 선택
     @State private var isSelectedTime: Bool = false
-    @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
+    @State private var temporaryReservation: Reservation = ReservationStore.tempReservation
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
     
@@ -36,19 +36,14 @@ struct ReservationView: View {
             NavigationStack {
                 ScrollView {
                     VStack(alignment: .leading) {
-                        Divider()
-                            .opacity(0)
-                        
                         Text("예약 일시")
                             .font(.pretendardBold20)
                             .foregroundStyle(Color.primary)
-                        
                         HStack {
                             Image(systemName: "calendar")
                             Text(isSelectedTime ? "\(reservationStore.getReservationDate(reservationDate: calendarData.selectedDate)) / \(self.reservedTime) \(self.reservedHour)시" : "날짜와 시간을 선택해주세요" )
                                 .font(.pretendardMedium18)
                             Spacer()
-                            
                             Button {
                                 withAnimation {
                                     showingDate.toggle()
@@ -57,7 +52,6 @@ struct ReservationView: View {
                                 Image(systemName: showingDate ? "chevron.up.circle": "chevron.down.circle")
                                     .foregroundStyle(Color.privateColor)
                                     .imageScale(.large)
-                                
                             }
                         }
                         .foregroundStyle(.white)
@@ -72,7 +66,6 @@ struct ReservationView: View {
                                     self.reservedTime = reservationStore.conversionReservedTime(time: newValue).0
                                     self.reservedHour = reservationStore.conversionReservedTime(time: newValue).1
                                     withAnimation {
-                                        //                                  isTapped.toggle()
                                         proxy.scrollTo(bottomID)
                                     }
                                 }
@@ -121,8 +114,6 @@ struct ReservationView: View {
                         .cornerRadius(12)
                     }// VStack
                     .padding(.bottom)
-                    
-                    Spacer() // 가장 밑으로 가도록 해야 함
                     
                     NavigationLink {
                         ReservationDetailView(reservationData: $temporaryReservation, shopData: shopData)

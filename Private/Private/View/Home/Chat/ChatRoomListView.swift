@@ -54,13 +54,17 @@ struct ChatRoomListView: View {
         .navigationBarBackButtonHidden(true)
         .backButtonArrow()
         .navigationBarItems(trailing: EditButton().foregroundColor(.privateColor))
+//        .navigationBarItems(trailing:
+//            Button(action: {
+//                // 수정 버튼이 눌렸을 때 수행할 동작
+//            EditButton().foregroundColor(.privateColor)
+//            }) {
+//                Text("수정")
+//                    .foregroundColor(.privateColor)
+//            }
+//        )
     }
-    
-//    func deleteChatRoom(at offsets: IndexSet) {
-//        chatRoomStore.chatRoomList.remove(atOffsets: offsets)
-//        chatRoomStore.removeChatRoom(myNickName: userStore.user.nickname, otherUserNickname: chatRoomStore.chatRoomList[offsets])
-//    }
-//    
+      
     func deleteChatRoom(at offsets: IndexSet) {
         let selectedIndices = Array(offsets)
         for index in selectedIndices {

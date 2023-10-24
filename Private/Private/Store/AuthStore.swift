@@ -142,8 +142,8 @@ class AuthStore: ObservableObject {
     
     func doubleCheckNickname(nickname: String) async -> Bool {
         do {
-            let datas = try await userCollection.document(nickname).getDocument()
-            if let data = datas.data(), !data.isEmpty {
+            let datas = try await userCollection.whereField("nickname", isEqualTo: nickname).getDocuments()
+            if !datas.isEmpty {
                 return false
             } else {
                 return true
@@ -154,6 +154,7 @@ class AuthStore: ObservableObject {
             return false
         }
     }
+
     
     // MARK: - 카카오톡 로그인
     
@@ -243,12 +244,23 @@ class AuthStore: ObservableObject {
     
     /// 카카오톡 로그아웃
     func handleKakaoLogout() {
-        UserApi.shared.logout {(error) in
+        UserApi.shared.unlink {(error) in
             if let error = error {
-                print(error)
+                print("\(error.localizedDescription)")
             } else {
-                print("logout() success.")
+                print("unlink() success.")
             }
         }
+    }
+    /// 회원 탈퇴
+    func deleteAuth (_ email: String) {
+        Auth.auth().currentUser?.delete { error in
+            if let error = error {
+                print("사용자 삭제 중 오류 발생: \(error.localizedDescription)")
+            } else {
+                print("사용자 삭제 완료")
+            }
+        }
+        
     }
 }
