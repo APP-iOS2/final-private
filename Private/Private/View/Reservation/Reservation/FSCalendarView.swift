@@ -26,21 +26,17 @@ struct FSCalendarView: UIViewRepresentable {
         // 언어 한국어로 변경
         calendar.locale = Locale(identifier: "ko_KR")
         
-        
         // MARK: - 상단 헤더 뷰
         calendar.appearance.headerTitleColor = .clear
         calendar.appearance.headerMinimumDissolvedAlpha = 0.0  //헤더 좌,우측 흐릿한 글씨 삭제
         calendar.headerHeight = 0  // 헤더 없앰(헤더를 따로 만들기 위함)
-        //        calendar.appearance.headerDateFormat = "YYYY년 M월"
         
         //MARK: -캘린더(날짜 부분) 관련
-        //        calendar.backgroundColor = .white // 배경색
         calendar.appearance.weekdayTextColor = Color.uiPrivateColor //요일(월,화,수..) 글씨 색
         calendar.appearance.selectionColor = Color.uiPrivateColor //선택 된 날의 동그라미 색
         calendar.appearance.titleDefaultColor = UIColor.label  //기본 날짜 색
         calendar.placeholderType = .none  // 해당 달의 날만 보여줌
         calendar.select(calendarData.selectedDate)  // 선택한 날짜
-        //        calendar.appearance.titleSelectionColor = UIColor(named: "AccentColor") // 선택된 날의 컬러 설정
         
         //MARK: -오늘 날짜(Today) 관련
         calendar.appearance.titleTodayColor = UIColor.red  // Today에 표시되는 특정 글자색
@@ -51,7 +47,6 @@ struct FSCalendarView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: FSCalendar, context: Context) {
-        // 선택한 날짜를 업데이트
         uiView.setCurrentPage(calendarData.currentPage, animated: true)  // 페이지 넘기는 버튼 눌렀을 때
     }
     
@@ -85,11 +80,10 @@ struct FSCalendarView: UIViewRepresentable {
             let temporaryHoliday: [Date] = parent.temporaryHoliday
             let publicHolidays = parent.publicHolidays
             
-            if date < today || date > nextYear {  // 달력에 있는 날들이 과거이거나 1년 후보다 미래일 때
+            if date < today || date > nextYear {
                 return UIColor.secondaryLabel
             }
             
-            // 휴일 - 기본 빨간색 / 과거 or 휴무일 - secondaryLabel
             for holiday in publicHolidays {
                 if let holidayDate = holiday["date"] as? Date {
                     if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }) {
@@ -112,7 +106,6 @@ struct FSCalendarView: UIViewRepresentable {
 
         //날짜 밑에 문자열을 표시
         func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
-//            calendar.appearance.subtitleDefaultColor = UIColor.label
             let temporaryHoliday: [Date] = parent.temporaryHoliday
             
             // 공휴일
@@ -174,11 +167,8 @@ struct FSCalendarView: UIViewRepresentable {
             let weekday = calendar.component(.weekday, from: date) // 해당 날짜의 요일을 가져옴 (1: 일요일, 2: 월요일, ...)
             let regularHolidays: [Int] = parent.regularHoliday
             let temporaryHoliday: [Date] = parent.temporaryHoliday
-            
-            print("캘린더 데이트 - \(date)")
-            
+                        
             if regularHolidays.contains(weekday) || temporaryHoliday.contains(where: { calendar.isDate(date, inSameDayAs: $0) }){
-                print("temporaryHoliday: \(temporaryHoliday)")
                 return false
             } else {
                 return true

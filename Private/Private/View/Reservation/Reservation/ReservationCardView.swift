@@ -22,7 +22,7 @@ struct ReservationCardView: View {
     @State private var reservedHour: Int = 0
     
     @State private var shopData: Shop = ShopStore.shop
-    @State private var temporaryReservation: Reservation = Reservation(shopId: "", reservedUserId: "유저정보 없음", date: Date(), time: 23, totalPrice: 30000)
+    @State private var temporaryReservation: Reservation = ReservationStore.tempReservation
     @State private var reservedDate: String = ""
     
     @Binding var viewNumber: Int
@@ -46,7 +46,6 @@ struct ReservationCardView: View {
                     }
                     if viewNumber == 1 {
                         Button(role: .destructive) {
-                            print(#fileID, #function, #line, "- 예약내역 삭제")
                             isShowDeleteMyReservationAlert.toggle()
                         } label: {
                             Text("예약내역 삭제")
@@ -59,7 +58,6 @@ struct ReservationCardView: View {
                 .foregroundColor(Color.secondary)
             }
             .padding(.bottom, 8)
-            
             
             NavigationLink {
                 ReservationConfirmView(viewNumber: $viewNumber, reservationData: temporaryReservation, shopData: shopData)

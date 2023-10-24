@@ -11,12 +11,12 @@ struct ReservationDetailView: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var userStore: UserStore
     
-    @State private var requirementText: String = ""  // TextField의 Text
+    @State private var requirementText: String = ""
     @State private var reservedTime: String = ""
     @State private var reservedHour: Int = 0
     
-    @Binding var reservationData: Reservation  // 예약 데이터
-    let shopData: Shop  // 가게 데이터
+    @Binding var reservationData: Reservation
+    let shopData: Shop
     
     var body: some View {
         VStack {
