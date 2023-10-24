@@ -10,9 +10,6 @@ struct MapFeedSheetView: View {
     
     @EnvironmentObject private var userStore: UserStore
     
-    @Binding var root: Bool
-    @Binding var selection: Int
-    
     @State private var isChangePlaceColor: Bool = false
     
     let feed: MyFeed
@@ -61,7 +58,7 @@ struct MapFeedSheetView: View {
             .background(Color.darkGraySubColor)
             
 //            ForEach(feed) { feed in
-                MapFeedCellView(root: $root, selection: $selection, feed: feed)
+                MapFeedCellView(feed: feed)
 //            }
         }
         .padding(.top, 20)
