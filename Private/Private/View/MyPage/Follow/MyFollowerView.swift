@@ -66,20 +66,20 @@ struct MyFollowerView: View {
         .onAppear {
             //followStore.fetchFollowerFollowingList(user.email)
             if followerUserList.count != followerList.count {
-                searchFollowerUser(searchNickname: followerList)
+                searchFollowerUser(searchName: followerList)
             }
         }
         .refreshable {
             followerUserList = []
-            searchFollowerUser(searchNickname: user.follower)
+            searchFollowerUser(searchName: user.follower)
         }
     }
     
-    func searchFollowerUser(searchNickname: [String]) {
+    func searchFollowerUser(searchName: [String]) {
         
-        for index in searchNickname {
+        for index in searchName {
             let query = userCollection
-                .whereField("nickname",isEqualTo: index)
+                .whereField("name",isEqualTo: index)
                 .limit(to: 10)
             
             query.getDocuments { (querySnapshot,error) in
