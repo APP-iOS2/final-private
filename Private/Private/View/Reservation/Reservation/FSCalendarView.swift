@@ -35,8 +35,8 @@ struct FSCalendarView: UIViewRepresentable {
         
         //MARK: -캘린더(날짜 부분) 관련
         //        calendar.backgroundColor = .white // 배경색
-        calendar.appearance.weekdayTextColor = UIColor(named: "AccentColor") //요일(월,화,수..) 글씨 색
-        calendar.appearance.selectionColor = UIColor(named: "AccentColor") //선택 된 날의 동그라미 색
+        calendar.appearance.weekdayTextColor = Color.uiPrivateColor //요일(월,화,수..) 글씨 색
+        calendar.appearance.selectionColor = Color.uiPrivateColor //선택 된 날의 동그라미 색
         calendar.appearance.titleDefaultColor = UIColor.label  //기본 날짜 색
         calendar.placeholderType = .none  // 해당 달의 날만 보여줌
         calendar.select(calendarData.selectedDate)  // 선택한 날짜
