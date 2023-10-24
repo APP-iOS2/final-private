@@ -7,6 +7,11 @@ Private는 내가 아는 사람들이 방문했던, 믿을 만한 장소들만 �
 - 다크 모드 대응
 
 ## 📱 주요 기능(⭐️스크린샷-기능 도표로)
+
+|![마커 클릭](https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/1b5da49a-9577-4cbb-a24b-f48d156f538f)|![업로드](https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/e6950e71-842f-4e28-8fc9-3ffe1be58615)|![예약](https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/250ee786-f57a-411f-ab59-1a0e0192cdd5)|
+|:----:|:----:|:-----:|
+|`피드 보기`|`피드 등록하기`|`예약하기`|
+
 |<img width="324" alt="스크린샷 2023-10-24 오후 4 53 27" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/1ddca088-4e08-41e1-a90d-7f8a3acbb4be">|<img width="324" alt="스크린샷 2023-10-24 오후 4 54 56" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/bfb07a4a-8810-4a1c-a1a7-9b22b83150b0">|<img width="324" alt="스크린샷 2023-10-24 오후 4 55 53" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/4b1dd865-9919-422b-8177-ed68e0c72129">|<img width="324" alt="스크린샷 2023-10-24 오후 8 51 15" src="https://github.com/APPSCHOOL3-iOS/final-private/assets/114156413/6c1663a0-aa26-4ee0-8bf1-0382461968a0">|
 |:----:|:----:|:-----:|:----:|
 |`소셜 로그인 뷰`|`로그인 알림 뷰`|`구글계정 로그인 뷰`|`유저 정보 입력 뷰`|
