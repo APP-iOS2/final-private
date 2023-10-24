@@ -70,19 +70,19 @@ final class ShopStore: ObservableObject {
                 
                 // 카테고리 rawValue의 쓰일 값 미리 받아오기
                 guard let categotyRawValue = data["category"] as? Int else {
-                    print("카테고리 미입력 =========")
+                    print("카테고리 미입력")
                     return
                 }
                 
                 // NMGLatLng로 쓰일 GeoPoint 미리 받아오기
                 guard let location = data["coord"] as? GeoPoint else {
-                    print("위치정보 없음 =========")
+                    print("위치정보 없음")
                     return
                 }
                 
                 // 임시 휴무일: [Timestamp] -> [Date]
                 guard let tempHoliday = data["temporaryHoliday"] as? [Timestamp] else {
-                    print("휴무일 없음 =========")
+                    print("휴무일 없음")
                     return
                 }
                 
