@@ -40,7 +40,8 @@ final class SearchStore: ObservableObject {
             for newUser in users {
                 if !searchUserLists.contains(newUser) {
                     searchUserLists.append(newUser)
-                } else if !searchUserResults.contains(newUser) {
+                }
+                if !searchUserResults.contains(newUser) {
                     searchUserResults.append(newUser)
                 }
             }

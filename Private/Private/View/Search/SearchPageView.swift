@@ -23,13 +23,14 @@ struct SearchPageView: View {
     struct RecentSearchListView: View {
         @EnvironmentObject var searchStore: SearchStore
         var body: some View {
-            VStack(spacing: 10) {
+            VStack {
                 VStack(alignment: .leading) {
                     Text("최근 검색어")
                         .font(.pretendardMedium24)
                         .padding()
                     
-                    Divider().padding()
+                    Divider()
+//                        .padding()
                 }
                     if !searchStore.recentSearchResult.isEmpty {
                         let array = Array(searchStore.recentSearchResult.prefix(5))
@@ -56,9 +57,6 @@ struct SearchPageView: View {
                     Text(resultText)
                         .font(.pretendardRegular16)
                         .foregroundColor(.primary)
-                        .onTapGesture {
-                            performSearchAndAddRecent()
-                        }
                     Spacer()
                     Button {
                         searchStore.removeRecentSearchResult(resultText)
@@ -77,26 +75,20 @@ struct SearchPageView: View {
             }
             
         }
-        
-        func performSearchAndAddRecent() {
-               Task {
-                   await searchStore.searchUser(searchTerm: resultText)
-                   searchStore.addRecentSearch(resultText)
-               }
-           }
     }
     
     struct RecentUserListView: View {
         @EnvironmentObject var searchStore: SearchStore
 
         var body: some View {
-            VStack(spacing: 10) {
+            VStack {
                 VStack(alignment: .leading) {
                     Text("찾은 사용자")
                         .font(.pretendardMedium24)
                         .padding()
                     
-                    Divider().padding()
+                    Divider()
+//                        .padding()
                 }
                 VStack(alignment: .leading) {
                     if !searchStore.searchUserLists.isEmpty {
