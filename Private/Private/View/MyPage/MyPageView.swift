@@ -15,7 +15,7 @@ struct MyPageView: View {
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var followStore: FollowStore
     
-    @StateObject var coordinator: Coordinator = Coordinator.shared
+    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     
     @Binding var root: Bool
     @Binding var selection: Int
@@ -52,17 +52,10 @@ struct MyPageView: View {
             HStack {
                 NavigationLink {
                     NavigationStack {
-                        NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
-                                 markerTitle: $coordinator.newMarkerTitle,
-                                 markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
-                        .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
-                            MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == coordinator.currentFeedId }[0])
+                        PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView, showMyMarkerDetailView: $postCoordinator.showMyMarkerDetailView, coord: $postCoordinator.coord, tappedLatLng: $postCoordinator.tappedLatLng)
+                        .sheet(isPresented: $postCoordinator.showMyMarkerDetailView) {
+                            MapFeedSheetView(feed: userStore.myFeedList.filter { $0.id == postCoordinator.currentFeedId }[0])
                                 .presentationDetents([.height(.screenHeight * 0.55)])
-                        }
-                        .onAppear {
-                            coordinator.checkIfLocationServicesIsEnabled()
-                            Coordinator.shared.myFeedList = userStore.myFeedList
-                            coordinator.makeOnlyMyFeedMarkers()
                         }
                     .navigationBarBackButtonHidden(true)
                     .navigationTitle("내 마커")
@@ -177,10 +170,9 @@ struct MyPageView: View {
         }
         .onAppear{
             followStore.fetchFollowerFollowingList(userStore.user.email)
-            coordinator.checkIfLocationServicesIsEnabled()
-            Coordinator.shared.myFeedList = userStore.myFeedList
-            print("myFeedList: \(Coordinator.shared.myFeedList)")
-            coordinator.makeOnlyMyFeedMarkers()
+            postCoordinator.checkIfLocationServicesIsEnabled()
+            PostCoordinator.shared.myFeedList = userStore.myFeedList
+            postCoordinator.makeOnlyMyFeedMarkers()
         }
     }
 }
