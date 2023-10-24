@@ -33,7 +33,7 @@ struct SearchPageView: View {
                 }
                     if !searchStore.recentSearchResult.isEmpty {
                         ForEach(searchStore.recentSearchResult.prefix(5), id: \.self) { resultText in
-//                            RecentSearchRowView(resultText: resultText)
+                            RecentSearchRowView(resultText: resultText)
                         }
                 } else {
                     Text("검색 기록이 없습니다")
@@ -47,14 +47,14 @@ struct SearchPageView: View {
     
     struct RecentSearchRowView: View {
         @EnvironmentObject var searchStore: SearchStore
-        @Binding var resultText: String
+        let resultText: String
         
         //foreach로 돌리는 데이터를 binding으로 받아야 하는데 해당 부분이 문제
         var body: some View {
             VStack {
                 HStack {
                     NavigationLink {
-                        UserListView(searchTerm: $resultText)
+//                        UserListView(searchTerm: resultText)
                     } label: {
                         Text(resultText)
                             .font(.pretendardRegular16)
@@ -104,7 +104,7 @@ struct SearchPageView: View {
                 }
                 VStack(alignment: .leading) {
                     if !searchStore.searchUserLists.isEmpty {
-                        ForEach(searchStore.searchUserLists.prefix(3), id: \.self) { user in
+                        ForEach(searchStore.searchUserLists.prefix(4), id: \.self) { user in
                             RecentUserRowView(user: user)
                         }
                     } else {

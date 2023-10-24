@@ -16,11 +16,25 @@ struct SearchUserCellView: View {
     
     var body: some View {
         HStack {
-            KFImage(URL(string: user.profileImageURL))
-                .resizable()
-                .frame(width: 48, height: 48)
-                .aspectRatio(contentMode: .fill)
-                .clipShape(Circle())
+            ZStack {
+                if user.profileImageURL.isEmpty {
+                    Circle()
+                        .frame(width: .screenWidth*0.15)
+                    KFImage(URL(string: "https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg"))
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
+                        .background(.black)
+                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                } else {
+                    KFImage(URL(string: user.profileImageURL))
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
+                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                }
+            }
+            .padding(.leading ,3)
             
             VStack(alignment: .leading) {
                 Text(user.nickname)
