@@ -31,7 +31,7 @@ struct MyPageFeedView: View {
                     isMyPageFeedSheet = false
                 } label: {
                     Image(systemName: "xmark")
-                        .foregroundColor(Color("AccentColor"))
+                        .foregroundColor(Color(.private))
                 }
             }
             .padding()

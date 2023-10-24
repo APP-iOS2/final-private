@@ -90,7 +90,7 @@ struct ShopInfoCardView: View {
                     Image(systemName: "pin.circle.fill")
                         .resizable()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(Color("AccentColor"))
+                        .foregroundColor(Color(.private))
                         .padding(.trailing,7)
                 }
             }
