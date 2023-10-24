@@ -33,6 +33,7 @@ struct UploadView: View {
             feedStore.isPostViewPresented = true
             searchResult.title = ""
             searchResult.roadAddress = ""
+            postCoordinator.newMarkerTitle = ""
             print("업로드 뷰 올라옴")
         }
         .fullScreenCover(isPresented: $feedStore.isPostViewPresented) {
