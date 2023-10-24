@@ -23,6 +23,7 @@ struct PostView: View {
     @EnvironmentObject var userDataStore: UserStore
     
     @StateObject private var locationSearchStore = LocationSearchStore.shared
+    @StateObject private var postStore: PostStore = PostStore()
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @ObservedObject var detailCoordinator = DetailCoordinator.shared
 
@@ -32,10 +33,10 @@ struct PostView: View {
     
     @State private var text: String = "" /// 텍스트마스터 내용
     @State private var textPlaceHolder: String = "나만의 Private한 장소에 대해 적어주세요!" /// 텍스트마스터 placeholder
-    @State private var lat: String = "" /// 검색결과 좌표 (위도)
-    @State private var lng: String = "" /// 검색결과 좌표 (경도)
-    @State private var newMarkerlat: String = "" /// 신규장소 등록 좌표 (위도)
-    @State private var newMarkerlng: String = "" /// 신규장소 등록 좌표 (경도)
+    @State private var lat: String = ""
+    @State private var lng: String = ""
+    @State private var newMarkerlat: String = ""
+    @State private var newMarkerlng: String = ""
     
     @State private var writer: String = ""
     @State private var images: [String] = []
@@ -88,7 +89,7 @@ struct PostView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: .screenWidth*0.15, height: .screenWidth*0.15)
-                                    .clipShape(Circle())
+                                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                             }
                         }
                         
@@ -99,7 +100,7 @@ struct PostView: View {
                     }
                     .padding(.vertical, 10)
                     
-                    //MARK: 본문
+                    //MARK: 내용
                     TextMaster(text: $text, isFocused: $isTextMasterFocused, maxLine: minLine, fontSize: fontSize, placeholder: textPlaceHolder)
                     
                         .padding(.trailing, 10)
@@ -173,6 +174,9 @@ struct PostView: View {
                                 .foregroundStyle(.primary)
                                 .padding(.trailing, 5)
                         }
+//                            if !postCoordinator.newMarkerTitle.isEmpty {
+//                                Text("신규장소: \(postCoordinator.newMarkerTitle)")
+//                            }
                     }
                     Divider()
                         .padding(.vertical, 10)
@@ -242,8 +246,50 @@ struct PostView: View {
                         .padding(.vertical, 10)
                     
                     //MARK: 카테고리
-                    CatecoryView(categoryAlert: $categoryAlert, myselectedCategory: $myselectedCategory)
                     
+                    HStack {
+                        Text("카테고리")
+                            .font(.pretendardMedium18)
+                            .foregroundStyle(Color.privateColor)
+                            .padding(.leading, 5)
+                        Text("(최대 3개)")
+                            .font(.pretendardRegular12)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    LazyVGrid(columns: createGridColumns(), spacing: 20) {
+                        ForEach (filteredCategories.indices, id: \.self) { index in
+                            VStack {
+                                if selectedToggle[index] {
+                                    Text(MyCategory.allCases[index].categoryName)
+                                        .font(.pretendardMedium16)
+                                        .foregroundColor(.black)
+                                        .frame(width: 70, height: 30)
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 4)
+                                        .background(Color.privateColor)
+                                        .cornerRadius(7)
+                                } else {
+                                    Text(MyCategory.allCases[index].categoryName)
+                                        .font(.pretendardMedium16)
+                                        .foregroundColor(.primary)
+                                        .frame(width: 70, height: 30)
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 4)
+                                        .cornerRadius(7)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 7)
+                                                .stroke(Color.darkGrayColor, lineWidth: 1.5)
+                                        )
+                                }
+                            }
+                            .onTapGesture {
+                                toggleCategorySelection(at: index)
+                                print("선택한 카테고리: \(myselectedCategory), 선택 된 Index토글: \(selectedToggle)")
+                            }
+                        }
+                    }
+                    .padding(.trailing, 8)
                     
                     //MARK: 업로드
                     Text("작성 완료")
@@ -261,7 +307,12 @@ struct PostView: View {
                         .disabled(text == "" || selectedImage == [] || myselectedCategory == [] || (searchResult.title == "" && postCoordinator.newMarkerTitle == ""))
                     
                 } // leading VStack
+                
             }
+            //            .sheet(isPresented: $ImageViewPresented) {
+            //                ImagePickerView(selectedImages: $selectedImage)
+            //            }
+            // toolbar 자리
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -316,10 +367,13 @@ struct PostView: View {
             )
         }
     } // body
+    
     //MARK: 파베함수
+    
     /// 일반적인 업로드 함수
     func creatFeed() {
         //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
+        
         var feed = MyFeed(writerNickname: userStore.user.nickname,
                           writerName: userStore.user.name,
                           writerProfileImage: userStore.user.profileImageURL,
@@ -374,6 +428,8 @@ struct PostView: View {
     }
     /// 새로운 장소와 마커를 함께 저장할 때 쓰여지는 함수
     func creatMarkerFeed() {
+        //        let selectCategory = chipsViewModel.chipArray.filter { $0.isSelected }.map { $0.titleKey }
+        
         var feed = MyFeed(writerNickname: userStore.user.nickname,
                           writerName: userStore.user.name,
                           writerProfileImage: userStore.user.profileImageURL,
@@ -426,6 +482,32 @@ struct PostView: View {
             }
         }
     }
+
+    func toggleCategorySelection(at index: Int) {
+        if categoryAlert {
+            return
+        }
+        selectedToggle[index].toggle()
+        let categoryName = MyCategory.allCases[index].categoryName
+
+        if selectedToggle[index] {
+            if myselectedCategory.count < maxSelectedCategories {
+                myselectedCategory.append(categoryName)
+            } else {
+                categoryAlert = true
+                selectedToggle[index] = false
+            }
+        } else if let selectedIndex = myselectedCategory.firstIndex(of: categoryName) {
+            myselectedCategory.remove(at: selectedIndex)
+        }
+    }
+
+    
+    func createGridColumns() -> [GridItem] {
+        let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
+        return columns
+    }
+    
 }
 
 struct PostView_Previews: PreviewProvider {

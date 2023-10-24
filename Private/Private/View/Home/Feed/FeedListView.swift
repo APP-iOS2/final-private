@@ -16,7 +16,8 @@ struct FeedListView: View {
     @EnvironmentObject var userStore : UserStore
     @Binding var root: Bool
     @Binding var selection: Int
-
+    
+    //    @State private var searchResult: SearchResult = SearchResult(title: "", category: "", address: "", roadAddress: "", mapx: "", mapy: "")
     var body: some View {
         
         NavigationView {

@@ -10,6 +10,7 @@ import NMapsMap
 
 struct MainHomeView: View {
     @EnvironmentObject var feedStore: FeedStore
+    @EnvironmentObject var postStore: PostStore
     @ObservedObject var coordinator: Coordinator = Coordinator.shared
     @ObservedObject var locationSearchStore = LocationSearchStore.shared
     

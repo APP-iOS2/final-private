@@ -86,6 +86,20 @@ struct LocationView: View {
 
             }
         }
+//        .overlay(
+//            TextField("", text: $postCoordinator.newMarkerTitle)
+//                .opacity(0)
+//                .frame(width: 0, height: 0)
+//        )
+//        .alert("신규 장소 저장완료\n홈에서 확인 가능", isPresented: $registrationAlert) {
+//            Button("완료") {
+////                registrationAlert = false
+//                dismiss()
+//                print("registrationAlert 마지막상태: \(registrationAlert)")
+//                print("newMarkerTitle 저장 된 이름: \(postCoordinator.newMarkerTitle)")
+//
+//            }
+//        }
     }
 }
 

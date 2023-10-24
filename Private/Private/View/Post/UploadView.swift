@@ -9,21 +9,21 @@ import SwiftUI
 import NMapsMap
 
 struct UploadView: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.presentationMode) var presentationMode
     
-    @EnvironmentObject private var feedStore: FeedStore
-    @EnvironmentObject private var userStore: UserStore
-    @EnvironmentObject private var userDataStore: UserStore
-    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
-
     @Binding var root: Bool
     @Binding var selection: Int
     @Binding var isImagePickerPresented: Bool
     @Binding var showLocation: Bool
     @Binding var searchResult: SearchResult
+
+    @Environment(\.dismiss) private var dismiss
     
     @State private var selectedImage: [UIImage]? = []
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject private var feedStore: FeedStore
+    @EnvironmentObject private var userStore: UserStore
+    @EnvironmentObject private var userDataStore: UserStore
+    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
 
     var body: some View {
         NavigationStack {
