@@ -50,7 +50,7 @@ struct LocationView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
-                            .font(.pretendardBold24)
+                            .font(.pretendardBold28)
                             .foregroundStyle(.black)
                             .padding(.leading, 10)
                     }
