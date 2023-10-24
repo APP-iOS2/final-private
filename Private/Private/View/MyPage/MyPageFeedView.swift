@@ -100,8 +100,8 @@ struct MyPageFeedView: View {
                                                             },
                                                             .destructive(Text("삭제")) {
                                                                 print("삭제")
-                                                                userStore.deleteMyFeed(feed)
-                                                                feedStore.deleteFeed(feedId: feed.id)
+                                                                userStore.deleteMyFeed(feedListFeed)
+                                                                feedStore.deleteFeed(feedId: feedListFeed.id)
                                                                 userStore.updateUser(user: userStore.user)
                                                                 feedStore.deleteToast = true
                                                             },
@@ -111,7 +111,7 @@ struct MyPageFeedView: View {
                                                     )
                                                 }
                                                 .fullScreenCover(isPresented: $isFeedUpdateViewPresented) {
-                                                    FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feed)
+                                                    FeedUpdateView(root:$root, selection: $selection, isFeedUpdateViewPresented: $isFeedUpdateViewPresented, searchResult: $searchResult, feed:feedListFeed)
                                                 }
                                             }
                                         }
