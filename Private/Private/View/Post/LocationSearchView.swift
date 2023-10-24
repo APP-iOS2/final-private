@@ -40,8 +40,6 @@ struct LocationSearchView: View {
                         }
                         .padding()
                     }
-                    
-
                 }
             }
             Button {

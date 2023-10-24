@@ -159,12 +159,11 @@
 		D1EC439A2AC2D42F00B088EA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EC43992AC2D42F00B088EA /* SearchView.swift */; };
 		E3071A252AD9204D00090B62 /* MapSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3071A242AD9204D00090B62 /* MapSearchView.swift */; };
 		E3602D342AE6491000706CCB /* LocationDetailMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3602D332AE6491000706CCB /* LocationDetailMap.swift */; };
-		E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E385FAB42AC161EE00AC7255 /* PostStore.swift */; };
-		E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3876FC22AC294E200CFE728 /* PictureView.swift */; };
 		E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */; };
 		E3A5A0BF2ADF71D800DB13B3 /* PostNaverMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A5A0BE2ADF71D800DB13B3 /* PostNaverMap.swift */; };
 		E3A782542ADD601C0042AAB9 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A782532ADD601B0042AAB9 /* LocationView.swift */; };
 		E3B9ED842ADEC76600F7E109 /* LocationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B9ED832ADEC76600F7E109 /* LocationDetailView.swift */; };
+		E3DF1BF42AE7B162002F85A8 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DF1BF32AE7B162002F85A8 /* ImagePickerView.swift */; };
 		E3EB7BC92AD53BAC00D9DF8B /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EB7BC82AD53BAC00D9DF8B /* UploadView.swift */; };
 		E421E2D52ACE9FF800FE1DAD /* UserImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */; };
 		E47089A22AD8E5A500D168BA /* MyPageFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47089A12AD8E5A500D168BA /* MyPageFeedView.swift */; };
@@ -316,12 +315,11 @@
 		E121B3F00B9AC989B133EC53 /* Pods-Private-PrivateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Private-PrivateUITests.debug.xcconfig"; path = "Target Support Files/Pods-Private-PrivateUITests/Pods-Private-PrivateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E3071A242AD9204D00090B62 /* MapSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchView.swift; sourceTree = "<group>"; };
 		E3602D332AE6491000706CCB /* LocationDetailMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailMap.swift; sourceTree = "<group>"; };
-		E385FAB42AC161EE00AC7255 /* PostStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStore.swift; sourceTree = "<group>"; };
-		E3876FC22AC294E200CFE728 /* PictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureView.swift; sourceTree = "<group>"; };
 		E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatecoryView.swift; sourceTree = "<group>"; };
 		E3A5A0BE2ADF71D800DB13B3 /* PostNaverMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNaverMap.swift; sourceTree = "<group>"; };
 		E3A782532ADD601B0042AAB9 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		E3B9ED832ADEC76600F7E109 /* LocationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailView.swift; sourceTree = "<group>"; };
+		E3DF1BF32AE7B162002F85A8 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		E3EB7BC82AD53BAC00D9DF8B /* UploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadView.swift; sourceTree = "<group>"; };
 		E421E2D42ACE9FF800FE1DAD /* UserImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImagePickerView.swift; sourceTree = "<group>"; };
 		E47089A12AD8E5A500D168BA /* MyPageFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageFeedView.swift; sourceTree = "<group>"; };
@@ -528,11 +526,10 @@
 		3CCD2DEC2ABC34D6005709F4 /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				E385FAB42AC161EE00AC7255 /* PostStore.swift */,
+				E3DF1BF32AE7B162002F85A8 /* ImagePickerView.swift */,
 				E3EB7BC82AD53BAC00D9DF8B /* UploadView.swift */,
 				3CCD2DF52ABC3572005709F4 /* PostView.swift */,
 				E3A2BBD62ABD87A60083E1DE /* CatecoryView.swift */,
-				E3876FC22AC294E200CFE728 /* PictureView.swift */,
 				E3A782532ADD601B0042AAB9 /* LocationView.swift */,
 				E3B9ED832ADEC76600F7E109 /* LocationDetailView.swift */,
 				3C9747762AD4E309007AE3CB /* LocationSearchView.swift */,
@@ -1122,7 +1119,6 @@
 				B591C7222ACC5C1B00602727 /* ReservationCardView.swift in Sources */,
 				3CF3D8F42AB82FF3003689A6 /* MainTabView.swift in Sources */,
 				E4778D832ACD33BE0099D924 /* MyFollowerFollowingView.swift in Sources */,
-				E3876FC32AC294E200CFE728 /* PictureView.swift in Sources */,
 				069C67372AC26D2D00A5275F /* ShopDetailInfoView.swift in Sources */,
 				B5C623492AE50FB600B3E46B /* PrivateDivider.swift in Sources */,
 				3C37B1B42AC02481004A8E7E /* Color+.swift in Sources */,
@@ -1173,6 +1169,7 @@
 				B5549FBF2AD5A26C00695A8F /* ReservationButton.swift in Sources */,
 				3CCD2DFC2ABC37DB005709F4 /* View+.swift in Sources */,
 				E3A2BBD72ABD87A60083E1DE /* CatecoryView.swift in Sources */,
+				E3DF1BF42AE7B162002F85A8 /* ImagePickerView.swift in Sources */,
 				3C57893B2AC27BAF00D8B7EA /* AuthStore.swift in Sources */,
 				B5483D4A2AE409E100C4F989 /* CompletePaymentView.swift in Sources */,
 				B5549FBB2AD50FBB00695A8F /* ReservationConfirmView.swift in Sources */,
@@ -1202,7 +1199,6 @@
 				3C97476E2AD4DC4E007AE3CB /* Bundle+.swift in Sources */,
 				E47089A22AD8E5A500D168BA /* MyPageFeedView.swift in Sources */,
 				E3A782542ADD601C0042AAB9 /* LocationView.swift in Sources */,
-				E385FAB52AC161EE00AC7255 /* PostStore.swift in Sources */,
 				B59853642AC3BE4E00C45E76 /* String+.swift in Sources */,
 				3C79CE202AC1101800CEA98D /* ChatRoomListView.swift in Sources */,
 				B591C7202ACC59E700602727 /* MyReservation.swift in Sources */,
