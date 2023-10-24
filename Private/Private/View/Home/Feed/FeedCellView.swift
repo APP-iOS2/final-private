@@ -24,7 +24,8 @@ struct FeedCellView: View {
     
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @StateObject private var locationSearchStore = LocationSearchStore.shared
-    
+    @ObservedObject var detailCoordinator = DetailCoordinator.shared
+
     @State private var message: String = ""
     @State private var isShowingMessageTextField: Bool = false
     @State private var isFeedUpdateViewPresented: Bool = false
@@ -159,13 +160,11 @@ struct FeedCellView: View {
                         lat = locationSearchStore.formatCoordinates(feed.mapy, 2) ?? ""
                         lng = locationSearchStore.formatCoordinates(feed.mapx, 3) ?? ""
                         
-                        postCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
+                        detailCoordinator.coord = NMGLatLng(lat: Double(lat) ?? 0, lng: Double(lng) ?? 0)
                         postCoordinator.newMarkerTitle = feed.title
                         searchResult.title = feed.title
                         
-                        postCoordinator.moveCameraPosition()
-                        postCoordinator.makeSearchLocationMarker()
-                        
+                        print("피드 장소 선택 시 좌표: \(postCoordinator.coord)")
                     } label: {
                         VStack(alignment: .leading, spacing: 5) {
                             Text("\(feed.title)")
