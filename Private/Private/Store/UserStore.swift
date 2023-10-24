@@ -133,7 +133,7 @@ final class UserStore: ObservableObject {
         }
     }
     
-    func fetchotherUser(userEmail:String) {
+    func fetchotherUser(userEmail:String, completion: @escaping (Bool) -> Void) {
         Firestore.firestore().collection("User").document(userEmail).collection("MyFeed").addSnapshotListener { querySnapshot, error in
             if let error = error {
                 print("Error fetching user: \(error.localizedDescription)")
@@ -170,6 +170,7 @@ final class UserStore: ObservableObject {
             }
             .sorted(by: { Date(timeIntervalSince1970: $0.createdAt) > Date(timeIntervalSince1970: $1.createdAt) }) ?? []
         }
+        completion(true)
     }
     
     func deleteUser(userEmail: String) {

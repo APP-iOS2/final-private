@@ -58,6 +58,7 @@ struct MyPageView: View {
                                 .presentationDetents([.height(.screenHeight * 0.55)])
                         }
                     .navigationBarBackButtonHidden(true)
+                    .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("내 마커")
                     .backButtonArrow()
                     }

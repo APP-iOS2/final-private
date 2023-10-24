@@ -15,7 +15,7 @@ struct OtherProfileView: View {
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var followStore: FollowStore
     
-    @StateObject var coordinator: Coordinator = Coordinator.shared
+    @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     
     /// 각 버튼을 누르면 해당 화면을 보여주는 bool값
     @State var viewNumber: Int = 0
@@ -27,15 +27,15 @@ struct OtherProfileView: View {
                 .padding(.bottom, 20)
             HStack {
                 NavigationLink {
-                    NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView,
-                             markerTitle: $coordinator.newMarkerTitle,
-                             markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
-                    .navigationBarBackButtonHidden(true)
-                    .backButtonArrow()
-                    .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
-                        MapFeedSheetView(feed: userStore.otherFeedList.filter { $0.id == coordinator.currentFeedId }[0])
+                    PostNaverMap(currentFeedId: $postCoordinator.currentFeedId, showMarkerDetailView: $postCoordinator.showMarkerDetailView, showMyMarkerDetailView: $postCoordinator.showMyMarkerDetailView, coord: $postCoordinator.coord, tappedLatLng: $postCoordinator.tappedLatLng)
+                    .sheet(isPresented: $postCoordinator.showMyMarkerDetailView) {
+                        MapFeedSheetView(feed: userStore.otherFeedList.filter { $0.id == postCoordinator.currentFeedId }[0])
                             .presentationDetents([.height(.screenHeight * 0.55)])
                     }
+                    .navigationBarBackButtonHidden(true)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("\(user.nickname)님의 마커")
+                    .backButtonArrow()
                 } label: {
                     HStack {
                         Image(systemName: "map")
@@ -133,12 +133,15 @@ struct OtherProfileView: View {
         .navigationTitle("\(user.nickname)")
         .backButtonArrow()
         .onAppear{
-            userStore.fetchotherUser(userEmail: user.email)
+            userStore.fetchotherUser(userEmail: user.email) { result in
+                if result {
+                    postCoordinator.checkIfLocationServicesIsEnabled()
+                    PostCoordinator.shared.myFeedList = userStore.otherFeedList
+                    postCoordinator.makeOnlyMyFeedMarkers()
+                    print("userStore.otherFeedList \(userStore.otherFeedList)")
+                }
+            }
             followStore.fetchFollowerFollowingList(user.email)
-            coordinator.checkIfLocationServicesIsEnabled()
-            Coordinator.shared.myFeedList = userStore.otherFeedList
-            print("myFeedList: \(Coordinator.shared.myFeedList)")
-//            coordinator.makeOnlyMyFeedMarkers()
         }
     }
 }
