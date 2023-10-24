@@ -18,13 +18,10 @@ import Kingfisher
 struct FeedUpdateView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.presentationMode) var presentationMode
-    //    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var feedStore: FeedStore
     @EnvironmentObject var userStore: UserStore
-    //    @EnvironmentObject var userDataStore: UserStore
     @State var newFeed : MyFeed = MyFeed()
     @StateObject private var locationSearchStore = LocationSearchStore.shared
-    @StateObject private var postStore: PostStore = PostStore()
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @Binding var root: Bool
     @Binding var selection: Int
@@ -56,7 +53,6 @@ struct FeedUpdateView: View {
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
     @State var feed: MyFeed
-    //    @State var category : Category
     private let minLine: Int = 10
     private let maxLine: Int = 12
     private let fontSize: Double = 18
@@ -64,7 +60,6 @@ struct FeedUpdateView: View {
     let userDataStore: UserStore = UserStore()
     var db = Firestore.firestore()
     var storage = Storage.storage()
-    //@State private var selectedCategories: Set<MyCategory> = []
     let filteredCategories = Category.filteredCases
     var body: some View {
         NavigationStack {
@@ -168,9 +163,6 @@ struct FeedUpdateView: View {
                                 .font(.pretendardMedium16)
                                 .foregroundStyle(Color.privateColor)
                         }
-                        //                            if !postCoordinator.newMarkerTitle.isEmpty {
-                        //                                Text("신규장소: \(postCoordinator.newMarkerTitle)")
-                        //                            }
                     }
                     Divider()
                         .padding(.vertical, 10)
