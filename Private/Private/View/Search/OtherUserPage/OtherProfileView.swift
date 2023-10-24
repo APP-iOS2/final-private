@@ -30,6 +30,8 @@ struct OtherProfileView: View {
                     NaverMap(currentFeedId: $coordinator.currentFeedId, showMarkerDetailView: $coordinator.showMarkerDetailView, showMyMarkerDetailView: $coordinator.showMyMarkerDetailView,
                              markerTitle: $coordinator.newMarkerTitle,
                              markerTitleEdit: $coordinator.newMarkerAlert, coord: $coordinator.coord)
+                    .navigationBarBackButtonHidden(true)
+                    .backButtonArrow()
                     .sheet(isPresented: $coordinator.showMyMarkerDetailView) {
                         MapFeedSheetView(feed: userStore.otherFeedList.filter { $0.id == coordinator.currentFeedId }[0])
                             .presentationDetents([.height(.screenHeight * 0.55)])
@@ -37,13 +39,21 @@ struct OtherProfileView: View {
                 } label: {
                     HStack {
                         Image(systemName: "map")
-                            .foregroundStyle(Color("AccentColor"))
+                            .foregroundStyle(Color.privateColor)
                         Text("\(user.nickname)님의 마커 보기")
                             .font(.pretendardRegular14)
                     }
+                    .padding()
+                    .frame(width: .screenWidth*0.9)
                     .foregroundColor(.primary)
                 }
                 .frame(width: .screenWidth*0.9)
+                .overlay(
+                     RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.privateColor,lineWidth: 2)
+                        .opacity(0.4)
+                   )
+
             }
             HStack {
                 Button {
