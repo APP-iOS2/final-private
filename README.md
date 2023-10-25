@@ -69,12 +69,6 @@ Private는 내가 아는 사람들이 방문했던, 믿을 만한 장소들만 �
 - TossPayments
 - Lottie
 
-## 💻 사용 방법
-1. ```GoogleService-Info.plist```와 ```Info.plist``` 파일을 tkddn0518@naver.com로 요청해주세요.
-2. ```Private.xcworkspace``` 파일을 실행해주세요.
-
-기타 문의사항은 tkddn0518@naver.com로 메일 주세요.
-
 ## 🤝 커밋 컨벤션
 ```
 - [Feat] 새로운 기능 구현
@@ -89,6 +83,12 @@ Private는 내가 아는 사람들이 방문했던, 믿을 만한 장소들만 �
 - [Move] 파일 이름/위치 변경
 - [Update] 버전 업데이트
 ```
+
+## 💻 사용 방법
+1. ```GoogleService-Info.plist```와 ```Info.plist``` 파일을 tkddn0518@naver.com로 요청해주세요.
+2. ```Private.xcworkspace``` 파일을 실행해주세요.
+
+기타 문의사항은 tkddn0518@naver.com로 메일 주세요.
 
 ## 👨‍👩‍👦‍👦 팀원 소개
 | 변상우(PM) | 박범수 | 박성훈 | 이경연 |
