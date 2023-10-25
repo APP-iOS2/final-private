@@ -30,18 +30,18 @@ final class FollowStore: ObservableObject {
         return userCollection.document(userid).collection("follower")
     }
     
-    static func followingID(nickname: String) -> DocumentReference {
+    static func followingID(name: String) -> DocumentReference {
         
-        return userCollection.document((Auth.auth().currentUser?.email)!).collection("following").document(nickname)
+        return userCollection.document((Auth.auth().currentUser?.email)!).collection("following").document(name)
     }
     
-    static func followersID(email: String, nickname: String) -> DocumentReference {
+    static func followersID(email: String, name: String) -> DocumentReference {
         
-        return userCollection.document(email).collection("follower").document(nickname)
+        return userCollection.document(email).collection("follower").document(name)
     }
     
     func followState(userid: String) {
-        FollowStore.followingID(nickname: userid).getDocument {
+        FollowStore.followingID(name: userid).getDocument {
             (document, error) in
             
             if let doc = document, doc.exists {
@@ -71,37 +71,37 @@ final class FollowStore: ObservableObject {
     }
     
     //팔로우 상태를 체크후 팔로우 언팔로우 하는 함수
-    func manageFollow(userId: String, myNickName: String, userEmail: String) {
+    func manageFollow(userId: String, myName: String, userEmail: String) {
         
         if !followCheck {
-            follow(userId: userId, myNickName: myNickName, OtherEmail: userEmail)
+            follow(userId: userId, myName: myName, OtherEmail: userEmail)
             updateFollowCount(userId: userId)
         } else {
-            unfollow(userId: userId, myNickName: myNickName, userEmail: userEmail)
+            unfollow(userId: userId, myName: myName, userEmail: userEmail)
             updateFollowCount(userId: userId)
         }
     }
     
     //팔로우
-    func follow(userId: String, myNickName: String, OtherEmail: String) {
+    func follow(userId: String, myName: String, OtherEmail: String) {
         
-        FollowStore.followingID(nickname: userId).setData(["following": FieldValue.arrayUnion([userId])]) { (err) in
+        FollowStore.followingID(name: userId).setData(["following": FieldValue.arrayUnion([userId])]) { (err) in
             if err == nil {
                 self.followingList.append(userId)
             }
         }
         
-        FollowStore.followersID(email: OtherEmail, nickname: myNickName).setData(["follower": FieldValue.arrayUnion([myNickName])]) { (err) in
+        FollowStore.followersID(email: OtherEmail, name: myName).setData(["follower": FieldValue.arrayUnion([myName])]) { (err) in
             if err == nil {
-                self.followerList.append(myNickName)
+                self.followerList.append(myName)
             }
         }
     }
     
     //언팔로우
-    func unfollow(userId: String, myNickName: String, userEmail: String) {
+    func unfollow(userId: String, myName: String, userEmail: String) {
         
-        FollowStore.followingID(nickname: userId).getDocument { (document, err) in
+        FollowStore.followingID(name: userId).getDocument { (document, err) in
             if let doc = document, doc.exists {
                 doc.reference.delete()
                 if let index = self.followingList.firstIndex(of: userId) {
@@ -110,10 +110,10 @@ final class FollowStore: ObservableObject {
             }
         }
         
-        FollowStore.followersID(email: userEmail, nickname: myNickName).getDocument { (document, err) in
+        FollowStore.followersID(email: userEmail, name: myName).getDocument { (document, err) in
             if let doc = document, doc.exists {
                 doc.reference.delete()
-                if let index = self.followerList.firstIndex(of: myNickName) {
+                if let index = self.followerList.firstIndex(of: myName) {
                     self.followerList.remove(at: index)
                 }
             }

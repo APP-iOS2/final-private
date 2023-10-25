@@ -65,19 +65,20 @@ struct MyFollowerView: View {
         }
         .onAppear {
             if followerUserList.count != followerList.count {
-                searchFollowerUser(searchNickname: followerList)
+                searchFollowerUser(searchName: followerList)
             }
         }
         .refreshable {
             followerUserList = []
-            searchFollowerUser(searchNickname: user.follower)
+            searchFollowerUser(searchName: user.follower)
         }
     }
-    func searchFollowerUser(searchNickname: [String]) {
-        let db = Firestore.firestore()
-        for index in searchNickname {
+    
+    func searchFollowerUser(searchName: [String]) {
+        
+        for index in searchName {
             let query = userCollection
-                .whereField("nickname",isEqualTo: index)
+                .whereField("name",isEqualTo: index)
                 .limit(to: 10)
             query.getDocuments { (querySnapshot,error) in
                 if let error = error {

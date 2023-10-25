@@ -48,7 +48,7 @@ struct MyFollowingView: View {
                     }
                     Spacer()
                     Button {
-                        followStore.unfollow(userId: following.nickname, myNickName: user.nickname, userEmail: user.email)
+                        followStore.unfollow(userId: following.name, myName: user.nickname, userEmail: user.email)
                         followingUserList.removeAll { $0 == following }
                     } label: {
                         Text("언팔로우")
@@ -67,16 +67,16 @@ struct MyFollowingView: View {
         }
         .onAppear {
             if followingUserList.count != followingList.count {
-                searchFollowingUser(searchNickname: followingList)
+                searchFollowingUser(searchName: followingList)
             }
         }
         .refreshable {
             followStore.fetchFollowerFollowingList(user.email)
         }
     }
-    func searchFollowingUser(searchNickname: [String]) {
+    func searchFollowingUser(searchName: [String]) {
         
-        for index in searchNickname {
+        for index in searchName {
             let query = userCollection
                 .whereField("nickname",isEqualTo: index)
                 .limit(to: 10)
