@@ -18,22 +18,20 @@ import Kingfisher
 struct FeedUpdateView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.presentationMode) var presentationMode
-    //    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var feedStore: FeedStore
     @EnvironmentObject var userStore: UserStore
-    //    @EnvironmentObject var userDataStore: UserStore
     @State var newFeed : MyFeed = MyFeed()
     @StateObject private var locationSearchStore = LocationSearchStore.shared
     @StateObject private var postStore: PostStore = PostStore()
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     @Binding var root: Bool
     @Binding var selection: Int
-    @Binding var isFeedUpdateViewPresented: Bool /// FeedUpdateView
+    @Binding var isFeedUpdateViewPresented: Bool
     @Binding var searchResult: SearchResult
     @State private var currentSearchResult: SearchResult
 
-    @State private var text: String = "" /// 텍스트마스터 내용
-    @State private var textPlaceHolder: String = "" /// 텍스트마스터 placeholder
+    @State private var text: String = ""
+    @State private var textPlaceHolder: String = ""
     @State private var lat: String = ""
     @State private var lng: String = ""
     @State private var newMarkerlat: String = ""
@@ -45,20 +43,19 @@ struct FeedUpdateView: View {
     @State private var feedId: String = ""
     @State private var myselectedCategory: [String] = []
     @State private var clickLocation: Bool = false
-    @State private var isImagePickerPresented: Bool = false /// 업로드뷰에서 이미지 선택 뷰
-    @State private var ImageViewPresented: Bool = true /// 처음 이미지 뷰
+    @State private var isImagePickerPresented: Bool = false
+    @State private var ImageViewPresented: Bool = true
     @State private var showLocation: Bool = false
-    @State private var isshowAlert = false /// 업로드 알럿
-    @State private var categoryAlert: Bool = false /// 카테고리 초과 알럿
-    @State private var isSearchedLocation: Bool = false /// 장소 검색 시트
-    @State private var registrationAlert: Bool = false /// 신규 장소 저장완료 알럿
+    @State private var isshowAlert = false
+    @State private var categoryAlert: Bool = false
+    @State private var isSearchedLocation: Bool = false
+    @State private var registrationAlert: Bool = false
     @State private var selectedImage: [UIImage]? = []
     @FocusState private var isTextMasterFocused: Bool
     @State private var selectedCategories: Set<MyCategory> = []
     @State private var selectedToggle: [Bool] = Array(repeating: false, count: MyCategory.allCases.count)
     
     @State var feed: MyFeed
-    //    @State var category : Category
     private let minLine: Int = 10
     private let maxLine: Int = 12
     private let fontSize: Double = 18
@@ -66,7 +63,6 @@ struct FeedUpdateView: View {
     let userDataStore: UserStore = UserStore()
     var db = Firestore.firestore()
     var storage = Storage.storage()
-    //@State private var selectedCategories: Set<MyCategory> = []
     let filteredCategories = Category.filteredCases
     
     init(root: Binding<Bool>, selection: Binding<Int>, isFeedUpdateViewPresented: Binding<Bool>, searchResult: Binding<SearchResult>, feed: MyFeed) {
@@ -83,11 +79,8 @@ struct FeedUpdateView: View {
         let combinedCategory = "\(firstCategory), \(secondCategory), \(thirdCategory)"
 
         self._currentSearchResult = State(initialValue: SearchResult(title: feed.title, category: combinedCategory, address: feed.address, roadAddress: feed.roadAddress, mapx: feed.mapx, mapy: feed.mapy))
-        
 
         self._feed = State(initialValue: feed)
-
-        // Initialize selectedToggle based on feed's categories
         let selectedCategories = Set(feed.category)
         self._selectedToggle = State(initialValue: MyCategory.allCases.map { selectedCategories.contains($0.categoryName) })
         
@@ -125,6 +118,14 @@ struct FeedUpdateView: View {
                         .padding(.trailing, 10)
                     //MARK: 장소
                     VStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(feed.title)
+                                .font(.pretendardRegular14)
+                                .foregroundStyle(Color.subGrayColor)
+                            Text(feed.address)
+                                .font(.pretendardRegular12)
+                                .foregroundStyle(Color.subGrayColor)
+                        }
                         Button {
                             showLocation = true
                         } label: {
@@ -132,29 +133,12 @@ struct FeedUpdateView: View {
                                 .font(.pretendardMedium16)
                                 .foregroundStyle(Color.privateColor)
                         }
-//                        .sheet(isPresented: $showLocation) {
-//                            LocationSearchView(showLocation:feed.address, searchResult:feed.title, isSearchedLocation: feed.roadAddress)
-//                                .presentationDetents([.fraction(0.75), .large])
-//                        }
-//                        .sheet(isPresented: $isSearchedLocation) {
-//                            LocationView(searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng, isSearchedLocation: $isSearchedLocation)
-//                        }
                         .sheet(isPresented: $showLocation) {
-                            LocationSearchView(
-                                showLocation: .constant(true),
-                                searchResult: $currentSearchResult,
-                                isSearchedLocation: .constant(true)
-                            )
-                            .presentationDetents([.fraction(0.75), .large])
+                            LocationSearchView(showLocation: $showLocation, searchResult: $searchResult, isSearchedLocation: $isSearchedLocation)
+                                .presentationDetents([.fraction(0.75), .large])
                         }
                         .sheet(isPresented: $isSearchedLocation) {
-                            LocationView(
-                                searchResult: $currentSearchResult,
-                                registrationAlert: $registrationAlert,
-                                newMarkerlat: $newMarkerlat,
-                                newMarkerlng: $newMarkerlng,
-                                isSearchedLocation: $isSearchedLocation
-                            )
+                            LocationView(searchResult: $searchResult, registrationAlert: $registrationAlert, newMarkerlat: $newMarkerlat, newMarkerlng: $newMarkerlng, isSearchedLocation: $isSearchedLocation)
                         }
                     }
                     .padding(.vertical, 10)
@@ -162,7 +146,7 @@ struct FeedUpdateView: View {
                     HStack {
                         VStack(alignment: .leading) {
                             if searchResult.title.isEmpty && postCoordinator.newMarkerTitle.isEmpty {
-                                Text("\(feed.title)")
+                                Text("장소를 선택해주세요")
                                     .font(.pretendardRegular12)
                                     .foregroundColor(.secondary)
                                     .padding(.bottom, 5)
@@ -171,7 +155,7 @@ struct FeedUpdateView: View {
                                     if !postCoordinator.newMarkerTitle.isEmpty {
                                         clickLocation.toggle()
                                         postCoordinator.newLocalmoveCameraPosition()
-                                        //                                        postCoordinator.makeNewLocationMarker()
+
                                         postCoordinator.makeSearchLocationMarker()
                                     } else {
                                         lat = locationSearchStore.formatCoordinates(searchResult.mapy, 2) ?? ""
@@ -217,6 +201,7 @@ struct FeedUpdateView: View {
                     }
                     Divider()
                         .padding(.vertical, 10)
+                    
                     
                     //MARK: 사진
                     
@@ -334,7 +319,6 @@ struct FeedUpdateView: View {
                         }
                     }
                     .padding(.trailing, 8)
-                    
                     //MARK: 업로드
                     Text("수정 완료")
                         .font(.pretendardBold18)
@@ -412,19 +396,6 @@ struct FeedUpdateView: View {
                 dismissButton: .default(Text("확인"))
             )
         }
-//        .onAppear {
-//            for imageUrl in feed.images {
-//                KingfisherManager.shared.retrieveImage(with: URL(string: imageUrl)!) { result in
-//                    switch result {
-//                    case .success(let value):
-//                        selectedImage?.append(value.image)
-//                    case .failure(let error):
-//                        print("Error loading image: \(error)")
-//                    }
-//                }
-//            }
-//        }
-        
     } // body
     func toggleCategorySelection(at index: Int) {
         selectedToggle[index].toggle()
@@ -447,26 +418,23 @@ struct FeedUpdateView: View {
         return columns
     }
     
-    // MARK: Feed 객체를 뉴 피드에 넣은 이미지로 수정
     func modifyUpdateFeed(with selectedImages: [String]) -> [String] {
         return selectedImages
     }
     func updateFeed(inputFeed: MyFeed, feedId: String) {
         print("Function: \(#function) started")
-        
-        // inputFeed의 복사본 생성
         var feedCopy = inputFeed
         
         if let selectedImages = selectedImage {
             var imageUrls: [String] = []
-            let group = DispatchGroup()  // DispatchGroup 생성
+            let group = DispatchGroup()
             
             for image in selectedImages {
                 guard let imageData = image.jpegData(compressionQuality: 0.2) else { continue }
                 
                 let storageRef = storage.reference().child(UUID().uuidString)
                 
-                group.enter() // DispatchGroup 시작
+                group.enter()
                 storageRef.putData(imageData) { _, error in
                     if let error = error {
                         print("Error uploading image: \(error)")
@@ -516,7 +484,6 @@ struct FeedUpdateView: View {
                     }
                 }
             }
-
 func getValue(from array: [String], at index: Int) -> String {
     return index < array.count ? array[index] : ""
 }
