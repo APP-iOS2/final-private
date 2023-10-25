@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct MyPageView: View {
-    
-    @Environment(\.colorScheme) var colorScheme
-    
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var feedStore: FeedStore
     @EnvironmentObject private var followStore: FollowStore
+    
+    @Environment(\.colorScheme) var colorScheme
     
     @ObservedObject var postCoordinator: PostCoordinator = PostCoordinator.shared
     
@@ -161,8 +160,8 @@ struct MyPageView: View {
                 .padding(.top, -9)
             
             TabView(selection: $viewNumber) {
-                MyHistoryView().tag(0)
-                MySavedView().tag(1)
+                MyHistoryView(root:$root, selection:$selection).tag(0)
+                MySavedView(root:$root, selection:$selection).tag(1)
                 MySavedPlaceView().tag(2)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))

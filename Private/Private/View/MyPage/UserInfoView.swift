@@ -9,13 +9,13 @@ import SwiftUI
 import Kingfisher
 
 struct UserInfoView: View {
-    
     @EnvironmentObject private var userStore: UserStore
     @EnvironmentObject private var followStore: FollowStore
-    var followerList: [String]
-    var followingList: [String]
+    
     @State var isModify: Bool = false
     
+    var followerList: [String]
+    var followingList: [String]
     var body: some View {
         HStack {
             VStack() {

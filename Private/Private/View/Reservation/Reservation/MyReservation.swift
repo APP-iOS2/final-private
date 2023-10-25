@@ -13,7 +13,6 @@ struct MyReservation: View {
     
     /// 각 버튼을 누르면 해당 화면을 보여주는 Int값(0: 이용완료 / 1: 이용예정)
     @State var viewNumber: Int = 0
-    
     @Binding var isShowingMyReservation: Bool
     
     var body: some View {
@@ -65,7 +64,7 @@ struct MyReservation_Previews: PreviewProvider {
     }
 }
 
-
+/// 내 예약 - 이용 후
 struct AfterUse: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var shopStore: ShopStore
@@ -94,7 +93,7 @@ struct AfterUse: View {
     }
 }
 
-
+/// 내 예약 - 이용 예정
 struct BeforeUse: View {
     @EnvironmentObject var reservationStore: ReservationStore
     @EnvironmentObject var shopStore: ShopStore

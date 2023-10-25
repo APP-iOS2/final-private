@@ -14,6 +14,7 @@ struct FeedListView: View {
     @EnvironmentObject var feedStore : FeedStore
     @EnvironmentObject var followStore : FollowStore
     @EnvironmentObject var userStore : UserStore
+    
     @Binding var root: Bool
     @Binding var selection: Int
     

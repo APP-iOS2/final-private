@@ -23,6 +23,8 @@ struct ShopInfoCardView: View {
     @State private var lng: String = ""
     
     let mySavedPlaceList: [MyFeed]
+    var isOtherUser: Bool
+    
     var body: some View {
         ForEach(mySavedPlaceList, id:\.self) {place in
             HStack {
@@ -62,12 +64,13 @@ struct ShopInfoCardView: View {
                                         .font(.pretendardRegular12)
                                         .foregroundColor(.primary)
                                 },
-                                icon: { Image(systemName: "fork.knife").frame(width: 1).padding(.leading, 6).padding(.trailing, 4) }
+                                icon: { Image(systemName: "fork.knife").foregroundColor(.privateColor).frame(width: 1).padding(.leading, 6).padding(.trailing, 4) }
                             )
                         }
                         VStack(alignment: .leading) {
                             HStack{
                                 Image(systemName: "mappin")
+                                    .foregroundColor(.privateColor)
                                     .frame(width: .screenWidth * 0.001)
                                     .padding([.leading,.trailing], 4)
                                 Text(place.roadAddress)
@@ -93,7 +96,7 @@ struct ShopInfoCardView: View {
                         .frame(width: 25, height: 25)
                         .foregroundColor(Color(.private))
                         .padding(.trailing,7)
-                }
+                }.disabled(isOtherUser)
             }
             Divider()
                 .background(Color.primary)
@@ -102,9 +105,3 @@ struct ShopInfoCardView: View {
         
     }
 }
-
-//struct ShopInfoCardView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ShopInfoCardView(mySavedPlaceList: [MyFeed()]).environmentObject(UserStore())
-//    }
-//}

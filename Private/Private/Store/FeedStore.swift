@@ -15,7 +15,6 @@ import FirebaseStorage
 
 final class FeedStore: ObservableObject {
     
- 
     var db = Firestore.firestore()
     var storage = Storage.storage()
     // @Published 는 SwiftUI에서 ObservableObject의 프로퍼티가 변경될 때 View를 업데이트하도록 합니다.
@@ -153,8 +152,6 @@ final class FeedStore: ObservableObject {
             }
         }
     }
-    
-    
     
     //MARK: 해당 피드id 값을 읽어 그것만 삭제
     func deleteFeed(feedId: String) {
